@@ -1,8 +1,8 @@
 {
-  "name": "sakai-ng",
-  "short_name": "sakai-ng",
+  "name": "Zhidhay.bt",
+  "short_name": "Zhidhay",
   "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "background_color": "#607D8B",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
