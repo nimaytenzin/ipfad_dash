@@ -37,6 +37,16 @@
         background-position: bottom;
     }
 }
+
+.logo {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+
+    img {
+        height: 3rem;
+    }
+}
 .cloud1 {
     position: absolute;
     opacity: 0.5;

@@ -11,6 +11,11 @@ $buttonPadding: 0.2rem 0.4rem;
 @import "../node_modules/primeflex/primeflex.scss";
 @import "../node_modules/primeicons/primeicons.css";
 
+.font-uchen {
+    font-family: "Uchen", serif;
+    font-weight: 400;
+    font-style: normal;
+}
 .p-breadcrumb {
     border: none !important;
     padding: 0 !important;
