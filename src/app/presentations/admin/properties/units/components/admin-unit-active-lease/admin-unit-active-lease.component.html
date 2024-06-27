@@ -1,0 +1,172 @@
+<div
+    id="leaseActivesummary"
+    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+>
+    <div class="flex justify-content-between mb-5">
+        <p-chip label="Active Lease" icon="pi pi-bookmark-fill" />
+        <div class="flex gap-2">
+            <p-button label="Detailed View" severity="secondary" size="small" />
+            <p-button
+                label="Renew Lease"
+                icon="pi pi-refresh"
+                severity="secondary"
+                size="small"
+            />
+            <p-button
+                label="Terminate Lease"
+                icon="pi pi-times"
+                severity="secondary"
+                size="small"
+            />
+        </div>
+    </div>
+
+    <!-- <p>Status: Active</p>
+    <p class="text-lg font-bold text-green-500 my-2">
+        Active till:
+        {{ getReadableDate(activeLeaseAgreement.leaseEndDate) }}
+    </p>
+    <p-button
+        label="renew"
+        size="small"
+        icon="pi pi-refresh
+"
+    ></p-button> -->
+
+    <div
+        class="flex justify-content-between gap-4 mt-3"
+        *ngIf="activeLeaseAgreement"
+    >
+        <div id="leaseSummary" class="w-4">
+            <p class="font-semibold text-lg">Lease Summary</p>
+            <p-divider type="dashed" />
+
+            <p>
+                Lease Duration:
+                <strong
+                    >{{
+                        activeLeaseAgreement.leaseDurationMonths
+                    }}
+                    Months</strong
+                >
+            </p>
+            <p>
+                Lease Start Date:
+                <strong>{{ activeLeaseAgreement.leaseStartDate }}</strong>
+            </p>
+            <p>
+                Lease Start Date:
+                <strong>{{ activeLeaseAgreement.leaseEndDate }}</strong>
+            </p>
+
+            <p>
+                Lease Purpose:
+                <strong>{{ activeLeaseAgreement.use }}</strong>
+            </p>
+            <p>
+                Total Monthly Payable:
+                <strong
+                    >Nu. {{ computeMonthlyPayable(activeLeaseAgreement) }}
+                </strong>
+            </p>
+        </div>
+
+        <div class="w-4">
+            <p class="font-semibold text-lg">Tenant Details</p>
+            <p-divider type="dashed" />
+
+            <p>
+                Name:
+                <strong>
+                    {{ activeLeaseAgreement?.tenant?.firstName }}
+                    {{ activeLeaseAgreement?.tenant?.middleName }}
+                    {{ activeLeaseAgreement?.tenant?.lastName }}
+                </strong>
+            </p>
+            <p>
+                CID:
+                <strong>
+                    {{ activeLeaseAgreement?.tenant?.cid }}
+                </strong>
+            </p>
+            <p>
+                Phone Number:
+                <strong>
+                    {{ activeLeaseAgreement?.tenant?.phoneNumber }}
+                </strong>
+            </p>
+
+            <p class="mt-2">
+                Dzongkhag:
+                {{ activeLeaseAgreement.tenant?.dzongkhag?.name }}
+                Dzongkhag
+            </p>
+            <p>
+                Administrative zone:
+                {{ activeLeaseAgreement.tenant?.administrativeZone?.name }}
+                {{
+                    activeLeaseAgreement.tenant?.administrativeZone
+                        ?.location === "R"
+                        ? "Gewog"
+                        : ""
+                }}
+            </p>
+            <p>
+                Sub Administrative zone:
+                {{ activeLeaseAgreement.tenant?.subadministrativeZone?.name }}
+                {{
+                    activeLeaseAgreement.tenant?.subadministrativeZone
+                        ?.location === "R"
+                        ? "Chiwog"
+                        : ""
+                }}
+            </p>
+        </div>
+
+        <div id="pendingPayments" class="w-4">
+            <p class="font-semibold text-lg">Pending Payment</p>
+            <p-divider type="dashed" />
+
+            <p *ngIf="!activeLeaseAgreement?.paymentAdvise?.length">
+                No pending payments
+            </p>
+            <div *ngIf="activeLeaseAgreement?.paymentAdvise?.length">
+                <div
+                    *ngFor="let advice of activeLeaseAgreement.paymentAdvise"
+                    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+                >
+                    <div>
+                        <p-tag
+                            *ngIf="advice.status == 'DUE'"
+                            severity="danger"
+                            icon="pi pi-times"
+                            value="Due"
+                        />
+                        <p class="text-3xl font-semibold">
+                            Nu. {{ advice.totalAmount }}
+                        </p>
+
+                        <p class="text-base">
+                            {{ advice.title }}
+                        </p>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <p-button
+                            label="Pay"
+                            size="small"
+                            severity="secondary"
+                            (click)="openPaymentGatewayPaymentModal(advice)"
+                        ></p-button>
+                        <p-button
+                            label="Details"
+                            size="small"
+                            severity="secondary"
+                            (click)="openPaymentGatewayPaymentModal(advice)"
+                        ></p-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

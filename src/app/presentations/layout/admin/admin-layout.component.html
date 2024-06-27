@@ -1,9 +1,9 @@
 <div class="layout-wrapper" [ngClass]="containerClass">
-    <app-admin-topbar></app-admin-topbar>
     <div class="layout-sidebar">
         <app-admin-sidebar></app-admin-sidebar>
     </div>
     <div class="layout-main-container">
+        <app-admin-topbar></app-admin-topbar>
         <div class="layout-main">
             <router-outlet></router-outlet>
         </div>

@@ -1,0 +1,29 @@
+<div class="flex gap-4">
+    <div *ngFor="let plot of plots">
+        <p class="mt-4">
+            Thram: <strong> {{ plot.thramNumber }} </strong>
+        </p>
+        <p>
+            PlotID: <strong> {{ plot.plotId }} </strong>
+        </p>
+        <div class="flex gap-2 mt-1">
+            <p-button
+                icon="pi pi-pencil"
+                size="small"
+                label="Edit"
+                severity="primary"
+                (click)="openEditBuildingPlotModal(plot)"
+            />
+            <p-button
+                icon="pi pi-trash"
+                size="small"
+                label="delete"
+                severity="danger "
+                (click)="openConfirmDeleteBuildingPlotDialog(plot)"
+            />
+        </div>
+    </div>
+</div>
+<div *ngIf="!plots?.length" class="text-red-500">
+    ! Building Plot not mapped
+</div>

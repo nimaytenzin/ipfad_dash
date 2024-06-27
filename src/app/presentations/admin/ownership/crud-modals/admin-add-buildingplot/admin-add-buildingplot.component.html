@@ -1,27 +1,27 @@
-<form [formGroup]="createBuildingPlotForm" class="p-fluid p-2">
-    <p-toast></p-toast>
-    <div class="grid">
-        <p>Create Plot Details for Building ID {{ buildingId }}</p>
-        <div class="field col-12 md:col-4">
-            <label for="zhichar"> Thram Number</label>
-            <input
-                pInputText
-                id="zhichar"
-                formControlName="thramNumber"
-                type="text"
-            />
-        </div>
-        <div class="field col-12 md:col-4">
-            <label for="zhichar"> PlotID</label>
-            <input
-                pInputText
-                id="zhichar"
-                formControlName="plotId"
-                type="text"
-            />
-        </div>
+<form [formGroup]="createBuildingPlotForm" class="">
+    <div class="flex flex-column gap-2">
+        <label for="username">Thram Number</label>
+        <input
+            pInputText
+            id="username"
+            formControlName="thramNumber"
+            aria-describedby="username-help"
+        />
+        <small id="username-help"> Enter the thram Number </small>
     </div>
+    <div class="flex flex-column gap-2 mb-4">
+        <label for="username">Plot ID </label>
+        <input
+            pInputText
+            id="username"
+            formControlName="plotId"
+            aria-describedby="username-help"
+        />
+        <small id="username-help"> Enter the plot Number </small>
+    </div>
+
     <p-button
+        style="margin-top: 1rem"
         (click)="createBuildingPlot()"
         label="Create Building Plot"
     ></p-button>

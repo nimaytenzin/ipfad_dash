@@ -1,3 +1,4 @@
+import { PaymentAdviceDto } from '../payments/payment-advice/payment-advice.dto';
 import { BuildingDTO } from '../properties/building.dto';
 import { UnitDTO } from '../units/unit.dto';
 import { AdminDTO } from '../users/admin.dto';
@@ -20,9 +21,9 @@ export interface LeaseAgreementDTO {
     leaseEndDate: string;
 
     tenantId: number;
-    tenant: TenantDTO;
-    ownerId: number;
-    owner: OwnerDTO;
+    tenant?: TenantDTO;
+    landlordId: number;
+    landlord?: OwnerDTO;
     witnessId: number;
     witness: AdminDTO;
 
@@ -42,6 +43,8 @@ export interface LeaseAgreementDTO {
     tenantPrematureTermination: boolean;
     ownerPrematureTermination: boolean;
     leaseRules?: LeaseRuleDTO[];
+
+    paymentAdvise?: PaymentAdviceDto[];
 }
 
 export interface LeaseAgreementPartiesDTO {

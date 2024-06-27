@@ -1,0 +1,39 @@
+<div class="">
+    <p-galleria
+        [(value)]="buildingImages"
+        [showIndicators]="true"
+        [showThumbnails]="false"
+        [showIndicatorsOnItem]="true"
+        indicatorsPosition="left"
+        [autoPlay]="true"
+        [circular]="true"
+    >
+        <ng-template pTemplate="item" let-item>
+            <div style="width: 430px">
+                <div
+                    [style.background-image]="'url(' + item + ')'"
+                    style="
+                        height: 300px;
+                        width: 100% auto;
+                        background-size: cover;
+                        border-radius: 10px;
+                    "
+                ></div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="indicator" let-index>
+            <span style="color: #e9ecef; cursor: pointer">
+                {{ index + 1 }}
+            </span>
+        </ng-template>
+    </p-galleria>
+    <div class="flex w-full mt-1 align-items-center justify-content-between">
+        <p-button
+            icon="pi pi-plus"
+            size="small"
+            label="Photo"
+            class="p-0"
+        ></p-button>
+    </div>
+</div>

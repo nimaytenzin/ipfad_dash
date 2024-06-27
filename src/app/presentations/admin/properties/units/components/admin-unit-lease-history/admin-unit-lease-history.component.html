@@ -1,0 +1,71 @@
+<div *ngIf="paginatedLeaseAgreements.data.length">
+    <p class="text-lg mt-6 font-semibold">Lease History</p>
+    <hr class="" />
+
+    <p-table
+        [value]="paginatedLeaseAgreements.data"
+        class="p-datatable-sm"
+        [tableStyle]="{ 'min-width': '50rem' }"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Status</th>
+                <th>Summary</th>
+                <th>Parties</th>
+                <th>Property</th>
+                <th>Charges</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>
+                    <p class="text-lg font-semibold">
+                        {{ item.leaseStatus }}
+                    </p>
+                </td>
+                <td>
+                    <p>Lease Duration: {{ item.leaseDurationMonths }}</p>
+                    <p>Lease Start Date : {{ item.leaseStartDate }}</p>
+                    <p>Lease End Date : {{ item.leaseEndDate }}</p>
+                </td>
+                <td>
+                    <p>Tenant: {{ item.tenantId }}</p>
+                    <p>Landlord: {{ item.landlordId }}</p>
+                </td>
+                <td>
+                    <p>Building: {{ item.buildingId }}</p>
+                    <p>Unit: {{ item.unitId }}</p>
+                    <p>Sanctioned Use: {{ item.use }}</p>
+                </td>
+                <td>
+                    <p>Rent: {{ item.rent }}</p>
+                    <p *ngFor="let charge of item.leaseSurcharges">
+                        {{ charge.particular }}: Nu. {{ charge.amount }}
+                    </p>
+                    <p>
+                        Monthly Payable:
+                        <strong>Nu. {{ computeMonthlyPayable(item) }} </strong>
+                    </p>
+
+                    <p-button (click)="viewLease(item)">View lease</p-button>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="summary">
+            <div>
+                <p-paginator
+                    (onPageChange)="onPageChange($event)"
+                    [first]="paginatedLeaseAgreements.firstPage"
+                    [rows]="paginatedLeaseAgreements.limit"
+                    [totalRecords]="paginatedLeaseAgreements.count"
+                    [rowsPerPageOptions]="[10, 20, 50]"
+                ></p-paginator>
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<div *ngIf="!paginatedLeaseAgreements.data.length">
+    <p>No Lease history to display</p>
+</div>

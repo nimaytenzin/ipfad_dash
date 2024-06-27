@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdminCreateLeaseAgreementComponent } from '../crud-modals/admin-create-lease-agreement/admin-create-lease-agreement.component';
 import { Router } from '@angular/router';
-import { LandLordDataService } from 'src/app/core/dataservice/users-and-auth/landlord.dataservice';
+import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
 import { AdminAddLandlordComponent } from '../../users/crud-dialog/admin-add-landlord/admin-add-landlord.component';
@@ -22,6 +22,7 @@ import { invoiceDataService } from 'src/app/core/dataservice/payments/invoice.da
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
+import { AdminViewLeaseAgreementComponent } from '../admin-view-lease-agreement/admin-view-lease-agreement.component';
 
 @Component({
     selector: 'app-admin-master-lease-agreements',
@@ -77,6 +78,10 @@ export class AdminMasterLeaseAgreementsComponent {
         this.getLeaseAgreements();
     }
 
+    createLease() {
+        this.router.navigate(['/admin/master-lease/create/parties']);
+    }
+
     onPageChange(e) {
         console.log(e);
         this.leaseAgreementDataService
@@ -121,7 +126,7 @@ export class AdminMasterLeaseAgreementsComponent {
             buildingId: item.buildingId,
             title: 'Payment for the month of May 2024',
             tenantId: item.tenantId,
-            landlordId: item.ownerId,
+            landlordId: item.landlordId,
             leaseAgreementId: item.id,
             month: 5,
             year: 2024,
@@ -176,5 +181,16 @@ export class AdminMasterLeaseAgreementsComponent {
             default:
                 return 'danger';
         }
+    }
+
+    viewLease(leaeAgreement: LeaseAgreementDTO) {
+        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+            header: 'View Lease',
+
+            width: '70vw',
+            data: {
+                leaseAgreementId: leaeAgreement.id,
+            },
+        });
     }
 }

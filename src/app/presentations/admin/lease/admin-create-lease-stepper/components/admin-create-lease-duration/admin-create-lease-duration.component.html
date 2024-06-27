@@ -1,9 +1,7 @@
 <div class="stepsdemo-content">
     <p-card>
         <ng-template pTemplate="title"> Lease Duration </ng-template>
-        <ng-template pTemplate="subtitle">
-            Enter your card details
-        </ng-template>
+
         <ng-template pTemplate="content">
             <div class="flex w-full flex-column text-center gap-4">
                 <p>
@@ -11,7 +9,7 @@
                     <strong>TENANT</strong>
                 </p>
                 <div>
-                    <p>lease Start</p>
+                    <p>from</p>
                     <p-calendar
                         view="month"
                         [(ngModel)]="leaseStartDate"
@@ -19,7 +17,7 @@
                     ></p-calendar>
                 </div>
                 <div>
-                    <p>lease End</p>
+                    <p>to</p>
                     <p-calendar
                         view="month"
                         [(ngModel)]="leaseEndDate"
@@ -28,8 +26,8 @@
                     </p-calendar>
                 </div>
             </div>
-            <p *ngIf="leaseEndDate && leaseStartDate" class="text-center">
-                from for a period of
+            <p *ngIf="leaseEndDate && leaseStartDate" class="text-center mt-4">
+                for a period of
                 {{ calculateMonthsDifference(leaseStartDate, leaseEndDate) }}
                 MONTHS
             </p>

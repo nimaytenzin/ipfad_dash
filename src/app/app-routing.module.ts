@@ -9,6 +9,13 @@ import { AdminLayoutComponent } from './presentations/layout/admin/admin-layout.
                 {
                     path: '',
                     loadChildren: () =>
+                        import(
+                            './presentations/public/public-routing.module'
+                        ).then((m) => m.PublicRoutingModule),
+                },
+                {
+                    path: 'auth',
+                    loadChildren: () =>
                         import('./presentations/auth/auth.module').then(
                             (m) => m.AuthModule
                         ),
@@ -18,13 +25,6 @@ import { AdminLayoutComponent } from './presentations/layout/admin/admin-layout.
                     path: 'admin',
                     component: AdminLayoutComponent,
                     children: [
-                        // {
-                        //     path: '',
-                        //     loadChildren: () =>
-                        //         import(
-                        //             './presentations/admin/admin-dashboard/admin-dashboard.module'
-                        //         ).then((m) => m.AdminDashboardModule),
-                        // },
                         {
                             path: 'master-properties',
                             loadChildren: () =>

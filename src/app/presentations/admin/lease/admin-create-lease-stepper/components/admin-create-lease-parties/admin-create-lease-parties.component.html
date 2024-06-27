@@ -2,12 +2,9 @@
     <p-toast></p-toast>
     <p-card>
         <ng-template pTemplate="title"> Lease Parties </ng-template>
-        <ng-template pTemplate="subtitle">
-            Enter your card details
-        </ng-template>
 
         <ng-template pTemplate="content">
-            <div class="flex w-full flex-column text-center text-xl gap-4">
+            <div class="flex w-full flex-column text-center gap-4">
                 <p class="text-xl text-center">This Agreement is entered on</p>
                 <p-calendar
                     [(ngModel)]="agreementDate"
@@ -68,7 +65,7 @@
                             </strong>
                         </p>
                         <small
-                            class="underline italic cursor-pointer"
+                            class="underline italic cursor-pointer text-red-500"
                             (click)="clearTenant()"
                         >
                             ( clear )
@@ -128,7 +125,7 @@
                         </p>
 
                         <small
-                            class="underline italic cursor-pointer"
+                            class="underline italic cursor-pointer text-red-500"
                             (click)="clearLandlord()"
                         >
                             ( clear )

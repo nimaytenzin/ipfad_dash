@@ -28,7 +28,7 @@ export class AdminLayoutService {
         inputStyle: 'outlined',
         menuMode: 'static',
         colorScheme: 'light',
-        theme: 'lara-light-indigo',
+        theme: 'saga-blue',
         scale: 14,
     };
 
@@ -52,6 +52,7 @@ export class AdminLayoutService {
     overlayOpen$ = this.overlayOpen.asObservable();
 
     constructor() {
+        this.changeTheme();
         effect(() => {
             const config = this.config();
             if (this.updateStyle(config)) {
@@ -119,7 +120,6 @@ export class AdminLayoutService {
     }
 
     changeTheme() {
-        console.log('CHANGING THEME');
         const config = this.config();
         const themeLink = <HTMLLinkElement>document.getElementById('theme-css');
         const themeLinkHref = themeLink.getAttribute('href')!;

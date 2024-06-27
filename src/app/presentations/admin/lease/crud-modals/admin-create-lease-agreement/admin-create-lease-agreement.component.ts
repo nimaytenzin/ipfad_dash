@@ -19,7 +19,7 @@ import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenan
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { CalendarModule } from 'primeng/calendar';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
-import { LandLordDataService } from 'src/app/core/dataservice/users-and-auth/landlord.dataservice';
+import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ToastModule } from 'primeng/toast';
@@ -54,7 +54,7 @@ export class AdminCreateLeaseAgreementComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private tenantDataService: TenantDataService,
-        private landlordDataService: LandLordDataService,
+        private ownerDataService: OwnerDataService,
         private messageService: MessageService,
         private buildingDataService: BuildingDataService,
         private unitDataService: UnitDataService

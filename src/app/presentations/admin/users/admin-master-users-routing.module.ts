@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminMasterTenantsComponent } from './admin-master-tenants/admin-master-tenants.component';
-import { AdminMasterLandlordsComponent } from './admin-master-landlords/admin-master-landlords.component';
+import { AdminMasterOwnersComponent } from './admin-master-owners/admin-master-owners.component';
 import { AdminMasterAdminsComponent } from './admin-master-admins/admin-master-admins.component';
 
 const routes: Routes = [
@@ -10,8 +10,8 @@ const routes: Routes = [
         component: AdminMasterTenantsComponent,
     },
     {
-        path: 'landlords',
-        component: AdminMasterLandlordsComponent,
+        path: 'owners',
+        component: AdminMasterOwnersComponent,
     },
     {
         path: 'admins',

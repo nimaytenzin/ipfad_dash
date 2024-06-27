@@ -73,6 +73,21 @@
                     <p>Landlord: Aum Zam</p>
                 </td>
                 <td>
+                    <p *ngIf="item.status === 'PAID'">
+                        Paid by Tenant vide transaction ref 1. (click to view
+                        receipt)
+                    </p>
+                    <p-button
+                        *ngIf="item.status === 'DUE'"
+                        label="Pay"
+                        (click)="openPayInvoiceModal(item)"
+                    ></p-button>
+
+                    <p-button
+                        *ngIf="item.status === 'PAID'"
+                        label="Transfer"
+                        (click)="openPayInvoiceModal(item)"
+                    ></p-button>
                     <p
                         class="underline italic cursor-pointer"
                         (click)="viewLeaseAgreement()"

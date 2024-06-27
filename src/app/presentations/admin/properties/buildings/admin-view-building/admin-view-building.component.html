@@ -5,79 +5,64 @@
             0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08);
     "
 >
-    <div class="flex align-items-end">
-        <qrcode
-            [qrdata]="getQr(building?.zhicharQrUuid)"
-            [errorCorrectionLevel]="'M'"
-            [allowEmptyString]="true"
-            [cssClass]="'center'"
-            [errorCorrectionLevel]="'high'"
-            [colorDark]="'#111827'"
-            [colorLight]="'#FFFFFF00'"
-            [elementType]="'svg'"
-            [errorCorrectionLevel]="'H'"
-            [scale]="1"
-            [title]="'BuildingQr'"
-            [width]="100"
-            class="m-0 p-0"
-        ></qrcode>
-        <div class="mb-3">
-            <h4 class="m-0 p-0">
-                {{ building?.name }}
-            </h4>
-            <p class="m-0 p-0">
-                {{ building?.buildingNumber }} {{ building?.streetName }}
-                {{ building?.adminsitrativeZone?.name }}
-                {{ building?.subadministrativeZone?.name }}
-            </p>
-            <small class="m-0 p-0"> Lat: {{ building.latitude }} </small>
-            <small class="m-0 p-0"> Long: {{ building.longitude }} </small>
-        </div>
-    </div>
+    <div class="mb-3">
+        <h4 class="m-0 p-0">
+            {{ building?.name }}
+        </h4>
+        <p class="m-0 p-0">
+            {{ building?.buildingNumber }} {{ building?.streetName }}
+            {{ building?.adminsitrativeZone?.name }}
+            {{ building?.subadministrativeZone?.name }}
+        </p>
 
+        <small class="m-0 p-0"> Building ID: {{ building.id }} </small>
+    </div>
     <p-tabView>
-        <p-tabPanel header="Building Details">
-            <div class="grid">
-                <div class="col-12 lg:col-4 border-2 p-2 border-round">
-                    <app-admin-building-details-card></app-admin-building-details-card>
-                    <p>
-                        <strong> Building Type: </strong>
-                        {{ building.buildingType }}
-                    </p>
-                    <p>
-                        <strong> Configuration: </strong>
-                        {{
-                            getBuildingFloorConfiguration(
-                                building.regularFloorCount,
-                                building.basementCount,
-                                building.stiltCount,
-                                building.atticCount,
-                                building.jamthogCount
-                            )
-                        }}
-                    </p>
+        <p-tabPanel header="Building Details"
+            ><div class="flex gap-6">
+                <div class="border-round-md" style="max-width: 430px">
+                    <app-admin-building-photos></app-admin-building-photos>
+                    <div class="flex flex-column gap-2 mt-4">
+                        <app-admin-building-surcharges
+                            [buildingId]="buildingId"
+                        ></app-admin-building-surcharges>
+                        <p-divider type="dashed" />
+                        <app-admin-building-rules
+                            [buildingId]="buildingId"
+                        ></app-admin-building-rules>
+                        <p-divider type="dashed" />
+                        <app-admin-building-amenities [buildingId]="buildingId">
+                        </app-admin-building-amenities>
+                    </div>
                 </div>
-                <div class="col-12 lg:col-4">
-                    <h2>Landlord</h2>
-                    <p *ngFor="let item of buildingAmenities; let i = index">
-                        {{ i + 1 }}) {{ item }}
-                    </p>
-                </div>
-                <div class="col-12 lg:col-4">
-                    <h2>Amenities</h2>
-                    <p *ngFor="let item of buildingAmenities; let i = index">
-                        {{ i + 1 }}) {{ item }}
-                    </p>
-                </div>
-                <div class="col-12 lg:col-4">
-                    <app-admin-building-rules
-                        [buildingId]="buildingId"
-                    ></app-admin-building-rules>
-                </div>
-                <div class="col-12 lg:col-4">
-                    <app-admin-building-surcharges
-                        [buildingId]="buildingId"
-                    ></app-admin-building-surcharges>
+
+                <div class="flex-1 flex-column border-round-md flex gap-4">
+                    <div class="flex gap-6">
+                        <div class="w-6">
+                            <app-admin-building-details-card
+                                [building]="building"
+                                [editMode]="true"
+                            ></app-admin-building-details-card>
+                            <p-divider type="dashed" />
+
+                            <app-admin-building-plot
+                                [plots]="building.plots"
+                            ></app-admin-building-plot>
+                        </div>
+                        <p-divider layout="vertical" type="dashed" />
+
+                        <div class="w-6">
+                            <app-admin-building-ownership-card
+                                [owners]="building.owners"
+                                [editMode]="true"
+                            >
+                            </app-admin-building-ownership-card>
+                        </div>
+                    </div>
+
+                    <p-divider type="dashed" />
+                    <app-admin-building-map [building]="building">
+                    </app-admin-building-map>
                 </div>
             </div>
         </p-tabPanel>

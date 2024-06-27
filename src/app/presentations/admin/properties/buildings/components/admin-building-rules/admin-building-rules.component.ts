@@ -46,7 +46,7 @@ import { BuildingSurchargeDTO } from 'src/app/core/dto/properties/building-surch
         ToastModule,
         ConfirmDialogModule,
     ],
-    providers: [ConfirmationService, MessageService],
+    providers: [ConfirmationService],
     templateUrl: './admin-building-rules.component.html',
     styleUrl: './admin-building-rules.component.scss',
 })
@@ -100,7 +100,7 @@ export class AdminBuildingRulesComponent {
         const createBuildingRuleData: CreateBuildingRuleDTO = {
             particular:
                 this.createBuildingRuleForm.controls['particular'].value,
-            buildingId: 1,
+            buildingId: this.buildingId,
         };
 
         this.buildingRulesDataService

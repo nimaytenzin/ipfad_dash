@@ -27,9 +27,19 @@ export class AdminMenuComponent implements OnInit {
                 label: 'Properties',
                 items: [
                     {
-                        label: 'Properties',
+                        label: 'Listings',
                         icon: 'pi pi-fw pi-th-large',
                         routerLink: ['/admin/master-properties'],
+                    },
+                    {
+                        label: 'Search',
+                        icon: 'pi pi-fw pi-th-large',
+                        routerLink: ['/admin/master-properties/search'],
+                    },
+                    {
+                        label: 'Map View',
+                        icon: 'pi pi-fw pi-th-large',
+                        routerLink: ['/admin/master-properties/map'],
                     },
                 ],
             },
@@ -58,9 +68,9 @@ export class AdminMenuComponent implements OnInit {
                 label: 'Users',
                 items: [
                     {
-                        label: 'Landlords',
+                        label: 'Owners',
                         icon: 'pi pi-fw pi-th-large',
-                        routerLink: ['/admin/master-users/landlords'],
+                        routerLink: ['/admin/master-users/owners'],
                     },
                     {
                         label: 'Tenants',
@@ -88,12 +98,17 @@ export class AdminMenuComponent implements OnInit {
                 label: 'Transactions',
                 items: [
                     {
-                        label: 'Transactions',
+                        label: 'Advice',
                         icon: 'pi pi-fw pi-building',
                         routerLink: ['/admin/master-transactions'],
                     },
                     {
-                        label: 'Invoices',
+                        label: 'Receipts',
+                        icon: 'pi pi-fw pi-th-large',
+                        routerLink: ['/admin/master-transactions/invoices'],
+                    },
+                    {
+                        label: 'Remittance',
                         icon: 'pi pi-fw pi-th-large',
                         routerLink: ['/admin/master-transactions/invoices'],
                     },

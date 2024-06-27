@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { API_URL } from '../../constants/constants';
-import { CreateUnitDTO, UnitDTO } from '../../dto/units/unit.dto';
+import {
+    CreateUnitDTO,
+    UnitDTO,
+    UpdateUnitDto,
+} from '../../dto/units/unit.dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,7 +30,7 @@ export class UnitDataService {
         return this.http.post(`${this.apiUrl}/unit`, data);
     }
 
-    UpdateUnit(data: CreateUnitDTO, id: number): Observable<UnitDTO> {
+    UpdateUnit(data: UpdateUnitDto, id: number): Observable<UnitDTO> {
         return this.http.patch<UnitDTO>(`${this.apiUrl}/unit/${id}`, data);
     }
 }

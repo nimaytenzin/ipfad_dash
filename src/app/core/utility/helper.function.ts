@@ -62,3 +62,21 @@ export function PARSEFLOORLEVELS(floorLevel: string) {
             return null; // Or handle invalid input as needed
     }
 }
+
+export function PARSEFULLNAME(firstName, middleName, lastName) {
+    let fullName = '';
+
+    if (firstName) {
+        fullName += firstName + ' ';
+    }
+
+    if (middleName) {
+        fullName += middleName + ' ';
+    }
+
+    if (lastName) {
+        fullName += lastName;
+    }
+
+    return fullName.trim();
+}

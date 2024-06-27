@@ -43,4 +43,40 @@ export class LeaseAgreementDataService {
             { params: httpParams }
         );
     }
+
+    FindLeaseAgreement(id: number): Observable<LeaseAgreementDTO> {
+        return this.http.get<LeaseAgreementDTO>(
+            `${this.apiUrl}/lease-agreement/${id}`
+        );
+    }
+
+    GetLeaseAgreementsPaginatedByUnit(
+        unitId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.page !== undefined) {
+                httpParams = httpParams.append('page', params.page.toString());
+            }
+            if (params.limit !== undefined) {
+                httpParams = httpParams.append(
+                    'limit',
+                    params.limit.toString()
+                );
+            }
+        }
+        return this.http.get<PaginatedData<LeaseAgreementDTO>>(
+            `${this.apiUrl}/lease-agreement/unit/q/${unitId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetActiveLeaseAgreementByUnit(
+        unitId: number
+    ): Observable<LeaseAgreementDTO> {
+        return this.http.get<LeaseAgreementDTO>(
+            `${this.apiUrl}/lease-agreement/active/unit/${unitId}`
+        );
+    }
 }

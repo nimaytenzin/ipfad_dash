@@ -12,6 +12,13 @@ import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
 import { TableModule } from 'primeng/table';
 import { AdminAddBuildingplotComponent } from '../../../ownership/crud-modals/admin-add-buildingplot/admin-add-buildingplot.component';
+import { AdminAddBuildingownershipComponent } from '../../../ownership/crud-modals/admin-add-buildingownership/admin-add-buildingownership.component';
+import { DialogModule } from 'primeng/dialog';
+import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
+import { BuildingOwnershipDto } from 'src/app/core/dto/properties/building-ownership.dto';
+import { AdminEditBuildingownershipComponent } from '../../../ownership/crud-modals/admin-edit-buildingownership/admin-edit-buildingownership.component';
+import { AdminEditBuildingplotComponent } from '../../../ownership/crud-modals/admin-edit-buildingplot/admin-edit-buildingplot.component';
+import { AdminBuildingDetailsCardComponent } from '../components/admin-building-details-card/admin-building-details-card.component';
 
 @Component({
     selector: 'app-admin-list-buildings',
@@ -23,6 +30,8 @@ import { AdminAddBuildingplotComponent } from '../../../ownership/crud-modals/ad
         TableModule,
         QRCodeModule,
         RouterModule,
+        DialogModule,
+        AdminBuildingDetailsCardComponent,
     ],
     providers: [DialogService],
     templateUrl: './admin-list-buildings.component.html',
@@ -36,9 +45,20 @@ export class AdminListBuildingsComponent {
     ) {}
 
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
+    showOwnerDetailCard: boolean = false;
+
+    //delete buildingplot
+    showConfirmDeleteBuildingPlotDialog: boolean = false;
+    selectedBuildingPlot: any;
+
+    //delete building ownership
+    showConfirmDeleteBuildingOwnershipDialog: boolean = false;
+    selectedBuildingOwnership: any;
 
     ref: DynamicDialogRef | undefined;
     buildingsPaginated: BuildingDTO[] = [];
+
+    selectedOwner: LandLordDTO;
 
     responsiveOptions: any[] = [
         {
@@ -80,6 +100,18 @@ export class AdminListBuildingsComponent {
             }
         });
     }
+    openAddBuildingOwnershipModal(building: BuildingDTO) {
+        this.ref = this.dialogService.open(AdminAddBuildingownershipComponent, {
+            header: 'Add Building Owner',
+            width: '600px',
+            data: building,
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.getPaginatedBuildings();
+            }
+        });
+    }
 
     openEditBuildingModal(data: BuildingDTO) {
         this.ref = this.dialogService.open(AdminEditBuildingComponent, {
@@ -111,6 +143,44 @@ export class AdminListBuildingsComponent {
             data: {
                 buildingId: buildingId,
             },
+        });
+    }
+
+    viewOwnerDetailCard(owner) {
+        console.log(owner);
+        this.selectedOwner = owner;
+        this.showOwnerDetailCard = true;
+    }
+
+    openEditOwnershipModal(ownership: BuildingOwnershipDto) {
+        this.ref = this.dialogService.open(
+            AdminEditBuildingownershipComponent,
+            {
+                header: 'Edit Ownership',
+                data: ownership,
+            }
+        );
+    }
+    openConfirmDeleteBuildingPlotDialog(selectedBuildingPlot) {
+        this.selectedBuildingPlot = selectedBuildingPlot;
+        this.showConfirmDeleteBuildingPlotDialog = true;
+    }
+    deleteBuildingPlot() {
+        alert('DELTETING ' + this.selectedBuildingPlot.plotId);
+    }
+
+    openConfirmDeleteBuildingOwnershipDialog(selectedBuildingOwnership) {
+        this.selectedBuildingOwnership = selectedBuildingOwnership;
+        this.showConfirmDeleteBuildingOwnershipDialog = true;
+    }
+    deleteBuildingOwnership() {
+        alert('DELTETING ' + this.selectedBuildingOwnership.id);
+    }
+
+    openEditBuildingPlotModal(buildingPlot) {
+        this.ref = this.dialogService.open(AdminEditBuildingplotComponent, {
+            header: 'Edit Building Plot Mapping',
+            data: buildingPlot,
         });
     }
 }

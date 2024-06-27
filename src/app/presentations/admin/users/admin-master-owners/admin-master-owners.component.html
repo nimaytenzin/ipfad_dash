@@ -1,0 +1,154 @@
+<div class="my-2">
+    <p-button
+        icon="pi pi-plus"
+        (click)="openAddlandlordsModal()"
+        label="Add Owner"
+    >
+    </p-button>
+</div>
+
+<p-table [value]="paginatedLandlords.data" class="p-datatable-sm">
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+            <th>Details</th>
+            <th>Bank Accounts</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-landlord>
+        <tr>
+            <td>
+                <div
+                    class="flex flex-column justify-content-center align-items-center"
+                >
+                    <p-avatar
+                        image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                        size="xlarge"
+                    />
+
+                    <img
+                        style="height: 40px"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtizEDnQGsgcJxJGtWsTdGXdGHTEKo5DSczA&s"
+                    />
+
+                    <div class="gap-2 flex">
+                        <p-button
+                            size="small"
+                            icon="pi pi-cloud-upload"
+                            label="Profile"
+                        />
+                        <p-button
+                            size="small"
+                            icon="pi pi-cloud-upload"
+                            label="signature"
+                        />
+                    </div>
+                </div>
+            </td>
+            <td>
+                <p>
+                    Name:
+                    <strong
+                        >{{ landlord.firstName }}
+                        <span *ngIf="landlord.middleName">
+                            {{ landlord.middleName }}
+                        </span>
+                        <span *ngIf="landlord.lastName">
+                            {{ landlord.lastName }}
+                        </span></strong
+                    >
+                </p>
+                <p>
+                    Phone: <strong> {{ landlord.phoneNumber }}</strong>
+                </p>
+                <p>
+                    Email: <strong>{{ landlord.email }}</strong>
+                </p>
+                <p>
+                    Address:
+                    <strong
+                        ><p>
+                            {{ landlord.subadministrativeZone.name }},{{
+                                landlord.administrativeZone.name
+                            }}, {{ landlord.dzongkhag.name }} Dzongkhag
+                        </p></strong
+                    >
+                </p>
+
+                <div class="flex gap-2">
+                    <p-button icon="pi pi-pencil" size="small" label="edit" />
+                    <p-button
+                        icon="pi pi-trash"
+                        label="delete"
+                        size="small"
+                        severity="danger"
+                    />
+                </div>
+            </td>
+
+            <td>
+                <p-button
+                    icon="pi pi-plus"
+                    size="small"
+                    label="Bank account"
+                    (click)="openCreateBankAccountModal(landlord)"
+                />
+                <hr />
+                <div class="flex flex-column gap-4">
+                    <div
+                        *ngFor="let item of landlord.bankAccounts"
+                        class="shadow-2 p-4"
+                    >
+                        <div>
+                            <img
+                                style="height: 40px"
+                                [src]="getBankLogo(item.bankName)"
+                            />
+                        </div>
+                        <p>
+                            Bank Name: <strong>{{ item.bankName }}</strong>
+                        </p>
+                        <p>
+                            Account Number:
+                            <strong>{{ item.accountNumber }}</strong>
+                        </p>
+                        <p>
+                            Account Name:
+                            <strong> {{ item.accountName }}</strong>
+                        </p>
+
+                        <div class="flex gap-2">
+                            <p-button
+                                size="small"
+                                icon="pi pi-pencil"
+                                label="edit"
+                                (click)="openEditBankAccountModal(item)"
+                            ></p-button>
+                            <p-button
+                                icon="pi pi-trash"
+                                size="small"
+                                label="delete"
+                                severity="danger "
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!landlord.bankAccounts.length">
+                    ...No bank account added
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+        <div>
+            <p-paginator
+                (onPageChange)="onPageChange($event)"
+                [first]="paginatedLandlords.firstPage"
+                [rows]="paginatedLandlords.limit"
+                [totalRecords]="paginatedLandlords.count"
+                [rowsPerPageOptions]="[10, 20, 50]"
+            ></p-paginator>
+        </div>
+    </ng-template>
+</p-table>

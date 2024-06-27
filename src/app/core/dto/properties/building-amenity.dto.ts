@@ -1,4 +1,9 @@
 export interface BuildingAmenityDTO {
     id: number;
-    particular: string;
+    name: string;
+    buildingId: number;
+}
+export interface CreateBuildingAmenityDto {
+    name: string;
+    buildingId: number;
 }

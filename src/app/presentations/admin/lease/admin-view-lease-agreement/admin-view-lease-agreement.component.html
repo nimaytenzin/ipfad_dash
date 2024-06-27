@@ -1,0 +1,368 @@
+<div class="text-2xl p-6" style="text-align: justify">
+    <h1 class="text-center font-bold">Lease Agreement</h1>
+
+    <p class="text-center mb-2">
+        This Rental/lease Agreement is executed on
+        <strong>{{ leaseAgreement.agreementDay }}</strong> Day of
+        <strong>{{ leaseAgreement.agreementMonth }}</strong> of the year
+        <strong>{{ leaseAgreement.agreementYear }}</strong> BETWEEN Mr.
+        <strong
+            >{{ leaseAgreement.tenant?.firstName }}
+            {{ leaseAgreement.tenant?.lastName }}</strong
+        >
+        holding Citizen ID No.
+        <strong>{{ leaseAgreement.tenant?.cid }}</strong> of
+        <strong> tenantVillage </strong> village,
+        <strong> tenantGewog </strong> Gewog,
+        <strong>tenantDzongkhag </strong> Dzongkhag, residing at
+        <strong> tenantPresentAddress </strong> Herein after referred to as the
+        “Tenant/ lessee” PARTY OF ONE PART
+    </p>
+
+    <p class="text-center mb-2">
+        and Mr./Ms.
+        <strong
+            >{{ leaseAgreement.landlord?.firstName }}
+            {{ leaseAgreement.landlord?.lastName }}</strong
+        >
+        holding CID No <strong>{{ leaseAgreement.landlord?.cid }}</strong> of
+        <strong>ownerVillage </strong> Village,
+        <strong> ownerGewog </strong> Gewog,
+        <strong> ownerDzongkhag </strong> Dzongåkhag residing at
+        <strong> ownerAddress </strong>, Owner of building
+        <strong> {{ leaseAgreement.buildingId }} </strong> at plot No
+        <strong>PLOT ID</strong>, herein after referred to as the
+        “Owner/Lessor”, PARTY OF OTHER PART.
+    </p>
+
+    <hr />
+
+    <p>
+        And whereas the parties hereto had due deliberations and discussions and
+        the consequence thereof they have reached an understanding, which they
+        have decided to reduce into writing.
+    </p>
+
+    <p>
+        NOW THIS AGREEMENT WITNESS and it is hereby mutually agreed by and
+        between the parties;
+    </p>
+
+    <hr />
+
+    <ol>
+        <li>
+            That the owner/lessor thus hereby grants and confers
+            <strong
+                >{{ leaseAgreement.unit?.floorLevel }} -
+                {{ leaseAgreement.unit?.unitNumber }} </strong
+            >, id <strong>{{ leaseAgreement.unitId }}</strong
+            >, of Building No -
+            <strong>{{ leaseAgreement.buildingId }}</strong> at plot No
+            <strong> PLOT ID </strong> in favour of the aforesaid tenant on rent
+            and on such terms and condition stated below.
+        </li>
+        <li>
+            That the period of tenancy/lease for the rental unit shall be for a
+            period of
+            <strong>{{ leaseAgreement.leaseDurationMonths }}</strong> month,
+            commencing from
+            <strong>{{ leaseAgreement.leaseStartDate }}</strong> to
+            <strong>{{ leaseAgreement.leaseEndDate }}</strong
+            >.
+        </li>
+        <li>
+            That the rent for the said unit/premises is agreed to be paid every
+            month at Nu <strong>{{ leaseAgreement.rent }}</strong> per month.
+        </li>
+        <li>
+            The rental unit is rented for the purpose of:
+            <strong>{{ leaseAgreement.use }}</strong>
+        </li>
+        <li>
+            That the rent as payable every month shall be tendered by the tenant
+            to the owner on or before
+            <strong>{{ leaseAgreement.paymentDueDay }}</strong
+            >, failing which the owner shall charge and the tenant shall pay an
+            interest at 24% per annum on the amount of rent payable for every
+            day of default.
+        </li>
+        <li>
+            That the aforesaid tenant shall deposit a sum of Nu
+            <strong>{{ leaseAgreement.securityDepositAmount }}</strong> only as
+            security deposit on the execution of this agreement.
+        </li>
+        <li>
+            The security deposit shall be refundable or adjusted in accordance
+            with the Act when the tenant vacates the rental unit:
+            <ol type="a">
+                <li>Upon expiry of the tenancy term;</li>
+                <li>
+                    Upon termination of the tenancy by the tenant in accordance
+                    with this agreement;
+                </li>
+                <li>
+                    Upon termination of the tenancy by the owner in accordance
+                    with this agreement;
+                </li>
+            </ol>
+        </li>
+        <li>
+            That the tenant hereby assures that he/she and his/her family
+            members shall use the unit/flat only for the purpose for which it
+            was granted.
+        </li>
+    </ol>
+
+    <p>Duties of Tenant</p>
+    <ol start="9">
+        <li>
+            The owner may evict the tenant if:
+            <ol type="a">
+                <li>
+                    Rent has been owing in respect of the rental under for two
+                    months;
+                </li>
+                <li>
+                    The tenant refuses to vacate the rental unit after the
+                    expiry or termination of the tenancy;
+                </li>
+                <li>
+                    The tenant creates nuisance to other tenants or carries out
+                    any dangerous activities;
+                </li>
+                <li>
+                    The tenant does not comply with the terms and conditions of
+                    this agreement or the Tenancy Act.
+                </li>
+            </ol>
+        </li>
+        <li>
+            That the owner shall not discontinue or withhold any services and
+            facilities enjoyed by the tenant without just and sufficient cause.
+        </li>
+        <li>
+            That the tenant shall dispose the garbage at a proper place and also
+            live hygienically.
+        </li>
+        <li>
+            That all municipal charges and other charges payable such as
+            electricity, water, sewerage, telephone, TV cable shall be paid by
+            the tenant.
+        </li>
+        <li>
+            That the tenant shall not make any structural additions and
+            alterations to the unit/flat without prior written consent of the
+            Owner.
+        </li>
+        <li>
+            The tenant may:
+            <ol type="a">
+                <li class="font-bold">
+                    Sublet the rental unit <i class="pi pi-check"></i>
+                </li>
+                <li>Sub-let only with a written consent of the owner</li>
+            </ol>
+        </li>
+        <li>
+            That the tenant shall hand over the rental unit as per the entry and
+            exit condition report in good and clean condition as taken over. The
+            tenant shall be liable for damages caused to the rental unit or the
+            premises other than normal wear and tear.
+        </li>
+        <li>
+            After assessment of the rental unit as per the entry and exit
+            condition report, the owner has the right to deduct the costs for
+            repairing the damages caused to the rental unit.
+        </li>
+        <li>
+            That the tenant shall permit the Owner, their agents etc to enter
+            upon the space and the premises for inspection whenever necessary,
+            with the prior consent of the tenant, provided the inspection is
+            carried out at a reasonable hour except in the case of an emergency.
+        </li>
+        <li>
+            The owner may terminate the rental agreement and reacquire the
+            rental unit for his own occupation during the subsistence of tenancy
+            in accordance with the Tenancy Act.
+            <ol type="a">
+                <li class="font-bold">Yes <i class="pi pi-check"></i></li>
+                <li>No</li>
+            </ol>
+        </li>
+        <li>
+            The tenant may terminate the rental agreement during the subsistence
+            of the tenancy in accordance with the Tenancy Act.
+            <ol type="a">
+                <li class="font-bold">Yes <i class="pi pi-check"></i></li>
+                <li>No</li>
+            </ol>
+        </li>
+        <li>
+            The tenant may by providing 2 months advance notice as per section
+            77 of this Act.
+        </li>
+        <li>
+            The owner shall give <strong>3 months</strong> advance notice for
+            rent increases.
+        </li>
+        <li>
+            The tenant shall serve <strong>2 months</strong> notice as per
+            section 80 of the Tenancy Act of Bhutan.
+        </li>
+        <li>
+            Renewal notice of <strong>2 months notice</strong> as per section 82
+            of the Tenancy Act of Bhutan.
+        </li>
+        <li>
+            The tenant may vacate the rental unit if tenant is transferred by
+            serving one month’s written notice to the owner.
+        </li>
+        <li>
+            The Dispute Settlement Committee under the concerned local
+            government and the Royal Courts of Justice shall have jurisdiction
+            over any dispute that arises out this agreement.
+        </li>
+        <li>
+            That in consideration of the tenant paying the rent, the owner does
+            hereby grant and confer this tenancy in favour of the tenant in
+            respect of the premises TO HAVE AND HOLD the same as a tenant
+            hereof, during the tenancy period.
+        </li>
+    </ol>
+
+    <p>
+        IN WITNESS WHEREOF the parties have signed here under at
+        <strong> Thimphu </strong> on Day
+        <strong>{{ leaseAgreement.agreementDay }}</strong> of
+        <strong> {{ leaseAgreement.agreementMonth }} </strong> of the year
+        <strong>{{ leaseAgreement.agreementYear }}</strong>
+    </p>
+
+    <table class="w-full text-xl mt-2" style="margin-top: 1000px">
+        <tr>
+            <td>
+                <div class="text-2xl">
+                    <div style="height: 200px; position: relative">
+                        <img
+                            src="assets/sign/sign4.png"
+                            style="
+                                height: 150px;
+                                position: absolute;
+                                bottom: 0;
+                                left: 50;
+                                z-index: 2;
+                            "
+                        />
+                        <img
+                            src="assets/legalstamp.png"
+                            style="
+                                height: 200px;
+                                position: absolute;
+                                z-index: 1;
+                                opacity: 0.8;
+                            "
+                        />
+                    </div>
+                    <p>
+                        Owner <br />
+                        cid: <strong>{{ leaseAgreement.landlord.cid }}</strong>
+                        <br />
+                    </p>
+                </div>
+            </td>
+            <td>
+                <div class="text-2xl">
+                    <div style="height: 200px; position: relative">
+                        <img
+                            src="assets/sign/sign2.png"
+                            style="
+                                height: 150px;
+                                position: absolute;
+                                bottom: 0;
+                                left: 50;
+                                z-index: 2;
+                            "
+                        />
+                        <img
+                            src="assets/legalstamp.png"
+                            style="
+                                height: 200px;
+                                position: absolute;
+                                z-index: 1;
+                                opacity: 0.8;
+                            "
+                        />
+                    </div>
+
+                    <p>Tenant <br /></p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="text-2xl mt-4">
+                    <div style="height: 200px; position: relative">
+                        <img
+                            src="assets/sign/sign3.png"
+                            style="
+                                height: 150px;
+                                position: absolute;
+                                bottom: 0;
+                                left: 50;
+                                z-index: 2;
+                            "
+                        />
+                        <img
+                            src="assets/legalstamp.png"
+                            style="
+                                height: 200px;
+                                position: absolute;
+                                z-index: 1;
+                                opacity: 0.8;
+                            "
+                        />
+                    </div>
+
+                    <p>
+                        Witness <br />
+                        Name: <strong> Zhidhay Bt </strong> <br />
+                        <strong> CEO, Zhidey.bt </strong> <br />
+                    </p>
+                </div>
+            </td>
+            <td>
+                <div class="text-2xl mt-4">
+                    <div style="height: 200px; position: relative">
+                        <img
+                            src="assets/sign/sign1.png"
+                            style="
+                                height: 150px;
+                                position: absolute;
+                                bottom: 0;
+                                left: 50;
+                                z-index: 2;
+                            "
+                        />
+                        <img
+                            src="assets/legalstamp.png"
+                            style="
+                                height: 200px;
+                                position: absolute;
+                                z-index: 1;
+                                opacity: 0.8;
+                            "
+                        />
+                    </div>
+
+                    <p>
+                        Witness <br />
+                        Name: <strong>Nima Yoezer Tenzin</strong> <br />
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <p>Lease agreement generated as per the Tenancy ACT of Bhutan 2015</p>
+</div>

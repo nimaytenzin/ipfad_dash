@@ -1,3 +1,4 @@
+import { BankAccountDto } from '../bankaccounts/bankaccount.dto';
 import { AdministrativeZoneDTO } from '../locations/administrative-zone.dto';
 import { DzongkhagDTO } from '../locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from '../locations/sub-administrative-zone.dto';
@@ -29,6 +30,8 @@ export interface LandLordDTO {
 
     buildings: BuildingDTO[];
     BuildingOwnership?: BuildingOwnershipDto;
+
+    bankAccounts?: BankAccountDto[];
 }
 
 export interface AdminCreateLandLordDTO {

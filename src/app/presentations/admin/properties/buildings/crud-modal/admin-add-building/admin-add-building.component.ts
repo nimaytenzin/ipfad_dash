@@ -185,7 +185,7 @@ export class AdminAddBuildingComponent {
                     this.createBuildingForm.controls['administrativeZoneId']
                         .value,
                 subadministrativeZoneId:
-                    this.createBuildingForm.controls['subadministrativeZoneId']
+                    this.createBuildingForm.controls['subadminsitrativeZoneId']
                         .value,
             };
 

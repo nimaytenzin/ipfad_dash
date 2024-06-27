@@ -8,8 +8,10 @@ import { AdminCreateLeaseDurationComponent } from './admin-create-lease-stepper/
 import { AdminCreateLeaseChargesComponent } from './admin-create-lease-stepper/components/admin-create-lease-charges/admin-create-lease-charges.component';
 import { AdminCreateLeaseTermsComponent } from './admin-create-lease-stepper/components/admin-create-lease-terms/admin-create-lease-terms.component';
 import { AdminCreateLeaseFinalizeComponent } from './admin-create-lease-stepper/components/admin-create-lease-finalize/admin-create-lease-finalize.component';
+import { SampleLeaseComponent } from './admin-create-lease-stepper/components/sample-lease/sample-lease.component';
 const routes: Routes = [
     { path: '', component: AdminMasterLeaseAgreementsComponent },
+    { path: 'sample', component: SampleLeaseComponent },
     {
         path: 'create',
         component: AdminCreateLeaseStepperComponent,

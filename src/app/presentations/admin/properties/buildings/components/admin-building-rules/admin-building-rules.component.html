@@ -1,16 +1,16 @@
-<div style="border: 0.01px solid gray" class="p-2 border-round shadow-lg">
-    <p-toast></p-toast>
+<div class="text-lg">
     <p-confirmDialog></p-confirmDialog>
+
     <div class="flex align-items-center justify-content-between">
-        <h3>Building Rules</h3>
+        <p class="font-bold my-3">Building Rules</p>
         <p-button
             icon="pi pi-plus"
             (click)="openCreateBuildingRuleModal()"
             size="small"
+            label="Surcharge"
             class="p-0"
         ></p-button>
     </div>
-
     <div
         *ngFor="let item of buildingRules; let i = index"
         class="flex justify-content-between"
@@ -35,11 +35,11 @@
 
     <div
         *ngIf="!buildingRules || buildingRules.length === 0"
-        class="flex flex-column w-full align-items-center"
+        class="flex flex-column w-full align-items-center justify-content-center"
     >
-        <img style="width: 100px" src="assets/logo/nodata.png" />
+        <img style="width: 100px" class="mt-5" src="assets/logo/nodata.png" />
         <p>
-            <small> Not Added </small>
+            <small> Not rules added </small>
         </p>
     </div>
 
@@ -62,10 +62,18 @@
                 </div>
             </div>
 
-            <p-button
-                (click)="createBuildingRule()"
-                label="Create Rule"
-            ></p-button>
+            <div class="flex gap-2 justify-content-end">
+                <p-button
+                    label="Cancel"
+                    (click)="showAddBuildingRuleModal = false"
+                    severity="secondary"
+                >
+                </p-button>
+                <p-button
+                    (click)="createBuildingRule()"
+                    label="Create Rule"
+                ></p-button>
+            </div>
         </form>
     </p-dialog>
 

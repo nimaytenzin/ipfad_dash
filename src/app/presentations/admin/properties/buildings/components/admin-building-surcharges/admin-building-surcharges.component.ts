@@ -19,7 +19,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { BuildingSurchargeDataService } from 'src/app/core/dataservice/building/building-surcharge.data.service';
-import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
+
 import {
     BuildingSurchargeDTO,
     CreateBuildingSurchargeDTO,
@@ -43,7 +43,7 @@ import {
         ToastModule,
         ConfirmDialogModule,
     ],
-    providers: [MessageService, ConfirmationService],
+    providers: [ConfirmationService],
     templateUrl: './admin-building-surcharges.component.html',
     styleUrl: './admin-building-surcharges.component.scss',
 })
@@ -103,7 +103,6 @@ export class AdminBuildingSurchargesComponent implements OnInit {
             })
             .subscribe((res) => {
                 this.buildingCharges = res;
-                console.log(res);
             });
     }
 
@@ -132,7 +131,6 @@ export class AdminBuildingSurchargesComponent implements OnInit {
             ),
             buildingId: this.buildingId,
         };
-        console.log(data);
         this.buildingSurchargeDataService
             .UpdateBuildingSurcharge(data, this.selectedSurcharge.id)
             .subscribe({
@@ -150,7 +148,6 @@ export class AdminBuildingSurchargesComponent implements OnInit {
         buildingSurcharge: BuildingSurchargeDTO,
         event: Event
     ) {
-        console.log('ok');
         this.selectedSurcharge = buildingSurcharge;
         this.confirmationService.confirm({
             target: event.target as EventTarget,

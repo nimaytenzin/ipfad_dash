@@ -3,8 +3,11 @@
 </div>
 <p-toast></p-toast>
 
-<i class="pi pi-pi-phone" style="font-size: 1rem"></i>
-
+<p-button
+    icon="pi pi-plus"
+    label="Lease Agreement"
+    (click)="createLease()"
+></p-button>
 <p-table
     [value]="paginatedLeaseAgreements.data"
     class="p-datatable-sm"
@@ -45,26 +48,10 @@
                     Monthly Payable:
                     <strong>Nu. {{ computeMonthlyPayable(item) }} </strong>
                 </p>
-            </td>
-            <td>
-                <div *ngFor="let invoice of item.invoices">
-                    <p>Invoice # {{ invoice.id }}</p>
-                    <p>
-                        {{ invoice.title }}
-                    </p>
-                    <p>Total amount: {{ invoice.totalAmount }}</p>
 
-                    <p-tag
-                        [value]="invoice.status"
-                        [severity]="getSeverity(invoice.status)"
-                    ></p-tag>
-                </div>
-                <p-button
-                    *ngIf="!item.invoices.length"
-                    label="generateInvoice"
-                    (click)="generateInvoice(item)"
-                ></p-button>
+                <p-button (click)="viewLease(item)">View lease</p-button>
             </td>
+            <td></td>
         </tr>
     </ng-template>
 

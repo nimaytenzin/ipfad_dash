@@ -34,20 +34,14 @@
                 </p-inputGroup>
 
                 <div>
-                    <p>Charges</p>
-                    <!-- <p *ngFor="let item of buildingSurcharges">
-                        {{ item.particular }} at {{ item.amount }} source:
-                        Building Charges
-                    </p>
-                    <p *ngFor="let item of unitSurcharges">
-                        {{ item.particular }} at {{ item.amount }} source: Unit
-                        Charges
-                    </p> -->
+                    <div class="flex gap-2 my-4 justify-content-between">
+                        <p>Charges</p>
 
-                    <p-button
-                        label="Create Lease Charge"
-                        (click)="openCreateLeaseSurchargeModal()"
-                    ></p-button>
+                        <p-button
+                            label="Create Lease Charge"
+                            (click)="openCreateLeaseSurchargeModal()"
+                        ></p-button>
+                    </div>
 
                     <p-table [value]="leaseCharges" class="p-datatable-sm">
                         <ng-template pTemplate="header">
@@ -113,7 +107,7 @@
                         </ng-template>
                     </p-table>
 
-                    <p>
+                    <p class="text-right font-bold text-2xl my-4">
                         Total Montly Payable :
                         <strong> {{ getTotalMonthlyPayabe() }} </strong>
                     </p>

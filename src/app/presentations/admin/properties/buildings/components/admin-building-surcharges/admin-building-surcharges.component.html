@@ -1,12 +1,12 @@
-<div style="border: 0.01px solid gray" class="p-2 border-round shadow-lg">
-    <p-toast></p-toast>
+<div class="text-lg">
     <p-confirmDialog></p-confirmDialog>
     <div class="flex align-items-center justify-content-between">
-        <h3>Building Charges</h3>
+        <p class="font-bold my-3">Building Charges</p>
         <p-button
             icon="pi pi-plus"
             (click)="openAddBuildingSurchargeModal()"
             size="small"
+            label="Surcharge"
             class="p-0"
         ></p-button>
     </div>
@@ -35,14 +35,8 @@
         </div>
     </div>
 
-    <div
-        *ngIf="!buildingCharges || buildingCharges.length === 0"
-        class="flex flex-column w-full align-items-center"
-    >
-        <img style="width: 100px" src="assets/logo/nodata.png" />
-        <p>
-            <small> Not Added </small>
-        </p>
+    <div *ngIf="!buildingCharges || buildingCharges.length === 0" class="">
+        <p class="text-left">....No building charges</p>
     </div>
 
     <p-dialog
@@ -71,10 +65,17 @@
                 </div>
             </div>
 
-            <p-button
-                (click)="createBuildingSurcharge()"
-                label="Create Surcharge"
-            ></p-button>
+            <div class="flex justify-content-end gap-2">
+                <p-button
+                    severity="secondary"
+                    label="Cancel"
+                    (click)="showAddSurchargeModal = false"
+                ></p-button>
+                <p-button
+                    (click)="createBuildingSurcharge()"
+                    label="Create Surcharge"
+                ></p-button>
+            </div>
         </form>
     </p-dialog>
 
@@ -104,10 +105,18 @@
                 </div>
             </div>
 
-            <p-button
-                (click)="updateBuildingSurcharge()"
-                label="Update Surcharge"
-            ></p-button>
+            <div class="flex justify-content-end gap-2">
+                <p-button
+                    severity="secondary"
+                    label="Cancel"
+                    (click)="showEditBuildingSurchargeModal = false"
+                >
+                </p-button>
+                <p-button
+                    (click)="updateBuildingSurcharge()"
+                    label="Update Surcharge"
+                ></p-button>
+            </div>
         </form>
     </p-dialog>
 </div>

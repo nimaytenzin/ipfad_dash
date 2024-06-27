@@ -88,6 +88,7 @@ export class AdminEditUnitComponent {
         this.updateUnitForm.patchValue({
             ...this.unit,
         });
+        console.log('EDIT UNIT CRUD MODAL', this.unit);
     }
 
     updateUnit() {
@@ -116,7 +117,7 @@ export class AdminEditUnitComponent {
                     },
                 ];
                 this.ref.close({
-                    updated: true,
+                    status: 200,
                 });
             },
             error: (err) => {

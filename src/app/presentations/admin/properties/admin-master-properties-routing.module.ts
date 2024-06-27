@@ -5,6 +5,7 @@ import { AdminListBuildingsComponent } from './buildings/admin-list-buildings/ad
 import { AdminViewUnitComponent } from './units/admin-view-unit/admin-view-unit.component';
 import { AdminMasterPropertiesComponent } from './admin-master-properties.component';
 import { AdminListUnitsComponent } from './units/admin-list-units/admin-list-units.component';
+import { AdminViewBuildingLayoutComponent } from './buildings/admin-view-building/admin-view-building-layout/admin-view-building-layout.component';
 
 const routes: Routes = [
     {

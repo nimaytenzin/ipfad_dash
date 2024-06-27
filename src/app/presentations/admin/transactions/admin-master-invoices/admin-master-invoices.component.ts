@@ -1,21 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { invoiceDataService } from 'src/app/core/dataservice/payments/invoice.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { InvoiceDTO } from 'src/app/core/dto/payments/invoice/invoice.dto';
+import { AdminTransactInvoiceComponent } from '../components/admin-transact-invoice/admin-transact-invoice.component';
+import { INVOICESTATUS } from 'src/app/core/constants/enums';
 
 @Component({
     selector: 'app-admin-master-invoices',
     templateUrl: './admin-master-invoices.component.html',
     standalone: true,
-    imports: [CardModule, CommonModule, TableModule, TagModule],
+    imports: [CardModule, CommonModule, TableModule, TagModule, ButtonModule],
+    providers: [DialogService],
     styleUrls: ['./admin-master-invoices.component.scss'],
 })
 export class AdminMasterInvoicesComponent implements OnInit {
     rows = 10;
+    invoiceStatus = INVOICESTATUS;
     paginatedInvoices: PaginatedData<InvoiceDTO> = {
         firstPage: 0,
         currentPage: 0,
@@ -58,7 +64,13 @@ export class AdminMasterInvoicesComponent implements OnInit {
             status: 'TRANSFERRED',
         },
     ];
-    constructor(private invoiceDataService: invoiceDataService) {}
+
+    ref: DynamicDialogRef | undefined;
+
+    constructor(
+        private invoiceDataService: invoiceDataService,
+        private dailogService: DialogService
+    ) {}
 
     ngOnInit() {
         this.getInvoices();
@@ -75,6 +87,16 @@ export class AdminMasterInvoicesComponent implements OnInit {
                 this.paginatedInvoices = res;
                 console.log(res);
             });
+    }
+
+    openPayInvoiceModal(invoice: InvoiceDTO) {
+        this.ref = this.dailogService.open(AdminTransactInvoiceComponent, {
+            header: 'Execute Invoice Transaction',
+            data: {
+                ...invoice,
+            },
+            width: '800px',
+        });
     }
 
     viewLeaseAgreement() {

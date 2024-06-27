@@ -16,7 +16,6 @@ export class AuthService {
     constructor(private http: HttpClient) {}
 
     Login(data) {
-        console.log('LOGIn');
         return this.http.post(`${this.apiUrl}/auth/login`, data);
     }
 
@@ -25,7 +24,6 @@ export class AuthService {
     }
 
     GetToken() {
-        console.log(sessionStorage.getItem(this.authTokenKey));
         return sessionStorage.getItem(this.authTokenKey);
     }
 

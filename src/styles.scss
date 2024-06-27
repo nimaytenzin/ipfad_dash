@@ -6,8 +6,113 @@ $buttonPadding: 0.2rem 0.4rem;
 @import "assets/layout/styles/layout/layout.scss";
 @import "assets/adminlayout/styles/layout/layout.scss";
 @import "~leaflet/dist/leaflet.css";
-
 /* PrimeNG */
 @import "../node_modules/primeng/resources/primeng.min.css";
 @import "../node_modules/primeflex/primeflex.scss";
 @import "../node_modules/primeicons/primeicons.css";
+
+.p-breadcrumb {
+    border: none !important;
+    padding: 0 !important;
+}
+
+.p-stepper {
+    flex-basis: 50rem;
+}
+.p-stepper-nav {
+    position: relative !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style-type: none !important;
+    overflow-x: auto !important;
+}
+
+.p-stepper-header {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+}
+.p-stepper-header .p-stepper-action {
+    border: 0 none;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+p-stepper .p-stepper-separator {
+    background-color: #e2e8f0;
+    width: 100%;
+    height: 2px;
+    margin-inline-start: 1rem;
+    transition:
+        background-color 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s,
+        outline-color 0.2s;
+}
+
+.p-stepper-header .p-stepper-action {
+    border: 0 none;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.p-stepper .p-stepper-header .p-stepper-action .p-stepper-number {
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-width: 2px;
+    background: #ffffff;
+    min-width: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    line-height: 2rem;
+    font-size: 1.143rem;
+    border-radius: 50%;
+    transition:
+        background-color 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s,
+        outline-color 0.2s;
+}
+
+.p-stepper .p-stepper-header .p-stepper-action .p-stepper-title {
+    margin-left: 0.5rem;
+    color: #334155;
+    font-weight: 500;
+    transition:
+        background-color 0.2s,
+        color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s,
+        outline-color 0.2s;
+}
+
+.p-stepper .p-stepper-header.p-highlight .p-stepper-title {
+    color: #3b82f6;
+}
+
+//otp
+.p-inputotp {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.field-checkbox {
+    margin: 0;
+}
+
+.p-listbox {
+    border: none !important;
+}
