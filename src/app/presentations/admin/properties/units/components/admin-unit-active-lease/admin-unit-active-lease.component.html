@@ -1,6 +1,7 @@
 <div
     id="leaseActivesummary"
     class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+    *ngIf="activeLeaseAgreement"
 >
     <div class="flex justify-content-between mb-5">
         <p-chip label="Active Lease" icon="pi pi-bookmark-fill" />
@@ -169,4 +170,11 @@
             </div>
         </div>
     </div>
+</div>
+
+<div
+    class="border-1 mb-4 p-4 border-dashed surface-border border-round surface-ground"
+    *ngIf="!activeLeaseAgreement"
+>
+    <p>No Active Lease agreement</p>
 </div>

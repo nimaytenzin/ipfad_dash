@@ -1,5 +1,6 @@
 <div
     class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+    *ngIf="pendingPaymentAdvice.length"
 >
     <div class="text-right">
         <p class="text-5xl font-semibold">Nu. {{ totalAmountDue }}</p>
@@ -69,4 +70,11 @@
             </div>
         </div>
     </div>
+</div>
+
+<div
+    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+    *ngIf="!pendingPaymentAdvice.length"
+>
+    <p>No Pending payment advices</p>
 </div>

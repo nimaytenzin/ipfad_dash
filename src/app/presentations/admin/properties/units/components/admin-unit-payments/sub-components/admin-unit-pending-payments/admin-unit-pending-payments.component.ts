@@ -24,18 +24,20 @@ export class AdminUnitPendingPaymentsComponent implements OnInit {
     }
 
     findAllPendingByUnit() {
-        this.paymentAdviceDataService.GetAllPendingAdviceByUnit(18).subscribe({
-            next: (res) => {
-                console.log('PENDING AdVICE');
-                console.log(res);
-                this.pendingPaymentAdvice = res;
-                this.pendingPaymentAdvice.forEach((item) => {
-                    this.totalAmountDue += item.amountDue;
-                });
-            },
-            error: (err) => {
-                console.log(err);
-            },
-        });
+        this.paymentAdviceDataService
+            .GetAllPendingAdviceByUnit(this.unitId)
+            .subscribe({
+                next: (res) => {
+                    console.log('PENDING AdVICE');
+                    console.log(res);
+                    this.pendingPaymentAdvice = res;
+                    this.pendingPaymentAdvice.forEach((item) => {
+                        this.totalAmountDue += item.amountDue;
+                    });
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 }

@@ -15,12 +15,5 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.primengConfig.ripple = true;
-        if (this.swUpdate.isEnabled) {
-            from(this.swUpdate.checkForUpdate()).subscribe((event) => {
-                if (event === true) {
-                    this.swUpdate.activateUpdate();
-                }
-            });
-        }
     }
 }

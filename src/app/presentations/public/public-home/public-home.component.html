@@ -1,4 +1,46 @@
-<div class="grid w-full">
+<div
+    class="flex hero flex-column align-items-center justify-content-center"
+    style="height: 100dvh; margin: 0"
+>
+    <div #centerElement class="p-4">
+        <div class="text-left">
+            <p class="font-serif text-7xl text-center">Zhidhay.bt</p>
+            <p class="text-lg text-center">
+                This platform, managed by the
+                <a href="#"> Segment X</a> , is your gateway to automated rental
+                property management suite on cloud.
+            </p>
+        </div>
+        <div
+            class="flex w-full flex-column p-fluid align-items-center justify-content-center gap-2 mt-6"
+        >
+            <div class="flex gap-2 my-2">
+                <div class="flex align-items-center">
+                    <p-button
+                        severity="secondary"
+                        label="Tenant Login"
+                    ></p-button>
+                </div>
+                <div class="flex align-items-center">
+                    <p-button
+                        severity="secondary"
+                        label="Owner Login"
+                        (click)="login()"
+                    ></p-button>
+                </div>
+            </div>
+
+            <p-button
+                label="Request for Demo"
+                severity="secondary"
+                [text]="true"
+                size="small"
+            >
+            </p-button>
+
+            <hr />
+        </div>
+    </div>
     <div class="cloud1">
         <img src="assets/images/cloud1.png" />
     </div>
@@ -14,72 +56,5 @@
 
     <div class="cloud5">
         <img src="assets/images/cloud3.png" />
-    </div>
-
-    <div class="col-12">
-        <div
-            class="flex hero flex-column align-items-center justify-content-center"
-            style="height: 80vh"
-        >
-            <div #centerElement>
-                <div class="text-left">
-                    <p class="font-serif text-7xl text-center">Zhidhay.bt</p>
-                    <p class="text-lg">
-                        This platform, managed by the
-                        <a href="#"> Segment X</a> , is your gateway to
-                        authorized Bhutanese legislation and related
-                        information.
-                    </p>
-                </div>
-                <div
-                    class="flex w-full flex-column p-fluid align-items-center justify-content-center gap-3"
-                >
-                    <p class="mt-2 text-left">Register</p>
-                    <div class="flex gap-2">
-                        <div class="p-fluid">
-                            <div></div>
-
-                            <div class="flex gap-2 my-2">
-                                <div class="flex align-items-center">
-                                    <p-button
-                                        severity="secondary"
-                                        label="Tenant Login"
-                                    ></p-button>
-                                </div>
-                                <div class="flex align-items-center">
-                                    <p-button
-                                        severity="secondary"
-                                        label="Owner Login"
-                                        (click)="login()"
-                                    ></p-button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr />
-                </div>
-            </div>
-        </div>
-
-        <div
-            class="text-center flex flex-column align-items-center justify-content-center mt-8"
-        >
-            <div class="w-10">
-                <h1 class="font-serif text-5xl text-blue-700">Zhidhay.bt</h1>
-                <p class="text-justify text-sm">
-                    Your Rental Management Web App is an innovative platform
-                    designed to streamline property management processes. It
-                    offers comprehensive features such as online rent
-                    collection, automated tenant communication, maintenance
-                    request tracking, and detailed financial reporting. This
-                    intuitive application simplifies property management tasks,
-                    enhancing efficiency and reducing administrative burdens.
-                    Its user-friendly interface ensures landlords and property
-                    managers can easily manage properties, maintain high levels
-                    of service, and maximize profitability.
-                </p>
-            </div>
-        </div>
     </div>
 </div>
