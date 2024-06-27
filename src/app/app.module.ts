@@ -19,7 +19,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         ToastModule,
         ServiceWorkerModule.register('ngsw-worker.js', {
             enabled: true,
-
             registrationStrategy: 'registerWhenStable:30000',
         }),
     ],
