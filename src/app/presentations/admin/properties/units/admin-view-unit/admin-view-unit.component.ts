@@ -37,6 +37,7 @@ import { TagModule } from 'primeng/tag';
 import { AdminUnitActiveLeaseComponent } from '../components/admin-unit-active-lease/admin-unit-active-lease.component';
 import { DividerModule } from 'primeng/divider';
 import { AdminUnitLeaseHistoryComponent } from '../components/admin-unit-lease-history/admin-unit-lease-history.component';
+import { AdminUnitPaymentsComponent } from '../components/admin-unit-payments/admin-unit-payments.component';
 
 @Component({
     selector: 'app-admin-view-unit',
@@ -58,6 +59,7 @@ import { AdminUnitLeaseHistoryComponent } from '../components/admin-unit-lease-h
         AdminUnitActiveLeaseComponent,
         AdminUnitLeaseHistoryComponent,
         TagModule,
+        AdminUnitPaymentsComponent,
     ],
 
     templateUrl: './admin-view-unit.component.html',
@@ -73,8 +75,6 @@ export class AdminViewUnitComponent implements OnInit {
     items: MenuItem[] | undefined;
     home: MenuItem | undefined;
     bankList = [];
-
-    pendingPaymentAdvice: PaymentAdviceDto[] = [];
 
     parseFloorLevel = PARSEFLOORLEVELS;
 
@@ -103,9 +103,7 @@ export class AdminViewUnitComponent implements OnInit {
         console.log('VIEW UINT PARENT COMPOT UNIT ID', this.unitId);
     }
 
-    ngOnInit(): void {
-        this.findAllPendingByUnit();
-    }
+    ngOnInit(): void {}
 
     getBankLogo(shorthand: string) {
         let result = this.bankList.find((item) => item.shorthand === shorthand);
@@ -208,22 +206,6 @@ export class AdminViewUnitComponent implements OnInit {
                             });
                         },
                     });
-            },
-        });
-    }
-
-    findAllPendingByUnit() {
-        this.paymentAdviceDataService.GetAllPendingAdviceByUnit(18).subscribe({
-            next: (res) => {
-                console.log('PENDING AdVICE');
-                console.log(res);
-                this.pendingPaymentAdvice = res;
-                this.pendingPaymentAdvice.forEach((item) => {
-                    this.totalAmountDue += item.amountDue;
-                });
-            },
-            error: (err) => {
-                console.log(err);
             },
         });
     }

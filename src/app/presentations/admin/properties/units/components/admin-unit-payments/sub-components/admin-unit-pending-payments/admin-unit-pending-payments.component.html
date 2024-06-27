@@ -1,0 +1,72 @@
+<div
+    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+>
+    <div class="text-right">
+        <p class="text-5xl font-semibold">Nu. {{ totalAmountDue }}</p>
+        <p>Total Amount Due</p>
+    </div>
+    <p-divider></p-divider>
+
+    <div
+        *ngFor="let advice of pendingPaymentAdvice"
+        class="flex gap-4"
+        style="margin: 2.3rem 0"
+    >
+        <div class="w-4">
+            <div class="">
+                <p class="text-4xl font-semibold">Nu.{{ advice.amountDue }}</p>
+                <p class="text-sm">(Amount Due)</p>
+            </div>
+            <p class="font-semibold">
+                {{ advice.title }}
+            </p>
+
+            <p-divider type="dashed"></p-divider>
+            <div class="flex gap-2">
+                <p-button
+                    size="small"
+                    severity="secondary"
+                    label="Pay"
+                ></p-button>
+                <p-button
+                    size="small"
+                    severity="secondary"
+                    label="Detailed view"
+                ></p-button>
+            </div>
+        </div>
+        <div class="w-4">
+            <p class="font-semibold">Advice Items</p>
+            <p-divider type="dashed"></p-divider>
+            <div *ngFor="let item of advice.paymentAdviseItem">
+                - {{ item.particular }} - Nu.
+                {{ item.amount }}
+            </div>
+        </div>
+        <div class="w-4">
+            <p class="font-semibold">Payer</p>
+            <p-divider type="dashed"></p-divider>
+            <div>
+                <p>
+                    Name
+                    {{
+                        (advice.tenant?.firstName
+                            ? advice.tenant.firstName + " "
+                            : "") +
+                            (advice.tenant?.middleName
+                                ? advice.tenant.middleName + " "
+                                : "") +
+                            (advice.tenant?.lastName
+                                ? advice.tenant.lastName
+                                : "")
+                    }}
+                </p>
+                <p>CID: {{ advice.tenant?.cid }}</p>
+                <p>
+                    Phone Number:
+                    {{ advice.tenant?.phoneNumber }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,9 @@
-<p>
-  admin-unit-payments works!
-</p>
+<div>
+    <app-admin-unit-pending-payments
+        [unitId]="unitId"
+    ></app-admin-unit-pending-payments>
+
+    <p-divider></p-divider>
+    <app-admin-unit-paid-payments [unitId]="unitId">
+    </app-admin-unit-paid-payments>
+</div>
