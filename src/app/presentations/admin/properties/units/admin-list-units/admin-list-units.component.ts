@@ -12,6 +12,12 @@ import { Subscription } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DividerModule } from 'primeng/divider';
+import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
+import { ChipModule } from 'primeng/chip';
+import { TagModule } from 'primeng/tag';
+import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { AdminViewLeaseAgreementComponent } from '../../../lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 
 @Component({
     selector: 'app-admin-list-units',
@@ -23,6 +29,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         CommonModule,
         ToastModule,
         ConfirmDialogModule,
+        DividerModule,
+        ChipModule,
+        TagModule,
     ],
     providers: [DialogService, ConfirmationService, MessageService],
     templateUrl: './admin-list-units.component.html',
@@ -35,7 +44,8 @@ export class AdminListUnitsComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private leaseAgreementDataService: LeaseAgreementDataService
     ) {}
 
     ref: DynamicDialogRef | undefined;
@@ -55,11 +65,22 @@ export class AdminListUnitsComponent implements OnInit {
     getUnitsByBuilding() {
         this.unitDataService
             .GetAllUnitsByBuilding(this.buildingId)
-            .subscribe((res: UnitDTO[]) => {
+            .subscribe(async (res: UnitDTO[]) => {
                 console.log(res);
                 this.units = res;
+
+                await this.units.forEach((unit) => {
+                    this.leaseAgreementDataService
+                        .GetActiveLeaseAgreementByUnit(unit.id)
+                        .subscribe((res) => {
+                            unit.activeLeaseAgreement = res;
+                        });
+                });
+                console.log(this.units);
             });
     }
+
+    getActiveLeaseAgreement(unitId: number) {}
     openAddUnitModal() {
         this.ref = this.dialogService.open(AdminAddUnitComponent, {
             header: 'Create Unit',
@@ -119,5 +140,16 @@ export class AdminListUnitsComponent implements OnInit {
         this.router.navigate([
             `/admin/master-properties/building/${unit.buildingId}/unit/${unit.id}`,
         ]);
+    }
+
+    viewLease(leaseAgreement: LeaseAgreementDTO) {
+        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+            header: 'View Lease',
+
+            width: '70vw',
+            data: {
+                ...leaseAgreement,
+            },
+        });
     }
 }

@@ -1,22 +1,31 @@
-<div class="text-2xl p-6" style="text-align: justify">
-    <h1 class="text-center font-bold">Lease Agreement</h1>
-
+<div
+    class="lg:text-2xl p-2 lg:p-6"
+    style="text-align: justify; line-height: 1.5"
+    *ngIf="leaseAgreement"
+>
+    <p class="text-center text-xl lg:text-3xl font-semibold">Lease Agreement</p>
+    <p-divider type="dashed"></p-divider>
     <p class="text-center mb-2">
-        This Rental/lease Agreement is executed on
-        <strong>{{ leaseAgreement.agreementDay }}</strong> Day of
-        <strong>{{ leaseAgreement.agreementMonth }}</strong> of the year
-        <strong>{{ leaseAgreement.agreementYear }}</strong> BETWEEN Mr.
+        This Rental/lease Agreement is executed on Day
+        <strong>{{ leaseAgreement.agreementDay }}</strong> of
+        <strong>{{ getMonthName(leaseAgreement.agreementMonth) }} Month</strong>
+        of the year <strong>{{ leaseAgreement.agreementYear }}</strong> BETWEEN
+        Mr.
         <strong
             >{{ leaseAgreement.tenant?.firstName }}
             {{ leaseAgreement.tenant?.lastName }}</strong
         >
         holding Citizen ID No.
         <strong>{{ leaseAgreement.tenant?.cid }}</strong> of
-        <strong> tenantVillage </strong> village,
-        <strong> tenantGewog </strong> Gewog,
-        <strong>tenantDzongkhag </strong> Dzongkhag, residing at
-        <strong> tenantPresentAddress </strong> Herein after referred to as the
-        “Tenant/ lessee” PARTY OF ONE PART
+        <strong>
+            {{ leaseAgreement.tenant?.subadministrativeZone?.name }}
+        </strong>
+        ,
+        <strong> {{ leaseAgreement.tenant?.administrativeZone?.name }} </strong>
+        ,
+        <strong> {{ leaseAgreement.tenant?.dzongkhag?.name }} </strong>
+        Dzongkhag, Herein after referred to as the
+        <strong>“Tenant/ lessee”</strong> PARTY OF ONE PART
     </p>
 
     <p class="text-center mb-2">
@@ -26,13 +35,29 @@
             {{ leaseAgreement.landlord?.lastName }}</strong
         >
         holding CID No <strong>{{ leaseAgreement.landlord?.cid }}</strong> of
-        <strong>ownerVillage </strong> Village,
-        <strong> ownerGewog </strong> Gewog,
-        <strong> ownerDzongkhag </strong> Dzongåkhag residing at
-        <strong> ownerAddress </strong>, Owner of building
-        <strong> {{ leaseAgreement.buildingId }} </strong> at plot No
-        <strong>PLOT ID</strong>, herein after referred to as the
-        “Owner/Lessor”, PARTY OF OTHER PART.
+        <strong>
+            {{ leaseAgreement.landlord?.subadministrativeZone?.name }}
+        </strong>
+        ,
+        <strong>
+            {{ leaseAgreement.landlord?.administrativeZone?.name }}
+        </strong>
+        ,
+        <strong> {{ leaseAgreement.landlord?.dzongkhag?.name }} </strong>
+        Dzongåkhag, Owner of building
+        <strong>
+            {{ leaseAgreement.buildingId }},{{
+                "," + leaseAgreement.building?.streetName
+            }}{{ "," + leaseAgreement.building?.quadrant
+            }}{{ "," + leaseAgreement.building?.quadrant
+            }}{{ "," + leaseAgreement.building?.landmark }}
+        </strong>
+        at plot No
+        <strong> {{ leaseAgreement.building?.plots[0].plotId }} </strong> and
+        Thram no.
+        <strong>{{ leaseAgreement.building?.plots[0].thramNumber }} </strong>
+        herein after referred to as the <strong>“Owner/Lessor”</strong>, PARTY
+        OF OTHER PART.
     </p>
 
     <hr />
@@ -54,13 +79,12 @@
         <li>
             That the owner/lessor thus hereby grants and confers
             <strong
-                >{{ leaseAgreement.unit?.floorLevel }} -
-                {{ leaseAgreement.unit?.unitNumber }} </strong
+                >{{ leaseAgreement.unit?.floorLevel }}-{{
+                    leaseAgreement.unit?.unitNumber
+                }} </strong
             >, id <strong>{{ leaseAgreement.unitId }}</strong
-            >, of Building No -
-            <strong>{{ leaseAgreement.buildingId }}</strong> at plot No
-            <strong> PLOT ID </strong> in favour of the aforesaid tenant on rent
-            and on such terms and condition stated below.
+            >, of the afroementioned building in favour of the aforesaid tenant
+            on rent and on such terms and condition stated below.
         </li>
         <li>
             That the period of tenancy/lease for the rental unit shall be for a
@@ -158,10 +182,19 @@
         <li>
             The tenant may:
             <ol type="a">
-                <li class="font-bold">
-                    Sublet the rental unit <i class="pi pi-check"></i>
-                </li>
-                <li>Sub-let only with a written consent of the owner</li>
+                <ng-container *ngIf="leaseAgreement.tenantSubletAuthority">
+                    <li class="font-bold">
+                        Sublet the rental unit <i class="pi pi-check"></i>
+                    </li>
+                    <li>Sub-let only with a written consent of the owner</li>
+                </ng-container>
+                <ng-container *ngIf="!leaseAgreement.tenantSubletAuthority">
+                    <li>Sublet the rental unit</li>
+                    <li class="font-bold">
+                        Sub-let only with a written consent of the owner
+                        <i class="pi pi-check"></i>
+                    </li>
+                </ng-container>
             </ol>
         </li>
         <li>
@@ -186,16 +219,30 @@
             rental unit for his own occupation during the subsistence of tenancy
             in accordance with the Tenancy Act.
             <ol type="a">
-                <li class="font-bold">Yes <i class="pi pi-check"></i></li>
-                <li>No</li>
+                <ng-container *ngIf="leaseAgreement.ownerPrematureTermination">
+                    <li class="font-bold">Yes <i class="pi pi-check"></i></li>
+                    <li>No</li>
+                </ng-container>
+                <ng-container *ngIf="!leaseAgreement.ownerPrematureTermination">
+                    <li>Yes</li>
+                    <li class="font-bold">No <i class="pi pi-check"></i></li>
+                </ng-container>
             </ol>
         </li>
         <li>
             The tenant may terminate the rental agreement during the subsistence
             of the tenancy in accordance with the Tenancy Act.
             <ol type="a">
-                <li class="font-bold">Yes <i class="pi pi-check"></i></li>
-                <li>No</li>
+                <ng-container *ngIf="leaseAgreement.tenantPrematureTermination">
+                    <li class="font-bold">Yes <i class="pi pi-check"></i></li>
+                    <li>No</li>
+                </ng-container>
+                <ng-container
+                    *ngIf="!leaseAgreement.tenantPrematureTermination"
+                >
+                    <li>Yes</li>
+                    <li class="font-bold">No <i class="pi pi-check"></i></li>
+                </ng-container>
             </ol>
         </li>
         <li>
@@ -203,12 +250,16 @@
             77 of this Act.
         </li>
         <li>
-            The owner shall give <strong>3 months</strong> advance notice for
-            rent increases.
+            The owner shall give
+            <strong>
+                {{ leaseAgreement.rentIncreaseNoticePeriod }} months</strong
+            >
+            advance notice for rent increases.
         </li>
         <li>
-            The tenant shall serve <strong>2 months</strong> notice as per
-            section 80 of the Tenancy Act of Bhutan.
+            The tenant shall serve
+            <strong>{{ leaseAgreement.vacationNoticePeriod }} months</strong>
+            notice as per section 80 of the Tenancy Act of Bhutan.
         </li>
         <li>
             Renewal notice of <strong>2 months notice</strong> as per section 82
@@ -236,10 +287,11 @@
         <strong> Thimphu </strong> on Day
         <strong>{{ leaseAgreement.agreementDay }}</strong> of
         <strong> {{ leaseAgreement.agreementMonth }} </strong> of the year
-        <strong>{{ leaseAgreement.agreementYear }}</strong>
+        <strong>{{ leaseAgreement.agreementYear }}</strong
+        >.
     </p>
 
-    <table class="w-full text-xl mt-2" style="margin-top: 1000px">
+    <!-- <table class="w-full text-xl mt-2" style="margin-top: 1000px">
         <tr>
             <td>
                 <div class="text-2xl">
@@ -362,7 +414,9 @@
                 </div>
             </td>
         </tr>
-    </table>
+    </table> -->
 
-    <p>Lease agreement generated as per the Tenancy ACT of Bhutan 2015</p>
+    <p class="mt-4 text-center font-semibold">
+        Lease agreement generated as per the Tenancy ACT of Bhutan 2015
+    </p>
 </div>

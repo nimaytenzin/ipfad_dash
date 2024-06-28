@@ -1,4 +1,5 @@
 import { BankAccountDto } from '../bankaccounts/bankaccount.dto';
+import { LeaseAgreementDTO } from '../lease/lease-agreement.dto';
 import { BuildingDTO } from '../properties/building.dto';
 
 export interface UnitDTO {
@@ -18,6 +19,8 @@ export interface UnitDTO {
 
     building?: BuildingDTO;
     bankAccount?: BankAccountDto;
+
+    activeLeaseAgreement?: LeaseAgreementDTO;
 }
 
 export interface CreateUnitDTO {

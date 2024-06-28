@@ -9,6 +9,9 @@ import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
+import { GETMONTHNAME } from 'src/app/core/utility/date.helper';
+import { CommonModule } from '@angular/common';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -16,22 +19,23 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     templateUrl: './admin-view-lease-agreement.component.html',
     styleUrls: ['./admin-view-lease-agreement.component.scss'],
     standalone: true,
-    imports: [ButtonModule],
+    imports: [ButtonModule, DividerModule, CommonModule],
 })
 export class AdminViewLeaseAgreementComponent implements OnInit {
     leaseAgreement: LeaseAgreementDTO;
     instance: DynamicDialogComponent | undefined;
     leaseAgreementId: number;
-
+    getMonthName = GETMONTHNAME;
     constructor(
-        private leaseAgreementDataService: LeaseAgreementDataService,
         private ref: DynamicDialogRef,
         private dialogService: DialogService
     ) {
         this.instance = this.dialogService.getInstance(this.ref);
 
         if (this.instance && this.instance.data) {
-            this.leaseAgreementId = this.instance.data.leaseAgreementId;
+            this.leaseAgreement = this.instance.data;
+
+            console.log('PASED LEASE AGREEMENT', this.leaseAgreement);
         }
     }
     generatePdf() {
@@ -55,12 +59,5 @@ export class AdminViewLeaseAgreementComponent implements OnInit {
         pdfMake.createPdf(docDefinition).download('userdata.pdf');
     }
 
-    ngOnInit() {
-        this.leaseAgreementDataService
-            .FindLeaseAgreement(this.leaseAgreementId)
-            .subscribe((res) => {
-                console.log(res);
-                this.leaseAgreement = res;
-            });
-    }
+    ngOnInit() {}
 }
