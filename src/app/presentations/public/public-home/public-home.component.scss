@@ -42,7 +42,10 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     img {
         height: 3rem;
     }
