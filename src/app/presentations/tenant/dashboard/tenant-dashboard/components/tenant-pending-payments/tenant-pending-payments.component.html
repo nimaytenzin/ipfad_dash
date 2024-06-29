@@ -1,0 +1,61 @@
+<div
+    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+    *ngIf="pendingPaymentAdvice?.length"
+>
+    <div class="text-left text-red-600">
+        <p class="text-5xl font-semibold">Nu. {{ totalAmountDue }}</p>
+        <p class="text-sm">(Amount Due)</p>
+    </div>
+    <p-divider></p-divider>
+
+    <div *ngFor="let advice of pendingPaymentAdvice" style="margin: 2.3rem 0">
+        <div class="flex gap-4">
+            <div class="flex-grow-1">
+                <div class="">
+                    <p class="text-4xl font-semibold">
+                        Nu.{{ advice.amountDue }}
+                    </p>
+                    <p class="text-sm">(Amount Due)</p>
+                </div>
+                <p class="font-semibold">
+                    {{ advice.title }}
+                </p>
+
+                <p-divider type="dashed"></p-divider>
+                PA for Unit {{ advice.unit?.floorLevel }}-{{
+                    advice.unit?.unitNumber
+                }}
+                in building {{ advice.unit?.building.name }}
+            </div>
+            <div>
+                <p class="font-semibold">Advice Items</p>
+                <p-divider type="dashed"></p-divider>
+                <div *ngFor="let item of advice.paymentAdviseItem">
+                    - {{ item.particular }} - Nu.
+                    {{ item.amount }}
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                size="small"
+                severity="secondary"
+                (click)="openPaymentGatewayPaymentModal(advice)"
+                label="Pay"
+            ></p-button>
+            <p-button
+                size="small"
+                severity="secondary"
+                label="Detailed view"
+            ></p-button>
+        </div>
+        <p-divider type="dashed"></p-divider>
+    </div>
+</div>
+
+<div
+    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+    *ngIf="!pendingPaymentAdvice.length"
+>
+    <p>No Pending payment advices</p>
+</div>

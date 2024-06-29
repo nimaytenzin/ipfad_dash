@@ -17,17 +17,18 @@ import {
 } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { AdminLayoutService } from '../service/admin-layout.service';
-import { AdminMenuService } from '../service/admin-menu.service';
+import { TenantMenuService } from '../service/tenant-menu.service';
+import { TenantLayoutService } from '../service/tenant-layout.service';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
-    selector: '[app-admin-menuitem]',
+    selector: '[app-tenant-menuitem]',
     template: `
         <ng-container>
             <div
                 *ngIf="root && item.visible !== false"
                 class="layout-menuitem-root-text"
+                (click)="ok()"
             >
                 {{ item.label }}
             </div>
@@ -49,7 +50,6 @@ import { AdminMenuService } from '../service/admin-menu.service';
                     *ngIf="item.items"
                 ></i>
             </a>
-
             <a
                 *ngIf="item.routerLink && !item.items && item.visible !== false"
                 (click)="itemClick($event)"
@@ -94,7 +94,7 @@ import { AdminMenuService } from '../service/admin-menu.service';
                     [ngForOf]="item.items"
                 >
                     <li
-                        app-admin-menuitem
+                        app-tenant-menuitem
                         [item]="child"
                         [index]="i"
                         [parentKey]="key"
@@ -125,7 +125,7 @@ import { AdminMenuService } from '../service/admin-menu.service';
         ]),
     ],
 })
-export class AdminMenuitemComponent implements OnInit, OnDestroy {
+export class TenantMenuitemComponent implements OnInit, OnDestroy {
     @Input() item: any;
 
     @Input() index!: number;
@@ -143,10 +143,10 @@ export class AdminMenuitemComponent implements OnInit, OnDestroy {
     key: string = '';
 
     constructor(
-        public layoutService: AdminLayoutService,
+        public layoutService: TenantLayoutService,
         private cd: ChangeDetectorRef,
         public router: Router,
-        private menuService: AdminMenuService
+        private menuService: TenantMenuService
     ) {
         this.menuSourceSubscription = this.menuService.menuSource$.subscribe(
             (value) => {

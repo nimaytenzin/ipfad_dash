@@ -79,4 +79,11 @@ export class LeaseAgreementDataService {
             `${this.apiUrl}/lease-agreement/active/unit/${unitId}`
         );
     }
+    GetActiveLeaseAgreementsByTenant(
+        tenantId: number
+    ): Observable<LeaseAgreementDTO[]> {
+        return this.http.get<LeaseAgreementDTO[]>(
+            `${this.apiUrl}/lease-agreement/active/tenant/${tenantId}`
+        );
+    }
 }

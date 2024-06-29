@@ -41,6 +41,7 @@ export function PARSEBUILDINGFLOORS(
 }
 
 export function PARSEFLOORLEVELS(floorLevel: string) {
+    if (!floorLevel) return null;
     switch (floorLevel.toUpperCase()) {
         case '3B':
             return 'Sub Basement 2';

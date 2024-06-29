@@ -22,13 +22,13 @@ interface LayoutState {
 @Injectable({
     providedIn: 'root',
 })
-export class LayoutService {
+export class TenantLayoutService {
     _config: AppConfig = {
         ripple: false,
         inputStyle: 'outlined',
         menuMode: 'static',
         colorScheme: 'light',
-        theme: 'lara-light-indigo',
+        theme: 'saga-blue',
         scale: 14,
     };
 
@@ -52,6 +52,7 @@ export class LayoutService {
     overlayOpen$ = this.overlayOpen.asObservable();
 
     constructor() {
+        this.changeTheme();
         effect(() => {
             const config = this.config();
             if (this.updateStyle(config)) {
@@ -70,6 +71,7 @@ export class LayoutService {
     }
 
     onMenuToggle() {
+        alert('ON MENU TOGGLE teNANT LAYOUT SERVIE');
         if (this.isOverlay()) {
             this.state.overlayMenuActive = !this.state.overlayMenuActive;
             if (this.state.overlayMenuActive) {

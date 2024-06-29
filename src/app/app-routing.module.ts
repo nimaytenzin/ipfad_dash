@@ -1,6 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AdminLayoutComponent } from './presentations/layout/admin/admin-layout.component';
+import { TenantLayoutComponent } from './presentations/layout/tenant/tenant-layout.component';
 
 @NgModule({
     imports: [
@@ -69,6 +70,20 @@ import { AdminLayoutComponent } from './presentations/layout/admin/admin-layout.
                                 ).then(
                                     (m) => m.AdminMasterTransactionRoutingModule
                                 ),
+                        },
+                    ],
+                },
+
+                {
+                    path: 'tenant',
+                    component: TenantLayoutComponent,
+                    children: [
+                        {
+                            path: '',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/tenant/dashboard/tenant-dashboard.routing.modules'
+                                ).then((m) => m.TenantDashboardRoutingModule),
                         },
                     ],
                 },

@@ -61,13 +61,24 @@
                             >Forgot password?</a
                         >
                     </div>
-                    <button
-                        pButton
-                        pRipple
-                        label="Sign In"
-                        class="w-full p-3 text-xl"
-                        (click)="login()"
-                    ></button>
+                    <div class="flex gap-2">
+                        <button
+                            pButton
+                            pRipple
+                            size="small"
+                            label="Admin"
+                            class="w-full p-3 text-xl"
+                            (click)="loginAdmin()"
+                        ></button>
+                        <button
+                            pButton
+                            pRipple
+                            size="small"
+                            label="Tenant"
+                            class="w-full p-3 text-xl"
+                            (click)="loginTenant()"
+                        ></button>
+                    </div>
                 </div>
             </div>
         </div>
