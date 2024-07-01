@@ -2,49 +2,55 @@
     class="border-1 p-4 border-dashed surface-border border-round surface-ground"
     *ngIf="pendingPaymentAdvice?.length"
 >
-    <div class="text-left text-red-600">
-        <p class="text-5xl font-semibold">Nu. {{ totalAmountDue }}</p>
-        <p class="text-sm">(Amount Due)</p>
+    <div>
+        <div>
+            <p class="text-2xl text-red-600 md:text-5xl font-semibold">
+                Nu. {{ totalAmountDue }}
+            </p>
+            <p class="text-sm">(Amount Due)</p>
+        </div>
+        <p class="text-left">
+            {{ pendingPaymentAdvice.length }} Payment{{
+                pendingPaymentAdvice.length > 1 ? "s" : ""
+            }}
+            Pending
+        </p>
     </div>
     <p-divider></p-divider>
 
-    <div *ngFor="let advice of pendingPaymentAdvice" style="margin: 2.3rem 0">
-        <div class="flex gap-4">
+    <div *ngFor="let advice of pendingPaymentAdvice">
+        <div class="flex flex-column md:flex-row gap-0 md:gap-4">
             <div class="flex-grow-1">
-                <div class="">
-                    <p class="text-4xl font-semibold">
-                        Nu.{{ advice.amountDue }}
+                <div class="flex gap-4 align-items-end">
+                    <p class="text-xl flex-grow-1">
+                        {{ advice.title }}
                     </p>
-                    <p class="text-sm">(Amount Due)</p>
+                    <div>
+                        <p class="text-3xl md:text-4xl">
+                            Nu.{{ advice.amountDue }}
+                        </p>
+                        <p class="text-sm">(Amount Due)</p>
+                    </div>
                 </div>
-                <p class="font-semibold">
-                    {{ advice.title }}
-                </p>
-
-                <p-divider type="dashed"></p-divider>
-                PA for Unit {{ advice.unit?.floorLevel }}-{{
-                    advice.unit?.unitNumber
-                }}
-                in building {{ advice.unit?.building.name }}
             </div>
             <div>
-                <p class="font-semibold">Advice Items</p>
-                <p-divider type="dashed"></p-divider>
+                <p class="font-semibold mt-2 mb-1">Advice Items</p>
                 <div *ngFor="let item of advice.paymentAdviseItem">
                     - {{ item.particular }} - Nu.
                     {{ item.amount }}
                 </div>
             </div>
         </div>
-        <div class="flex justify-content-end gap-2">
+        <div class="flex justify-content-end gap-2 mt-3">
             <p-button
                 size="small"
-                severity="secondary"
+                severity=""
                 (click)="openPaymentGatewayPaymentModal(advice)"
                 label="Pay"
             ></p-button>
             <p-button
                 size="small"
+                [outlined]="true"
                 severity="secondary"
                 label="Detailed view"
             ></p-button>

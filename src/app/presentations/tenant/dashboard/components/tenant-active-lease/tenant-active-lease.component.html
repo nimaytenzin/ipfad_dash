@@ -1,14 +1,16 @@
-<div
-    id="leaseActivesummary"
-    class="p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="activeLeaseAgreements"
->
+<div id="leaseActivesummary" class="p-4" *ngIf="activeLeaseAgreements">
+    <div class="mb-2 p-4">
+        <p class="text-2xl text-blue-600 font-bold">
+            {{ activeLeaseAgreements.length }}
+        </p>
+        <p>Active Lease</p>
+    </div>
     <div *ngIf="activeLeaseAgreements.length">
         <div
-            class="flex flex-column justify-content-between gap-4 mt-3"
-            *ngFor="let item of activeLeaseAgreements"
+            class="flex flex-column justify-content-between gap-4 p-4 border-dashed surface-border border-round surface-ground"
+            *ngFor="let item of activeLeaseAgreements; index as i"
         >
-            <div class="flex justify-content-between mb-3">
+            <!-- <div class="flex justify-content-between mb-3">
                 <p-chip label="Active Lease" icon="pi pi-bookmark-fill" />
                 <div
                     class="flex gap-2 justify-content-end"
@@ -27,10 +29,15 @@
                         size="small"
                     />
                 </div>
-            </div>
+            </div> -->
 
             <div class="w-12">
-                <p class="font-semibold text-lg">Property Detail</p>
+                <p class="font-semibold text-lg">
+                    {{ i + 1 }}. Lease of unit {{ item.unit?.floorLevel }}-{{
+                        item.unit?.unitNumber
+                    }}
+                    for {{ item.use }} purpose.
+                </p>
                 <p-divider type="dashed" />
 
                 <div
@@ -99,8 +106,6 @@
                 </div>
             </div>
             <div id="leaseSummary" class="w-12">
-                <p class="font-semibold text-lg">Lease Summary</p>
-                <p-divider type="dashed" />
                 <div class="flex gap-3 mb-2">
                     <p class="text-xl">
                         Total Monthly Payable:
