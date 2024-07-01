@@ -44,6 +44,10 @@ export interface LeaseAgreementDTO {
     ownerPrematureTermination: boolean;
     leaseRules?: LeaseRuleDTO[];
 
+    vacationNoticePeriod: number;
+    evictionNoticePeriod: number;
+    rentIncreaseNoticePeriod: number;
+
     paymentAdvise?: PaymentAdviceDto[];
 }
 

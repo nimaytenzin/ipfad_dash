@@ -98,3 +98,16 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 576px) {
+    .grid {
+        padding: 0 !important;
+    }
+
+    .layout-wrapper .layout-main-container {
+        padding: 6.5rem 0.5rem;
+    }
+}

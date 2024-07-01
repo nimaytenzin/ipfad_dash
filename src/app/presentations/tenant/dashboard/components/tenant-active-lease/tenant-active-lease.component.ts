@@ -11,13 +11,22 @@ import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payme
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 import { TagModule } from 'primeng/tag';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
+import { DialogModule } from 'primeng/dialog';
+import { TenantViewLeaseDetailsComponent } from '../tenant-view-lease-details/tenant-view-lease-details.component';
 
 @Component({
     selector: 'app-tenant-active-lease',
     templateUrl: './tenant-active-lease.component.html',
     styleUrls: ['./tenant-active-lease.component.scss'],
     standalone: true,
-    imports: [CommonModule, ButtonModule, ChipModule, DividerModule, TagModule],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        ChipModule,
+        DividerModule,
+        TagModule,
+        DialogModule,
+    ],
     providers: [DialogService],
 })
 export class TenantActiveLeasecomponent implements OnInit {
@@ -25,6 +34,9 @@ export class TenantActiveLeasecomponent implements OnInit {
         required: true,
     })
     tenantId: number;
+
+    showLeasePaymentBreakdownModal: boolean = false;
+    selectedLease: LeaseAgreementDTO;
 
     ref: DynamicDialogRef | undefined;
     activeLeaseAgreements: LeaseAgreementDTO[];
@@ -66,6 +78,18 @@ export class TenantActiveLeasecomponent implements OnInit {
             data: {
                 leaseAgreementId: leaeAgreement.id,
             },
+        });
+    }
+    viewLeasePaymentBreakdown(item: LeaseAgreementDTO) {
+        this.selectedLease = item;
+        this.showLeasePaymentBreakdownModal = true;
+    }
+
+    openLeaseDetailedView(item: LeaseAgreementDTO) {
+        this.ref = this.dialogService.open(TenantViewLeaseDetailsComponent, {
+            header: 'Lease Details',
+            width: '600px',
+            data: { ...item },
         });
     }
 }

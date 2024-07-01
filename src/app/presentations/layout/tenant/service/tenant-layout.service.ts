@@ -71,7 +71,6 @@ export class TenantLayoutService {
     }
 
     onMenuToggle() {
-        alert('ON MENU TOGGLE teNANT LAYOUT SERVIE');
         if (this.isOverlay()) {
             this.state.overlayMenuActive = !this.state.overlayMenuActive;
             if (this.state.overlayMenuActive) {

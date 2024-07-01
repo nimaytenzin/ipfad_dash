@@ -24,6 +24,26 @@ export class TenantSidebarComponent implements OnInit {
                         icon: 'pi pi-fw pi-home',
                         routerLink: ['/tenant'],
                     },
+                    {
+                        label: 'Lease',
+                        icon: 'pi pi-fw pi-file-o',
+                        routerLink: ['/tenant/lease'],
+                    },
+                    {
+                        label: 'Payments',
+                        icon: 'pi pi-fw pi-money-bill',
+                        routerLink: ['/tenant/payments'],
+                    },
+                    {
+                        label: 'Maintenance Requests',
+                        icon: 'pi pi-fw pi-wrench',
+                        routerLink: ['/tenant/maintenance'],
+                    },
+                    {
+                        label: 'Profile',
+                        icon: 'pi pi-fw pi-user',
+                        routerLink: ['/tenant/profile'],
+                    },
                 ],
             },
         ];
