@@ -7,6 +7,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
+import { AccordionModule } from 'primeng/accordion';
 
 @Component({
     selector: 'app-tenant-pending-payments',
@@ -14,7 +15,7 @@ import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/paym
     styleUrls: ['./tenant-pending-payments.component.scss'],
     standalone: true,
     imports: [CommonModule, DividerModule, ButtonModule],
-    providers: [DialogService, ConfirmationService],
+    providers: [DialogService, ConfirmationService, AccordionModule],
 })
 export class TenantPendingPaymentComponent implements OnInit {
     @Input({ required: true }) tenantId: number;

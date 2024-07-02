@@ -1,166 +1,152 @@
-<div id="leaseActivesummary" *ngIf="activeLeaseAgreements">
-    <div class="flex justify-content-between align-items-end my-2">
-        <p class="text-2xl font-semibold">Units Rented</p>
-        <p class="text-2xl text-blue-600 font-bold">
-            {{ activeLeaseAgreements.length }}
-            <small class="text-sm"
-                >(unit{{
-                    activeLeaseAgreements.length > 1 ? "s" : ""
-                }}
-                rented)</small
-            >
-        </p>
-    </div>
-    <div *ngIf="activeLeaseAgreements.length">
-        <div
-            class="flex flex-column my-3 justify-content-between p-4 border-dashed surface-border border-round surface-ground"
-            *ngFor="let item of activeLeaseAgreements; index as i"
-        >
-            <div class="w-12">
-                <!-- <p class="font-semibold text-lg">
-                    {{ i + 1 }}. Lease of unit {{ item.unit?.floorLevel }}-{{
-                        item.unit?.unitNumber
-                    }}
-                    for {{ item.use }} purpose.
-                </p> -->
+<div class="card">
+    <div id="leaseActivesummary" *ngIf="activeLeaseAgreements">
+        <div class="mb-4">
+            <p class="text-xl font-semibold">Leased Units</p>
+            <p class="text-sm">
+                {{ activeLeaseAgreements.length }}
 
-                <div
-                    class="flex gap-2 justify-content-between align-items-end mb-1"
-                >
-                    <div>
-                        <p class="text-2xl font-semibold">
-                            {{ item.unit?.floorLevel }}-{{
-                                item.unit?.unitNumber
-                            }}
+                (unit{{ activeLeaseAgreements.length > 1 ? "s" : "" }}
+                rented)
+            </p>
+        </div>
+
+        <div *ngIf="activeLeaseAgreements.length">
+            <div
+                class="flex flex-column my-3 justify-content-between p-4 border-dashed surface-border border-round surface-ground"
+                *ngFor="let item of activeLeaseAgreements; index as i"
+            >
+                <div class="w-12">
+                    <div
+                        class="flex gap-2 justify-content-between align-items-end mb-1"
+                    >
+                        <div>
+                            <p class="text-xl mb-2 font-bold">
+                                {{ item.unit?.floorLevel }}-{{
+                                    item.unit?.unitNumber
+                                }}
+                            </p>
+
+                            <p>{{ item.building?.name }}</p>
+                            <p class="mb-4 p-0">
+                                {{ item.building?.buildingNumber }}
+                                {{ item.building?.streetName }}
+                                {{ item.building?.adminsitrativeZone?.name }}
+                                {{ item.building?.subadministrativeZone?.name }}
+
+                                {{ item.building.landmark }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 text-sm" style="flex-wrap: wrap">
+                        <div class="flex align-items-end">
+                            <img
+                                src="assets/icons/bed.svg"
+                                style="height: 1.5rem"
+                            />
+                            <p>{{ item.unit?.bedroomCount }} Beds</p>
+                        </div>
+                        <div class="flex align-items-end">
+                            <img
+                                src="assets/icons/toilet.svg"
+                                style="height: 1.5rem"
+                            />
+                            <p>{{ item.unit?.toiletCount }} Baths</p>
+                        </div>
+                        <div class="flex align-items-end">
+                            <img
+                                src="assets/icons/balcony.svg"
+                                style="height: 1.5rem"
+                                alt="Icon"
+                            />
+                            <p>{{ item.unit?.balconyCount }} Balconies</p>
+                        </div>
+
+                        <div
+                            class="flex align-items-end"
+                            *ngIf="item.unit.floorArea"
+                        >
+                            <img
+                                src="assets/icons/floorArea.svg"
+                                style="height: 1.5rem"
+                            />
+                            <p>{{ item.unit?.floorArea }} SqM</p>
+                        </div>
+                    </div>
+
+                    <p-divider type="dashed" />
+                    <div class="flex justify-content-between">
+                        <p>
+                            Purpose:
+                            <strong>{{ item.use }}</strong>
                         </p>
                         <p>
-                            <span style="text-transform: capitalize">{{
-                                parseFloorLevel(item.unit?.floorLevel)
-                            }}</span>
+                            End Date:
+                            <strong>{{ item.leaseEndDate }}</strong>
                         </p>
                     </div>
-                    <div class="text-right">
-                        <p>{{ item.building?.name }}</p>
-                        <p class="m-0 p-0">
-                            {{ item.building?.buildingNumber }}
-                            {{ item.building?.streetName }}
-                            {{ item.building?.adminsitrativeZone?.name }}
-                            {{ item.building?.subadministrativeZone?.name }}
-
-                            {{ item.building.landmark }}
-                        </p>
-                    </div>
+                    <p-divider type="dashed" />
                 </div>
-
-                <div class="flex gap-3 text-sm" style="flex-wrap: wrap">
-                    <div class="flex align-items-end">
-                        <img
-                            src="assets/icons/bed.svg"
-                            style="height: 1.5rem"
-                        />
-                        <p>{{ item.unit?.bedroomCount }} Beds</p>
-                    </div>
-                    <div class="flex align-items-end">
-                        <img
-                            src="assets/icons/toilet.svg"
-                            style="height: 1.5rem"
-                        />
-                        <p>{{ item.unit?.toiletCount }} Baths</p>
-                    </div>
-                    <div class="flex align-items-end">
-                        <img
-                            src="assets/icons/balcony.svg"
-                            style="height: 1.5rem"
-                            alt="Icon"
-                        />
-                        <p>{{ item.unit?.balconyCount }} Balconies</p>
-                    </div>
-
+                <div id="leaseSummary" class="w-12">
                     <div
-                        class="flex align-items-end"
-                        *ngIf="item.unit.floorArea"
+                        class="flex justify-content-between align-items-center"
                     >
-                        <img
-                            src="assets/icons/floorArea.svg"
-                            style="height: 1.5rem"
-                        />
-                        <p>{{ item.unit?.floorArea }} SqM</p>
-                    </div>
-                </div>
-
-                <p-divider type="dashed" />
-                <div class="flex justify-content-between">
-                    <p>
-                        Purpose:
-                        <strong>{{ item.use }}</strong>
-                    </p>
-                    <p>
-                        End Date:
-                        <strong>{{ item.leaseEndDate }}</strong>
-                    </p>
-                </div>
-                <p-divider type="dashed" />
-            </div>
-            <div id="leaseSummary" class="w-12">
-                <div class="flex justify-content-between">
-                    <p class="tex">
-                        Total Monthly Payable:
-                        <span class="font-semibold"
-                            >Nu. {{ computeMonthlyPayable(item) }}
-                        </span>
-                    </p>
-                    <div class="flex flex-column">
-                        <p-button
-                            [text]="true"
-                            size="small"
-                            (click)="viewLeasePaymentBreakdown(item)"
-                            >view breakdown</p-button
-                        >
-                        <p-button
-                            [text]="true"
-                            size="small"
-                            (click)="openLeaseDetailedView(item)"
-                            >view Lease Agreement
-                        </p-button>
+                        <p class="tex">
+                            Total Monthly Payable:
+                            <span class="font-semibold"
+                                >Nu. {{ computeMonthlyPayable(item) }}
+                            </span>
+                        </p>
+                        <div class="">
+                            <p-button
+                                [text]="true"
+                                (click)="openLeaseDetailedView(item)"
+                            >
+                                Lease Agreement
+                            </p-button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div
-    class="border-1 mb-4 p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="!activeLeaseAgreements?.length"
->
-    <p>No Active Lease agreement</p>
-</div>
-
-<!-- DIALOGS -->
-<p-dialog
-    header="Lease Surcharges"
-    [modal]="true"
-    [(visible)]="showLeasePaymentBreakdownModal"
-    [style]="{ width: '25rem' }"
->
-    <div *ngIf="selectedLease">
-        <table>
-            <tr>
-                <td>Rent</td>
-                <td>
-                    <p class="pl-2">Nu. {{ selectedLease?.rent }}</p>
-                </td>
-            </tr>
-            <tr *ngFor="let item of selectedLease?.leaseSurcharges">
-                <td>{{ item.particular }}</td>
-                <td>
-                    <p class="pl-2">Nu.{{ item.amount }}</p>
-                </td>
-            </tr>
-        </table>
-
-        <p *ngIf="selectedLease" class="text-right mt-1 text-xl font-semibold">
-            Total: Nu.{{ computeMonthlyPayable(selectedLease) }}
-        </p>
+    <div
+        class="border-1 mb-4 p-4 border-dashed surface-border border-round surface-ground"
+        *ngIf="!activeLeaseAgreements?.length"
+    >
+        <p>No Active Lease agreement</p>
     </div>
-</p-dialog>
+
+    <!-- DIALOGS -->
+    <p-dialog
+        header="Lease Surcharges"
+        [modal]="true"
+        [(visible)]="showLeasePaymentBreakdownModal"
+        [style]="{ width: '25rem' }"
+    >
+        <div *ngIf="selectedLease">
+            <table>
+                <tr>
+                    <td>Rent</td>
+                    <td>
+                        <p class="pl-2">Nu. {{ selectedLease?.rent }}</p>
+                    </td>
+                </tr>
+                <tr *ngFor="let item of selectedLease?.leaseSurcharges">
+                    <td>{{ item.particular }}</td>
+                    <td>
+                        <p class="pl-2">Nu.{{ item.amount }}</p>
+                    </td>
+                </tr>
+            </table>
+
+            <p
+                *ngIf="selectedLease"
+                class="text-right mt-1 text-xl font-semibold"
+            >
+                Total: Nu.{{ computeMonthlyPayable(selectedLease) }}
+            </p>
+        </div>
+    </p-dialog>
+</div>

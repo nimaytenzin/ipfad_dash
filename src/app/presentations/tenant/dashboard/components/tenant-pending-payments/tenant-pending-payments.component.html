@@ -1,67 +1,53 @@
-<div
-    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="pendingPaymentAdvice?.length"
->
-    <div>
-        <div>
-            <p class="text-2xl text-red-600 md:text-5xl font-semibold">
-                Nu. {{ totalAmountDue }}
-            </p>
-            <p class="text-sm">(Amount Due)</p>
-        </div>
-        <p class="text-left">
-            {{ pendingPaymentAdvice.length }} Payment{{
-                pendingPaymentAdvice.length > 1 ? "s" : ""
-            }}
-            Pending
-        </p>
-    </div>
-    <p-divider></p-divider>
-
-    <div *ngFor="let advice of pendingPaymentAdvice">
-        <div class="flex flex-column md:flex-row gap-0 md:gap-4">
-            <div class="flex-grow-1">
-                <div class="flex justify-content-between mb-3 align-items-end">
-                    <div class="">
-                        <p class="text-3xl md:text-4xl">
-                            Nu.{{ advice.amountDue }}
-                        </p>
-                        <p class="text-sm">(Amount Due)</p>
-                    </div>
-                    <p class="text-lg w-6">
-                        {{ advice.title }}
-                    </p>
-                </div>
+<div class="card">
+    <div *ngIf="pendingPaymentAdvice?.length">
+        <div class="flex justify-content-between align-items-end my-2">
+            <p class="text-2xl font-semibold text-blue-800">Pending Payments</p>
+            <div class="text-right">
+                <p class="text-sm">Amount Due</p>
+                <p class="text-2xl text-red-600 md:text-5xl font-semibold">
+                    Nu. {{ totalAmountDue }}
+                </p>
             </div>
+        </div>
+        <p-divider></p-divider>
+
+        <div
+            *ngFor="let advice of pendingPaymentAdvice"
+            class="border-1 my-3 p-4 border-dashed surface-border border-round surface-ground"
+        >
             <div>
-                <p class="font-semibold mb-1">Advice Items</p>
-                <div *ngFor="let item of advice.paymentAdviseItem">
-                    - {{ item.particular }} - Nu.
-                    {{ item.amount }}
-                </div>
+                <p class="text-xl md:text-4xl font-bold">
+                    Nu.{{ advice.amountDue }}
+                </p>
+                <p>
+                    {{ advice.title }}
+                </p>
+            </div>
+            <div class="mt-2">
+                <p *ngFor="let item of advice.paymentAdviseItem">
+                    - {{ item.particular }} : Nu. {{ item.amount }}
+                </p>
+            </div>
+            <p-divider></p-divider>
+            <div class="flex justify-content-end gap-4">
+                <p-button
+                    [outlined]="true"
+                    severity="secondary"
+                    label="Details"
+                ></p-button>
+                <p-button
+                    severity="success"
+                    (click)="openPaymentGatewayPaymentModal(advice)"
+                    label="Pay"
+                ></p-button>
             </div>
         </div>
-        <div class="flex justify-content-end gap-2 mt-3">
-            <p-button
-                size="small"
-                severity=""
-                (click)="openPaymentGatewayPaymentModal(advice)"
-                label="Pay"
-            ></p-button>
-            <p-button
-                size="small"
-                [outlined]="true"
-                severity="secondary"
-                label="Detailed view"
-            ></p-button>
-        </div>
-        <p-divider type="dashed"></p-divider>
     </div>
-</div>
 
-<div
-    class="border-1 p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="!pendingPaymentAdvice.length"
->
-    <p>No Pending payment advices</p>
+    <div
+        class="border-1 p-4 border-dashed surface-border border-round surface-ground"
+        *ngIf="!pendingPaymentAdvice.length"
+    >
+        <p>No Pending payment advices</p>
+    </div>
 </div>
