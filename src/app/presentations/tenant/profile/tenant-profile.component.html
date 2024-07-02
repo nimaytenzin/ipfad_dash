@@ -1,3 +1,57 @@
-<p>
-  tenant-profile works!
-</p>
+<div class="h-full card">
+    <div class="flex justify-content-center mt-6">
+        <div
+            style="height: 7rem; width: 7rem; border-radius: 100%"
+            class="bg-blue-300 flex text-white justify-content-center align-items-center text-5xl"
+        >
+            N
+        </div>
+    </div>
+    <div class="text-center my-2">
+        <p class="text-2xl font-semibold">Nima Yoezer Tenzin</p>
+        <p class="text-sm">Member since Jan 3 2023</p>
+    </div>
+    <div class="flex justify-content-center">
+        <p-button
+            [text]="true"
+            icon="pi pi-camera"
+            label="Change Profile"
+        ></p-button>
+        <p-button
+            [text]="true"
+            label="Edit Details"
+            icon="pi pi-pencil"
+        ></p-button>
+    </div>
+
+    <p-divider></p-divider>
+    <div>
+        <p class="text-center text-2xl">Your Details</p>
+        <div class="my-3">
+            <p class="font-semibold text-lg">Full Name</p>
+            <p>Nima Yoezer Tenzin</p>
+        </div>
+        <div class="my-3">
+            <p class="font-semibold text-lg">CID</p>
+            <p>10302000402</p>
+        </div>
+        <div class="my-3">
+            <p class="font-semibold text-lg">Phone Number</p>
+            <p>17263764</p>
+        </div>
+        <div class="my-3">
+            <p class="font-semibold text-lg">Email</p>
+            <p>nimaytenzin&#64;gmail.com</p>
+        </div>
+    </div>
+    <p-divider></p-divider>
+
+    <div class="flex justify-content-center">
+        <p-button
+            [text]="true"
+            severity="secondary"
+            label="Change Password"
+            icon="pi pi-lock"
+        ></p-button>
+    </div>
+</div>
