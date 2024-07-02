@@ -1,4 +1,4 @@
-<div class="text-lg">
+<div class="text-lg" style="max-width: 80vw">
     <p class="text-right font-semibold text-xl mb-3">
         Status:
         <span style="text-transform: capitalize">{{
@@ -163,19 +163,6 @@
             <p class="text-xl font-semibold text-right">
                 Total Monthly Payable: Nu. {{ computeMonthlyPayable(lease) }}
             </p>
-        </p-tabPanel>
-        <p-tabPanel header="Owner">
-            <p class="font-semibold mb-1">Building Owner</p>
-            <div>
-                <p>
-                    Name: {{ lease.landlord?.firstName }}
-                    {{ lease.landlord?.middleName }}
-                    {{ lease.landlord?.lastName }}
-                </p>
-                <p class="m-0 p-0">
-                    Contact: {{ lease.landlord?.phoneNumber }}
-                </p>
-            </div>
         </p-tabPanel>
     </p-tabView>
 </div>

@@ -74,7 +74,8 @@ export class TenantActiveLeasecomponent implements OnInit {
         this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
             header: 'View Lease',
 
-            width: '70vw',
+            width: '600px',
+
             data: {
                 leaseAgreementId: leaeAgreement.id,
             },

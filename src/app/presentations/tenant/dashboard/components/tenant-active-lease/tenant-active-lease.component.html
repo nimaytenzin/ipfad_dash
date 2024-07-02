@@ -109,12 +109,20 @@
                             >Nu. {{ computeMonthlyPayable(item) }}
                         </span>
                     </p>
-                    <p-button
-                        [text]="true"
-                        size="small"
-                        (click)="viewLeasePaymentBreakdown(item)"
-                        >view breakdown</p-button
-                    >
+                    <div class="flex flex-column">
+                        <p-button
+                            [text]="true"
+                            size="small"
+                            (click)="viewLeasePaymentBreakdown(item)"
+                            >view breakdown</p-button
+                        >
+                        <p-button
+                            [text]="true"
+                            size="small"
+                            (click)="openLeaseDetailedView(item)"
+                            >view Lease Agreement
+                        </p-button>
+                    </div>
                 </div>
             </div>
         </div>
