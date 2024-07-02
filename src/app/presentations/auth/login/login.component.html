@@ -1,6 +1,8 @@
 <div
     class="surface-card flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
 >
+    <p-toast />
+
     <div class="flex flex-column align-items-center justify-content-center">
         <div>
             <div class="w-full py-8 px-5 sm:px-8">
@@ -10,7 +12,7 @@
                     </div>
                 </div>
 
-                <div class="p-fluid">
+                <form [formGroup]="loginForm" class="p-fluid">
                     <label for="email1" class="block text-900 mb-2"
                         >Phone Number</label
                     >
@@ -19,16 +21,20 @@
                         type="text"
                         placeholder="Phone Number"
                         pInputText
+                        autocomplete=""
+                        formControlName="phoneNumber"
                     />
                     <label for="password1" class="block text-900 mt-4 mb-2"
                         >Password</label
                     >
                     <p-password
                         id="password1"
-                        [(ngModel)]="password"
+                        formControlName="password"
                         placeholder="Password"
                         [toggleMask]="true"
+                        autocomplete="current-password"
                         styleClass="mb-5"
+                        [feedback]="false"
                     ></p-password>
 
                     <div
@@ -52,19 +58,12 @@
                         <button
                             pButton
                             pRipple
-                            label="Admin"
+                            label="Login"
                             class="w-full"
-                            (click)="loginAdmin()"
-                        ></button>
-                        <button
-                            pButton
-                            pRipple
-                            label="Tenant"
-                            class="w-full"
-                            (click)="loginTenant()"
+                            (click)="login()"
                         ></button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

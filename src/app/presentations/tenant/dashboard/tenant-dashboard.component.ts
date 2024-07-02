@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { Subscription } from 'rxjs';
 import { TenantActiveLeasecomponent } from './components/tenant-active-lease/tenant-active-lease.component';
 import { TenantPendingPaymentComponent } from './components/tenant-pending-payments/tenant-pending-payments.component';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
     selector: 'app-tenant-dashboard',
@@ -15,6 +16,7 @@ import { TenantPendingPaymentComponent } from './components/tenant-pending-payme
         ButtonModule,
         TenantActiveLeasecomponent,
         TenantPendingPaymentComponent,
+        BadgeModule,
     ],
 })
 export class TenantDashboardComponent implements OnInit {

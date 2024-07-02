@@ -101,66 +101,65 @@
         </p-tabPanel>
         <p-tabPanel header="Lease Conditions">
             <div class="text-lg">
-                <ul>
+                <div>
                     <p class="text-lg font-semibold my-2">Lease Terms</p>
-                    <li>
-                        Rent has to be paid before day
+                    <p>
+                        - Rent has to be paid before day
                         <strong> {{ lease.paymentDueDay }}</strong> of the next
                         month.
-                    </li>
-                    <li>
-                        The Owner will issue a notice at least
+                    </p>
+                    <p>
+                        - The Owner will issue a notice at least
                         <strong>
                             {{ lease.rentIncreaseNoticePeriod }} months</strong
                         >
                         in advance before increasing the rent, in accordance
                         with the Tenancy Act of 2015.
-                    </li>
-                    <li>
-                        The Tenant is
+                    </p>
+                    <p>
+                        - The Tenant is
                         <strong>{{
                             lease.tenantSubletAuthority
                                 ? "permitted"
                                 : "not permitted"
                         }}</strong>
                         to sublet the unit.
-                    </li>
+                    </p>
 
-                    <li>
-                        If a tenant wishes to vacate the property or terminate
+                    <p>
+                        - If a tenant wishes to vacate the property or terminate
                         the agreement, they must give a notice at least
                         <strong>{{ lease.vacationNoticePeriod }} months</strong>
                         in advance.
-                    </li>
-                    <li>
-                        Similarly, the owner will issue a notice at least
+                    </p>
+                    <p>
+                        - Similarly, the owner will issue a notice at least
                         <strong>{{ lease.evictionNoticePeriod }} months</strong>
                         months in advance before evicting a tenant or
                         terminating the lease agreement.
-                    </li>
+                    </p>
 
                     <p class="text-lg font-semibold my-2">
                         Building and unit rules
                     </p>
 
-                    <li *ngFor="let item of lease.leaseRules">
-                        {{ item.particular }}
+                    <p *ngFor="let item of lease.leaseRules">
+                        - {{ item.particular }}
                         <small>({{ item.origin }} rule)</small>
-                    </li>
-                </ul>
+                    </p>
+                </div>
             </div>
         </p-tabPanel>
         <p-tabPanel header="Lease Charges">
-            <ul class="text-lg">
+            <div class="text-lg">
+                <p>Security Deposit: Nu. {{ lease.securityDepositAmount }}</p>
                 <p class="text-lg font-semibold my-2">Lease Charges</p>
-                <li>Rent: Nu. {{ lease.rent }}</li>
-                <li>Security Deposit: Nu. {{ lease.securityDepositAmount }}</li>
-                <p class="text-lg font-semibold my-2">Lease Surcharges</p>
-                <li *ngFor="let item of lease.leaseSurcharges">
+                <p>Rent: Nu. {{ lease.rent }}</p>
+                <p *ngFor="let item of lease.leaseSurcharges">
                     {{ item.particular }}: Nu. {{ item.amount }}
-                </li>
-            </ul>
-            <p class="text-xl font-semibold text-right">
+                </p>
+            </div>
+            <p class="text-xl mt-2 font-semibold text-right">
                 Total Monthly Payable: Nu. {{ computeMonthlyPayable(lease) }}
             </p>
         </p-tabPanel>
