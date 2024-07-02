@@ -1,44 +1,28 @@
-<div id="leaseActivesummary" class="p-4" *ngIf="activeLeaseAgreements">
-    <div class="mb-2 p-4">
+<div id="leaseActivesummary" *ngIf="activeLeaseAgreements">
+    <div class="flex justify-content-between align-items-end my-2">
+        <p class="text-2xl font-semibold">Units Rented</p>
         <p class="text-2xl text-blue-600 font-bold">
             {{ activeLeaseAgreements.length }}
+            <small class="text-sm"
+                >(unit{{
+                    activeLeaseAgreements.length > 1 ? "s" : ""
+                }}
+                rented)</small
+            >
         </p>
-        <p>Active Lease</p>
     </div>
     <div *ngIf="activeLeaseAgreements.length">
         <div
-            class="flex flex-column justify-content-between gap-4 p-4 border-dashed surface-border border-round surface-ground"
+            class="flex flex-column my-3 justify-content-between p-4 border-dashed surface-border border-round surface-ground"
             *ngFor="let item of activeLeaseAgreements; index as i"
         >
-            <!-- <div class="flex justify-content-between mb-3">
-                <p-chip label="Active Lease" icon="pi pi-bookmark-fill" />
-                <div
-                    class="flex gap-2 justify-content-end"
-                    style="flex-wrap: wrap"
-                >
-                    <p-button
-                        label="Detailed View"
-                        severity="secondary"
-                        size="small"
-                        (click)="openLeaseDetailedView(item)"
-                    />
-                    <p-button
-                        label="Request Renewal"
-                        icon="pi pi-refresh"
-                        severity="secondary"
-                        size="small"
-                    />
-                </div>
-            </div> -->
-
             <div class="w-12">
-                <p class="font-semibold text-lg">
+                <!-- <p class="font-semibold text-lg">
                     {{ i + 1 }}. Lease of unit {{ item.unit?.floorLevel }}-{{
                         item.unit?.unitNumber
                     }}
                     for {{ item.use }} purpose.
-                </p>
-                <p-divider type="dashed" />
+                </p> -->
 
                 <div
                     class="flex gap-2 justify-content-between align-items-end mb-1"
@@ -67,9 +51,8 @@
                         </p>
                     </div>
                 </div>
-                <p-divider type="dashed" />
 
-                <div class="flex gap-3 text-sm my-2" style="flex-wrap: wrap">
+                <div class="flex gap-3 text-sm" style="flex-wrap: wrap">
                     <div class="flex align-items-end">
                         <img
                             src="assets/icons/bed.svg"
@@ -104,10 +87,23 @@
                         <p>{{ item.unit?.floorArea }} SqM</p>
                     </div>
                 </div>
+
+                <p-divider type="dashed" />
+                <div class="flex justify-content-between">
+                    <p>
+                        Purpose:
+                        <strong>{{ item.use }}</strong>
+                    </p>
+                    <p>
+                        End Date:
+                        <strong>{{ item.leaseEndDate }}</strong>
+                    </p>
+                </div>
+                <p-divider type="dashed" />
             </div>
             <div id="leaseSummary" class="w-12">
-                <div class="flex gap-3 mb-2">
-                    <p class="text-xl">
+                <div class="flex justify-content-between">
+                    <p class="tex">
                         Total Monthly Payable:
                         <span class="font-semibold"
                             >Nu. {{ computeMonthlyPayable(item) }}
@@ -120,15 +116,6 @@
                         >view breakdown</p-button
                     >
                 </div>
-
-                <p>
-                    Lease Purpose:
-                    <strong>{{ item.use }}</strong>
-                </p>
-                <p>
-                    Lease End Date:
-                    <strong>{{ item.leaseEndDate }}</strong>
-                </p>
             </div>
         </div>
     </div>

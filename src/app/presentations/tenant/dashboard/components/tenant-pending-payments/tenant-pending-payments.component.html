@@ -21,20 +21,20 @@
     <div *ngFor="let advice of pendingPaymentAdvice">
         <div class="flex flex-column md:flex-row gap-0 md:gap-4">
             <div class="flex-grow-1">
-                <div class="flex gap-4 align-items-end">
-                    <p class="text-xl flex-grow-1">
-                        {{ advice.title }}
-                    </p>
-                    <div>
+                <div class="flex justify-content-between mb-3 align-items-end">
+                    <div class="">
                         <p class="text-3xl md:text-4xl">
                             Nu.{{ advice.amountDue }}
                         </p>
                         <p class="text-sm">(Amount Due)</p>
                     </div>
+                    <p class="text-lg w-6">
+                        {{ advice.title }}
+                    </p>
                 </div>
             </div>
             <div>
-                <p class="font-semibold mt-2 mb-1">Advice Items</p>
+                <p class="font-semibold mb-1">Advice Items</p>
                 <div *ngFor="let item of advice.paymentAdviseItem">
                     - {{ item.particular }} - Nu.
                     {{ item.amount }}
