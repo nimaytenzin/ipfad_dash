@@ -30,14 +30,15 @@ import { TenantFooterComponent } from './tenant-footer/tenant-footer.component';
         InputSwitchModule,
         RippleModule,
         RouterModule,
+        TenantTopbarComponent,
     ],
     declarations: [
         TenantLayoutComponent,
-        TenantTopbarComponent,
         TenantSidebarComponent,
         TenantMenuitemComponent,
         TenantFooterComponent,
     ],
+
     exports: [TenantLayoutComponent],
 })
 export class TenantLayoutModule {}

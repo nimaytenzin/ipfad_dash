@@ -1,25 +1,17 @@
 <div
-    class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+    class="surface-card flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
 >
     <div class="flex flex-column align-items-center justify-content-center">
         <div>
-            <div
-                class="w-full surface-card py-8 px-5 sm:px-8"
-                style="border-radius: 53px"
-            >
+            <div class="w-full py-8 px-5 sm:px-8">
                 <div class="text-center mb-5">
                     <div class="text-900 text-3xl font-medium mb-3">
-                        Welcome,
+                        Welcome
                     </div>
-                    <span class="text-600 font-medium"
-                        >Sign in to continue</span
-                    >
                 </div>
 
-                <div>
-                    <label
-                        for="email1"
-                        class="block text-900 text-xl font-medium mb-2"
+                <div class="p-fluid">
+                    <label for="email1" class="block text-900 mb-2"
                         >Phone Number</label
                     >
                     <input
@@ -27,12 +19,8 @@
                         type="text"
                         placeholder="Phone Number"
                         pInputText
-                        class="w-full md:w-30rem mb-5"
-                        style="padding: 1rem"
                     />
-                    <label
-                        for="password1"
-                        class="block text-900 font-medium text-xl mb-2"
+                    <label for="password1" class="block text-900 mt-4 mb-2"
                         >Password</label
                     >
                     <p-password
@@ -41,7 +29,6 @@
                         placeholder="Password"
                         [toggleMask]="true"
                         styleClass="mb-5"
-                        inputStyleClass="w-full p-3 md:w-30rem"
                     ></p-password>
 
                     <div
@@ -65,17 +52,15 @@
                         <button
                             pButton
                             pRipple
-                            size="small"
                             label="Admin"
-                            class="w-full p-3 text-xl"
+                            class="w-full"
                             (click)="loginAdmin()"
                         ></button>
                         <button
                             pButton
                             pRipple
-                            size="small"
                             label="Tenant"
-                            class="w-full p-3 text-xl"
+                            class="w-full"
                             (click)="loginTenant()"
                         ></button>
                     </div>
