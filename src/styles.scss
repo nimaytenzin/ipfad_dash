@@ -132,3 +132,9 @@ p-stepper .p-stepper-separator {
 .p-dialog {
     max-width: 90vw;
 }
+
+@media (max-width: 768px) {
+    .pg-modal-container {
+        min-height: 50vh;
+    }
+}
