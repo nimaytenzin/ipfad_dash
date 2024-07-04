@@ -170,9 +170,6 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
                                 .subscribe((message: any) => {
                                     if (message.status === 'Success') {
                                         this.showRequestDemoModal = false;
-                                        alert(
-                                            'REquest has been sent. u wil be contacted shrotly'
-                                        );
                                     }
                                 });
                         }
