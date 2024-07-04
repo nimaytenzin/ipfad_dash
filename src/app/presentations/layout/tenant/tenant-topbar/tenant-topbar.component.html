@@ -29,10 +29,10 @@
         }"
     >
         <button class="p-link layout-topbar-button">
-            <i class="pi pi-bell"></i>
-            <span>Notificatoin</span>
+            <i class="pi pi-bell" pBadge value="2"></i>
+            <span>Notification</span>
         </button>
-        <button class="p-link layout-topbar-button">
+        <button class="p-link layout-topbar-button" (click)="profile()">
             <i class="pi pi-user"></i>
             <span>Profile</span>
         </button>
@@ -42,3 +42,5 @@
         </button>
     </div>
 </div>
+
+<p-confirmPopup />

@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { TenantActiveLeasecomponent } from './components/tenant-active-lease/tenant-active-lease.component';
 import { TenantPendingPaymentComponent } from './components/tenant-pending-payments/tenant-pending-payments.component';
 import { BadgeModule } from 'primeng/badge';
+import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
+import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
 
 @Component({
     selector: 'app-tenant-dashboard',
@@ -20,19 +22,19 @@ import { BadgeModule } from 'primeng/badge';
     ],
 })
 export class TenantDashboardComponent implements OnInit {
-    chartData: any;
+    tenantDetails: TenantDTO;
 
-    chartOptions: any;
-
-    subscription!: Subscription;
-
-    constructor() {}
+    constructor(private tenantDataService: TenantDataService) {
+        this.tenantDataService
+            .SearchTenant({
+                id: 1,
+            })
+            .subscribe((res) => {
+                this.tenantDetails = res;
+            });
+    }
 
     ngOnInit() {}
 
-    ngOnDestroy() {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    }
+    ngOnDestroy() {}
 }

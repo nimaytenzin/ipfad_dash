@@ -6,7 +6,7 @@ import {
     PaginatedData,
     PaginatedParamsOptions,
 } from '../../dto/paginated-data.dto';
-import { TenantDTO } from '../../dto/users/tenant.dto';
+import { TenantDTO, UpdateTenantDto } from '../../dto/users/tenant.dto';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -63,5 +63,9 @@ export class TenantDataService {
         return this.http.get<TenantDTO>(`${this.apiUrl}/tenant/q`, {
             params: httpParams,
         });
+    }
+
+    UpdateTenantDetails(data: UpdateTenantDto, id: number) {
+        return this.http.patch(`${this.apiUrl}/tenant/${id}`, data);
     }
 }

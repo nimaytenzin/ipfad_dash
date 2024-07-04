@@ -8,8 +8,13 @@
         </div>
     </div>
     <div class="text-center my-2">
-        <p class="text-2xl font-semibold">Nima Yoezer Tenzin</p>
-        <p class="text-sm">Member since Jan 3 2023</p>
+        <p class="text-2xl font-semibold">
+            {{ tenantDetails?.firstName }} {{ tenantDetails?.middleName }}
+            {{ tenantDetails?.lastName }}
+        </p>
+        <p class="text-sm">
+            Member since {{ getReadableDate(tenantDetails?.createdAt) }}
+        </p>
     </div>
     <div class="flex justify-content-center">
         <p-button
@@ -21,6 +26,7 @@
             [text]="true"
             label="Edit Details"
             icon="pi pi-pencil"
+            (click)="showEditProfileDialog = true"
         ></p-button>
     </div>
 
@@ -29,19 +35,35 @@
         <p class="text-center text-2xl">Your Details</p>
         <div class="my-3">
             <p class="font-semibold text-lg">Full Name</p>
-            <p>Nima Yoezer Tenzin</p>
+            <p>
+                {{ tenantDetails?.firstName }} {{ tenantDetails?.middleName }}
+                {{ tenantDetails?.lastName }}
+            </p>
         </div>
         <div class="my-3">
             <p class="font-semibold text-lg">CID</p>
-            <p>10302000402</p>
+            <p>{{ tenantDetails?.cid }}</p>
         </div>
         <div class="my-3">
             <p class="font-semibold text-lg">Phone Number</p>
-            <p>17263764</p>
+            <p>{{ tenantDetails?.phoneNumber }}</p>
         </div>
         <div class="my-3">
             <p class="font-semibold text-lg">Email</p>
-            <p>nimaytenzin&#64;gmail.com</p>
+            <p>
+                {{ tenantDetails?.email }}
+            </p>
+        </div>
+
+        <div class="my-3">
+            <p class="font-semibold text-lg">Permanent Address</p>
+            <p>
+                {{ tenantDetails?.subadministrativeZone?.name }}
+                {{ tenantDetails?.subadministrativeZone?.type }},
+                {{ tenantDetails?.administrativeZone?.name }}
+                {{ tenantDetails?.administrativeZone?.type }},
+                {{ tenantDetails?.dzongkhag?.name }}
+            </p>
         </div>
     </div>
     <p-divider></p-divider>
@@ -55,3 +77,114 @@
         ></p-button>
     </div>
 </div>
+
+<p-dialog
+    header="Edit Profile"
+    [modal]="true"
+    [(visible)]="showEditProfileDialog"
+    [style]="{ width: '25rem' }"
+>
+    <span class="p-text-secondary block mb-5">Update your information.</span>
+    <form [formGroup]="editProfileForm" class="p-fluid">
+        <div class="mb-3">
+            <label for="username">First Name</label>
+            <input
+                pInputText
+                id="username"
+                formControlName="firstName"
+                class="flex-auto mt-2"
+                autocomplete="off"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username">Middle Name</label>
+            <input
+                pInputText
+                id="username"
+                formControlName="middleName"
+                class="flex-auto mt-2"
+                autocomplete="off"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username">Last Name</label>
+            <input
+                pInputText
+                id="username"
+                formControlName="lastName"
+                class="flex-auto mt-2"
+                autocomplete="off"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username">CID</label>
+            <input
+                pInputText
+                id="username"
+                formControlName="cid"
+                class="flex-auto mt-2"
+                autocomplete="off"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username">Phone Number</label>
+            <input
+                pInputText
+                id="username"
+                formControlName="phoneNumber"
+                class="flex-auto mt-2"
+                autocomplete="off"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username">Email</label>
+            <input
+                pInputText
+                id="username"
+                formControlName="email"
+                class="flex-auto mt-2"
+                autocomplete="off"
+            />
+        </div>
+
+        <div class="mb-3">
+            <label for="username">Dzongkhag</label>
+            <p-dropdown
+                [options]="dzongkhags"
+                formControlName="dzongkhagId"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Dzongkhag"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username">Administrative Zone</label>
+            <p-dropdown
+                [options]="administrativeZones"
+                formControlName="administrativeZoneId"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Administrative Zone"
+            />
+        </div>
+        <div class="mb-3">
+            <label for="username">Sub Administrative Zone</label>
+            <p-dropdown
+                [options]="subAdministrativeZones"
+                formControlName="subAdministrativeZoneId"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="Sub Administrative Zone"
+            />
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="Cancel"
+                severity="secondary"
+                (click)="showEditProfileDialog = false"
+            />
+            <p-button label="Save" (click)="updateProfileDetails()" />
+        </div>
+    </form>
+</p-dialog>

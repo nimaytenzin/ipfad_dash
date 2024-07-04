@@ -27,6 +27,8 @@ export interface TenantDTO {
     subadministrativeZone: SubAdministrativeZoneDTO;
 
     leaseAgreements?: LeaseAgreementDTO[];
+
+    createdAt?: string;
 }
 
 export interface AdminCreateTenantDTO {
@@ -47,4 +49,18 @@ export interface AdminCreateTenantDTO {
     dzongkhagId: number;
     administrativeZoneId: number;
     subadministrativeZoneId: number;
+}
+
+export interface UpdateTenantDto {
+    firstName?: string;
+    middleName?: string;
+    lastName?: string | null;
+    phoneNumber?: number;
+    cid?: string | null;
+
+    email?: string | null;
+
+    dzongkhagId?: number;
+    administrativeZoneId?: number;
+    subadministrativeZoneId?: number;
 }

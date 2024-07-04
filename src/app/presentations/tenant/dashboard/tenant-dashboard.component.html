@@ -1,7 +1,12 @@
 <div
     class="px-4 py-2 flex align-items-center justify-content-between surface-card"
 >
-    <p class="text-xl">Welcome, Nima Yoezer Tenzin</p>
+    <p class="text-xl">
+        Welcome,
+
+        {{ tenantDetails?.firstName }} {{ tenantDetails?.middleName }}
+        {{ tenantDetails?.lastName }}
+    </p>
     <div>
         <button class="p-link layout-topbar-button">
             <i
