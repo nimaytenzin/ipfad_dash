@@ -38,8 +38,6 @@ export class TenantPendingPaymentComponent implements OnInit {
             .GetPendingPaymentsByTenant(this.tenantId)
             .subscribe({
                 next: (res) => {
-                    console.log('PENDING AdVICE');
-                    console.log(res);
                     this.pendingPaymentAdvice = res;
                     this.pendingPaymentAdvice.forEach((item) => {
                         this.totalAmountDue += item.amountDue;

@@ -13,6 +13,7 @@ import { TagModule } from 'primeng/tag';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
 import { DialogModule } from 'primeng/dialog';
 import { TenantViewLeaseDetailsComponent } from '../tenant-view-lease-details/tenant-view-lease-details.component';
+import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 
 @Component({
     selector: 'app-tenant-active-lease',
@@ -34,6 +35,8 @@ export class TenantActiveLeasecomponent implements OnInit {
         required: true,
     })
     tenantId: number;
+
+    zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
 
     showLeasePaymentBreakdownModal: boolean = false;
     selectedLease: LeaseAgreementDTO;
