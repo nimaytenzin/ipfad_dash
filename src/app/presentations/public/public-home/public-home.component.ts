@@ -6,20 +6,69 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
+import {
+    FormBuilder,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { gsap } from 'gsap';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
+import {
+    RECAPTCHA_V3_SITE_KEY,
+    ReCaptchaV3Service,
+    RecaptchaV3Module,
+} from 'ng-recaptcha';
+import { RecaptchaService } from 'src/app/core/dataservice/recaptcha.dataservice';
+import { NotificationService } from 'src/app/core/dataservice/notification.service';
+
 @Component({
     selector: 'app-public-home',
     templateUrl: './public-home.component.html',
     styleUrls: ['./public-home.component.scss'],
     standalone: true,
-    imports: [CommonModule, ButtonModule],
+    imports: [
+        CommonModule,
+        ButtonModule,
+        FormsModule,
+        DialogModule,
+        InputTextModule,
+        InputNumberModule,
+        CalendarModule,
+        ReactiveFormsModule,
+    ],
+    providers: [],
 })
 export class PublicHomeComponent implements OnInit, AfterViewInit {
     @ViewChild('hContainer') hContainer: ElementRef;
     @ViewChild('centerElement') centerElement!: ElementRef;
-    constructor(private router: Router) {}
+    showRequestDemoModal: boolean = false;
+    zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
+
+    date: Date | undefined;
+
+    requestDemoForm: FormGroup;
+    captcha: any;
+    constructor(
+        private router: Router,
+        private fb: FormBuilder,
+        private recaptchaV3Service: ReCaptchaV3Service,
+        private recaptchaVerificationService: RecaptchaService,
+        private notificationService: NotificationService
+    ) {
+        this.requestDemoForm = this.fb.group({
+            name: [],
+            phoneNumber: [],
+            numberOfUnits: [],
+            preferredDemoDate: [],
+        });
+    }
 
     ngOnInit() {}
 
@@ -98,5 +147,38 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
 
     login() {
         this.router.navigate(['auth']);
+    }
+
+    requestDemo() {
+        const formValue = this.requestDemoForm.value;
+        const message = `${formValue.name} has requested a demo on ${formValue.preferredDemoDate}. Number of units: ${formValue.numberOfUnits}. Contact: ${formValue.phoneNumber}`;
+
+        this.recaptchaV3Service
+            .execute('RequestingDemoForZhidhay')
+            .subscribe((token) => {
+                console.log('REcAPCHA TOKEN ', token);
+                this.recaptchaVerificationService
+                    .VerifyToken(token)
+                    .subscribe((res) => {
+                        console.log('token verificaiotn results', res);
+                        if (res.success === true) {
+                            alert(message);
+                            this.notificationService
+                                .SendSMS({
+                                    contact: 77385314,
+                                    message: message,
+                                })
+                                .subscribe((message: any) => {
+                                    if (message.status === 'Success') {
+                                        this.showRequestDemoModal = false;
+                                        alert(
+                                            'REquest has been sent. u wil be contacted shrotly'
+                                        );
+                                    }
+                                });
+                        }
+                    });
+            });
+        console.log(this.requestDemoForm.value);
     }
 }

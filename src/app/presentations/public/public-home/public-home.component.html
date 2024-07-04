@@ -3,12 +3,12 @@
     style="height: 100dvh; margin: 0; overflow: hidden"
 >
     <div class="logo">
-        <img src="assets/logo.png" style="height: 10px" />
-        <p>Zhidhay.bt</p>
+        <p>Zhidhay.com</p>
     </div>
     <div #centerElement class="p-4">
         <div class="text-left">
             <p class="font-serif text-6xl text-center">Zhidhay.bt</p>
+
             <p class="text-center font-uchen">
                 ཞི་བདེ་སེམས་ཀྱི་ནོར་བུ་ཨིན། ཞི་བདེའི་རིམ་ལུགས་ལག་ལེན་མཛད།།
             </p>
@@ -34,6 +34,7 @@
                     <p-button
                         label="Request for Demo"
                         size="small"
+                        (click)="showRequestDemoModal = true"
                         severity="secondary"
                     >
                     </p-button>
@@ -96,24 +97,25 @@
             </div>
             <span class="text-700 line-height-3">
                 Secured Rental Payments powered by RMA Payment Gateway. - Keep
-                track of all your payments in one place for easy bookkeeping and
-                tax season.Get notified as soon as your tenant pays, or if their
-                payment is past due.
+                track of all your payments in one place for easy bookkeeping
+                during tax season.Get notified as soon as your tenant pays, or
+                if their payment is past due.
             </span>
         </div>
         <div class="col-12 md:col-4 mb-4 px-5">
-            <span
+            <div
                 class="p-3 shadow-2 mb-3 inline-block surface-card"
                 style="border-radius: 10px"
             >
                 <i class="pi pi-home text-4xl text-blue-500"></i>
-            </span>
-            <div class="text-900 text-xl mb-3 font-medium">
-                Auto TDS,Rental Income Tax Report and Property Tax Reports
             </div>
-            <span class="text-700 line-height-3"
-                >Streamline with TDS deductions, generate rental income report
-                based on the format by DRC and generate property tax reports.
+            <div class="text-900 text-xl mb-3 font-medium">
+                Automation of TDS
+            </div>
+            <span class="text-700 line-height-3">
+                Simplify your Taxation process with automated TDS(tax deduction
+                at source), generate rental income reports in DRC format, and
+                create comprehensive property tax reports.
             </span>
         </div>
         <div class="col-12 md:col-4 mb-4 px-5">
@@ -146,7 +148,7 @@
             <span class="text-700 line-height-3"
                 >Set up automatic late fees and enable autopay for tenants.
                 Receive email reminders for timely payments and notifications
-                for overdue rent.</span
+                for overdue rent. SMS reminder to all your tenants</span
             >
         </div>
     </div>
@@ -280,12 +282,68 @@
             Transform your rental management today! Contact us now to book a
             demo and experience the future of effortless property management.
         </div>
-        <button
-            pButton
-            pRipple
-            severity="secondary"
-            label="Contact us now"
-            class="p-button-raised white-space-nowrap"
-        ></button>
+        <p>Phone : {{ zhidhayContactDetails.phoneNumber }}</p>
+        <p>Email : {{ zhidhayContactDetails.email }}</p>
+        <p>Address : {{ zhidhayContactDetails.address }}</p>
     </div>
 </div>
+
+<p-dialog
+    header="Request Demo"
+    [modal]="true"
+    [(visible)]="showRequestDemoModal"
+    [style]="{ width: '25rem' }"
+>
+    <span class="p-text-secondary block mb-5">Fill in your information.</span>
+
+    <form [formGroup]="requestDemoForm" class="p-fluid">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="username" class="font-semibold w-6rem">Name</label>
+            <input
+                pInputText
+                id="username"
+                class="flex-auto"
+                formControlName="name"
+                autocomplete="off"
+            />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="email" class="font-semibold w-6rem"
+                >Contact Number</label
+            >
+            <input
+                pInputText
+                id="email"
+                formControlName="phoneNumber"
+                class="flex-auto"
+                autocomplete="off"
+            />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="email" class="font-semibold w-6rem"
+                >No of Flats/Units</label
+            >
+            <input
+                pInputText
+                id="email"
+                formControlName="numberOfUnits"
+                class="flex-auto"
+                autocomplete="off"
+            />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label for="email" class="font-semibold w-6rem"
+                >Preferred Date for Demo</label
+            >
+            <p-calendar appendTo="body" formControlName="preferredDemoDate" />
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="Cancel"
+                severity="secondary"
+                (click)="showRequestDemoModal = false"
+            />
+            <p-button label="Request Demo" (click)="requestDemo()" />
+        </div>
+    </form>
+</p-dialog>
