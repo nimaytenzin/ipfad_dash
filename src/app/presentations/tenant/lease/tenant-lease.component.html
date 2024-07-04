@@ -1,2 +1,9 @@
-<app-tenant-lease-active-lease-list></app-tenant-lease-active-lease-list>
-<app-tenant-lease-lease-history></app-tenant-lease-lease-history>
+<div class="flex flex-column gap-4">
+    <app-tenant-lease-active-lease-list
+        [tenantId]="1"
+    ></app-tenant-lease-active-lease-list>
+
+    <app-tenant-lease-lease-history
+        [tenantId]="1"
+    ></app-tenant-lease-lease-history>
+</div>
