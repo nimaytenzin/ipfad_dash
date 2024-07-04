@@ -162,10 +162,9 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
                     .subscribe((res) => {
                         console.log('token verificaiotn results', res);
                         if (res.success === true) {
-                            alert(message);
                             this.notificationService
                                 .SendSMS({
-                                    contact: 77385314,
+                                    contact: 17263764,
                                     message: message,
                                 })
                                 .subscribe((message: any) => {
