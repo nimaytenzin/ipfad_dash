@@ -51,7 +51,7 @@
                     <div class="numpad">
                         <div class="numpad_key" *ngFor="let key of keys">
                             <button
-                                [disabled]="pin.length === 4 && key !== 'DEL'"
+                                [disabled]="pin.length === 4 && key !== 'del'"
                                 (click)="appendToPin(key)"
                             >
                                 {{ key }}

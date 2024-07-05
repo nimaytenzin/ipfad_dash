@@ -38,11 +38,11 @@ export class LoginComponent {
         '9',
         '*',
         '0',
-        'DEL',
+        'del',
     ];
 
     appendToPin(key: string) {
-        if (key === 'DEL') {
+        if (key === 'del') {
             if (this.pin.length > 0) {
                 this.pinPlaceholder.push('_');
             }
