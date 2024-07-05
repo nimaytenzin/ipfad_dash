@@ -7,6 +7,10 @@ import { TenantPendingPaymentComponent } from './components/tenant-pending-payme
 import { BadgeModule } from 'primeng/badge';
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
+import {
+    AuthService,
+    AuthenticatedUser,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-tenant-dashboard',
@@ -23,11 +27,15 @@ import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenan
 })
 export class TenantDashboardComponent implements OnInit {
     tenantDetails: TenantDTO;
-
-    constructor(private tenantDataService: TenantDataService) {
+    authenticatedUser: AuthenticatedUser;
+    constructor(
+        private tenantDataService: TenantDataService,
+        private authService: AuthService
+    ) {
+        this.authenticatedUser = this.authService.GetAuthenticatedUser();
         this.tenantDataService
             .SearchTenant({
-                id: 1,
+                id: this.authenticatedUser.id,
             })
             .subscribe((res) => {
                 this.tenantDetails = res;

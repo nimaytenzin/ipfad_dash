@@ -19,7 +19,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
+import {
+    COMPANY_NAME,
+    ZHIDHAYCONTACTDETAILS,
+} from 'src/app/core/constants/constants';
 import {
     RECAPTCHA_V3_SITE_KEY,
     ReCaptchaV3Service,
@@ -52,7 +55,7 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
     zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
 
     date: Date | undefined;
-
+    companyName: string = COMPANY_NAME;
     requestDemoForm: FormGroup;
     captcha: any;
     constructor(

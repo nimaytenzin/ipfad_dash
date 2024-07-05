@@ -8,6 +8,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
+import {
+    AuthService,
+    AuthenticatedUser,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
@@ -38,11 +42,16 @@ export class TenantProfileComponent implements OnInit {
     dzongkhags: DzongkhagDTO[];
     administrativeZones: AdministrativeZoneDTO[];
     subAdministrativeZones: SubAdministrativeZoneDTO[];
+
+    authenticatedUser: AuthenticatedUser;
+
     constructor(
         private fb: FormBuilder,
         private tenantDataService: TenantDataService,
-        private locationDataService: LocationDataService
+        private locationDataService: LocationDataService,
+        private authService: AuthService
     ) {
+        this.authenticatedUser = this.authService.GetAuthenticatedUser();
         this.locationDataService.GetAllDzonghags().subscribe((res) => {
             this.dzongkhags = res;
         });
@@ -65,7 +74,7 @@ export class TenantProfileComponent implements OnInit {
     fetchTenantDetails() {
         this.tenantDataService
             .SearchTenant({
-                id: 1,
+                id: this.authenticatedUser.id,
             })
             .subscribe((res) => {
                 this.tenantDetails = res;
@@ -88,14 +97,16 @@ export class TenantProfileComponent implements OnInit {
                     .subscribe((zones) => {
                         this.administrativeZones = zones;
                     });
-                this.locationDataService
-                    .GetAllSubAdministrativeZones({
-                        administrativeZoneId:
-                            res.administrativeZoneId.toString(),
-                    })
-                    .subscribe((subzones) => {
-                        this.subAdministrativeZones = subzones;
-                    });
+                if (res.administrativeZone) {
+                    this.locationDataService
+                        .GetAllSubAdministrativeZones({
+                            administrativeZoneId:
+                                res.administrativeZoneId.toString(),
+                        })
+                        .subscribe((subzones) => {
+                            this.subAdministrativeZones = subzones;
+                        });
+                }
             });
     }
 
@@ -109,7 +120,10 @@ export class TenantProfileComponent implements OnInit {
     updateProfileDetails() {
         console.log(this.editProfileForm.value);
         this.tenantDataService
-            .UpdateTenantDetails({ ...this.editProfileForm.value }, 1)
+            .UpdateTenantDetails(
+                { ...this.editProfileForm.value },
+                this.authenticatedUser.id
+            )
             .subscribe((res) => {
                 if (res) {
                     this.fetchTenantDetails();

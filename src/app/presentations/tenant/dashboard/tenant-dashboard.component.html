@@ -22,14 +22,16 @@
     <div class="col-12 xl:col-6">
         <div>
             <app-tenant-pending-payments
-                [tenantId]="7"
+                [tenantId]="authenticatedUser.id"
             ></app-tenant-pending-payments>
         </div>
     </div>
 
     <div class="col-12 xl:col-6">
         <div>
-            <app-tenant-active-lease [tenantId]="1"></app-tenant-active-lease>
+            <app-tenant-active-lease
+                [tenantId]="authenticatedUser.id"
+            ></app-tenant-active-lease>
         </div>
     </div>
 </div>

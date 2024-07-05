@@ -67,34 +67,45 @@ export class LoginComponent {
                 '',
                 [Validators.required, Validators.pattern(/^[0-9]{8}$/)],
             ],
-            password: ['', [Validators.required]],
         });
     }
 
     login() {
         const loginData = {
             phoneNumber: this.loginForm.value.phoneNumber,
-            password: this.loginForm.value.password,
+            password: this.pin.join(''),
         };
-        this.authService
-            .Login({
-                phoneNumber: 17263764,
-                password: 'overlord123',
-            })
-            .subscribe({
-                next: (res: any) => {
-                    console.log(res);
-                    this.authService.SetAuthToken(res.token);
-                    this.router.navigate(['/tenant']);
-                },
-                error: (err) => {
-                    this.messageService.add({
-                        key: 'tst',
-                        severity: 'error',
-                        summary: 'Couldnot Fetch Data',
-                        detail: 'Data not avilable in zhichar',
-                    });
-                },
-            });
+        this.authService.Login(loginData).subscribe({
+            next: (res: any) => {
+                console.log(res);
+                this.authService.SetAuthToken(res.token);
+                console.log(this.authService.GetAuthenticatedUser());
+                this.determineNextRoute(
+                    this.authService.GetAuthenticatedUser().role
+                );
+            },
+            error: (err) => {
+                console.log(err);
+                this.messageService.add({
+                    key: 'tst',
+                    severity: 'error',
+                    summary: 'Couldnot Fetch Data',
+                    detail: 'Data not avilable in zhichar',
+                });
+            },
+        });
+    }
+
+    backToHome() {
+        this.router.navigate(['/']);
+    }
+
+    determineNextRoute(role: string) {
+        if (role === 'SYSADMIN') {
+            this.router.navigate(['/admin']);
+        }
+        if (role === 'TENANT') {
+            this.router.navigate(['/tenant']);
+        }
     }
 }

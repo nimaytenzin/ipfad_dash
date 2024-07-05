@@ -9,6 +9,7 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { ToastModule } from 'primeng/toast';
         PasswordModule,
         ReactiveFormsModule,
         ToastModule,
+        DividerModule,
     ],
     declarations: [LoginComponent],
     providers: [MessageService],

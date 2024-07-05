@@ -33,6 +33,7 @@
     "angularx-qrcode": "^17.0.0",
     "chart.js": "^3.3.2",
     "gsap": "^3.12.5",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "ng-recaptcha": "^13.2.1",
     "pdfmake": "^0.2.9",

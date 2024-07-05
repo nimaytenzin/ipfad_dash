@@ -6,7 +6,15 @@ import { API_URL } from '../../constants/constants';
 import { AUTH_TOKEN_KEY } from '../../constants/api-constants';
 import { AdminCreateTenantDTO } from '../../dto/users/tenant.dto';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
+export interface AuthenticatedUser {
+    phoneNumber: number;
+    role: string;
+    id: number;
+    exp: number;
+    iat: number;
+}
 @Injectable({
     providedIn: 'root',
 })
@@ -25,6 +33,10 @@ export class AuthService {
 
     SetAuthToken(token) {
         sessionStorage.setItem(this.authTokenKey, token);
+    }
+
+    GetAuthenticatedUser(): AuthenticatedUser {
+        return jwtDecode(this.GetToken());
     }
 
     GetToken() {

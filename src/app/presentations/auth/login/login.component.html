@@ -1,19 +1,23 @@
 <div
-    class="surface-card flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
+    class="surface-card flex align-items-center justify-content-center min-w-screen overflow-hidden"
+    style="height: 100dvh"
 >
-    <p-toast />
-
     <div class="flex flex-column align-items-center justify-content-center">
         <div>
             <div class="w-full py-8 px-5 sm:px-8">
-                <div class="text-center mb-5">
-                    <div class="text-900 text-3xl font-medium mb-3">
-                        Welcome
+                <div class="flex flex-column align-items-center gap-2 my-2">
+                    <div>
+                        <img style="height: 50px" src="assets/logo.png" />
                     </div>
+                    <p class="text-4xl">welcome to zhidhay.com</p>
+                    <p class="">Login using your phone number and pin code</p>
                 </div>
+                <p-divider type="dashed"></p-divider>
 
-                <form [formGroup]="loginForm" class="p-fluid">
-                    <label for="email1" class="block text-900 mb-2"
+                <form [formGroup]="loginForm" class="mt-4 p-fluid">
+                    <label
+                        for="email1"
+                        class="block font-semibold text-900 mb-2"
                         >Phone Number</label
                     >
                     <input
@@ -24,7 +28,9 @@
                         autocomplete=""
                         formControlName="phoneNumber"
                     />
-                    <label for="password1" class="block text-900 mt-4 mb-2"
+                    <label
+                        for="password1"
+                        class="block font-semibold text-900 mt-5 mb-2"
                         >Pin</label
                     >
                     <!-- <p-password
@@ -38,7 +44,7 @@
                     ></p-password> -->
 
                     <div
-                        class="flex my-4 text-5xl font-semibold justify-content-center align-items-center gap-3"
+                        class="flex text-5xl font-semibold justify-content-center align-items-center gap-3"
                     >
                         <p *ngFor="let i of pinPlaceholder">
                             {{ i }}
@@ -83,6 +89,12 @@
                             class="w-full"
                             (click)="login()"
                         ></button>
+                    </div>
+
+                    <div class="mt-4">
+                        <p style="cursor: pointer" (click)="backToHome()">
+                            Back to home page
+                        </p>
                     </div>
                 </form>
             </div>
