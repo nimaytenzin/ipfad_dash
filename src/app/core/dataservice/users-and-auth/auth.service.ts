@@ -46,7 +46,11 @@ export class AuthService {
     }
 
     GetAuthenticatedUser(): AuthenticatedUser {
-        return jwtDecode(this.GetToken());
+        if (this.GetToken()) {
+            return jwtDecode(this.GetToken());
+        } else {
+            return null;
+        }
     }
 
     GetToken() {
