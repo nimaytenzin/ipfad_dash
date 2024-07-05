@@ -138,3 +138,26 @@ p-stepper .p-stepper-separator {
         min-height: 50vh;
     }
 }
+
+.numpad {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+
+    &_key {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        button {
+            border: none;
+            width: 100%;
+            height: 50px;
+
+            color: #2196f3;
+            cursor: pointer;
+            padding: 1.2rem;
+            font-size: 1.5rem;
+        }
+    }
+}

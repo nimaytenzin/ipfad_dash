@@ -73,6 +73,7 @@ export class AdminListUnitsComponent implements OnInit {
                     this.leaseAgreementDataService
                         .GetActiveLeaseAgreementByUnit(unit.id)
                         .subscribe((res) => {
+                            console.log(unit, 'ACTIVE LEASE AGREEMNT', res);
                             unit.activeLeaseAgreement = res;
                         });
                 });

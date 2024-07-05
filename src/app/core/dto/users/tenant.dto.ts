@@ -43,7 +43,7 @@ export interface AdminCreateTenantDTO {
     signatureUri?: string | null;
     email?: string | null;
     bankName: string | null;
-    password: string;
+    password?: string;
     accountNumber: number | null;
 
     dzongkhagId: number;

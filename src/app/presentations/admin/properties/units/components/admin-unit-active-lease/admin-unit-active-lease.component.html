@@ -125,7 +125,14 @@
         </div>
 
         <div id="pendingPayments" class="w-4">
-            <p class="font-semibold text-lg">Pending Payment</p>
+            <div class="flex justify-content-between">
+                <p class="font-semibold text-lg">Pending Payment</p>
+                <p-button
+                    label="Generate PA"
+                    severity="secondary"
+                    (click)="openGeneratePAModal()"
+                ></p-button>
+            </div>
             <p-divider type="dashed" />
 
             <p *ngIf="!activeLeaseAgreement?.paymentAdvise?.length">

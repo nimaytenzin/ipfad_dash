@@ -43,3 +43,13 @@ export function GETMONTHNAME(monthNumber) {
 
     return monthNames[monthNumber - 1];
 }
+
+export function ExtractMonthAndYear(dateString: string): {
+    month: number;
+    year: number;
+} {
+    const date = new Date(dateString);
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return { month, year };
+}

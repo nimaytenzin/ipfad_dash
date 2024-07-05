@@ -10,6 +10,7 @@ import { DividerModule } from 'primeng/divider';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 import { TagModule } from 'primeng/tag';
+import { AdminGeneratePaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-payment-advice/admin-generate-payment-advice.component';
 
 @Component({
     selector: 'app-admin-unit-active-lease',
@@ -88,5 +89,14 @@ export class AdminUnitActiveLeaseComponent implements OnInit {
                 this.getActiveLeaseByUnit();
             }
         });
+    }
+    openGeneratePAModal() {
+        this.ref = this.dialogService.open(
+            AdminGeneratePaymentAdviceComponent,
+            {
+                header: 'Generate Payment advice',
+                data: { ...this.activeLeaseAgreement },
+            }
+        );
     }
 }

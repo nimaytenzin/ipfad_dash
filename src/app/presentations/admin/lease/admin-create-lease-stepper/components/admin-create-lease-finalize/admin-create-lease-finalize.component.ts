@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { CreateLeaseService } from 'src/app/core/dataservice/lease/create-lease.dataservice';
@@ -22,11 +24,14 @@ export class AdminCreateLeaseFinalizeComponent implements OnInit {
     calculateMonthsDifference = GETMONTHDIFF;
     constructor(
         private createLeaseService: CreateLeaseService,
-        private leaseAgreementDataService: LeaseAgreementDataService
+        private leaseAgreementDataService: LeaseAgreementDataService,
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit() {
         this.leaseInformation = this.createLeaseService.getLeaseInformation();
+        this.checkNavigation(this.leaseInformation);
     }
     checkNavigation(leaseInfo: GroupedLeaseAgreementDTO) {
         if (!leaseInfo.parties) {
@@ -83,11 +88,20 @@ export class AdminCreateLeaseFinalizeComponent implements OnInit {
         this.leaseAgreementDataService.CreateLeaseAgreement(data).subscribe({
             next: (res) => {
                 if (res) {
-                    console.log(res);
+                    this.router.navigate(['admin/master-lease']);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Lease agreement created',
+                    });
                 }
             },
             error: (err) => {
-                console.log(err);
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error.message,
+                });
             },
         });
     }

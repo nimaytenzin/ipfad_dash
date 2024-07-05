@@ -31,12 +31,32 @@
                 <p>Lease Duration: {{ item.leaseDurationMonths }}</p>
             </td>
             <td>
-                <p>Tenant: {{ item.tenantId }}</p>
-                <p>Landlord: {{ item.landlordId }}</p>
+                <div class="p-1 border-1 border-dashed">
+                    Tenant:
+                    <p>
+                        Name: {{ item.tenant?.firstName }}
+                        {{ item.tenant?.middleName }}
+                        {{ item.tenant?.lastName }}
+                    </p>
+                    <p>Phone Number: {{ item.tenant?.phoneNumber }}</p>
+                </div>
+                <div class="p-1 border-1 border-dashed">
+                    Owner
+                    <p>
+                        Name: {{ item.landlord?.firstName }}
+                        {{ item.landlord?.middleName }}
+                        {{ item.landlord?.lastName }}
+                    </p>
+                    <p>Phone Nummber: {{ item.landlord?.phoneNumber }}</p>
+                </div>
             </td>
             <td>
                 <p>Building: {{ item.buildingId }}</p>
-                <p>Unit: {{ item.unitId }}</p>
+                <p>
+                    Unit: {{ item.unit?.floorLevel }}-{{
+                        item.unit?.unitNumber
+                    }}
+                </p>
                 <p>Sanctioned Use: {{ item.use }}</p>
             </td>
             <td>

@@ -24,6 +24,38 @@ export class LoginComponent {
 
     password!: string;
 
+    pin: string[] = [];
+    pinPlaceholder: string[] = ['_', '_', '_', '_'];
+    keys: string[] = [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '*',
+        '0',
+        'DEL',
+    ];
+
+    appendToPin(key: string) {
+        if (key === 'DEL') {
+            if (this.pin.length > 0) {
+                this.pinPlaceholder.push('_');
+            }
+            this.pin.pop();
+        } else {
+            if (this.pin.length < 4) {
+                this.pinPlaceholder.pop();
+
+                this.pin.push(key);
+            }
+        }
+    }
+
     constructor(
         private authService: AuthService,
         private router: Router,
