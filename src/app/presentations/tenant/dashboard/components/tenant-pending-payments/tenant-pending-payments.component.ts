@@ -30,10 +30,11 @@ export class TenantPendingPaymentComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.findAllPendingByUnit();
+        this.findAllPendingPayments();
     }
 
-    findAllPendingByUnit() {
+    findAllPendingPayments() {
+        this.totalAmountDue = 0;
         this.paymentAdviceDataService
             .GetPendingPaymentsByTenant(this.tenantId)
             .subscribe({
@@ -58,7 +59,7 @@ export class TenantPendingPaymentComponent implements OnInit {
 
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 200) {
-                alert('PADI');
+                this.findAllPendingPayments();
             }
         });
     }

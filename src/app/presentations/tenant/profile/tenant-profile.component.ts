@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
@@ -17,6 +18,7 @@ import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
+import { TenantUpdatePincodeComponent } from '../shared/tenant-update-pincode/tenant-update-pincode.component';
 
 @Component({
     selector: 'app-tenant-profile',
@@ -33,9 +35,11 @@ import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
         DropdownModule,
         ReactiveFormsModule,
     ],
+    providers: [DialogService],
 })
 export class TenantProfileComponent implements OnInit {
     showEditProfileDialog: boolean = false;
+    ref: DynamicDialogRef;
     editProfileForm: FormGroup;
 
     tenantDetails: TenantDTO;
@@ -47,6 +51,7 @@ export class TenantProfileComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private dialogService: DialogService,
         private tenantDataService: TenantDataService,
         private locationDataService: LocationDataService,
         private authService: AuthService
@@ -131,5 +136,11 @@ export class TenantProfileComponent implements OnInit {
                 }
             });
         // Implement your save logic here
+    }
+
+    updatePin() {
+        this.ref = this.dialogService.open(TenantUpdatePincodeComponent, {
+            header: 'update pin',
+        });
     }
 }

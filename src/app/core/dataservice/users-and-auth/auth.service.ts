@@ -14,6 +14,16 @@ export interface AuthenticatedUser {
     id: number;
     exp: number;
     iat: number;
+    isVerified: number;
+    userAuthId: number;
+}
+export interface UpdatePinDto {
+    userAuthId: number;
+    pin: string;
+}
+
+export interface ResetPinDto {
+    userAuthId: number;
 }
 @Injectable({
     providedIn: 'root',
@@ -45,5 +55,12 @@ export class AuthService {
 
     AdminCreateTenant(data: AdminCreateTenantDTO) {
         return this.http.post(`${this.apiUrl}/auth/signup`, data);
+    }
+
+    UpdatePINCode(data: UpdatePinDto) {
+        return this.http.post(`${this.apiUrl}/auth/update-pin`, data);
+    }
+    ResetPinCode(data: ResetPinDto) {
+        return this.http.post(`${this.apiUrl}/auth/reset-pin`, data);
     }
 }

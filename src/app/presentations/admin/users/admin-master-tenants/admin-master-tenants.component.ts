@@ -12,6 +12,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { LEASESTATUS } from 'src/app/core/constants/enums';
 import { TagModule } from 'primeng/tag';
 import { GETMONTHYEARSTRING } from 'src/app/core/utility/date.helper';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-admin-master-tenants',
@@ -43,7 +44,8 @@ export class AdminMasterTenantsComponent implements OnInit {
     constructor(
         public dialogService: DialogService,
         private router: Router,
-        private tenantDataService: TenantDataService
+        private tenantDataService: TenantDataService,
+        private authService: AuthService
     ) {}
     ngOnInit(): void {
         this.getTenants();
@@ -92,5 +94,17 @@ export class AdminMasterTenantsComponent implements OnInit {
             default:
                 return 'danger';
         }
+    }
+
+    resetPin(tenant: TenantDTO) {
+        this.authService
+            .ResetPinCode({
+                userAuthId: tenant.userAuthId,
+            })
+            .subscribe({
+                next: (res) => {
+                    console.log(res);
+                },
+            });
     }
 }

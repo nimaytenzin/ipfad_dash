@@ -63,21 +63,29 @@
                     </svg>
                     {{ tenant.email }}
                 </p>
+
+                <p-divider></p-divider>
+                <p-button
+                    label="Reset PIN"
+                    severity="secondary"
+                    (click)="resetPin(tenant)"
+                >
+                </p-button>
             </td>
 
             <td>
                 Permanent Address
                 <p>
-                    {{ tenant.subadministrativeZone.name }}
-                    / {{ tenant.subadministrativeZone.nameDzo }}
+                    {{ tenant.subadministrativeZone?.name }}
+                    / {{ tenant.subadministrativeZone?.nameDzo }}
                 </p>
                 <p>
-                    {{ tenant.administrativeZone.name }} /
-                    {{ tenant.subadministrativeZone.nameDzo }}
+                    {{ tenant.administrativeZone?.name }} /
+                    {{ tenant.subadministrativeZone?.nameDzo }}
                 </p>
                 <p>
-                    {{ tenant.dzongkhag.name }} Dzongkhag /
-                    {{ tenant.dzongkhag.nameDzo }}
+                    {{ tenant.dzongkhag?.name }} Dzongkhag /
+                    {{ tenant.dzongkhag?.nameDzo }}
                 </p>
             </td>
 

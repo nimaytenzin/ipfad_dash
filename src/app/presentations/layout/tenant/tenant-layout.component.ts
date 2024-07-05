@@ -12,6 +12,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AdminSidebarComponent } from '../admin/admin-sidebar/admin-sidebar.component';
 import { AdminTopbarComponent } from '../admin/admin-topbar/admin-topbar.component';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-tenant-layout',
@@ -32,7 +33,8 @@ export class TenantLayoutComponent implements OnDestroy {
     constructor(
         public layoutService: TenantLayoutService,
         public renderer: Renderer2,
-        public router: Router
+        public router: Router,
+        private authService: AuthService
     ) {
         this.overlayMenuOpenSubscription =
             this.layoutService.overlayOpen$.subscribe(() => {

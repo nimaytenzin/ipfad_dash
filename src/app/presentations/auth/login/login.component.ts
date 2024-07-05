@@ -68,6 +68,13 @@ export class LoginComponent {
                 [Validators.required, Validators.pattern(/^[0-9]{8}$/)],
             ],
         });
+
+        let user = this.authService.GetAuthenticatedUser();
+        if (user) {
+            this.loginForm.patchValue({
+                phoneNumber: user.phoneNumber,
+            });
+        }
     }
 
     login() {

@@ -37,6 +37,13 @@ export class PaymentAdviceDataService {
             `${this.apiUrl}/payment-advice/pending/unit/${unitId}`
         );
     }
+
+    FindOne(adviceId: number): Observable<PaymentAdviceDto> {
+        return this.http.get<PaymentAdviceDto>(
+            `${this.apiUrl}/payment-advice/${adviceId}`
+        );
+    }
+
     GetPendingPaymentsByTenant(
         tenantId: number
     ): Observable<PaymentAdviceDto[]> {

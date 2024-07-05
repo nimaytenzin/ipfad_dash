@@ -165,7 +165,7 @@ export class AdminPgPaymentStepperComponent implements OnInit {
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Payment Successful',
-                            detail: 'Payment is successful. redirecting to receipt',
+                            detail: 'Payment is successful',
                         });
                         this.ref.close({ status: 200 });
                     }
