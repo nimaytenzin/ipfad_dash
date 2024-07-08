@@ -22,6 +22,7 @@ import { DividerModule } from 'primeng/divider';
         PasswordModule,
         ReactiveFormsModule,
         ToastModule,
+        ToastModule,
         DividerModule,
     ],
     declarations: [LoginComponent],

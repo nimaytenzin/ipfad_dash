@@ -84,28 +84,7 @@
             ></p-dropdown>
         </div>
 
-        <p class="col-12">Bank Details</p>
-
-        <div class="field col-12 md:col-6">
-            <label for="bankName">Bank Name</label>
-            <p-dropdown
-                id="bankName"
-                [options]="bankNames"
-                formControlName="bankName"
-            ></p-dropdown>
-        </div>
-
-        <div class="field col-12 md:col-6">
-            <label for="accountNumber">Account Number* </label>
-            <input
-                pInputText
-                id="accountNumber"
-                type="text"
-                formControlName="accountNumber"
-            />
-        </div>
-
-        <div class="field col-12 md:col-6">
+        <!-- <div class="field col-12 md:col-6">
             <label for="profileUpload">Profile Picture </label>
             <p-fileUpload
                 id="profileUpload"
@@ -131,7 +110,7 @@
                 maxFileSize="1000000"
                 (onUpload)="onUpload($event)"
             ></p-fileUpload>
-        </div>
+        </div> -->
     </div>
     <p-messages
         [(value)]="messages"

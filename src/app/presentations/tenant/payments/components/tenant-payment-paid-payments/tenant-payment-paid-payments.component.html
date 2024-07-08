@@ -819,4 +819,35 @@
         <p>If you are not seeing your past Payment history please</p>
         <p>Contact Zhidhay Support Team</p>
     </div>
+
+    <div
+        *ngFor="let advice of paidPayments"
+        class="border-1 my-3 p-4 border-dashed surface-border border-round surface-ground"
+    >
+        <div>
+            <p class="text-xl md:text-4xl font-bold">
+                Total amount: Nu.{{ advice.totalAmount }}
+            </p>
+            <p class="text-xl md:text-4xl font-bold">
+                Amount Due: Nu.{{ advice.amountDue }}
+            </p>
+            <p>
+                {{ advice.title }}
+            </p>
+        </div>
+        <div class="mt-2">
+            <p *ngFor="let item of advice.paymentAdviseItem">
+                - {{ item.particular }} : Nu. {{ item.amount }}
+            </p>
+        </div>
+        <p-divider></p-divider>
+        <div class="flex justify-content-end gap-4">
+            <p-button
+                [outlined]="true"
+                severity="secondary"
+                label="Receipt"
+                (click)="viewReceipt()"
+            ></p-button>
+        </div>
+    </div>
 </div>

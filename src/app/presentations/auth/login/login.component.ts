@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
     selector: 'app-login',
@@ -92,12 +93,10 @@ export class LoginComponent {
                 );
             },
             error: (err) => {
-                console.log(err);
                 this.messageService.add({
-                    key: 'tst',
                     severity: 'error',
-                    summary: 'Couldnot Fetch Data',
-                    detail: 'Data not avilable in zhichar',
+                    summary: 'Error',
+                    detail: err.error.message,
                 });
             },
         });

@@ -7,11 +7,13 @@ interface IZhidhayContactDetails {
     phoneNumber: number;
     email: string;
     address: string;
+    webAppName: string;
 }
 
 export const ZHIDHAYCONTACTDETAILS: IZhidhayContactDetails = {
     name: '',
+    webAppName: 'Zhidhay.com',
     phoneNumber: 17263764,
-    email: 'nimaytenzin@gmail.com',
-    address: 'Babesa Truck Parking, Babesa, Thim Throm',
+    email: 'info@zhidhay.com',
+    address: 'Babesa, Thim Throm',
 };

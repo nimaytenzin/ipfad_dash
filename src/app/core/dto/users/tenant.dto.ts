@@ -42,9 +42,9 @@ export interface AdminCreateTenantDTO {
     profileUri?: string | null;
     signatureUri?: string | null;
     email?: string | null;
-    bankName: string | null;
+    bankName?: string | null;
     password?: string;
-    accountNumber: number | null;
+    accountNumber?: number | null;
 
     dzongkhagId: number;
     administrativeZoneId: number;

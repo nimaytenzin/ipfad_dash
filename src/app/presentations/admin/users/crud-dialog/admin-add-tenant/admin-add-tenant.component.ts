@@ -115,17 +115,14 @@ export class AdminAddTenantComponent implements OnInit {
             ),
             email: this.createTenantForm.controls['email'].value,
             cid: this.createTenantForm.controls['cid'].value,
-            bankName: this.createTenantForm.controls['bankName'].value,
-            password: 'new',
-            accountNumber: Number(
-                this.createTenantForm.controls['accountNumber'].value
-            ),
             dzongkhagId: this.createTenantForm.controls['dzongkhagId'].value,
             administrativeZoneId:
                 this.createTenantForm.controls['administrativeZoneId'].value,
             subadministrativeZoneId:
                 this.createTenantForm.controls['subadministrativeZoneId'].value,
         };
+
+        console.log('CREating tenant', tenantCreateData);
 
         this.authService.AdminCreateTenant(tenantCreateData).subscribe({
             next: (res: any) => {

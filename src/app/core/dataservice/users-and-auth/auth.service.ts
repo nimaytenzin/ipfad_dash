@@ -58,7 +58,7 @@ export class AuthService {
     }
 
     AdminCreateTenant(data: AdminCreateTenantDTO) {
-        return this.http.post(`${this.apiUrl}/auth/signup`, data);
+        return this.http.post(`${this.apiUrl}/auth/admin-tenant-signup`, data);
     }
 
     UpdatePINCode(data: UpdatePinDto) {
