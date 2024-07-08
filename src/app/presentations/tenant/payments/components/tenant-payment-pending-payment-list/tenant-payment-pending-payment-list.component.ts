@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
+import { DividerModule } from 'primeng/divider';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
@@ -14,7 +15,7 @@ import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/paym
     styleUrls: ['./tenant-payment-pending-payment-list.component.scss'],
     standalone: true,
     providers: [DialogService, ConfirmationService],
-    imports: [CommonModule, ButtonModule],
+    imports: [CommonModule, ButtonModule, DividerModule],
 })
 export class TenantPaymentPendingPaymentListComponent implements OnInit {
     @Input({ required: true }) tenantId: number;
