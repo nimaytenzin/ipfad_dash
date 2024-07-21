@@ -99,10 +99,11 @@ export class TenantDashboardComponent implements OnInit {
                 next: (res) => {
                     this.notifications = res;
                     for (const item of this.notifications) {
-                        console.log('CHECKING', item);
                         if (!item.isRead) {
                             this.unReadNotificationExists = true;
                             this.unReadNotifications.push(item);
+                        } else {
+                            this.unReadNotificationExists = false;
                         }
                     }
                 },

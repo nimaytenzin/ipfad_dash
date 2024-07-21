@@ -45,6 +45,7 @@
     <p-button
         label="Pay Now"
         size="small"
+        *ngIf="paymentAdvice.status !== 'PAID'"
         (click)="openPaymentGatewayPaymentModal(paymentAdvice)"
     ></p-button>
 </div>

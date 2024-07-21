@@ -60,6 +60,20 @@ export class TenantPendingPaymentComponent implements OnInit {
 
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 200) {
+                this.paymentAdviceDataService
+                    .FindOne(paymentAdvice.id)
+                    .subscribe((res) => {
+                        this.ref = this.dialogService.open(
+                            ViewPaymentAdviceComponent,
+                            {
+                                header: 'Payment Receipt',
+                                data: {
+                                    ...res,
+                                },
+                            }
+                        );
+                    });
+
                 this.findAllPendingPayments();
             }
         });
