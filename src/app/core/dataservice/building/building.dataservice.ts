@@ -39,6 +39,11 @@ export class BuildingDataService {
             `${this.apiUrl}/building/latest/buildings`
         );
     }
+    GetBuildingsPaginatedByOwner(ownerId: number): Observable<BuildingDTO[]> {
+        return this.http.get<BuildingDTO[]>(
+            `${this.apiUrl}/building/owner/${ownerId}`
+        );
+    }
 
     GetOneById(buildingId: number): Observable<BuildingDTO> {
         return this.http.get<BuildingDTO>(
@@ -48,7 +53,7 @@ export class BuildingDataService {
 
     GetBuildingsByLandlord(landlordId: number): Observable<BuildingDTO[]> {
         return this.http.get<BuildingDTO[]>(
-            `${this.apiUrl}/building/landlord/${landlordId}`
+            `${this.apiUrl}/building/owner/${landlordId}`
         );
     }
 }

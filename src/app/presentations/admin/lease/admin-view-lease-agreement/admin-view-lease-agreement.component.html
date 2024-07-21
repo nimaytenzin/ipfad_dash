@@ -1,8 +1,4 @@
-<div
-    class="lg:text-2xl p-2 m-6 lg:p-6 w-full"
-    style="text-align: justify; line-height: 1.5"
-    *ngIf="leaseAgreement"
->
+<div *ngIf="leaseAgreement">
     <p class="text-center text-xl lg:text-3xl font-semibold">Lease Agreement</p>
     <p-divider type="dashed"></p-divider>
     <p class="text-center mb-2">
@@ -75,17 +71,18 @@
 
     <hr />
 
+    <p>
+        That the owner/lessor thus hereby grants and confers
+        <strong
+            >{{ leaseAgreement.unit?.floorLevel }}-{{
+                leaseAgreement.unit?.unitNumber
+            }} </strong
+        >, unit ID: <strong>{{ leaseAgreement.unitId }}</strong
+        >, of the afroementioned building in favour of the aforesaid tenant on
+        rent and on such terms and condition stated below.
+    </p>
+
     <ol>
-        <li>
-            That the owner/lessor thus hereby grants and confers
-            <strong
-                >{{ leaseAgreement.unit?.floorLevel }}-{{
-                    leaseAgreement.unit?.unitNumber
-                }} </strong
-            >, id <strong>{{ leaseAgreement.unitId }}</strong
-            >, of the afroementioned building in favour of the aforesaid tenant
-            on rent and on such terms and condition stated below.
-        </li>
         <li>
             That the period of tenancy/lease for the rental unit shall be for a
             period of
@@ -105,10 +102,10 @@
         </li>
         <li>
             That the rent as payable every month shall be tendered by the tenant
-            to the owner on or before
-            <strong>{{ leaseAgreement.paymentDueDay }}</strong
-            >, failing which the owner shall charge and the tenant shall pay an
-            interest at 24% per annum on the amount of rent payable for every
+            to the owner on or before day
+            <strong>{{ leaseAgreement.paymentDueDay }}</strong> of the following
+            month, failing which the owner shall charge and the tenant shall pay
+            an interest at 24% per annum on the amount of rent payable for every
             day of default.
         </li>
         <li>
@@ -286,135 +283,69 @@
         IN WITNESS WHEREOF the parties have signed here under at
         <strong> Thimphu </strong> on Day
         <strong>{{ leaseAgreement.agreementDay }}</strong> of
-        <strong> {{ leaseAgreement.agreementMonth }} </strong> of the year
-        <strong>{{ leaseAgreement.agreementYear }}</strong
+        <strong> {{ getMonthName(leaseAgreement.agreementMonth) }} </strong> of
+        the year <strong>{{ leaseAgreement.agreementYear }}</strong
         >.
     </p>
 
-    <!-- <table class="w-full text-xl mt-2" style="margin-top: 1000px">
+    <table class="w-full mt-6">
         <tr>
             <td>
-                <div class="text-2xl">
-                    <div style="height: 200px; position: relative">
-                        <img
-                            src="assets/sign/sign4.png"
-                            style="
-                                height: 150px;
-                                position: absolute;
-                                bottom: 0;
-                                left: 50;
-                                z-index: 2;
-                            "
-                        />
-                        <img
-                            src="assets/legalstamp.png"
-                            style="
-                                height: 200px;
-                                position: absolute;
-                                z-index: 1;
-                                opacity: 0.8;
-                            "
-                        />
-                    </div>
+                <div>
+                    <img src="assets/sign/sign1.png" style="height: 70px" />
+                    <p>Owner</p>
                     <p>
-                        Owner <br />
+                        Name:
+                        <strong>
+                            {{ leaseAgreement.landlord.firstName }}
+                            {{ leaseAgreement.landlord.middleName }}
+                            {{ leaseAgreement.landlord.lastName }}
+                        </strong>
+                    </p>
+                    <p>
                         cid: <strong>{{ leaseAgreement.landlord.cid }}</strong>
-                        <br />
+                    </p>
+                    <p>
+                        Phone Number:
+                        <strong>{{
+                            leaseAgreement.landlord.phoneNumber
+                        }}</strong>
                     </p>
                 </div>
             </td>
             <td>
-                <div class="text-2xl">
-                    <div style="height: 200px; position: relative">
-                        <img
-                            src="assets/sign/sign2.png"
-                            style="
-                                height: 150px;
-                                position: absolute;
-                                bottom: 0;
-                                left: 50;
-                                z-index: 2;
-                            "
-                        />
-                        <img
-                            src="assets/legalstamp.png"
-                            style="
-                                height: 200px;
-                                position: absolute;
-                                z-index: 1;
-                                opacity: 0.8;
-                            "
-                        />
-                    </div>
-
-                    <p>Tenant <br /></p>
+                <div>
+                    <img [src]="tenantSignatureUri" style="height: 70px" />
+                    <p>Tenant</p>
+                    <p>
+                        Name:
+                        <strong>
+                            {{ leaseAgreement.tenant.firstName }}
+                            {{ leaseAgreement.tenant.middleName }}
+                            {{ leaseAgreement.tenant.lastName }}
+                        </strong>
+                    </p>
+                    <p>
+                        cid: <strong>{{ leaseAgreement.tenant.cid }}</strong>
+                    </p>
+                    <p>
+                        Phone Number:
+                        <strong>{{ leaseAgreement.tenant.phoneNumber }}</strong>
+                    </p>
                 </div>
             </td>
         </tr>
         <tr>
             <td>
-                <div class="text-2xl mt-4">
-                    <div style="height: 200px; position: relative">
-                        <img
-                            src="assets/sign/sign3.png"
-                            style="
-                                height: 150px;
-                                position: absolute;
-                                bottom: 0;
-                                left: 50;
-                                z-index: 2;
-                            "
-                        />
-                        <img
-                            src="assets/legalstamp.png"
-                            style="
-                                height: 200px;
-                                position: absolute;
-                                z-index: 1;
-                                opacity: 0.8;
-                            "
-                        />
-                    </div>
-
-                    <p>
-                        Witness <br />
-                        Name: <strong> Zhidhay Bt </strong> <br />
-                        <strong> CEO, Zhidey.bt </strong> <br />
-                    </p>
-                </div>
-            </td>
-            <td>
-                <div class="text-2xl mt-4">
-                    <div style="height: 200px; position: relative">
-                        <img
-                            src="assets/sign/sign1.png"
-                            style="
-                                height: 150px;
-                                position: absolute;
-                                bottom: 0;
-                                left: 50;
-                                z-index: 2;
-                            "
-                        />
-                        <img
-                            src="assets/legalstamp.png"
-                            style="
-                                height: 200px;
-                                position: absolute;
-                                z-index: 1;
-                                opacity: 0.8;
-                            "
-                        />
-                    </div>
-
-                    <p>
-                        Witness <br />
-                        Name: <strong>Nima Yoezer Tenzin</strong> <br />
-                    </p>
+                <div>
+                    <img src="assets/sign/sign4.png" style="height: 70px" />
+                    <p>Witness</p>
+                    <p>Name: <strong>Namgay Dorji </strong></p>
+                    <p>CEO, SegmentX Private Limited</p>
                 </div>
             </td>
         </tr>
-    </table> -->
+    </table>
 
     <p class="mt-4 text-center font-semibold">
         Lease agreement generated as per the Tenancy ACT of Bhutan 2015

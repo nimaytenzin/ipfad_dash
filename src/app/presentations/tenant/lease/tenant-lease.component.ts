@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { TenantActiveLeasecomponent } from '../dashboard/components/tenant-active-lease/tenant-active-lease.component';
 import { TenantLeaseActiveLeaseListComponent } from './components/tenant-lease-active-lease-list/tenant-lease-active-lease-list.component';
 import { TenantLeaseLeaseHistoryComponent } from './components/tenant-lease-lease-history/tenant-lease-lease-history.component';
+import {
+    AuthenticatedUser,
+    AuthService,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-tenant-lease',
@@ -14,7 +18,10 @@ import { TenantLeaseLeaseHistoryComponent } from './components/tenant-lease-leas
     ],
 })
 export class TenantLeaseComponent implements OnInit {
-    constructor() {}
+    currentUser: AuthenticatedUser;
+    constructor(private authService: AuthService) {
+        this.currentUser = this.authService.GetAuthenticatedUser();
+    }
 
     ngOnInit() {}
 }

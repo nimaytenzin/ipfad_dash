@@ -1,6 +1,7 @@
 export enum USERROLESENUM {
     'LANDLORD' = 'LANDLORD',
     'TENANT' = 'TENANT',
+    'ADMIN' = 'ADMIN',
 }
 
 export enum ADMINROLES {
@@ -117,4 +118,10 @@ export enum INVOICETRANSACTIONMODES {
 export enum BUILDINGOWNERSHIPTYPES {
     'SOLE' = 'SOLE',
     'JOINT' = 'JOINT',
+}
+
+export enum ENTRYDAMAGEACTIONSTATUS {
+    REPORTED = 'REPORTED',
+    RESOLVED = 'RESOLVED',
+    REJECTED = 'REJECTED',
 }

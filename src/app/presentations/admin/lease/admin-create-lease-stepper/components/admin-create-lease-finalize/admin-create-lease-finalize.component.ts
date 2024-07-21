@@ -9,7 +9,7 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import {
     CreateLeaseAgreementDTO,
     GroupedLeaseAgreementDTO,
-} from 'src/app/core/dto/lease/lease-agreement.dto';
+} from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { GETMONTHDIFF } from 'src/app/core/utility/date.helper';
 
 @Component({
@@ -51,6 +51,7 @@ export class AdminCreateLeaseFinalizeComponent implements OnInit {
     createLeaseAgreement() {
         const data: CreateLeaseAgreementDTO = {
             leaseStatus: 'ACTIVE',
+            entryDamageReportSubmitted: false,
             tenantId: this.leaseInformation.parties.tenantId,
             landlordId: this.leaseInformation.parties.landlordId,
             witnessId: 1,

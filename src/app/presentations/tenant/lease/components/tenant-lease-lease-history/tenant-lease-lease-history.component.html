@@ -1,113 +1,138 @@
-<div class="card">
-    <p>Lease History</p>
-    <p-divider></p-divider>
-    <div id="leaseActivesummary" *ngIf="leaseHistory">
-        <div class="mb-4">
-            <p class="text-xl font-semibold">Leased Units</p>
-            <p class="text-sm">
-                {{ activeLeaseAgreements.length }}
-
-                (unit{{ activeLeaseAgreements.length > 1 ? "s" : "" }}
-                rented)
-            </p>
-        </div>
-
-        <div *ngIf="activeLeaseAgreements.length">
+<div>
+    <div *ngIf="leaseHistory.length">
+        <div
+            class="flex flex-column my-3 justify-content-between p-4 border-dashed surface-border border-round surface-ground"
+            *ngFor="let item of leaseHistory; index as i"
+        >
             <div
-                class="flex flex-column my-3 justify-content-between p-4 border-dashed surface-border border-round surface-ground"
-                *ngFor="let item of activeLeaseAgreements; index as i"
+                *ngIf="!item.entryDamageReportSubmitted"
+                class="flex flex-column justify-content-center py-4 px-2 gap-2 text-sm align-items-center"
             >
-                <div class="w-12">
-                    <div
-                        class="flex gap-2 justify-content-between align-items-end mb-1"
-                    >
-                        <div>
-                            <p class="text-xl mb-2 font-bold">
-                                {{ item.unit?.floorLevel }}-{{
-                                    item.unit?.unitNumber
-                                }}
-                            </p>
+                <p class="text-flash">! Entry Damage Report Not Submitted</p>
+                <p-button
+                    size="small"
+                    icon="pi pi-plus"
+                    label="Entry Damage Report"
+                    (click)="openSubmitDamageReportModal(item)"
+                ></p-button>
+                <p>
+                    Please submit the report within one week of lease signing.
+                    After one week the system will mark as no damage reported
+                    upon entry.
+                </p>
+            </div>
 
-                            <p>{{ item.building?.name }}</p>
-                            <p class="mb-4 p-0">
-                                {{ item.building?.buildingNumber }}
-                                {{ item.building?.streetName }}
-                                {{ item.building?.adminsitrativeZone?.name }}
-                                {{ item.building?.subadministrativeZone?.name }}
-
-                                {{ item.building.landmark }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3 text-sm" style="flex-wrap: wrap">
-                        <div class="flex align-items-end">
-                            <img
-                                src="assets/icons/bed.svg"
-                                style="height: 1.5rem"
-                            />
-                            <p>{{ item.unit?.bedroomCount }} Beds</p>
-                        </div>
-                        <div class="flex align-items-end">
-                            <img
-                                src="assets/icons/toilet.svg"
-                                style="height: 1.5rem"
-                            />
-                            <p>{{ item.unit?.toiletCount }} Baths</p>
-                        </div>
-                        <div class="flex align-items-end">
-                            <img
-                                src="assets/icons/balcony.svg"
-                                style="height: 1.5rem"
-                                alt="Icon"
-                            />
-                            <p>{{ item.unit?.balconyCount }} Balconies</p>
-                        </div>
-
-                        <div
-                            class="flex align-items-end"
-                            *ngIf="item.unit.floorArea"
-                        >
-                            <img
-                                src="assets/icons/floorArea.svg"
-                                style="height: 1.5rem"
-                            />
-                            <p>{{ item.unit?.floorArea }} SqM</p>
-                        </div>
-                    </div>
-
-                    <p-divider type="dashed" />
-                    <div class="flex justify-content-between">
-                        <p>
-                            Purpose:
-                            <strong>{{ item.use }}</strong>
+            <div class="w-12">
+                <div
+                    class="flex gap-2 justify-content-between align-items-end mb-1"
+                >
+                    <div>
+                        <p class="text-xl mb-2 font-bold">
+                            {{ item.unit?.floorLevel }}-{{
+                                item.unit?.unitNumber
+                            }}
                         </p>
-                        <p>
-                            End Date:
-                            <strong>{{ item.leaseEndDate }}</strong>
+
+                        <p>{{ item.building?.name }}</p>
+                        <p class="mb-4 p-0">
+                            {{ item.building?.buildingNumber }}
+                            {{ item.building?.streetName }}
+                            {{ item.building?.adminsitrativeZone?.name }}
+                            {{ item.building?.subadministrativeZone?.name }}
+
+                            {{ item.building.landmark }}
                         </p>
                     </div>
-                    <p-divider type="dashed" />
                 </div>
-                <div id="leaseSummary" class="w-12">
-                    <div
-                        class="flex justify-content-between align-items-center"
-                    >
-                        <p class="tex">
-                            Total Monthly Payable:
-                            <span class="font-semibold"
-                                >Nu. {{ computeMonthlyPayable(item) }}
-                            </span>
-                        </p>
-                        <div class="">
-                            <p-button
-                                [text]="true"
-                                (click)="openLeaseDetailedView(item)"
-                            >
-                                Lease Agreement
-                            </p-button>
-                        </div>
+
+                <div class="flex gap-3 text-sm" style="flex-wrap: wrap">
+                    <div class="flex align-items-end">
+                        <img
+                            src="assets/icons/bed.svg"
+                            style="height: 1.5rem"
+                        />
+                        <p>{{ item.unit?.bedroomCount }} Beds</p>
                     </div>
+                    <div class="flex align-items-end">
+                        <img
+                            src="assets/icons/toilet.svg"
+                            style="height: 1.5rem"
+                        />
+                        <p>{{ item.unit?.toiletCount }} Baths</p>
+                    </div>
+                    <div class="flex align-items-end">
+                        <img
+                            src="assets/icons/balcony.svg"
+                            style="height: 1.5rem"
+                            alt="Icon"
+                        />
+                        <p>{{ item.unit?.balconyCount }} Balconies</p>
+                    </div>
+
+                    <div
+                        class="flex align-items-end"
+                        *ngIf="item.unit.floorArea"
+                    >
+                        <img
+                            src="assets/icons/floorArea.svg"
+                            style="height: 1.5rem"
+                        />
+                        <p>{{ item.unit?.floorArea }} SqM</p>
+                    </div>
+                </div>
+
+                <p-divider type="dashed" />
+                <div class="flex justify-content-between">
+                    <p>
+                        Purpose:
+                        <strong>{{ item.use }}</strong>
+                    </p>
+                    <p>
+                        End Date:
+                        <strong>{{ item.leaseEndDate }}</strong>
+                    </p>
+                </div>
+            </div>
+            <div id="leaseSummary" class="w-12">
+                <div class="flex justify-content-end align-items-center">
+                    <p class="tex">
+                        Total Monthly Payable:
+                        <span class="font-semibold"
+                            >Nu. {{ computeMonthlyPayable(item) }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <p-divider type="dashed" />
+
+            <div class="flex gap-1" style="flex-wrap: wrap">
+                <p-button
+                    size="small"
+                    icon="pi pi-paperclip"
+                    severity="secondary"
+                    [text]="true"
+                    label="Detailed Lease Agreement"
+                    (click)="openLeaseDetailedView(item)"
+                >
+                </p-button>
+                <p-button
+                    size="small"
+                    icon="pi pi-paperclip"
+                    severity="secondary"
+                    [text]="true"
+                    label="Summary Lease Agreement"
+                    (click)="openLeaseSumaryView(item)"
+                >
+                </p-button>
+                <div *ngIf="item.entryDamageReportSubmitted" class="">
+                    <p-button
+                        size="small"
+                        icon="pi pi-paperclip"
+                        severity="secondary"
+                        [text]="true"
+                        label="Entry Damage Report"
+                        (click)="openSubmitDamageReportModal(item)"
+                    ></p-button>
                 </div>
             </div>
         </div>

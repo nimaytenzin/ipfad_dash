@@ -23,6 +23,8 @@ export class LoginComponent {
     valCheck: string[] = ['remember'];
     loginForm!: FormGroup;
 
+    showLoading: boolean = false;
+
     password!: string;
 
     pin: string[] = [];
@@ -83,16 +85,22 @@ export class LoginComponent {
             phoneNumber: this.loginForm.value.phoneNumber,
             password: this.pin.join(''),
         };
+        this.showLoading = true;
+
         this.authService.Login(loginData).subscribe({
             next: (res: any) => {
                 console.log(res);
                 this.authService.SetAuthToken(res.token);
-                console.log(this.authService.GetAuthenticatedUser());
-                this.determineNextRoute(
-                    this.authService.GetAuthenticatedUser().role
-                );
+                setTimeout(() => {
+                    this.showLoading = false;
+
+                    this.determineNextRoute(
+                        this.authService.GetAuthenticatedUser().role
+                    );
+                }, 2000);
             },
             error: (err) => {
+                this.showLoading = false;
                 this.messageService.add({
                     severity: 'error',
                     summary: 'Error',
@@ -107,11 +115,14 @@ export class LoginComponent {
     }
 
     determineNextRoute(role: string) {
-        if (role === 'SYSADMIN') {
+        if (role === 'ADMIN') {
             this.router.navigate(['/admin']);
         }
         if (role === 'TENANT') {
             this.router.navigate(['/tenant']);
+        }
+        if (role === 'LANDLORD') {
+            this.router.navigate(['/owner']);
         }
     }
 }

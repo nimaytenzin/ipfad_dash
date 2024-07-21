@@ -4,7 +4,7 @@ import { API_URL } from '../../constants/constants';
 import {
     CreateLeaseAgreementDTO,
     LeaseAgreementDTO,
-} from '../../dto/lease/lease-agreement.dto';
+} from './lease-agreement.dto';
 import {
     PaginatedData,
     PaginatedParamsOptions,

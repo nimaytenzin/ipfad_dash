@@ -11,10 +11,7 @@ import { GalleriaModule } from 'primeng/galleria';
     imports: [CarouselModule, ButtonModule, GalleriaModule],
 })
 export class AdminBuildingPhotosComponent implements OnInit {
-    buildingImages = [
-        'https://www.waytobhutan.com/wp-content/uploads/2020/02/dscf26071-1024x768.jpg',
-        'https://media.architecturaldigest.com/photos/5aa7f0882ed63a101d5619f3/master/w_1600%2Cc_limit/amankora-gangtey-bhutan-dining.jpg.jpg',
-    ];
+    buildingImages = ['assets/images/b1.jpeg'];
 
     constructor() {}
 

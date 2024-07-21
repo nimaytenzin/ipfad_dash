@@ -8,6 +8,7 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 import { AccordionModule } from 'primeng/accordion';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-components/view-payment-advice/view-payment-advice.component';
 
 @Component({
     selector: 'app-tenant-pending-payments',
@@ -61,6 +62,13 @@ export class TenantPendingPaymentComponent implements OnInit {
             if (res && res.status === 200) {
                 this.findAllPendingPayments();
             }
+        });
+    }
+
+    openPaymentAdviceDetailModal(item: PaymentAdviceDto) {
+        this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
+            header: 'Payment Advice',
+            data: { ...item },
         });
     }
 }

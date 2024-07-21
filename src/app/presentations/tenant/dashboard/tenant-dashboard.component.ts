@@ -19,6 +19,23 @@ import {
 } from 'primeng/dynamicdialog';
 import { TenantUpdatePincodeComponent } from '../shared/tenant-update-pincode/tenant-update-pincode.component';
 import { TenantPaymentReceiptComponent } from '../shared/tenant-payment-receipt/tenant-payment-receipt.component';
+import { TenantPaymentPaidPaymentsComponent } from '../payments/components/tenant-payment-paid-payments/tenant-payment-paid-payments.component';
+import {
+    NotificationDTO,
+    NotificationService,
+} from 'src/app/core/dataservice/notification.service';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import {
+    API_URL,
+    ZHIDHAYCONTACTDETAILS,
+} from 'src/app/core/constants/constants';
+import { TenantNotificationsSummaryComponent } from './components/tenant-notifications-summary/tenant-notifications-summary.component';
+import { GETELAPSEDTIME } from 'src/app/core/utility/date.helper';
+import { DividerModule } from 'primeng/divider';
+import { TabViewModule } from 'primeng/tabview';
+import { TenantTopbarComponent } from '../../layout/tenant/tenant-topbar/tenant-topbar.component';
+import { TenantHeaderComponent } from '../../layout/tenant/tenant-header/tenant-header.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-tenant-dashboard',
@@ -33,6 +50,13 @@ import { TenantPaymentReceiptComponent } from '../shared/tenant-payment-receipt/
         BadgeModule,
         DynamicDialogModule,
         TenantPaymentReceiptComponent,
+        TenantPaymentPaidPaymentsComponent,
+        TenantNotificationsSummaryComponent,
+        OverlayPanelModule,
+        DialogModule,
+        DividerModule,
+        TabViewModule,
+        TenantHeaderComponent,
     ],
     providers: [DialogService],
 })
@@ -40,34 +64,62 @@ export class TenantDashboardComponent implements OnInit {
     ref: DynamicDialogRef;
     tenantDetails: TenantDTO;
     authenticatedUser: AuthenticatedUser;
+    profileUri: string;
+    apiUrl = API_URL;
 
+    getElapsedTime = GETELAPSEDTIME;
     showUpdatePinModal: boolean = false;
+    notifications: NotificationDTO[] = [];
+    unReadNotifications: NotificationDTO[] = [];
+    unReadNotificationExists: boolean = false;
+    zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
     constructor(
         private tenantDataService: TenantDataService,
         private authService: AuthService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private notificationService: NotificationService,
+        private messageService: MessageService
     ) {
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
         if (!this.authenticatedUser.isVerified) {
             this.showUpdatePinDialog();
         }
-        this.tenantDataService
-            .SearchTenant({
-                id: this.authenticatedUser.id,
-            })
-            .subscribe((res) => {
-                this.tenantDetails = res;
-            });
+
+        this.getAndCheckNotifications();
     }
 
     ngOnInit() {}
 
     ngOnDestroy() {}
 
+    getAndCheckNotifications() {
+        this.notificationService
+            .GetNotificationsByTenant(this.authenticatedUser.userAuthId)
+            .subscribe({
+                next: (res) => {
+                    this.notifications = res;
+                    for (const item of this.notifications) {
+                        console.log('CHECKING', item);
+                        if (!item.isRead) {
+                            this.unReadNotificationExists = true;
+                            this.unReadNotifications.push(item);
+                        }
+                    }
+                },
+            });
+    }
     showUpdatePinDialog() {
         this.ref = this.dialogService.open(TenantUpdatePincodeComponent, {
             header: 'update pin',
             closable: false,
         });
+    }
+
+    markAsRead(item: NotificationDTO) {
+        this.notificationService
+            .MarkNotificationAsRead(item.id)
+            .subscribe((res) => {
+                this.getAndCheckNotifications();
+            });
     }
 }

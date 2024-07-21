@@ -1,12 +1,19 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
-<div class="flex align-items-center mb-2 justify-content-between">
+<div class="flex align-items-center mb-2 justify-content-start gap-4">
     <p-button
         icon="pi pi-plus"
         label="Unit"
         severity="secondary"
         (click)="openAddUnitModal()"
+    ></p-button>
+
+    <p-button
+        icon="pi pi-plus"
+        label="Payment Advices"
+        severity="secondary"
+        (click)="generateBuildingPA()"
     ></p-button>
 </div>
 
@@ -31,6 +38,18 @@
 
             <p></p>
             <p class="text-right">Floor Level: {{ unit.floorLevel }}</p>
+        </div>
+        <div *ngIf="unit.activeLeaseAgreement" class="text-sm">
+            <p>
+                {{ unit.activeLeaseAgreement.tenant?.firstName }}
+                {{ unit.activeLeaseAgreement.tenant?.middleName }}
+                {{ unit.activeLeaseAgreement.tenant?.lastName }}
+            </p>
+
+            <p>
+                Phone Number:
+                {{ unit.activeLeaseAgreement.tenant?.phoneNumber }}
+            </p>
         </div>
         <p class="text-3xl font-semibold">
             {{ unit.floorLevel }}-{{ unit.unitNumber }}

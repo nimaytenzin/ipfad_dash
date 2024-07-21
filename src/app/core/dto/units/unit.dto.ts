@@ -1,5 +1,5 @@
-import { BankAccountDto } from '../bankaccounts/bankaccount.dto';
-import { LeaseAgreementDTO } from '../lease/lease-agreement.dto';
+import { BankAccountDto } from '../../dataservice/bankaccounts/bankaccount.dto';
+import { LeaseAgreementDTO } from '../../dataservice/lease/lease-agreement.dto';
 import { BuildingDTO } from '../properties/building.dto';
 
 export interface UnitDTO {

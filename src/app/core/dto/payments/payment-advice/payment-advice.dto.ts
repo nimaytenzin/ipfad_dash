@@ -46,3 +46,10 @@ export interface PaymentAdviceDto {
     paymentAdviseItem: PaymentAdviceDto[];
     tenant: TenantDTO;
 }
+
+export interface GenerateBuildingPADto {
+    buildingId: number;
+
+    month: number;
+    year: number;
+}

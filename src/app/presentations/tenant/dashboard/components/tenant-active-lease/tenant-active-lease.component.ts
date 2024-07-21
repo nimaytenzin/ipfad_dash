@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AdminViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
@@ -14,6 +14,7 @@ import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
 import { DialogModule } from 'primeng/dialog';
 import { TenantViewLeaseDetailsComponent } from '../tenant-view-lease-details/tenant-view-lease-details.component';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
+import { TenantSubmitDamageReportModalComponent } from '../../../shared/tenant-submit-damage-report-modal/tenant-submit-damage-report-modal.component';
 
 @Component({
     selector: 'app-tenant-active-lease',
@@ -58,6 +59,7 @@ export class TenantActiveLeasecomponent implements OnInit {
             .GetActiveLeaseAgreementsByTenant(this.tenantId)
             .subscribe((res) => {
                 this.activeLeaseAgreements = res;
+                console.log(res);
                 console.log('ACTIVE LEASE AGREEMNT', res);
             });
     }
@@ -90,10 +92,29 @@ export class TenantActiveLeasecomponent implements OnInit {
     }
 
     openLeaseDetailedView(item: LeaseAgreementDTO) {
+        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+            header: 'Lease Details',
+            width: '600px',
+            data: { ...item },
+        });
+    }
+    openLeaseSumaryView(item: LeaseAgreementDTO) {
         this.ref = this.dialogService.open(TenantViewLeaseDetailsComponent, {
             header: 'Lease Details',
             width: '600px',
             data: { ...item },
         });
+    }
+
+    openSubmitDamageReportModal(item: LeaseAgreementDTO) {
+        this.ref = this.dialogService.open(
+            TenantSubmitDamageReportModalComponent,
+            {
+                header: 'Entry Damage Report',
+                data: {
+                    ...item,
+                },
+            }
+        );
     }
 }

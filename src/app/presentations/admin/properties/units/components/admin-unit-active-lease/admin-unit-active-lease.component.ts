@@ -3,14 +3,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AdminViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 import { TagModule } from 'primeng/tag';
-import { AdminGeneratePaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-payment-advice/admin-generate-payment-advice.component';
+import { AdminGenerateUnitPaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-unit-payment-advice/admin-generate-unit-payment-advice.component';
 
 @Component({
     selector: 'app-admin-unit-active-lease',
@@ -92,7 +92,7 @@ export class AdminUnitActiveLeaseComponent implements OnInit {
     }
     openGeneratePAModal() {
         this.ref = this.dialogService.open(
-            AdminGeneratePaymentAdviceComponent,
+            AdminGenerateUnitPaymentAdviceComponent,
             {
                 header: 'Generate Payment advice',
                 data: { ...this.activeLeaseAgreement },

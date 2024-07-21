@@ -1,9 +1,6 @@
-<div class="flex flex-column gap-4">
-    <app-tenant-lease-active-lease-list
-        [tenantId]="1"
-    ></app-tenant-lease-active-lease-list>
-
+<div class="px-4">
+    <p>Tenant / <span class="font-semibold">Lease History</span></p>
     <app-tenant-lease-lease-history
-        [tenantId]="1"
+        [tenantId]="currentUser.id"
     ></app-tenant-lease-lease-history>
 </div>

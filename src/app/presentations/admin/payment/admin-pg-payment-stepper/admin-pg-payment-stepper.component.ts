@@ -139,10 +139,21 @@ export class AdminPgPaymentStepperComponent implements OnInit {
                     console.log(res);
                     this.accountDetailsSent = true;
                     this.loadingModal = false;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'OTP Sent',
+                        detail: 'An OTP has been sent to the linked phone number.',
+                    });
                     nextCallBack.emit();
                 },
                 error: (err) => {
                     console.log(err);
+                    this.loadingModal = false;
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
                 },
             });
     }

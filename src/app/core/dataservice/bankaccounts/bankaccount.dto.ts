@@ -1,4 +1,4 @@
-import { OwnerDTO } from '../users/owner.dto';
+import { OwnerDTO } from '../../dto/users/owner.dto';
 
 export interface BankAccountDto {
     id: number;

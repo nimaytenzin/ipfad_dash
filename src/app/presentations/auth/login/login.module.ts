@@ -10,6 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { DividerModule } from 'primeng/divider';
+import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
     imports: [
@@ -23,7 +25,9 @@ import { DividerModule } from 'primeng/divider';
         ReactiveFormsModule,
         ToastModule,
         ToastModule,
+        DialogModule,
         DividerModule,
+        ProgressSpinnerModule,
     ],
     declarations: [LoginComponent],
     providers: [MessageService],

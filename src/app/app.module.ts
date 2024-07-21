@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { TenantLayoutModule } from './presentations/layout/tenant/tenant-layout.module';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { OwnerLayoutModule } from './presentations/layout/owner/owner-layout.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
         AppRoutingModule,
         AdminLayoutModule,
         TenantLayoutModule,
+        OwnerLayoutModule,
         ToastModule,
         RecaptchaV3Module,
 

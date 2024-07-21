@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { CreateLeaseService } from 'src/app/core/dataservice/lease/create-lease.dataservice';
-import { LeaseAgreementDurationDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDurationDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { GETMONTHDIFF } from 'src/app/core/utility/date.helper';
 
 @Component({

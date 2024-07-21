@@ -5,13 +5,14 @@ import { environment } from 'src/environments/environment';
 import { API_URL } from '../../constants/constants';
 import { CreateInvoiceDTO } from '../../dto/payments/invoice/create-invoice.dto';
 import { InvoiceDTO } from '../../dto/payments/invoice/invoice.dto';
-import { LeaseAgreementDTO } from '../../dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from '../lease/lease-agreement.dto';
 import {
     PaginatedParamsOptions,
     PaginatedData,
 } from '../../dto/paginated-data.dto';
 import {
     CreatePaymentAdviceDto,
+    GenerateBuildingPADto,
     PaymentAdviceDto,
 } from '../../dto/payments/payment-advice/payment-advice.dto';
 
@@ -30,6 +31,10 @@ export class PaymentAdviceDataService {
             `${this.apiUrl}/payment-advice`,
             data
         );
+    }
+
+    GenerateBuildingPA(data: GenerateBuildingPADto) {
+        return this.http.post(`${this.apiUrl}/payment-advice/building`, data);
     }
 
     GetAllPendingAdviceByUnit(unitId: number): Observable<PaymentAdviceDto[]> {

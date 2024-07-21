@@ -1,4 +1,4 @@
-<div class="surface-white">
+<div class="surface-white p-4" id="capture">
     <div #header class="flex justify-content-between">
         <div id="companyDetails">
             <p>{{ zhidhayContactDetails.webAppName }}</p>
@@ -87,4 +87,11 @@
             {{ zhidhayContactDetails.email }}
         </p>
     </div>
+</div>
+<div class="flex justify-content-end mt-3">
+    <p-button
+        label="Screenshot"
+        icon="pi pi-camera"
+        (click)="screenshot()"
+    ></p-button>
 </div>

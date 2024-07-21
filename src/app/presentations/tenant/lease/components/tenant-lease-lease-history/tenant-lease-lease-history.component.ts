@@ -2,19 +2,21 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
 import { AdminViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { TenantViewLeaseDetailsComponent } from '../../../dashboard/components/tenant-view-lease-details/tenant-view-lease-details.component';
 import { CommonModule } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
+import { ButtonModule } from 'primeng/button';
+import { TenantSubmitDamageReportModalComponent } from '../../../shared/tenant-submit-damage-report-modal/tenant-submit-damage-report-modal.component';
 
 @Component({
     selector: 'app-tenant-lease-lease-history',
     templateUrl: './tenant-lease-lease-history.component.html',
     styleUrls: ['./tenant-lease-lease-history.component.scss'],
     standalone: true,
-    imports: [CommonModule, DividerModule],
+    imports: [CommonModule, DividerModule, ButtonModule],
     providers: [DialogService],
 })
 export class TenantLeaseLeaseHistoryComponent implements OnInit {
@@ -28,7 +30,7 @@ export class TenantLeaseLeaseHistoryComponent implements OnInit {
     selectedLease: LeaseAgreementDTO;
 
     ref: DynamicDialogRef | undefined;
-    leaseHistory: LeaseAgreementDTO[];
+    leaseHistory: LeaseAgreementDTO[] = [];
     parseFloorLevel = PARSEFLOORLEVELS;
     constructor(
         private leaseAgreementDataService: LeaseAgreementDataService,
@@ -43,8 +45,8 @@ export class TenantLeaseLeaseHistoryComponent implements OnInit {
         this.leaseAgreementDataService
             .GetActiveLeaseAgreementsByTenant(this.tenantId)
             .subscribe((res) => {
-                // this.activeLeaseAgreements = res;
-                console.log('ACTIVE LEASE AGREEMNT', res);
+                this.leaseHistory = res;
+                console.log(' LEASE AGREEMNT', res);
             });
     }
     computeMonthlyPayable(item: LeaseAgreementDTO) {
@@ -76,10 +78,29 @@ export class TenantLeaseLeaseHistoryComponent implements OnInit {
     }
 
     openLeaseDetailedView(item: LeaseAgreementDTO) {
+        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+            header: 'Lease Details',
+            width: '600px',
+            data: { ...item },
+        });
+    }
+    openLeaseSumaryView(item: LeaseAgreementDTO) {
         this.ref = this.dialogService.open(TenantViewLeaseDetailsComponent, {
             header: 'Lease Details',
             width: '600px',
             data: { ...item },
         });
+    }
+
+    openSubmitDamageReportModal(item: LeaseAgreementDTO) {
+        this.ref = this.dialogService.open(
+            TenantSubmitDamageReportModalComponent,
+            {
+                header: 'Entry Damage Report',
+                data: {
+                    ...item,
+                },
+            }
+        );
     }
 }

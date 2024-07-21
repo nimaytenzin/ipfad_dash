@@ -22,6 +22,8 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 export class TenantLayoutComponent implements OnDestroy {
     overlayMenuOpenSubscription: Subscription;
 
+    routeChangeSubscription: Subscription;
+
     menuOutsideClickListener: any;
 
     profileMenuOutsideClickListener: any;
@@ -29,6 +31,8 @@ export class TenantLayoutComponent implements OnDestroy {
     @ViewChild(TenantSidebarComponent) appSidebar!: TenantSidebarComponent;
 
     @ViewChild(TenantTopbarComponent) appTopbar!: TenantTopbarComponent;
+
+    isProfileRoute: boolean = false;
 
     constructor(
         public layoutService: TenantLayoutService,
@@ -102,6 +106,17 @@ export class TenantLayoutComponent implements OnDestroy {
             .subscribe(() => {
                 this.hideMenu();
                 this.hideProfileMenu();
+            });
+
+        this.routeChangeSubscription = this.router.events
+            .pipe(filter((event) => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                const url = event.urlAfterRedirects;
+                if (url === '/tenant/profile') {
+                    this.isProfileRoute = true;
+                } else {
+                    this.isProfileRoute = false;
+                }
             });
     }
 

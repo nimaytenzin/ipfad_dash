@@ -15,6 +15,9 @@
     >
         <div class="w-4">
             <div class="">
+                <p>
+                    {{ advice.id }}
+                </p>
                 <p class="text-4xl font-semibold">Nu.{{ advice.amountDue }}</p>
                 <p class="text-sm">(Amount Due)</p>
             </div>
@@ -32,7 +35,8 @@
                 <p-button
                     size="small"
                     severity="secondary"
-                    label="Detailed view"
+                    label="View Advice"
+                    (click)="openViewAdvice(advice)"
                 ></p-button>
             </div>
         </div>

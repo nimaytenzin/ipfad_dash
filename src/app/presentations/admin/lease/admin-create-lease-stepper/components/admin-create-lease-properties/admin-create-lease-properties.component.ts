@@ -8,7 +8,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
 import { CreateLeaseService } from 'src/app/core/dataservice/lease/create-lease.dataservice';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
-import { LeaseAgreementPropertiesDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementPropertiesDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 

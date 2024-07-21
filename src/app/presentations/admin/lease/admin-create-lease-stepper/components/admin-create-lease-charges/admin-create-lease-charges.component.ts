@@ -17,12 +17,12 @@ import { UnitSurchargeDataService } from 'src/app/core/dataservice/units/unit-su
 import {
     GroupedLeaseAgreementDTO,
     LeaseAgreementChargesDTO,
-} from 'src/app/core/dto/lease/lease-agreement.dto';
+} from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { BuildingSurchargeDTO } from 'src/app/core/dto/properties/building-surcharge.dto';
 import { UnitSurchargeDTO } from 'src/app/core/dto/units/unit-surcharge.dto';
 import { Table, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { LeaseSurchargeDTO } from 'src/app/core/dto/lease/lease-surcharge.dto';
+import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService, MessageService } from 'primeng/api';

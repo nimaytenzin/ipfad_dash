@@ -1,105 +1,112 @@
 <div
-    class="surface-card flex align-items-center justify-content-center min-w-screen overflow-hidden"
+    class="surface-card wavybackground flex align-items-center justify-content-center min-w-screen overflow-hidden"
     style="height: 100dvh"
 >
     <p-toast appendTo="body" />
-
-    <div class="flex flex-column align-items-center justify-content-center">
+    <div
+        class="flex login-card flex-column gap-4 align-items-center justify-content-center"
+    >
         <div>
-            <div class="w-full py-8 px-5 sm:px-8">
-                <div class="flex flex-column align-items-center gap-2 my-2">
-                    <div>
-                        <img style="height: 50px" src="assets/logo.png" />
-                    </div>
-                    <p class="text-4xl">welcome to zhidhay.com</p>
-                    <p class="">Login using your phone number and pin code</p>
-                </div>
-                <p-divider type="dashed"></p-divider>
-
-                <form [formGroup]="loginForm" class="mt-4 p-fluid">
-                    <label
-                        for="email1"
-                        class="block font-semibold text-900 mb-2"
-                        >Phone Number</label
-                    >
-                    <input
-                        id="email1"
-                        type="text"
-                        placeholder="Phone Number"
-                        pInputText
-                        autocomplete=""
-                        formControlName="phoneNumber"
-                    />
-                    <label
-                        for="password1"
-                        class="block font-semibold text-900 mt-5 mb-2"
-                        >Pin</label
-                    >
-                    <!-- <p-password
-                        id="password1"
-                        formControlName="password"
-                        placeholder="Password"
-                        [toggleMask]="true"
-                        autocomplete="current-password"
-                        styleClass="mb-5"
-                        [feedback]="false"
-                    ></p-password> -->
-
-                    <div
-                        class="flex text-5xl font-semibold justify-content-center align-items-center gap-3"
-                    >
-                        <p *ngFor="let i of pinPlaceholder">
-                            {{ i }}
-                        </p>
-                        <p *ngFor="let i of pin">
-                            {{ i }}
-                        </p>
-                    </div>
-
-                    <div class="numpad">
-                        <div class="numpad_key" *ngFor="let key of keys">
-                            <button
-                                [disabled]="pin.length === 4 && key !== 'del'"
-                                (click)="appendToPin(key)"
-                            >
-                                {{ key }}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex my-6 align-items-center justify-content-between mb-5 gap-5"
-                    >
-                        <div class="flex align-items-center">
-                            <p-checkbox
-                                id="rememberme1"
-                                [binary]="true"
-                                styleClass="mr-2"
-                            ></p-checkbox>
-                            <label for="rememberme1">Remember me</label>
-                        </div>
-                        <a
-                            class="font-medium no-underline ml-2 text-right cursor-pointer"
-                            >Forgot password?</a
-                        >
-                    </div>
-                    <div class="flex gap-2">
-                        <button
-                            pButton
-                            pRipple
-                            label="Login"
-                            class="w-full"
-                            (click)="login()"
-                        ></button>
-                    </div>
-
-                    <div class="mt-4">
-                        <p style="cursor: pointer" (click)="backToHome()">
-                            Back to home page
-                        </p>
-                    </div>
-                </form>
+            <div class="flex align-items-center gap-2">
+                <img style="height: 25px" src="assets/logo.png" />
+                <p class="text-4xl">zhidhay.com</p>
             </div>
+            <p-divider type="dashed"></p-divider>
+            <p class="text-sm text-center">
+                Login using your phone number and pin code
+            </p>
         </div>
+        <form [formGroup]="loginForm" class="mt-4 p-fluid">
+            <label for="email1" class="block font-semibold text-900 mb-2"
+                >Phone Number</label
+            >
+            <input
+                id="email1"
+                type="text"
+                placeholder="Phone Number"
+                pInputText
+                autocomplete=""
+                formControlName="phoneNumber"
+            />
+
+            <label
+                for="password1"
+                class="block font-semibold text-900 mt-5 mb-2"
+                >Pin</label
+            >
+            <div
+                class="flex text-5xl font-semibold justify-content-center align-items-center gap-3"
+            >
+                <p *ngFor="let i of pinPlaceholder">
+                    {{ i }}
+                </p>
+                <p *ngFor="let i of pin">
+                    {{ i }}
+                </p>
+            </div>
+
+            <div class="numpad">
+                <div class="numpad_key" *ngFor="let key of keys">
+                    <button
+                        [disabled]="pin.length === 4 && key !== 'del'"
+                        (click)="appendToPin(key)"
+                    >
+                        {{ key }}
+                    </button>
+                </div>
+            </div>
+
+            <div
+                class="flex my-6 align-items-center justify-content-between mb-5 gap-5"
+            >
+                <div class="flex align-items-center">
+                    <p-checkbox
+                        id="rememberme1"
+                        [binary]="true"
+                        styleClass="mr-2"
+                    ></p-checkbox>
+                    <label for="rememberme1">Remember me</label>
+                </div>
+                <a
+                    class="font-medium no-underline ml-2 text-right cursor-pointer"
+                    >Forgot password?</a
+                >
+            </div>
+            <div class="flex gap-2">
+                <button
+                    pButton
+                    pRipple
+                    label="Login"
+                    class="w-full"
+                    (click)="login()"
+                ></button>
+            </div>
+
+            <div class="mt-4">
+                <p style="cursor: pointer" (click)="backToHome()">
+                    Back to home page
+                </p>
+            </div>
+        </form>
     </div>
 </div>
+
+<p-dialog
+    [modal]="true"
+    [(visible)]="showLoading"
+    closable="false"
+    styleClass="bg-transparent"
+    [style]="{ width: '25rem', background: 'transparent' }"
+>
+    <div
+        class="flex h-full w-full flex-column align-items-center justify-content-center"
+    >
+        <p>Validating your credentials</p>
+        <p-progressSpinner
+            styleClass="w-4rem h-4rem"
+            strokeWidth="8"
+            fill="var(--surface-ground)"
+            animationDuration=".5s"
+        />
+    </div>
+</p-dialog>

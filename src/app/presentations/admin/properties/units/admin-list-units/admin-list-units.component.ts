@@ -16,8 +16,9 @@ import { DividerModule } from 'primeng/divider';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AdminViewLeaseAgreementComponent } from '../../../lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
+import { AdminGenerateBuildingPaymentAdviceComponent } from '../../../payment/admin-generate-building-payment-advice/admin-generate-building-payment-advice.component';
 
 @Component({
     selector: 'app-admin-list-units',
@@ -153,5 +154,17 @@ export class AdminListUnitsComponent implements OnInit {
                 ...leaseAgreement,
             },
         });
+    }
+
+    generateBuildingPA() {
+        this.ref = this.dialogService.open(
+            AdminGenerateBuildingPaymentAdviceComponent,
+            {
+                header: 'Generate PA for Building ID: ' + this.buildingId,
+                data: {
+                    buildingId: this.buildingId,
+                },
+            }
+        );
     }
 }

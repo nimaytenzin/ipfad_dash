@@ -16,6 +16,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { SidebarModule } from 'primeng/sidebar';
 import { TenantFooterComponent } from './tenant-footer/tenant-footer.component';
+import { TenantHeaderComponent } from './tenant-header/tenant-header.component';
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import { TenantFooterComponent } from './tenant-footer/tenant-footer.component';
         RippleModule,
         RouterModule,
         TenantTopbarComponent,
+        TenantHeaderComponent,
     ],
     declarations: [
         TenantLayoutComponent,

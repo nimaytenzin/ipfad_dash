@@ -5,7 +5,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { INVOICESTATUS } from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import {
     CreatePaymentAdviceDto,

@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { AdminLayoutComponent } from './presentations/layout/admin/admin-layout.component';
 import { TenantLayoutComponent } from './presentations/layout/tenant/tenant-layout.component';
 import { TenantProfileComponent } from './presentations/tenant/profile/tenant-profile.component';
+import { OwnerLayoutComponent } from './presentations/layout/owner/owner-layout.component';
+import { RoleGuard } from './core/guards/role.guard';
+import { USERROLESENUM } from './core/constants/enums';
 
 @NgModule({
     imports: [
@@ -26,7 +29,16 @@ import { TenantProfileComponent } from './presentations/tenant/profile/tenant-pr
                 {
                     path: 'admin',
                     component: AdminLayoutComponent,
+                    canActivate: [RoleGuard],
+                    data: { roles: [USERROLESENUM.ADMIN] },
                     children: [
+                        {
+                            path: '',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/admin/dashboard/admin-dashboard-routing.module'
+                                ).then((m) => m.AdminDashboardRoutingModule),
+                        },
                         {
                             path: 'master-properties',
                             loadChildren: () =>
@@ -78,6 +90,8 @@ import { TenantProfileComponent } from './presentations/tenant/profile/tenant-pr
                 {
                     path: 'tenant',
                     component: TenantLayoutComponent,
+                    canActivate: [RoleGuard],
+                    data: { roles: [USERROLESENUM.TENANT] },
                     children: [
                         {
                             path: '',
@@ -108,8 +122,40 @@ import { TenantProfileComponent } from './presentations/tenant/profile/tenant-pr
                                 ).then((m) => m.TenantMaintenanceRoutingModule),
                         },
                         {
+                            path: 'notifications',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/tenant/notifications/tenant-notifications.routing.modules'
+                                ).then(
+                                    (m) => m.TenantNotificationsRoutingModule
+                                ),
+                        },
+                        {
                             path: 'profile',
                             component: TenantProfileComponent,
+                        },
+                    ],
+                },
+
+                {
+                    path: 'owner',
+                    component: OwnerLayoutComponent,
+                    canActivate: [RoleGuard],
+                    data: { roles: [USERROLESENUM.LANDLORD] },
+                    children: [
+                        {
+                            path: '',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/owner/dashboard/owner-dashboard.routing.modules'
+                                ).then((m) => m.OwnerDashboardRoutingModule),
+                        },
+                        {
+                            path: 'properties',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/owner/properties/owner-properties.routing.modules'
+                                ).then((m) => m.OwnerPropertiesRoutingModule),
                         },
                     ],
                 },

@@ -1,4 +1,4 @@
-import { LeaseAgreementDTO } from '../lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from '../../dataservice/lease/lease-agreement.dto';
 import { AdministrativeZoneDTO } from '../locations/administrative-zone.dto';
 import { DzongkhagDTO } from '../locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from '../locations/sub-administrative-zone.dto';

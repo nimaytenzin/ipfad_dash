@@ -11,8 +11,8 @@ import { UnitRuleDataService } from 'src/app/core/dataservice/units/unit-rules.d
 import {
     GroupedLeaseAgreementDTO,
     LeaseAgreementTermsDTO,
-} from 'src/app/core/dto/lease/lease-agreement.dto';
-import { LeaseRuleDTO } from 'src/app/core/dto/lease/lease-rule.dto';
+} from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { LeaseRuleDTO } from 'src/app/core/dataservice/lease/lease-rule.dto';
 
 @Component({
     selector: 'app-admin-create-lease-terms',

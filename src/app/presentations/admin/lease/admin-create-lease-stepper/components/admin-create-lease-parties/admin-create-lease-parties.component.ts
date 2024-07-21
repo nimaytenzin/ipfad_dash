@@ -13,7 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import { CreateLeaseService } from 'src/app/core/dataservice/lease/create-lease.dataservice';
 import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
-import { LeaseAgreementPartiesDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementPartiesDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { GETDMYFROMDATE, GETMONTHNAME } from 'src/app/core/utility/date.helper';

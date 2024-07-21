@@ -54,6 +54,7 @@
 .cloud1 {
     position: absolute;
     opacity: 0.5;
+    z-index: 22;
     filter: grayscale(1);
     @media (min-width: 320px) {
         transform: scale(0.3);
@@ -70,6 +71,7 @@
     bottom: 38%;
     left: -5%;
     opacity: 0.3;
+    z-index: 22;
     transform: scale(0.4);
     filter: grayscale(1);
     @media (min-width: 320px) {
@@ -82,6 +84,7 @@
     position: absolute;
     bottom: 42%;
     left: -10%;
+    z-index: 22;
     opacity: 0.3;
     transform: scale(0.7);
     filter: grayscale(1);
@@ -96,6 +99,7 @@
     bottom: 46%;
     right: 0;
     opacity: 0.3;
+    z-index: 22;
     transform: scale(0.8);
     filter: grayscale(1);
     @media (min-width: 320px) {
@@ -108,6 +112,7 @@
     bottom: 44%;
     margin-right: -30px;
     right: 0;
+    z-index: 22;
     opacity: 0.4;
     transform: scale(0.5) rotate(180deg);
 

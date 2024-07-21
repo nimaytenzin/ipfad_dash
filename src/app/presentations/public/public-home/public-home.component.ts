@@ -8,9 +8,11 @@ import {
 } from '@angular/core';
 import {
     FormBuilder,
+    FormControl,
     FormGroup,
     FormsModule,
     ReactiveFormsModule,
+    Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { gsap } from 'gsap';
@@ -30,6 +32,15 @@ import {
 } from 'ng-recaptcha';
 import { RecaptchaService } from 'src/app/core/dataservice/recaptcha.dataservice';
 import { NotificationService } from 'src/app/core/dataservice/notification.service';
+import { SidebarModule } from 'primeng/sidebar';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { MessageService } from 'primeng/api';
+import { CardModule } from 'primeng/card';
+import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
+import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
+import { GalleriaModule } from 'primeng/galleria';
 
 @Component({
     selector: 'app-public-home',
@@ -45,6 +56,12 @@ import { NotificationService } from 'src/app/core/dataservice/notification.servi
         InputNumberModule,
         CalendarModule,
         ReactiveFormsModule,
+        SidebarModule,
+        InputTextareaModule,
+        InputGroupModule,
+        InputGroupAddonModule,
+        CardModule,
+        GalleriaModule,
     ],
     providers: [],
 })
@@ -53,27 +70,44 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
     @ViewChild('centerElement') centerElement!: ElementRef;
     showRequestDemoModal: boolean = false;
     zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
+    characterLimit = 255;
+    characterCountExceeded: boolean = false;
+    listedUnits: UnitDTO[] = [];
 
     date: Date | undefined;
     companyName: string = COMPANY_NAME;
     requestDemoForm: FormGroup;
     captcha: any;
+    buildingImages = [
+        'https://www.waytobhutan.com/wp-content/uploads/2020/02/dscf26071-1024x768.jpg',
+        'https://media.architecturaldigest.com/photos/5aa7f0882ed63a101d5619f3/master/w_1600%2Cc_limit/amankora-gangtey-bhutan-dining.jpg.jpg',
+    ];
     constructor(
         private router: Router,
         private fb: FormBuilder,
         private recaptchaV3Service: ReCaptchaV3Service,
         private recaptchaVerificationService: RecaptchaService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private messageService: MessageService,
+        private unitDataService: UnitDataService
     ) {
         this.requestDemoForm = this.fb.group({
             name: [],
             phoneNumber: [],
-            numberOfUnits: [],
+            remarks: new FormControl({ value: '', disabled: false }, [
+                Validators.maxLength(this.characterLimit),
+            ]),
             preferredDemoDate: [],
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.unitDataService.GetUnitListings().subscribe({
+            next: (res) => {
+                this.listedUnits = res;
+            },
+        });
+    }
 
     ngAfterViewInit(): void {
         gsap.from(this.centerElement.nativeElement, {
@@ -152,10 +186,34 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
         this.router.navigate(['auth']);
     }
 
+    onTextareaInput(event: Event): void {
+        const value = (event.target as HTMLTextAreaElement).value;
+        if (value.length > this.characterLimit) {
+            this.characterCountExceeded = true;
+        }
+    }
+
+    getRemarksCharCount(): number {
+        const remarksControl = this.requestDemoForm.get('remarks');
+        if (remarksControl) {
+            const remarksValue = remarksControl.value;
+            return remarksValue ? remarksValue.length : 0;
+        }
+        return 0;
+    }
     requestDemo() {
         const formValue = this.requestDemoForm.value;
-        const message = `${formValue.name} has requested a demo on ${formValue.preferredDemoDate}. Number of units: ${formValue.numberOfUnits}. Contact: ${formValue.phoneNumber}`;
+        let dateObj = new Date(formValue.preferredDemoDate);
 
+        let month = dateObj.toLocaleString('default', { month: 'short' }); // Gets abbreviated month name
+        let day = dateObj.getDate(); // Gets the day of the month
+        let year = dateObj.getFullYear(); // Gets the full year
+
+        let formattedDate = `${month} ${day} ${year}`;
+
+        const message = `${formValue.name},#ph${formValue.phoneNumber} has requested a demo on ${formattedDate}.(${formValue.remarks})`;
+
+        console.log(message);
         this.recaptchaV3Service
             .execute('RequestingDemoForZhidhay')
             .subscribe((token) => {
@@ -173,6 +231,12 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
                                 .subscribe((message: any) => {
                                     if (message.status === 'Success') {
                                         this.showRequestDemoModal = false;
+                                        this.messageService.add({
+                                            severity: 'success',
+                                            summary:
+                                                'Demo request has been sent.',
+                                            detail: 'Our Team will contact you shortly with the details.',
+                                        });
                                     }
                                 });
                         }

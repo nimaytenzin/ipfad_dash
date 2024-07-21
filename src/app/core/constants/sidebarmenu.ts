@@ -20,7 +20,7 @@ export const TENANTSIDEBARITEMS = [
             {
                 label: 'Notifications',
                 icon: 'pi pi-fw pi-bell',
-                routerLink: ['/tenant/payments'],
+                routerLink: ['/tenant/notifications'],
             },
 
             {
@@ -129,6 +129,90 @@ export const ADMINSIDEBARITEMS = [
             },
             {
                 label: 'Remittance',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-transactions/invoices'],
+            },
+        ],
+    },
+    {
+        label: 'Tools',
+        items: [
+            {
+                label: 'Rental Income Report Generator',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-dzongkhags'],
+            },
+            {
+                label: 'Property Tax Report Generator',
+                icon: 'pi pi-fw pi-building',
+                routerLink: ['/admin/master-admzones'],
+            },
+        ],
+    },
+];
+
+export const OWNERSIDEBARITEMS = [
+    {
+        label: 'Home',
+        items: [
+            {
+                label: 'Dashboard',
+                icon: 'pi pi-fw pi-home',
+                routerLink: ['/owner'],
+            },
+        ],
+    },
+    {
+        label: 'Properties',
+        items: [
+            {
+                label: 'Listings',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/owner/properties'],
+            },
+            {
+                label: 'Search',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/search'],
+            },
+            {
+                label: 'Map View',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/map'],
+            },
+        ],
+    },
+
+    {
+        label: 'Tenants',
+        items: [
+            {
+                label: 'Listing',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-users/tenants'],
+            },
+            {
+                label: 'Search',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-users/admins'],
+            },
+        ],
+    },
+    {
+        label: 'Lease',
+        items: [
+            {
+                label: 'Lease Agreements',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-lease'],
+            },
+        ],
+    },
+    {
+        label: 'Transactions',
+        items: [
+            {
+                label: 'Rental Payments',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-transactions/invoices'],
             },

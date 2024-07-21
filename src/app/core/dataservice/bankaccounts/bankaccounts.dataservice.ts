@@ -8,10 +8,7 @@ import {
     BuildingAmenityDTO,
     CreateBuildingAmenityDto,
 } from '../../dto/properties/building-amenity.dto';
-import {
-    BankAccountDto,
-    CreateBankAccountDto,
-} from '../../dto/bankaccounts/bankaccount.dto';
+import { BankAccountDto, CreateBankAccountDto } from './bankaccount.dto';
 
 interface BankListWithLogoDto {
     bankCode: string;

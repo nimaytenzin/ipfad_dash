@@ -1,6 +1,6 @@
-<div class="gap-4 flex flex-column">
-    <app-tenant-payment-pending-payment-list
-        [tenantId]="1"
-    ></app-tenant-payment-pending-payment-list>
-    <app-tenant-payment-paid-payments></app-tenant-payment-paid-payments>
+<div class="px-4">
+    <p>Tenant / <span class="font-semibold">Payments History</span></p>
+    <app-tenant-pending-payments
+        [tenantId]="currentUser.id"
+    ></app-tenant-pending-payments>
 </div>

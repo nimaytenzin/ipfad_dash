@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -16,6 +16,11 @@ import { TenantPaymentReceiptComponent } from '../../../shared/tenant-payment-re
     providers: [DialogService],
 })
 export class TenantPaymentPaidPaymentsComponent implements OnInit {
+    @Input({
+        required: true,
+    })
+    tenantId: number;
+
     paidPayments: PaymentAdviceDto[] = [];
     ref: DynamicDialogRef;
     constructor(
@@ -29,16 +34,18 @@ export class TenantPaymentPaidPaymentsComponent implements OnInit {
 
     findAllPaidByTenant() {
         console.log('PAID AdVICE');
-        this.paymentAdviceDataService.GetPaidPaymentsByTenant(14).subscribe({
-            next: (res) => {
-                console.log(res);
-                console.log('PENDING AdVICE');
-                this.paidPayments = res;
-            },
-            error: (err) => {
-                console.log(err);
-            },
-        });
+        this.paymentAdviceDataService
+            .GetPaidPaymentsByTenant(this.tenantId)
+            .subscribe({
+                next: (res) => {
+                    console.log(res);
+                    console.log('PENDING AdVICE');
+                    this.paidPayments = res;
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
     }
 
     viewReceipt() {

@@ -1,4 +1,4 @@
-import { BankAccountDto } from '../bankaccounts/bankaccount.dto';
+import { BankAccountDto } from '../../dataservice/bankaccounts/bankaccount.dto';
 import { AdministrativeZoneDTO } from '../locations/administrative-zone.dto';
 import { DzongkhagDTO } from '../locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from '../locations/sub-administrative-zone.dto';

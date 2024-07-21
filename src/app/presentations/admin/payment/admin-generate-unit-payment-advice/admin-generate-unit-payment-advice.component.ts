@@ -4,7 +4,7 @@ import {
     DynamicDialogRef,
     DialogService,
 } from 'primeng/dynamicdialog';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
@@ -19,13 +19,13 @@ import {
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 
 @Component({
-    selector: 'app-admin-generate-payment-advice',
-    templateUrl: './admin-generate-payment-advice.component.html',
-    styleUrls: ['./admin-generate-payment-advice.component.css'],
+    selector: 'app-admin-generate-unit-payment-advice',
+    templateUrl: './admin-generate-unit-payment-advice.component.html',
+    styleUrls: ['./admin-generate-unit-payment-advice.component.css'],
     standalone: true,
     imports: [DropdownModule, FormsModule, CalendarModule],
 })
-export class AdminGeneratePaymentAdviceComponent implements OnInit {
+export class AdminGenerateUnitPaymentAdviceComponent implements OnInit {
     instance: DynamicDialogComponent | undefined;
     leaseAgreement: LeaseAgreementDTO;
     date: Date | undefined;

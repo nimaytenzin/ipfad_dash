@@ -7,7 +7,7 @@ import {
     DialogService,
 } from 'primeng/dynamicdialog';
 import { TabViewModule } from 'primeng/tabview';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
 
 @Component({

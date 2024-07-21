@@ -10,7 +10,7 @@ import {
 import { BankAccountDataService } from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
 import { BuildingOwnershipDataService } from 'src/app/core/dataservice/ownership/buildingownership.dataservice';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
-import { BankAccountDto } from 'src/app/core/dto/bankaccounts/bankaccount.dto';
+import { BankAccountDto } from 'src/app/core/dataservice/bankaccounts/bankaccount.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
 

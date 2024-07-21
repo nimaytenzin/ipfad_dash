@@ -19,6 +19,15 @@ import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { TenantUpdatePincodeComponent } from '../shared/tenant-update-pincode/tenant-update-pincode.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { CommonModule } from '@angular/common';
+import { FileUploadService } from 'src/app/core/dataservice/fileupload.dataservice';
+import { API_URL } from 'src/app/core/constants/constants';
+
+interface UploadEvent {
+    originalEvent: Event;
+    files: File[];
+}
 
 @Component({
     selector: 'app-tenant-profile',
@@ -34,11 +43,16 @@ import { TenantUpdatePincodeComponent } from '../shared/tenant-update-pincode/te
         InputNumberModule,
         DropdownModule,
         ReactiveFormsModule,
+        FileUploadModule,
+        CommonModule,
     ],
     providers: [DialogService],
 })
 export class TenantProfileComponent implements OnInit {
     showEditProfileDialog: boolean = false;
+    showUploadProfile: boolean = false;
+    showUploadSignatureModal: boolean = false;
+
     ref: DynamicDialogRef;
     editProfileForm: FormGroup;
 
@@ -48,13 +62,20 @@ export class TenantProfileComponent implements OnInit {
     subAdministrativeZones: SubAdministrativeZoneDTO[];
 
     authenticatedUser: AuthenticatedUser;
+    selectedProfilePicture: any;
+    selectedSignature: any;
 
+    profileUri: string;
+    signatureUri: string;
+
+    apiUrl = API_URL;
     constructor(
         private fb: FormBuilder,
         private dialogService: DialogService,
         private tenantDataService: TenantDataService,
         private locationDataService: LocationDataService,
-        private authService: AuthService
+        private authService: AuthService,
+        private fileUploadService: FileUploadService
     ) {
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
         this.locationDataService.GetAllDzonghags().subscribe((res) => {
@@ -95,6 +116,14 @@ export class TenantProfileComponent implements OnInit {
                     subAdministrativeZoneId: res.subadministrativeZoneId,
                 });
 
+                if (this.tenantDetails.profileUri) {
+                    this.profileUri =
+                        this.apiUrl + '/' + this.tenantDetails.profileUri;
+                }
+                if (this.tenantDetails.signatureUri) {
+                    this.signatureUri =
+                        this.apiUrl + '/' + this.tenantDetails.signatureUri;
+                }
                 this.locationDataService
                     .GetAllAdministrativeZones({
                         dzongkhagId: res.dzongkhagId.toString(),
@@ -142,5 +171,42 @@ export class TenantProfileComponent implements OnInit {
         this.ref = this.dialogService.open(TenantUpdatePincodeComponent, {
             header: 'update pin',
         });
+    }
+
+    openUploadProfileModal() {
+        this.showUploadProfile = true;
+    }
+
+    onSelect(event: UploadEvent) {
+        this.selectedProfilePicture = event.files[0];
+    }
+    onSignatureSelect(event: UploadEvent) {
+        this.selectedSignature = event.files[0];
+    }
+
+    onUpload(event: UploadEvent) {
+        const file = this.selectedProfilePicture;
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        console.log(formData);
+        this.fileUploadService
+            .UploadTenantProfilePicture(formData, this.authenticatedUser.id)
+            .subscribe((res) => {
+                this.fetchTenantDetails();
+                this.showUploadProfile = false;
+            });
+    }
+
+    onSignatureUpload(event: UploadEvent) {
+        const file = this.selectedSignature;
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        console.log(formData);
+        this.fileUploadService
+            .UploadTenantSignature(formData, this.authenticatedUser.id)
+            .subscribe((res) => {
+                this.fetchTenantDetails();
+                this.showUploadSignatureModal = false;
+            });
     }
 }

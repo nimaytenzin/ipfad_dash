@@ -8,7 +8,7 @@ import {
     LeaseAgreementPartiesDTO,
     LeaseAgreementPropertiesDTO,
     LeaseAgreementTermsDTO,
-} from '../../dto/lease/lease-agreement.dto';
+} from './lease-agreement.dto';
 import { Router } from '@angular/router';
 
 @Injectable({

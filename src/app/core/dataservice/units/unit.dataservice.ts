@@ -25,6 +25,9 @@ export class UnitDataService {
     GetUnit(unitId: number): Observable<UnitDTO> {
         return this.http.get<UnitDTO>(`${this.apiUrl}/unit/${unitId}`);
     }
+    GetUnitListings(): Observable<UnitDTO[]> {
+        return this.http.get<UnitDTO[]>(`${this.apiUrl}/unit/listings/all`);
+    }
 
     CreateUnit(data: CreateUnitDTO) {
         return this.http.post(`${this.apiUrl}/unit`, data);

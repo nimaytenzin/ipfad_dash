@@ -1,15 +1,16 @@
-import { PaymentAdviceDto } from '../payments/payment-advice/payment-advice.dto';
-import { BuildingDTO } from '../properties/building.dto';
-import { UnitDTO } from '../units/unit.dto';
-import { AdminDTO } from '../users/admin.dto';
-import { LandLordDTO } from '../users/landlord.dto';
-import { OwnerDTO } from '../users/owner.dto';
-import { TenantDTO } from '../users/tenant.dto';
+import { PaymentAdviceDto } from '../../dto/payments/payment-advice/payment-advice.dto';
+import { BuildingDTO } from '../../dto/properties/building.dto';
+import { UnitDTO } from '../../dto/units/unit.dto';
+import { AdminDTO } from '../../dto/users/admin.dto';
+import { LandLordDTO } from '../../dto/users/landlord.dto';
+import { OwnerDTO } from '../../dto/users/owner.dto';
+import { TenantDTO } from '../../dto/users/tenant.dto';
 import { LeaseRuleDTO } from './lease-rule.dto';
 import { LeaseSurchargeDTO } from './lease-surcharge.dto';
 
 export interface LeaseAgreementDTO {
     id: number;
+    entryDamageReportSubmitted: boolean;
 
     leaseStatus: string;
     agreementDay: number;
@@ -105,6 +106,8 @@ export interface GroupedLeaseAgreementDTO {
 
 export interface CreateLeaseAgreementDTO {
     leaseStatus: string;
+    entryDamageReportSubmitted: boolean;
+
     tenantId: number;
     landlordId: number;
     witnessId: number;

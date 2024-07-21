@@ -11,7 +11,7 @@ import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
 import { AdminAddLandlordComponent } from '../../users/crud-dialog/admin-add-landlord/admin-add-landlord.component';
-import { LeaseAgreementDTO } from 'src/app/core/dto/lease/lease-agreement.dto';
+import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
