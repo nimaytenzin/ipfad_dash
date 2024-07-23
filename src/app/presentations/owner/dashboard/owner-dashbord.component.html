@@ -1,3 +1,129 @@
-<div>
-    <p class="text-4xl mb-4">Your properties</p>
+<div class="flex gap-6 px-4">
+    <div class="w-8">
+        <div class="flex gap-4 my-4 justify-content-end">
+            <p-button label="Broadcast SMS" icon="pi pi-envelope"></p-button>
+            <p-button label="Add Property" icon="pi pi-plus"></p-button>
+            <p-button label="Add Tenant" icon="pi pi-user"></p-button>
+            <p-button label="Generate Lease" icon="pi pi-file-o"></p-button>
+        </div>
+        <p-divider type="dashed"></p-divider>
+
+        <div class="flex justify-content-between gap-3 my-4">
+            <div class="flex-1 border-1 surface-border border-round-md p-2">
+                <p class="text-2xl font-bold">Payments</p>
+                <p-divider></p-divider>
+                <div class="flex justify-content-between align-items-end">
+                    <div>
+                        <p class="text-2xl font-semibold">
+                            Nu. {{ summaryStats.totalRentalIncome }}
+                        </p>
+                        <p class="text-sm text-gray-600">Total Rental Income</p>
+                    </div>
+                    <p-button
+                        label="View Breakdown"
+                        icon="pi pi-angle-down"
+                        size="small"
+                        text="true"
+                    >
+                    </p-button>
+                </div>
+
+                <div class="mt-2 flex justify-content-between align-items-end">
+                    <div>
+                        <p class="text-2xl font-semibold text-red-500">
+                            Nu. {{ summaryStats.pendingPaymentAmount }}
+                        </p>
+                        <p>Pending Payments</p>
+                    </div>
+
+                    <p-button
+                        label="View Breakdown"
+                        icon="pi pi-angle-down"
+                        size="small"
+                        text="true"
+                    >
+                    </p-button>
+                </div>
+            </div>
+            <div class="w-3 border-1 surface-border border-round-md p-2">
+                <p class="text-2xl font-bold">Properties</p>
+                <p-divider></p-divider>
+                <div>
+                    <p class="text-2xl font-semibold">
+                        {{ summaryStats.buildingCount }}
+                    </p>
+                    <p class="text-sm text-gray-600">Buildings</p>
+                </div>
+                <div class="mt-4">
+                    <p class="text-2xl font-semibold">
+                        {{ summaryStats.unitCount }}
+                    </p>
+                    <p class="text-sm text-gray-600">Units</p>
+                </div>
+            </div>
+            <div class="w-3 border-1 surface-border border-round-md p-2">
+                <p class="text-2xl font-bold">
+                    Occupancy ({{
+                        (summaryStats.activeLeaseCount /
+                            summaryStats.unitCount) *
+                            100
+                    }}
+                    %)
+                </p>
+                <p-divider></p-divider>
+                <div>
+                    <p class="text-2xl font-semibold">
+                        {{ summaryStats.activeLeaseCount }}
+                    </p>
+                    <p class="text-sm text-gray-600">Active Lease</p>
+                </div>
+                <div class="mt-4">
+                    <p class="text-2xl font-semibold">
+                        {{
+                            summaryStats.unitCount -
+                                summaryStats.activeLeaseCount
+                        }}
+                    </p>
+                    <p class="text-sm text-gray-600">Vacant Units</p>
+                </div>
+            </div>
+        </div>
+
+        <div>Vacant Unit List by Building with list proeprtey for rent</div>
+        <div>Maintenance Request and Damager Reports</div>
+    </div>
+    <div class="flex-1">
+        <p class="text-2xl font-semibold">Messages</p>
+        <div
+            *ngFor="let item of requests"
+            class="mb-2 py-4 border-bottom-1 surface-border"
+        >
+            <div class="flex my-2 justify-content-between">
+                <p
+                    class="px-2 text-sm py-1 inline-block border-round-md"
+                    [ngClass]="getTypeClass(item.type)"
+                >
+                    {{ item.type }}
+                </p>
+                <div>
+                    {{ item.dateReported }}
+                </div>
+            </div>
+            <p>
+                {{ item.tenant.firstName }} {{ item.tenant.lastName }}, phone:
+                {{ item.tenant.phoneNumber }}
+            </p>
+
+            <p class="font-semibold my-2">
+                {{ item.details }} ({{ item.request }})
+            </p>
+
+            <p class="my-2">
+                {{ item.unit.floorLevel }}-{{ item.unit.unitNumber }} at
+                {{ item.building.name }}, {{ item.building.address }}
+            </p>
+        </div>
+        <div></div>
+        <p>Notifications</p>
+    </div>
 </div>
