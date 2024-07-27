@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { AdminLayoutService } from '../service/admin-layout.service';
-import { COMPANY_NAME } from 'src/app/core/constants/constants';
+import {
+    COMPANY_NAME,
+    ZHIDHAYCONTACTDETAILS,
+} from 'src/app/core/constants/constants';
 
 @Component({
     selector: 'app-admin-topbar',
@@ -10,8 +13,7 @@ import { COMPANY_NAME } from 'src/app/core/constants/constants';
 })
 export class AdminTopbarComponent {
     items!: MenuItem[];
-    companyName = COMPANY_NAME;
-
+    companyDetails = ZHIDHAYCONTACTDETAILS;
     @ViewChild('menubutton') menuButton!: ElementRef;
 
     @ViewChild('topbarmenubutton') topbarMenuButton!: ElementRef;

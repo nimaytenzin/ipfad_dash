@@ -1,3 +1,5 @@
+import { BuildingDTO } from '../../dto/properties/building.dto';
+
 export interface OwnerSummaryStatsDTO {
     buildingCount: number;
     unitCount: number;
@@ -5,4 +7,6 @@ export interface OwnerSummaryStatsDTO {
     activeLeaseCount: number;
     totalRentalIncome: number;
     pendingPaymentAmount: number;
+
+    buildings: BuildingDTO[];
 }

@@ -1,3 +1,4 @@
+import { UnitDTO } from '../../units/unit.dto';
 import { TenantDTO } from '../../users/tenant.dto';
 
 export interface CreatePaymentAdviceItemDto {
@@ -45,6 +46,7 @@ export interface PaymentAdviceDto {
     status: string;
     paymentAdviseItem: PaymentAdviceDto[];
     tenant: TenantDTO;
+    unit: UnitDTO;
 }
 
 export interface GenerateBuildingPADto {

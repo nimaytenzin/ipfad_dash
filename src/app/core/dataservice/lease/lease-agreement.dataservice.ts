@@ -86,4 +86,10 @@ export class LeaseAgreementDataService {
             `${this.apiUrl}/lease-agreement/active/tenant/${tenantId}`
         );
     }
+
+    GetExpiringLeaseByBuilding(buildingId: number) {
+        return this.http.get<LeaseAgreementDTO[]>(
+            `${this.apiUrl}/lease-agreement/expiring/building/${buildingId}`
+        );
+    }
 }

@@ -59,7 +59,17 @@ export const ADMINSIDEBARITEMS = [
             {
                 label: 'Map View',
                 icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-properties/map'],
+                routerLink: ['/admin/master-properties/map-view'],
+            },
+            {
+                label: 'Organizations',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/search'],
+            },
+            {
+                label: 'Thrams',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/search'],
             },
         ],
     },

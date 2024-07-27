@@ -1,0 +1,54 @@
+<div>
+    <div *ngFor="let organization of data">
+        <p class="text-2xl font-semibold">
+            {{ organization.nameEng }} / {{ organization.nameDzo }}
+        </p>
+        <div *ngFor="let thram of organization.thrams">
+            <p class="text-xl">Thram No: {{ thram.thramNo }}</p>
+            <p>administrative Zone: {{ thram.administrativeZone }}</p>
+            <p>Sub administrative Zone: {{ thram.subAdministrativeZone }}</p>
+            <p-table [value]="thram.plots" styleClass="p-datatable-striped">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Plot ID</th>
+                        <th>Location</th>
+                        <th>Ownership Type</th>
+                        <th>Owner Name (English)</th>
+                        <th>Owner Name (Dzongkha)</th>
+                        <th>Owner CID</th>
+                        <th>Net Area</th>
+                        <th>Administrative Zone</th>
+                        <th>Sub Administrative Zone</th>
+                        <th>Lap Name</th>
+                        <th>Lap Code</th>
+                        <th>Precinct Name</th>
+                        <th>Precinct Code</th>
+
+                        <th>Plot Category</th>
+                        <th>Remarks</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-plot>
+                    <tr>
+                        <td>{{ plot.plotId }}</td>
+                        <td>{{ plot.location }}</td>
+                        <td>{{ plot.ownershipType }}</td>
+                        <td>{{ plot.ownerNameEnglish }}</td>
+                        <td>{{ plot.ownerNameDzongkha }}</td>
+                        <td>{{ plot.ownerCid }}</td>
+                        <td>{{ plot.netArea }} {{ plot.areaUnit }}</td>
+                        <td>{{ plot.administrativeZone }}</td>
+                        <td>{{ plot.subAdministrativeZone }}</td>
+                        <td>{{ plot.lapName }}</td>
+                        <td>{{ plot.lapCode }}</td>
+                        <td>{{ plot.precinctName }}</td>
+                        <td>{{ plot.precinctCode }}</td>
+
+                        <td>{{ plot.plotCategory }}</td>
+                        <td>{{ plot.remarks }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>

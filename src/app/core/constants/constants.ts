@@ -12,7 +12,7 @@ interface IZhidhayContactDetails {
 
 export const ZHIDHAYCONTACTDETAILS: IZhidhayContactDetails = {
     name: '',
-    webAppName: 'Zhidhay.com',
+    webAppName: 'Gerab Nyed',
     phoneNumber: 17263764,
     email: 'info@zhidhay.com',
     address: 'Babesa, Thim Throm',

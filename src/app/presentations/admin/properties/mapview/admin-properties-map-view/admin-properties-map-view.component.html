@@ -1,0 +1,18 @@
+<div class="flex gap-4 py-4">
+    <div class="flex gap-2">
+        <p-dropdown
+            [options]="cities"
+            [(ngModel)]="selectedCity"
+            optionLabel="name"
+            placeholder="Select a Dzongkhag "
+        />
+        <p-button icon="pi pi-search" label="Zoom"></p-button>
+    </div>
+
+    <p-inputGroup>
+        <input type="text" pInputText placeholder="Search Plot ID" />
+        <p-button icon="pi pi-search"></p-button>
+    </p-inputGroup>
+</div>
+
+<div id="map"></div>
