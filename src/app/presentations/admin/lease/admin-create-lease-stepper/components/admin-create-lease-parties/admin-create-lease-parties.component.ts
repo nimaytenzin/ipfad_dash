@@ -11,12 +11,15 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { CreateLeaseService } from 'src/app/core/dataservice/lease/create-lease.dataservice';
-import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
+// import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
 import { LeaseAgreementPartiesDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { GETDMYFROMDATE, GETMONTHNAME } from 'src/app/core/utility/date.helper';
+import { OwnerDataService } from 'src/app/core/dataservice/owners/owner.dataservice';
+import { OwnerDTO } from 'src/app/core/dataservice/owners/dto/owner.dto';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
     selector: 'app-admin-create-lease-parties',
@@ -31,6 +34,7 @@ import { GETDMYFROMDATE, GETMONTHNAME } from 'src/app/core/utility/date.helper';
         InputGroupModule,
         ToastModule,
         CalendarModule,
+        DropdownModule,
     ],
     providers: [MessageService],
     templateUrl: './admin-create-lease-parties.component.html',
@@ -39,6 +43,8 @@ import { GETDMYFROMDATE, GETMONTHNAME } from 'src/app/core/utility/date.helper';
 export class AdminCreateLeasePartiesComponent implements OnInit {
     tenantPhoneNumber: number;
     landlordPhoneNumber: number;
+
+    owners: OwnerDTO[];
 
     selectedTenant: TenantDTO;
     selectedLandlord: LandLordDTO;
@@ -51,12 +57,17 @@ export class AdminCreateLeasePartiesComponent implements OnInit {
         private createLeaseService: CreateLeaseService,
         private router: Router,
         private messageService: MessageService,
-        private tenantDataService: TenantDataService,
-        private landlordDataService: OwnerDataService
+        private ownerDataService: OwnerDataService,
+        private tenantDataService: TenantDataService // private landlordDataService: OwnerDataService
     ) {}
 
     ngOnInit() {
         this.restoreStateIfExists();
+        this.ownerDataService.GetAllOwners().subscribe({
+            next: (res) => {
+                this.owners = res;
+            },
+        });
     }
 
     restoreStateIfExists() {
@@ -143,43 +154,43 @@ export class AdminCreateLeasePartiesComponent implements OnInit {
         this.selectedLandlord = null;
     }
     searchLandlordByPhoneNumber() {
-        this.landlordDataService
-            .SearchLandLord({
-                phoneNumber: this.landlordPhoneNumber,
-            })
-            .subscribe({
-                next: (res) => {
-                    if (res) {
-                        this.selectedLandlord = res;
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Landlord Found',
-                            detail:
-                                'Landlord with Phone Number ' +
-                                this.landlordPhoneNumber +
-                                ' found',
-                        });
-                    } else {
-                        this.messageService.add({
-                            severity: 'error',
-                            summary: 'No Landlord Found',
-                            detail:
-                                'No Landlord with Phone number ' +
-                                this.landlordPhoneNumber,
-                        });
-                        this.landlordPhoneNumber = null;
-                    }
-                },
-                error: (err) => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'No Landlord Found',
-                        detail:
-                            'No Landlord with Phone number ' +
-                            this.tenantPhoneNumber,
-                    });
-                    this.landlordPhoneNumber = null;
-                },
-            });
+        // this.landlordDataService
+        //     .SearchLandLord({
+        //         phoneNumber: this.landlordPhoneNumber,
+        //     })
+        //     .subscribe({
+        //         next: (res) => {
+        //             if (res) {
+        //                 this.selectedLandlord = res;
+        //                 this.messageService.add({
+        //                     severity: 'success',
+        //                     summary: 'Landlord Found',
+        //                     detail:
+        //                         'Landlord with Phone Number ' +
+        //                         this.landlordPhoneNumber +
+        //                         ' found',
+        //                 });
+        //             } else {
+        //                 this.messageService.add({
+        //                     severity: 'error',
+        //                     summary: 'No Landlord Found',
+        //                     detail:
+        //                         'No Landlord with Phone number ' +
+        //                         this.landlordPhoneNumber,
+        //                 });
+        //                 this.landlordPhoneNumber = null;
+        //             }
+        //         },
+        //         error: (err) => {
+        //             this.messageService.add({
+        //                 severity: 'error',
+        //                 summary: 'No Landlord Found',
+        //                 detail:
+        //                     'No Landlord with Phone number ' +
+        //                     this.tenantPhoneNumber,
+        //             });
+        //             this.landlordPhoneNumber = null;
+        //         },
+        //     });
     }
 }

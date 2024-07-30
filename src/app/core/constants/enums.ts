@@ -125,3 +125,28 @@ export enum ENTRYDAMAGEACTIONSTATUS {
     RESOLVED = 'RESOLVED',
     REJECTED = 'REJECTED',
 }
+
+export enum LANDAREAUNITS {
+    SQFT = 'Sqft',
+    ACRE = 'Acre',
+}
+
+export enum PLOTCATEGORYENUM {
+    OT = 'Old Thromde Thram',
+    KA = 'Kasho',
+    IN = 'Inheritance',
+    ZH = 'Zhichhag',
+    SA = 'Substitute',
+    SL = 'Sale Purchase',
+    EX = 'Exchange',
+    GF = 'Gift',
+    LE = 'Lease',
+    SR = 'Soelra',
+    AL = 'Allotment',
+    NO = 'Normal',
+    C = 'Commercial',
+    R = 'Residential',
+    I = 'Institutional',
+    LUC = 'Land Use Certificate',
+    UN = 'Unknown',
+}

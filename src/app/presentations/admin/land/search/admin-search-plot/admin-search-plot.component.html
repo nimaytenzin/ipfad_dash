@@ -1,0 +1,129 @@
+<p>Search Thram</p>
+<div class="p-fluid flex flex-column gap-2 mt-4">
+    <div class="flex gap-4 w-full mb-4">
+        <div class="flex flex-1 flex-column gap-2">
+            <label for="dzongkhag">Dzongkhag</label>
+            <p-dropdown
+                [options]="dzongkhags"
+                optionLabel="name"
+                placeholder="Select Dzongkhag"
+                (onChange)="dzongkhagSelected($event)"
+                [(ngModel)]="selectedDzongkhag"
+            ></p-dropdown>
+        </div>
+        <div class="flex flex-1 flex-column gap-2">
+            <label for="gewog">Administrative Zone</label>
+            <p-dropdown
+                optionLabel="name"
+                placeholder="Select Administrative Zone"
+                (onChange)="administrativeZoneSelect($event)"
+                [options]="administrativeZones"
+                [(ngModel)]="selectedAdministrativeZone"
+            >
+            </p-dropdown>
+        </div>
+    </div>
+    <div class="flex gap-4 my-4 justify-content-end align-items-end">
+        <div class="flex flex-1 flex-column gap-2">
+            <label for="chiwog">Sub AdministrativeZone</label>
+            <p-dropdown
+                [options]="subAdministrativeZones"
+                optionLabel="name"
+                placeholder="Select Sub Administrative Zone"
+                [(ngModel)]="selectedSubAdministrativeZone"
+            ></p-dropdown>
+        </div>
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="nameEnglish">Thram Number</label>
+            <input
+                pInputText
+                id="nameEnglish"
+                [(ngModel)]="thramNo"
+                type="text"
+            />
+        </div>
+    </div>
+    <div class="flex justify-content-end">
+        <p-button label="Search for Thram" (click)="searchThram()"></p-button>
+    </div>
+</div>
+
+<p-divider></p-divider>
+
+<div *ngIf="thram">
+    <p class="text-xl font-semibold my-2">Thram No: {{ thram.thramNo }}</p>
+    <p>Owner: {{ thram.owner.nameEnglish }} / {{ thram.owner.nameDzongkha }}</p>
+    <p-table [value]="plots" styleClass="p-datatable-striped">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Plot Id</th>
+                <th>Plot Category</th>
+
+                <th>Ownership Type</th>
+                <th>Thram No</th>
+                <th>Owner</th>
+
+                <th>Net Area</th>
+
+                <th>Lap Name</th>
+
+                <th>Precinct Name</th>
+
+                <th>Buildings</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-plot>
+            <tr>
+                <td>
+                    <p>
+                        {{ plot.plotId }}
+                    </p>
+                    <a
+                        href=" https://esakorv1.nlcs.gov.bt/portal/public/app/verifyqrcode/f588e036d97f44e6648fb3da11dfde92aab76ae8"
+                        target="_blank"
+                    >
+                        Esakor Link
+                    </a>
+                    <p-button
+                        label="Map View"
+                        size="small"
+                        icon="pi pi-map"
+                        (click)="viewPlotsSpatially(plot)"
+                    ></p-button>
+                </td>
+                <td>{{ plot.plotCategory }}</td>
+
+                <td>{{ plot.ownershipType }}</td>
+                <td>{{ plot.thram?.thramNo }}</td>
+                <td>
+                    {{ thram?.owner?.nameEnglish }}/{{
+                        plot.thram?.owner?.nameDzongkha
+                    }}
+                </td>
+                <td>{{ plot.netArea }} {{ plot.areaUnit }}</td>
+
+                <td>{{ plot.lapName }}/ {{ plot.lapCode }}</td>
+
+                <td>{{ plot.precinctName }} /{{ plot.precinctCode }}</td>
+
+                <td>
+                    <div>
+                        <p *ngIf="!plot.buildings.length">No Buildings Added</p>
+                        <div
+                            *ngFor="let building of plot.buildings"
+                            class="p-fluid"
+                        >
+                            <p-button
+                                [label]="building.name"
+                                [link]="true"
+                                (click)="navigateToBuilding(building.id)"
+                            />
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

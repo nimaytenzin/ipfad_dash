@@ -11,6 +11,14 @@ import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice
 import { LeaseAgreementPropertiesDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
+import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
+import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
+import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
+import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
+import { InputTextModule } from 'primeng/inputtext';
+import { ThramDataService } from 'src/app/core/dataservice/land/thram.dataservice';
+import { ThramDTO } from 'src/app/core/dataservice/land/dto/thram.dto';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 
 @Component({
     selector: 'app-admin-create-lease-properties',
@@ -22,13 +30,27 @@ import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
         FormsModule,
         DropdownModule,
         ButtonModule,
+        InputTextModule,
     ],
     styleUrls: ['./admin-create-lease-properties.component.scss'],
 })
 export class AdminCreateLeasePropertiesComponent implements OnInit {
+    selectedDzongkhag: DzongkhagDTO;
+    selectedAdministrativeZone: AdministrativeZoneDTO;
+    selectedSubAdministrativeZone: SubAdministrativeZoneDTO;
+    thramNo: string;
+
+    dzongkhags: DzongkhagDTO[];
+    administrativeZones: AdministrativeZoneDTO[];
+    subAdministrativeZones: SubAdministrativeZoneDTO[];
+
+    thram: ThramDTO;
+    plots: PlotDTO[];
+
+    selectedPlot: PlotDTO;
     selectedBuilding: BuildingDTO;
     selectedUnit: UnitDTO;
-    buildings: BuildingDTO[];
+    buildings: BuildingDTO[] = [];
     units: UnitDTO[];
 
     selectedUse: string;
@@ -46,16 +68,73 @@ export class AdminCreateLeasePropertiesComponent implements OnInit {
         private createLeaseService: CreateLeaseService,
         private buildingDataService: BuildingDataService,
         private unitDataService: UnitDataService,
-        private router: Router
+        private router: Router,
+        private locationDataService: LocationDataService,
+        private thramDataService: ThramDataService
     ) {}
 
     ngOnInit() {
+        this.locationDataService.GetAllDzonghags().subscribe({
+            next: (res) => {
+                this.dzongkhags = res;
+            },
+        });
         if (!this.createLeaseService.getLeaseInformation().parties) {
             this.createLeaseService.navigateToParties();
         } else {
             this.getBuildingsByLandlord();
             this.restoreStateIfExists();
         }
+    }
+
+    getAdminsitrativeZones(dzongkhag: DzongkhagDTO) {
+        this.locationDataService
+            .GetAllAdministrativeZones({
+                dzongkhagId: dzongkhag.id.toString(),
+            })
+            .subscribe((res: any) => {
+                this.administrativeZones = res;
+            });
+    }
+
+    dzongkhagSelected(e) {
+        this.getAdminsitrativeZones(e.value);
+    }
+    administrativeZoneSelect(e) {
+        this.getSubadministrativeZones(e.value);
+    }
+
+    getSubadministrativeZones(administrativeZone: AdministrativeZoneDTO) {
+        this.locationDataService
+            .GetAllSubAdministrativeZones({
+                administrativeZoneId: administrativeZone.id.toString(),
+            })
+            .subscribe((res: any) => {
+                this.subAdministrativeZones = res;
+            });
+    }
+
+    searchThram() {
+        console.log({
+            dzongkhagId: this.selectedDzongkhag.id,
+            administrativeZoneId: this.selectedAdministrativeZone.id,
+            subAdministrativeZoneId: this.selectedAdministrativeZone.id,
+            thramNo: this.thramNo,
+        });
+        this.thramDataService
+            .SearchForThram({
+                dzongkhagId: this.selectedDzongkhag.id,
+                administrativeZoneId: this.selectedAdministrativeZone.id,
+                subAdministrativeZoneId: this.selectedAdministrativeZone.id,
+                thramNo: this.thramNo,
+            })
+            .subscribe({
+                next: (res) => {
+                    this.thram = res;
+                    console.log(res);
+                    this.plots = res.plots;
+                },
+            });
     }
 
     restoreStateIfExists() {
@@ -69,21 +148,28 @@ export class AdminCreateLeasePropertiesComponent implements OnInit {
         return this.createLeaseService.getLeaseInformation().properties;
     }
 
+    plotSelected(event) {
+        if (!event.value.buildings.length) {
+            alert('No buildings registerd in the selected plot');
+        }
+        this.buildings = event.value.buildings;
+    }
+
     getBuildingsByLandlord() {
-        this.buildingDataService
-            .GetBuildingsByLandlord(
-                this.createLeaseService.getLeaseInformation().parties.landlordId
-            )
-            .subscribe({
-                next: (res) => {
-                    if (res) {
-                        this.buildings = res;
-                    }
-                },
-                error: (err) => {
-                    alert(err);
-                },
-            });
+        // this.buildingDataService
+        //     .GetBuildingsByLandlord(
+        //         this.createLeaseService.getLeaseInformation().parties.landlordId
+        //     )
+        //     .subscribe({
+        //         next: (res) => {
+        //             if (res) {
+        //                 this.buildings = res;
+        //             }
+        //         },
+        //         error: (err) => {
+        //             alert(err);
+        //         },
+        //     });
     }
     loadUnitsByBuilding() {
         this.unitDataService

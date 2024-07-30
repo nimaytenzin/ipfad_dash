@@ -15,6 +15,7 @@ import {
     BuildingPlotDTO,
     CreateBuildingPlotDTO,
 } from '../../dto/ownership/buildingplot.dto';
+import { PlotDTO } from '../land/dto/plot.dto';
 
 @Injectable({
     providedIn: 'root',

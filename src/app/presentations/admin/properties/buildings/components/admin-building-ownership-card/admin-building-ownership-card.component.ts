@@ -5,7 +5,6 @@ import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { BuildingOwnershipDto } from 'src/app/core/dto/properties/building-ownership.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
-import { OwnerDTO } from 'src/app/core/dto/users/owner.dto';
 import { AdminAddBuildingownershipComponent } from 'src/app/presentations/admin/ownership/crud-modals/admin-add-buildingownership/admin-add-buildingownership.component';
 import { AdminEditBuildingownershipComponent } from 'src/app/presentations/admin/ownership/crud-modals/admin-edit-buildingownership/admin-edit-buildingownership.component';
 
@@ -32,7 +31,7 @@ export class AdminBuildingOwnershipCardComponent implements OnInit {
     ref: DynamicDialogRef | undefined;
     showConfirmDeleteBuildingOwnershipDialog: boolean = false;
     showOwnerDetailCard: boolean = false;
-    selectedOwner: OwnerDTO = {} as OwnerDTO;
+    selectedOwner: any;
 
     constructor(private dialogService: DialogService) {}
 

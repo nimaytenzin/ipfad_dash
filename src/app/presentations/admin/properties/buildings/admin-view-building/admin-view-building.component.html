@@ -11,7 +11,7 @@
         </h4>
         <p class="m-0 p-0">
             {{ building?.buildingNumber }} {{ building?.streetName }}
-            {{ building?.adminsitrativeZone?.name }}
+            {{ building?.administrativeZone?.name }}
             {{ building?.subadministrativeZone?.name }}
         </p>
 
@@ -44,19 +44,19 @@
                                 [editMode]="true"
                             ></app-admin-building-details-card>
                             <p-divider type="dashed" />
-
-                            <app-admin-building-plot
-                                [plots]="building.plots"
-                            ></app-admin-building-plot>
                         </div>
                         <p-divider layout="vertical" type="dashed" />
 
                         <div class="w-6">
-                            <app-admin-building-ownership-card
+                            <app-admin-building-plot
+                                [plots]="building.plots"
+                                [buildingId]="buildingId"
+                            ></app-admin-building-plot>
+                            <!-- <app-admin-building-ownership-card
                                 [owners]="building.owners"
                                 [editMode]="true"
                             >
-                            </app-admin-building-ownership-card>
+                            </app-admin-building-ownership-card> -->
                         </div>
                     </div>
 

@@ -25,6 +25,11 @@
         [(ngModel)]="accountNumber"
     />
 </div>
+
+<div class="flex align-items-center gap-3 mb-5">
+    <label for="bankAccountNumber" class="font-semibold w-6rem">Remarks</label>
+    <input type="text" [(ngModel)]="remarks" pInputText />
+</div>
 <div class="flex justify-content-end gap-2">
     <p-button label="Cancel" (click)="close()" severity="secondary" />
     <p-button label="Update" (click)="updateBankAccount()" />

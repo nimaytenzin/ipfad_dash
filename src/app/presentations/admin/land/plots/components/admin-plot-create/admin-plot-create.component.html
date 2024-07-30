@@ -1,0 +1,193 @@
+<form [formGroup]="createPlotForm" class="p-fluid p-2" style="min-width: 35vw">
+    <div *ngIf="!thramFound">
+        <p class="text-lg font-semibold mb-2">Search Thram</p>
+
+        <div class="flex gap-2 w-full mb-4">
+            <div class="flex flex-1 flex-column gap-2">
+                <label for="dzongkhag">Dzongkhag</label>
+                <p-dropdown
+                    id="dzongkhag"
+                    [options]="dzongkhags"
+                    optionValue="id"
+                    optionLabel="name"
+                    (onChange)="dzongkhagSelected($event)"
+                    formControlName="dzongkhagId"
+                ></p-dropdown>
+            </div>
+            <div class="flex flex-1 flex-column gap-2">
+                <label for="gewog">Administrative Zone</label>
+                <p-dropdown
+                    id="bankName"
+                    optionValue="id"
+                    optionLabel="name"
+                    (onChange)="administrativeZoneSelect($event)"
+                    [options]="administrativeZones"
+                    formControlName="administrativeZoneId"
+                >
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="flex gap-2 my-4 justify-content-end align-items-end">
+            <div class="flex flex-1 flex-column gap-2">
+                <label for="chiwog">Sub AdministrativeZone</label>
+                <p-dropdown
+                    id="chiwog"
+                    [options]="subAdministrativeZones"
+                    optionValue="id"
+                    optionLabel="name"
+                    formControlName="subAdministrativeZoneId"
+                ></p-dropdown>
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Thram Number</label>
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    formControlName="thramNo"
+                    type="text"
+                />
+            </div>
+        </div>
+        <div class="flex justify-content-end">
+            <p-button
+                label="Search for Thram"
+                (click)="searchThram()"
+            ></p-button>
+        </div>
+    </div>
+
+    <p-divider></p-divider>
+    <div *ngIf="searchedThram">
+        <p class="text-lg font-semibold text-green-500">Thram Found</p>
+        <p>Thram No: {{ searchedThram.thramNo }}</p>
+        <p>Dzongkhag: {{ searchedThram.dzongkhag?.name }}</p>
+        <p>Adminstrative Zone: {{ searchedThram.administrativeZone?.name }}</p>
+        <p>
+            Sub Adminstrative Zone:
+            {{ searchedThram.subAdministrativeZone?.name }}
+        </p>
+        <p>
+            Owner: {{ searchedThram.owner?.nameEnglish }}/{{
+                searchedThram.owner?.nameDzongkha
+            }}
+        </p>
+    </div>
+    <p-divider></p-divider>
+    <div *ngIf="thramFound">
+        <p class="text-lg font-semibold mb-2">Add Plot Details</p>
+        <div class="flex gap-2">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Plot ID</label>
+
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    formControlName="plotId"
+                    type="text"
+                />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Plot Category</label>
+
+                <p-dropdown
+                    id="dzongkhag"
+                    [options]="plotCategories"
+                    formControlName="plotCategory"
+                ></p-dropdown>
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Ownership Type</label>
+
+                <p-dropdown
+                    id="dzongkhag"
+                    [options]="plotCategories"
+                    formControlName="ownershipType"
+                ></p-dropdown>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Net Area</label>
+
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    formControlName="netArea"
+                    type="text"
+                />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="dzongkhag">Area Units</label>
+                <p-dropdown
+                    id="dzongkhag"
+                    [options]="landAreaUnits"
+                    formControlName="areaUnit"
+                ></p-dropdown>
+            </div>
+        </div>
+
+        <p-divider></p-divider>
+        <p class="text-lg font-semibold mb-2">
+            Precicnts and Development Rights
+        </p>
+        <div class="flex gap-2">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">LAP Name</label>
+
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    formControlName="lapName"
+                    type="text"
+                />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">LAP CODE</label>
+
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    formControlName="lapCode"
+                    type="text"
+                />
+            </div>
+        </div>
+        <div class="flex gap-2 my-4">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Precinct Name</label>
+
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    formControlName="precinctName"
+                    type="text"
+                />
+            </div>
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Precinct Code</label>
+
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    formControlName="precinctCode"
+                    type="text"
+                />
+            </div>
+        </div>
+        <div class="flex flex-column gap-2 my-4">
+            <label for="nameEnglish">Additional Remarks</label>
+
+            <input
+                pInputText
+                id="nameEnglish"
+                formControlName="remarks"
+                type="text"
+            />
+        </div>
+
+        <div class="flex justify-content-end gap-4 mt-4">
+            <p-button (click)="createPlot()" label="Create Plot"></p-button>
+            <p-button severity="secondary" label="Cancel"></p-button>
+        </div>
+    </div>
+</form>

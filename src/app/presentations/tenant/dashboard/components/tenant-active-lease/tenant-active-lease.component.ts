@@ -116,5 +116,11 @@ export class TenantActiveLeasecomponent implements OnInit {
                 },
             }
         );
+
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.getActiveLeaseAgreements();
+            }
+        });
     }
 }

@@ -10,7 +10,7 @@ import {
 } from '../../dto/properties/building-amenity.dto';
 import { BankAccountDto, CreateBankAccountDto } from './bankaccount.dto';
 
-interface BankListWithLogoDto {
+export interface BankListWithLogoDto {
     bankCode: string;
     bankName: string;
     logourl: string;
@@ -31,6 +31,9 @@ export class BankAccountDataService {
             `${this.apiUrl}/bank-account`,
             data
         );
+    }
+    GetBankAccounts(): Observable<BankAccountDto[]> {
+        return this.http.get<BankAccountDto[]>(`${this.apiUrl}/bank-account`);
     }
 
     UpdateBankAccount(

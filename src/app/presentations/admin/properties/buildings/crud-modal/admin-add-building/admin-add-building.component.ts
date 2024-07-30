@@ -101,7 +101,7 @@ export class AdminAddBuildingComponent {
 
             dzongkhagId: ['', Validators.required],
             administrativeZoneId: ['', Validators.required],
-            subadministrativeZoneId: ['', Validators.required],
+            subadminsitrativeZoneId: ['', Validators.required],
         });
 
         this.getDzongkhags();

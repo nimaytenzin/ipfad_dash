@@ -9,7 +9,6 @@ import { PaginatorModule } from 'primeng/paginator';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
-import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { AdminCreateBankAccountComponent } from '../../bankaccounts/admin-create-bank-account/admin-create-bank-account.component';
@@ -34,7 +33,7 @@ export class AdminMasterOwnersComponent implements OnInit {
     constructor(
         public dialogService: DialogService,
         private router: Router,
-        private landlordDataService: OwnerDataService,
+
         private bankAccountDataservice: BankAccountDataService
     ) {}
 
@@ -64,33 +63,32 @@ export class AdminMasterOwnersComponent implements OnInit {
     }
 
     onPageChange(e) {
-        console.log(e);
-        this.landlordDataService
-            .GetLandlordsPaginated({
-                page: e.page,
-                limit: e.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedLandlords = res;
-            });
+        // console.log(e);
+        // this.landlordDataService
+        //     .GetLandlordsPaginated({
+        //         page: e.page,
+        //         limit: e.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedLandlords = res;
+        //     });
     }
 
     getLandlords() {
-        this.landlordDataService
-            .GetLandlordsPaginated({
-                page: 0,
-                limit: this.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedLandlords = res;
-                console.log(res);
-
-                for (const landlord of res.data) {
-                    for (const building of landlord.buildings) {
-                        console.log(building.BuildingOwnership);
-                    }
-                }
-            });
+        // this.landlordDataService
+        //     .GetLandlordsPaginated({
+        //         page: 0,
+        //         limit: this.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedLandlords = res;
+        //         console.log(res);
+        //         for (const landlord of res.data) {
+        //             for (const building of landlord.buildings) {
+        //                 console.log(building.BuildingOwnership);
+        //             }
+        //         }
+        //     });
     }
 
     getObjectKeys(obj: any): string[] {

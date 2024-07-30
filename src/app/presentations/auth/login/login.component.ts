@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { ToastModule } from 'primeng/toast';
+import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 
 @Component({
     selector: 'app-login',
@@ -24,7 +25,7 @@ export class LoginComponent {
     loginForm!: FormGroup;
 
     showLoading: boolean = false;
-
+    companyDetails = ZHIDHAYCONTACTDETAILS;
     password!: string;
 
     pin: string[] = [];

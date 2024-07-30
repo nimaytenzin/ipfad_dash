@@ -35,6 +35,7 @@ export class AdminEditBankAccoutComponent implements OnInit {
     accountNumber: number;
     accountName: string;
     selectedBank: any;
+    remarks: string;
 
     bankAccount: any;
 
@@ -53,6 +54,7 @@ export class AdminEditBankAccoutComponent implements OnInit {
             );
             this.accountNumber = this.bankAccount.accountNumber;
             this.accountName = this.bankAccount.accountName;
+            this.remarks = this.bankAccount.remarks;
         }
     }
 
@@ -69,7 +71,7 @@ export class AdminEditBankAccoutComponent implements OnInit {
                     bankName: this.selectedBank.shorthand,
                     accountName: this.accountName,
                     accountNumber: this.accountNumber,
-                    landlordId: this.bankAccount.landlordid,
+                    remarks: this.remarks,
                 },
                 this.bankAccount.id
             )

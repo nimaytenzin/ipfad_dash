@@ -64,6 +64,7 @@ export class AdminViewBuildingComponent implements OnInit {
             .GetOneById(this.buildingId)
             .subscribe((res) => {
                 this.building = res;
+                console.log(res);
             });
 
         this.responsiveOptions = [

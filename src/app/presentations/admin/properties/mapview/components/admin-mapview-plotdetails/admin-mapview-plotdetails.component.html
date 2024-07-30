@@ -1,22 +1,42 @@
 <div>
-    <p>PlotId: SM1-12</p>
-    <p>Orginazation</p>
-    <p class="font-semibold">'Central Monastic Body'/ 'གཞུང་གྲྭ་ཚང་།'</p>
-    <p-divider type="dashed"></p-divider>
-    <p>Thram : <strong>3072 </strong></p>
-    <p>Dzonkhag:Thimphu Dzongkhag</p>
-    <p>Administrative Zone: Thimphu Thromde</p>
-    <p>Sub Administrative Zone: Simtokha Thromde Village</p>
-    <p>LAP: Simtokha LAP ( TH1100)</p>
+    <p>
+        PlotId:
+        {{ plotId }}
+    </p>
 
     <p-divider type="dashed"></p-divider>
-    <p>Lease Status: <strong>Not Leased</strong></p>
-    <p-divider type="dashed"></p-divider>
-    <p>Buildings</p>
+    <p>
+        Thram : <strong>{{ plot?.thram?.thramNo }} </strong>
+    </p>
+    <p>
+        Owner:
+        <strong>
+            {{ plot?.thram?.owner?.nameEnglish }} /
+            {{ plot?.thram?.owner?.nameDzongkha }}
+        </strong>
+    </p>
+    <p-divider></p-divider>
 
-    <div>
-        <p>Name: <strong>NN Building</strong></p>
-        <p>Type: Contemporary RCC Building</p>
-        <p>Floor Configuration: B+G+4</p>
-    </div>
+    <p class="font-semibold mb-2">Location Details</p>
+    <p>
+        Dzonkhag: <strong>{{ plot.dzongkhag.name }}</strong>
+    </p>
+    <p>
+        Administrative Zone: <strong>{{ plot.administrativeZone.name }}</strong>
+    </p>
+
+    <p>
+        Sub Administrative Zone:
+        <strong> {{ plot.subAdministrativeZone.name }}</strong>
+    </p>
+    <p-divider></p-divider>
+
+    <p class="font-semibold mb-2">Development Zone Details</p>
+    <p>
+        LAP: <strong>{{ plot?.lapName }} ({{ plot?.lapCode }})</strong>
+    </p>
+    <p>
+        Precinct:
+        <strong>{{ plot?.precinctName }} ({{ plot?.precinctCode }})</strong>
+    </p>
 </div>

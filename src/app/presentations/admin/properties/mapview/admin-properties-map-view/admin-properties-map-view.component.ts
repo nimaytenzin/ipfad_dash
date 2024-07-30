@@ -84,6 +84,9 @@ export class AdminPropertiesMapViewComponent implements OnInit {
                                 AdminMapviewPlotdetailsComponent,
                                 {
                                     header: feature.properties.plotId,
+                                    data: {
+                                        plotId: feature.properties.plotId,
+                                    },
                                 }
                             );
                         });

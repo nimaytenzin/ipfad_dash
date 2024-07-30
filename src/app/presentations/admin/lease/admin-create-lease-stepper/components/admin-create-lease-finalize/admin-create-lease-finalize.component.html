@@ -35,21 +35,8 @@
                 </p>
                 <p>PARTY OF ONE PART and</p>
                 <p>
-                    {{ leaseInformation.parties?.landlord?.firstName }}
-                    {{ leaseInformation.parties?.landlord?.middleName }}
-                    {{ leaseInformation.parties?.landlord?.lastName }}
-
-                    holding CID No
-                    {{ leaseInformation.parties?.landlord?.cid }} of
-                    {{
-                        leaseInformation.parties?.landlord
-                            ?.subadministrativeZone?.name
-                    }},
-                    {{
-                        leaseInformation.parties?.landlord?.administrativeZone
-                            ?.name
-                    }}
-                    {{ leaseInformation.parties?.landlord?.dzongkhag?.name }}
+                    {{ leaseInformation.parties?.landlord?.nameEnglish }}
+                    {{ leaseInformation.parties?.landlord?.nameDzongkha }}
 
                     herein after referred to as the “Owner/Lessor".
                 </p>
@@ -260,12 +247,6 @@
                         period.
                     </li>
                 </ol>
-
-                <p-button
-                    label="Create Lease Agreement"
-                    (click)="createLeaseAgreement()"
-                >
-                </p-button>
             </div>
         </ng-template>
 
@@ -277,11 +258,10 @@
                     icon="pi pi-angle-left"
                 ></p-button>
                 <p-button
-                    label="Create Lease"
-                    (onClick)="createLease()"
-                    icon="pi pi-save"
-                    iconPos="right"
-                ></p-button>
+                    label="Create Lease Agreement"
+                    (click)="createLeaseAgreement()"
+                >
+                </p-button>
             </div>
         </ng-template>
     </p-card>

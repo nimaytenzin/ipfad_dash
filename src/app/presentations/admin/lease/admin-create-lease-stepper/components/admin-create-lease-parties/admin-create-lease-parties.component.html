@@ -78,49 +78,21 @@
 
                 <div>
                     <div *ngIf="!selectedLandlord">
-                        <p-inputGroup class="w-full">
-                            <p-inputGroupAddon>+975</p-inputGroupAddon>
-                            <input
-                                type="text"
-                                pInputText
-                                placeholder="Landlord Phone Number"
-                                [(ngModel)]="landlordPhoneNumber"
-                                (keyup.enter)="searchLandlordByPhoneNumber()"
-                            />
-                            <p-inputGroupAddon>
-                                <i
-                                    class="pi pi-search"
-                                    (click)="searchLandlordByPhoneNumber()"
-                                ></i>
-                            </p-inputGroupAddon>
-                        </p-inputGroup>
+                        <p-dropdown
+                            [options]="owners"
+                            [(ngModel)]="selectedLandlord"
+                            placeholder="Select an Owner"
+                            optionLabel="nameEnglish"
+                            [filter]="true"
+                            filterBy="nameEnglish"
+                        />
                     </div>
 
                     <div *ngIf="selectedLandlord">
                         <p>
                             <strong>
-                                {{ selectedLandlord.firstName }}
-                                <span *ngIf="selectedLandlord.middleName">
-                                    {{ selectedLandlord.middleName }}
-                                </span>
-                                <span *ngIf="selectedLandlord.lastName">
-                                    {{ selectedLandlord.lastName }}
-                                </span>
-                            </strong>
-                        </p>
-                        <p>
-                            bearing cid
-                            <strong>{{ selectedLandlord.cid }}</strong>
-                        </p>
-                        <p>
-                            from
-                            <strong>
-                                {{
-                                    selectedLandlord.subadministrativeZone.name
-                                }},
-                                {{ selectedLandlord.administrativeZone.name }}
-                                ,
-                                {{ selectedLandlord.dzongkhag.name }}
+                                {{ selectedLandlord.nameEnglish }} / .
+                                {{ selectedLandlord.nameDzongkha }}
                             </strong>
                         </p>
 

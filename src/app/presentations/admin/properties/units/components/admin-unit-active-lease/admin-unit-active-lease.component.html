@@ -1,7 +1,7 @@
 <div
     id="leaseActivesummary"
     class="border-1 p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="activeLeaseAgreement"
+    *ngIf="activeLeaseAgreement.id"
 >
     <div class="flex justify-content-between mb-5">
         <p-chip label="Active Lease" icon="pi pi-bookmark-fill" />
@@ -21,18 +21,6 @@
             />
         </div>
     </div>
-
-    <!-- <p>Status: Active</p>
-    <p class="text-lg font-bold text-green-500 my-2">
-        Active till:
-        {{ getReadableDate(activeLeaseAgreement.leaseEndDate) }}
-    </p>
-    <p-button
-        label="renew"
-        size="small"
-        icon="pi pi-refresh
-"
-    ></p-button> -->
 
     <div
         class="flex justify-content-between gap-4 mt-3"
@@ -181,7 +169,10 @@
 
 <div
     class="border-1 mb-4 p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="!activeLeaseAgreement"
+    *ngIf="!activeLeaseAgreement.id"
 >
-    <p>No Active Lease agreement</p>
+    <p>
+        This unit has not been currently leased. Please go to the lease
+        agreements tab and create a new lease
+    </p>
 </div>

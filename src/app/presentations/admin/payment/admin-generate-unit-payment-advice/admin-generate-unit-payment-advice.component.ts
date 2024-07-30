@@ -56,7 +56,7 @@ export class AdminGenerateUnitPaymentAdviceComponent implements OnInit {
             buildingId: this.leaseAgreement.buildingId,
             tenantId: this.leaseAgreement.tenantId,
             leaseAgreementId: this.leaseAgreement.id,
-            landlordId: this.leaseAgreement.landlordId,
+            ownerId: this.leaseAgreement.ownerId,
             title:
                 'Payment for the month of ' +
                 monthName +

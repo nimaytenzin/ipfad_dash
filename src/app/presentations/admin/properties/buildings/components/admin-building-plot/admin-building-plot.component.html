@@ -1,12 +1,26 @@
+<p class="font-bold text-xl">Plot & Ownership</p>
+
 <div class="flex gap-4">
     <div *ngFor="let plot of plots">
-        <p class="mt-4">
-            Thram: <strong> {{ plot.thramNumber }} </strong>
+        <p class="text-lg">
+            Owner:
+            <span class="font-semibold"
+                >{{ plot.thram.owner.nameEnglish }}/
+                {{ plot.thram.owner.nameDzongkha }}</span
+            >
+        </p>
+        <p class="mt-2">
+            Thram: <strong> {{ plot.thram.thramNo }} </strong>
         </p>
         <p>
             PlotID: <strong> {{ plot.plotId }} </strong>
         </p>
-        <div class="flex gap-2 mt-1">
+        <p>Precinct: {{ plot.precinctName }}({{ plot.precinctCode }})</p>
+        <p>
+            {{ plot.administrativeZone?.name }},
+            {{ plot.subAdministrativeZone?.name }}
+        </p>
+        <!-- <div class="flex gap-2 mt-1">
             <p-button
                 icon="pi pi-pencil"
                 size="small"
@@ -21,9 +35,11 @@
                 severity="danger "
                 (click)="openConfirmDeleteBuildingPlotDialog(plot)"
             />
-        </div>
+        </div> -->
     </div>
 </div>
 <div *ngIf="!plots?.length" class="text-red-500">
     ! Building Plot not mapped
+
+    <p-button label="Map plot" (click)="openMapPlotBuilding()"></p-button>
 </div>

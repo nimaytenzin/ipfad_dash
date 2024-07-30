@@ -12,7 +12,7 @@ export interface CreatePaymentAdviceDto {
     buildingId: number;
     tenantId: number;
     leaseAgreementId: number;
-    landlordId: number;
+    ownerId: number;
     title: string;
     month: number;
     year: number;
@@ -34,7 +34,7 @@ export interface PaymentAdviceDto {
     unitId: number;
     buildingId: number;
     tenantId: number;
-    landlordId: number;
+    ownerId: number;
 
     title: string;
     month: number;

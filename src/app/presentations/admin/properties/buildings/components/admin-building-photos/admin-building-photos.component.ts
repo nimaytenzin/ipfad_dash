@@ -11,7 +11,7 @@ import { GalleriaModule } from 'primeng/galleria';
     imports: [CarouselModule, ButtonModule, GalleriaModule],
 })
 export class AdminBuildingPhotosComponent implements OnInit {
-    buildingImages = ['assets/images/b1.jpeg'];
+    buildingImages = ['assets/images/b1.jpg'];
 
     constructor() {}
 

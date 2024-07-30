@@ -8,7 +8,10 @@ import { AdminListUnitsComponent } from './units/admin-list-units/admin-list-uni
 import { AdminViewBuildingLayoutComponent } from './buildings/admin-view-building/admin-view-building-layout/admin-view-building-layout.component';
 import { AdminPropertyListingsComponent } from './listings/admin-property-listings/admin-property-listings.component';
 import { AdminPropertiesMapViewComponent } from './mapview/admin-properties-map-view/admin-properties-map-view.component';
-import { AdminPropertiesSearchComponent } from './search/admin-properties-search/admin-properties-search.component';
+import { AdminThramListingsComponent } from '../land/thrams/admin-thram-listings/admin-thram-listings.component';
+import { AdminPlotsListingComponent } from '../land/plots/admin-plots-listing/admin-plots-listing.component';
+import { AdminSearchPlotComponent } from '../land/search/admin-search-plot/admin-search-plot.component';
+import { AdminSearchBuildingsComponent } from './search/admin-search-buildings/admin-search-buildings.component';
 
 const routes: Routes = [
     {
@@ -20,12 +23,29 @@ const routes: Routes = [
                 component: AdminPropertyListingsComponent,
             },
             {
+                path: 'thrams',
+                component: AdminThramListingsComponent,
+            },
+            {
+                path: 'plots',
+                component: AdminPlotsListingComponent,
+            },
+            {
                 path: 'map-view',
                 component: AdminPropertiesMapViewComponent,
             },
             {
-                path: 'search',
-                component: AdminPropertiesSearchComponent,
+                path: 'search/plots',
+                component: AdminSearchPlotComponent,
+            },
+            {
+                path: 'search/buildings',
+                component: AdminSearchBuildingsComponent,
+            },
+
+            {
+                path: 'list-buildings',
+                component: AdminListBuildingsComponent,
             },
             {
                 path: 'building/:buildingId',

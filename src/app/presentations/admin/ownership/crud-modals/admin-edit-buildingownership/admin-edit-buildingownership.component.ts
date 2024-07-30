@@ -11,7 +11,7 @@ import {
 import { InputNumberModule } from 'primeng/inputnumber';
 import { BUILDINGOWNERSHIPTYPES } from 'src/app/core/constants/enums';
 import { BuildingOwnershipDataService } from 'src/app/core/dataservice/ownership/buildingownership.dataservice';
-import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
+// import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { BuildingOwnershipDto } from 'src/app/core/dto/properties/building-ownership.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
@@ -35,7 +35,7 @@ export class AdminEditBuildingownershipComponent {
         public ref: DynamicDialogRef,
         private dialogService: DialogService,
         private messageService: MessageService,
-        private ownerdataService: OwnerDataService,
+        // private ownerdataService: OwnerDataService,
         private buildingOwnershipDataService: BuildingOwnershipDataService
     ) {
         this.instance = this.dialogService.getInstance(this.ref);

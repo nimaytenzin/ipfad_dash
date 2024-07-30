@@ -73,7 +73,7 @@ export class TenantUpdatePincodeComponent implements OnInit {
                             life: 20000,
                             detail: 'Please login with your new pin codes',
                         });
-                        this.router.navigate(['auth']);
+                        this.router.navigate(['/']);
                     }
                 },
                 error: (err) => {

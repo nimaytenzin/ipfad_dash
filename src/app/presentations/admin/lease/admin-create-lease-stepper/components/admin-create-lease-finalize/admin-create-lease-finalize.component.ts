@@ -53,7 +53,7 @@ export class AdminCreateLeaseFinalizeComponent implements OnInit {
             leaseStatus: 'ACTIVE',
             entryDamageReportSubmitted: false,
             tenantId: this.leaseInformation.parties.tenantId,
-            landlordId: this.leaseInformation.parties.landlordId,
+            ownerId: this.leaseInformation.parties.landlordId,
             witnessId: 1,
             agreementDay: this.leaseInformation.parties.agreementDay,
             agreementMonth: this.leaseInformation.parties.agreementMonth,

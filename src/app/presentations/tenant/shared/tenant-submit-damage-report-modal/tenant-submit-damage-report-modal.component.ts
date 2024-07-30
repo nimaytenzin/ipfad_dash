@@ -41,7 +41,6 @@ import { API_URL } from 'src/app/core/constants/constants';
     providers: [DialogService],
 })
 export class TenantSubmitDamageReportModalComponent implements OnInit {
-    ref: DynamicDialogRef;
     leaseAgreement: LeaseAgreementDTO;
     damageReportItems: EntryDamageReportItemDTO[] = [];
     agree: boolean = false;
@@ -50,6 +49,7 @@ export class TenantSubmitDamageReportModalComponent implements OnInit {
 
     constructor(
         private dialogService: DialogService,
+        private ref: DynamicDialogRef,
         private config: DynamicDialogConfig,
         private primeConfig: PrimeNGConfig,
         private messageService: MessageService,
@@ -132,7 +132,7 @@ export class TenantSubmitDamageReportModalComponent implements OnInit {
         return API_URL + '/' + src;
     }
 
-    async submitDamageReport() {
+    submitDamageReport() {
         if (!this.agree) {
             this.messageService.add({
                 severity: 'error',
@@ -147,7 +147,13 @@ export class TenantSubmitDamageReportModalComponent implements OnInit {
                     leaseAgreementId: this.leaseAgreement.id,
                 })
                 .subscribe((res) => {
-                    console.log(res);
+                    if (this.ref) {
+                        this.ref.close({
+                            status: 201,
+                        });
+                    } else {
+                        console.error('Dialog reference is undefined');
+                    }
                 });
         }
     }

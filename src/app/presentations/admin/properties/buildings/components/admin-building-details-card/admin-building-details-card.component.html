@@ -31,17 +31,11 @@
     <p>
         Type: <strong>{{ building.buildingType }}</strong>
     </p>
-    <p *ngIf="building.buildingNumber">
-        Building Number:
-        <strong>{{ building.buildingNumber }}</strong>
-    </p>
+
     <p>
-        Address:
-        <strong>
-            {{ building.streetName }}, {{ building.quadrant }},
-            {{ building.subadministrativeZone?.name }},
-            {{ building.adminsitrativeZone?.name }},
-            {{ building.dzongkhag?.name }}
-        </strong>
+        Address:{{ building.buildingNumber }} {{ building.streetName }},
+        {{ building.quadrant }}, {{ building.subadministrativeZone?.name }},
+        {{ building.administrativeZone?.name }},
+        {{ building.dzongkhag?.name }}
     </p>
 </div>

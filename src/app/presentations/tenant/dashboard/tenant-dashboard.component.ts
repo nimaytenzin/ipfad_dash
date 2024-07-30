@@ -81,6 +81,7 @@ export class TenantDashboardComponent implements OnInit {
         private messageService: MessageService
     ) {
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
+        console.log(this.authenticatedUser);
         if (!this.authenticatedUser.isVerified) {
             this.showUpdatePinDialog();
         }

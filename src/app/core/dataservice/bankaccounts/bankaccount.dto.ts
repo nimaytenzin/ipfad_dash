@@ -1,4 +1,4 @@
-import { OwnerDTO } from '../../dto/users/owner.dto';
+import { LandLordDTO } from '../../dto/users/landlord.dto';
 
 export interface BankAccountDto {
     id: number;
@@ -7,13 +7,12 @@ export interface BankAccountDto {
     accountName: string;
     accountNumber: number;
 
-    landlordId: number;
-    owner?: OwnerDTO;
+    remarks: string;
 }
 
 export interface CreateBankAccountDto {
-    landlordId: number;
     bankName: string;
     accountNumber: number;
     accountName: string;
+    remarks: string;
 }

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AdminPropertiesSearchComponent } from './admin-properties-search.component';
+import { AdminOwnerCreateComponent } from './admin-owner-create.component';
 
-describe('AdminPropertiesSearchComponent', () => {
-  let component: AdminPropertiesSearchComponent;
-  let fixture: ComponentFixture<AdminPropertiesSearchComponent>;
+describe('AdminOwnerCreateComponent', () => {
+  let component: AdminOwnerCreateComponent;
+  let fixture: ComponentFixture<AdminOwnerCreateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminPropertiesSearchComponent ]
+      declarations: [ AdminOwnerCreateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminPropertiesSearchComponent);
+    fixture = TestBed.createComponent(AdminOwnerCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

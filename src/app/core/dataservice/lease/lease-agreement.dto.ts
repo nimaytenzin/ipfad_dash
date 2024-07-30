@@ -3,8 +3,8 @@ import { BuildingDTO } from '../../dto/properties/building.dto';
 import { UnitDTO } from '../../dto/units/unit.dto';
 import { AdminDTO } from '../../dto/users/admin.dto';
 import { LandLordDTO } from '../../dto/users/landlord.dto';
-import { OwnerDTO } from '../../dto/users/owner.dto';
 import { TenantDTO } from '../../dto/users/tenant.dto';
+import { OwnerDTO } from '../owners/dto/owner.dto';
 import { LeaseRuleDTO } from './lease-rule.dto';
 import { LeaseSurchargeDTO } from './lease-surcharge.dto';
 
@@ -23,8 +23,8 @@ export interface LeaseAgreementDTO {
 
     tenantId: number;
     tenant?: TenantDTO;
-    landlordId: number;
-    landlord?: OwnerDTO;
+    ownerId: number;
+    owner?: OwnerDTO;
     witnessId: number;
     witness: AdminDTO;
 
@@ -109,7 +109,7 @@ export interface CreateLeaseAgreementDTO {
     entryDamageReportSubmitted: boolean;
 
     tenantId: number;
-    landlordId: number;
+    ownerId: number;
     witnessId: number;
     agreementDay: number;
     agreementMonth: number;

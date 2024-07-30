@@ -1,0 +1,73 @@
+<form [formGroup]="createThramForm" class="p-fluid p-2 flex flex-column gap-4">
+    <div class="flex flex-column gap-2">
+        <label for="nameEnglish">Thram Number</label>
+        <input
+            pInputText
+            id="nameEnglish"
+            formControlName="thramNo"
+            type="text"
+        />
+    </div>
+
+    <div class="flex flex-column gap-2">
+        <label for="chiwog">Owner Type</label>
+        <p-dropdown
+            id="chiwog"
+            [options]="ownerTypes"
+            formControlName="ownerType"
+        ></p-dropdown>
+    </div>
+
+    <div class="flex flex-column gap-2">
+        <label for="dzongkhag">Dzongkhag</label>
+        <p-dropdown
+            id="dzongkhag"
+            [options]="dzongkhags"
+            optionValue="id"
+            optionLabel="name"
+            (onChange)="dzongkhagSelected($event)"
+            formControlName="dzongkhagId"
+        ></p-dropdown>
+    </div>
+    <div class="flex flex-column gap-2">
+        <label for="gewog">Administrative Zone</label>
+        <p-dropdown
+            id="bankName"
+            optionValue="id"
+            optionLabel="name"
+            (onChange)="administrativeZoneSelect($event)"
+            [options]="administrativeZones"
+            formControlName="administrativeZoneId"
+        >
+        </p-dropdown>
+    </div>
+    <div class="flex flex-column gap-2">
+        <label for="chiwog">Sub AdministrativeZone</label>
+        <p-dropdown
+            id="chiwog"
+            [options]="subAdministrativeZones"
+            optionValue="id"
+            optionLabel="name"
+            formControlName="subadministrativeZoneId"
+        ></p-dropdown>
+    </div>
+
+    <div class="flex flex-column gap-2">
+        <label for="chiwog">Owner Organization</label>
+        <p-dropdown
+            id="chiwog"
+            [options]="owners"
+            optionValue="id"
+            [filter]="true"
+            filterBy="nameEnglish"
+            bindTo="body"
+            optionLabel="nameEnglish"
+            formControlName="ownerId"
+        ></p-dropdown>
+    </div>
+
+    <div class="flex justify-content-end gap-4">
+        <p-button (click)="createThram()" label="Create Thram"></p-button>
+        <p-button severity="secondary" label="Cancel"></p-button>
+    </div>
+</form>

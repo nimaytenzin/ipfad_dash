@@ -67,7 +67,7 @@ export interface BuildingDTO {
     dzongkhagId: number;
     dzongkhag: DzongkhagDTO;
     administrativeZoneId: number;
-    adminsitrativeZone: AdministrativeZoneDTO;
+    administrativeZone: AdministrativeZoneDTO;
     subadministrativeZoneId: number;
     subadministrativeZone: SubAdministrativeZoneDTO;
 

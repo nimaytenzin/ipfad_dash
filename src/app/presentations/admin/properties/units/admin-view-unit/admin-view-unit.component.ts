@@ -92,15 +92,16 @@ export class AdminViewUnitComponent implements OnInit {
         private paymentAdviceDataService: PaymentAdviceDataService
     ) {
         this.unitId = Number(this.route.snapshot.paramMap.get('unitId'));
-        this.buildingId = Number(
-            this.route.snapshot.paramMap.get('buildingId')
-        );
+
         this.home = { icon: 'pi pi-home', routerLink: '/' };
         this.bankList = this.bankAccountDataService.BankListWithLogo;
 
-        this.getUnit();
+        this.route.parent.paramMap.subscribe((params) => {
+            this.buildingId = Number(params.get('buildingId'));
+            console.log(`Building ID: ${this.buildingId}`);
+        });
 
-        console.log('VIEW UINT PARENT COMPOT UNIT ID', this.unitId);
+        this.getUnit();
     }
 
     ngOnInit(): void {}
@@ -133,7 +134,9 @@ export class AdminViewUnitComponent implements OnInit {
     }
 
     goBack() {
-        this.router.navigate(['/admin/master-properties/building/' + 3]);
+        this.router.navigate([
+            '/admin/master-properties/building/' + this.buildingId,
+        ]);
     }
 
     openEditUnitModal() {

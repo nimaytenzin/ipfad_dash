@@ -17,11 +17,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { BUILDINGOWNERSHIPTYPES } from 'src/app/core/constants/enums';
 import { BuildingOwnershipDataService } from 'src/app/core/dataservice/ownership/buildingownership.dataservice';
-import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
+// import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { BuildingOwnershipDto } from 'src/app/core/dto/properties/building-ownership.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
-import { OwnerDTO } from 'src/app/core/dto/users/owner.dto';
 
 @Component({
     selector: 'app-admin-add-buildingownership',
@@ -58,7 +57,7 @@ export class AdminAddBuildingownershipComponent {
         public ref: DynamicDialogRef,
         private dialogService: DialogService,
         private messageService: MessageService,
-        private ownerdataService: OwnerDataService,
+        // private ownerdataService: OwnerDataService,
         private buildingOwnershipDataService: BuildingOwnershipDataService
     ) {
         this.instance = this.dialogService.getInstance(this.ref);
@@ -88,24 +87,24 @@ export class AdminAddBuildingownershipComponent {
             });
         } else {
             this.searched = true;
-            this.ownerdataService
-                .SearchLandLord({
-                    phoneNumber: Number(this.searchPhoneNumber),
-                })
-                .subscribe({
-                    next: (res) => {
-                        console.log(res);
+            // this.ownerdataService
+            //     .SearchLandLord({
+            //         phoneNumber: Number(this.searchPhoneNumber),
+            //     })
+            //     .subscribe({
+            //         next: (res) => {
+            //             console.log(res);
 
-                        this.searchResult = res;
-                    },
-                    error: (err) => {
-                        this.messageService.add({
-                            severity: 'error',
-                            summary: 'Owner not Found',
-                            detail: 'Owner with that phone number not found',
-                        });
-                    },
-                });
+            //             this.searchResult = res;
+            //         },
+            //         error: (err) => {
+            //             this.messageService.add({
+            //                 severity: 'error',
+            //                 summary: 'Owner not Found',
+            //                 detail: 'Owner with that phone number not found',
+            //             });
+            //         },
+            //     });
         }
     }
     searchOwnerByCid() {

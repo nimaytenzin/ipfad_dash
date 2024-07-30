@@ -80,7 +80,7 @@
                     <p class="m-0 p-0">
                         Building Address: {{ lease.building?.buildingNumber }}
                         {{ lease.building?.streetName }}
-                        {{ lease.building?.adminsitrativeZone?.name }}
+                        {{ lease.building?.administrativeZone?.name }}
                         {{ lease.building?.subadministrativeZone?.name }}
                         {{ lease.building?.landmark }}
                     </p>
@@ -89,12 +89,8 @@
                 <p class="font-semibold mb-1">Building Owner</p>
                 <div>
                     <p>
-                        Name: {{ lease.landlord?.firstName }}
-                        {{ lease.landlord?.middleName }}
-                        {{ lease.landlord?.lastName }}
-                    </p>
-                    <p class="m-0 p-0">
-                        Contact: {{ lease.landlord?.phoneNumber }}
+                        Name: {{ lease.owner?.nameEnglish }}/
+                        {{ lease.owner?.nameDzongkha }}
                     </p>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <div
-    class="surface-card wavybackground flex align-items-center justify-content-center min-w-screen overflow-hidden"
+    class="bg-gray-100 flex align-items-center justify-content-center min-w-screen overflow-hidden"
     style="height: 100dvh"
 >
     <p-toast appendTo="body" />
@@ -9,11 +9,11 @@
         <div>
             <div class="flex align-items-center gap-2">
                 <img style="height: 25px" src="assets/logo.png" />
-                <p class="text-4xl">zhidhay.com</p>
+                <p class="text-4xl">{{ companyDetails.webAppName }}</p>
             </div>
             <p-divider type="dashed"></p-divider>
             <p class="text-sm text-center">
-                Login using your phone number and pin code
+                Fixed Asset Management powered by Zhidhay
             </p>
         </div>
         <form [formGroup]="loginForm" class="mt-4 p-fluid">
@@ -80,12 +80,6 @@
                     class="w-full"
                     (click)="login()"
                 ></button>
-            </div>
-
-            <div class="mt-4">
-                <p style="cursor: pointer" (click)="backToHome()">
-                    Back to home page
-                </p>
             </div>
         </form>
     </div>

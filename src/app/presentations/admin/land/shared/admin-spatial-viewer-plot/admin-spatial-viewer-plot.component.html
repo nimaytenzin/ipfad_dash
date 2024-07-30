@@ -1,0 +1,49 @@
+<p>
+    Guide: Red Outline: <span class="text-red-600">Plots</span>, yellow Outline:
+    <span class="text-yellow-300">Building</span>
+</p>
+<div class="flex border-round-lg" id="map" style="height: 40vh"></div>
+
+<p-dialog
+    header="Edit Profile"
+    [modal]="true"
+    [draggable]="false"
+    [(visible)]="viewBuildingSummary"
+    [style]="{ width: '25rem' }"
+>
+    <div *ngIf="selectedBuilding">
+        <p>
+            Building Name: <strong>{{ selectedBuilding.name }}</strong>
+        </p>
+        <p>
+            Floor Config:
+            <strong>
+                {{
+                    getBuildingFloorConfiguration(
+                        selectedBuilding.regularFloorCount,
+                        selectedBuilding.basementCount,
+                        selectedBuilding.stiltCount,
+                        selectedBuilding.atticCount,
+                        selectedBuilding.jamthogCount
+                    )
+                }}</strong
+            >
+        </p>
+        <p>
+            Type: <strong>{{ selectedBuilding.buildingType }}</strong>
+        </p>
+
+        <p>
+            Address:{{ selectedBuilding.buildingNumber }}
+            {{ selectedBuilding.streetName }},
+            {{ selectedBuilding.quadrant }}
+        </p>
+        <p-divider></p-divider>
+        <p-button
+            size="small"
+            label="View Details"
+            (click)="navigateToBuilding()"
+            severity="secondary"
+        />
+    </div>
+</p-dialog>

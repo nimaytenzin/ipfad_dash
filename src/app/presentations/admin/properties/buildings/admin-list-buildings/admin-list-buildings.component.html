@@ -21,7 +21,7 @@
             <th>ID</th>
             <th>Building</th>
 
-            <th>Ownership</th>
+            <!-- <th>Ownership</th> -->
             <th>Plot Mapping</th>
         </tr>
     </ng-template>
@@ -85,7 +85,7 @@
                 </div>
             </td>
 
-            <td>
+            <!-- <td>
                 <div *ngFor="let owner of building.owners" class="mb-4">
                     <p>
                         <strong>Name:</strong>
@@ -136,14 +136,19 @@
                 <div *ngIf="!building.owners.length" class="text-red-500">
                     ! Building Ownership not mapped
                 </div>
-            </td>
+            </td> -->
             <td class="">
                 <div *ngFor="let plot of building.plots">
                     <p>
-                        Thram: <strong> {{ plot.thramNumber }} </strong>
+                        Thram: <strong> {{ plot.thram.thramNo }} </strong>
                     </p>
                     <p>
                         PlotID: <strong> {{ plot.plotId }} </strong>
+                    </p>
+                    <p>
+                        Precicnt: {{ plot.precinctName }} ({{
+                            plot.precinctCode
+                        }})
                     </p>
                     <div class="flex gap-2 mt-4">
                         <p-button
@@ -162,7 +167,7 @@
                         />
                     </div>
                 </div>
-                <div *ngIf="!building.owners.length" class="text-red-500">
+                <div *ngIf="!building.plots.length" class="text-red-500">
                     ! Building Plot not mapped
                 </div>
             </td>

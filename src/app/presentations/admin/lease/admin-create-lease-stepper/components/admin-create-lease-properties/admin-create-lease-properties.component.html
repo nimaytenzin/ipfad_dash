@@ -3,6 +3,63 @@
         <ng-template pTemplate="title"> Lease Properties </ng-template>
 
         <ng-template pTemplate="content">
+            <p>Search Thram</p>
+            <div class="flex gap-2 w-full mb-4">
+                <div class="flex flex-1 flex-column gap-2">
+                    <label for="dzongkhag">Dzongkhag</label>
+                    <p-dropdown
+                        [options]="dzongkhags"
+                        optionLabel="name"
+                        placeholder="Select Dzongkhag"
+                        (onChange)="dzongkhagSelected($event)"
+                        [(ngModel)]="selectedDzongkhag"
+                    ></p-dropdown>
+                </div>
+                <div class="flex flex-1 flex-column gap-2">
+                    <label for="gewog">Administrative Zone</label>
+                    <p-dropdown
+                        optionLabel="name"
+                        placeholder="Select Administrative Zone"
+                        (onChange)="administrativeZoneSelect($event)"
+                        [options]="administrativeZones"
+                        [(ngModel)]="selectedAdministrativeZone"
+                    >
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="flex gap-2 my-4 justify-content-end align-items-end">
+                <div class="flex flex-1 flex-column gap-2">
+                    <label for="chiwog">Sub AdministrativeZone</label>
+                    <p-dropdown
+                        [options]="subAdministrativeZones"
+                        optionLabel="name"
+                        placeholder="Select Sub Administrative Zone"
+                        [(ngModel)]="selectedSubAdministrativeZone"
+                    ></p-dropdown>
+                </div>
+                <div class="flex flex-column gap-2 flex-1">
+                    <label for="nameEnglish">Thram Number</label>
+                    <input
+                        pInputText
+                        id="nameEnglish"
+                        [(ngModel)]="thramNo"
+                        type="text"
+                    />
+                </div>
+            </div>
+            <div class="flex justify-content-end">
+                <p-button
+                    label="Search for Thram"
+                    (click)="searchThram()"
+                ></p-button>
+            </div>
+
+            <p-divider></p-divider>
+
+            <div *ngIf="thram">
+                <p>Thram found</p>
+                <p>Thram No: {{ thram.thramNo }}</p>
+            </div>
             <div class="flex flex-column text-xl text-center gap-4">
                 <p>
                     The <strong>LANDLORD</strong> leases the following proeprty
@@ -10,11 +67,19 @@
                     <strong>TENANT</strong>
                 </p>
 
-                <div class="p-fluid">
+                <div class="p-fluid flex gap-2">
+                    <div class="flex flex-1 flex-column gap-2">
+                        <p-dropdown
+                            [options]="plots"
+                            optionLabel="plotId"
+                            placeholder="Select a Plot"
+                            (onChange)="plotSelected($event)"
+                            [(ngModel)]="selectedPlot"
+                        ></p-dropdown>
+                    </div>
                     <p-dropdown
                         [options]="buildings"
                         [(ngModel)]="selectedBuilding"
-                        optionLabel="name"
                         [showClear]="true"
                         (onChange)="loadUnitsByBuilding()"
                         placeholder="Select a Building "
@@ -26,18 +91,6 @@
                                 <span *ngIf="selectedBuilding.name">
                                     {{ selectedBuilding.name }}
                                 </span>
-                                at
-                                {{ selectedBuilding.dzongkhag.name }},
-                                {{ selectedBuilding.administrativeZone.name }},
-                                {{
-                                    selectedBuilding.subadministrativeZone.name
-                                }}
-                                on plot ID
-                                <span
-                                    *ngFor="let plot of selectedBuilding.plots"
-                                >
-                                    {{ plot.plotId }}
-                                </span>
                             </p>
                         </ng-template>
                         <ng-template let-building pTemplate="item ">
@@ -46,13 +99,6 @@
                                 {{ building.id }},
                                 <span *ngIf="building.name">
                                     {{ building.name }}
-                                </span>
-                                at {{ building.dzongkhag.name }},
-                                {{ building.administrativeZone.name }},
-                                {{ building.subadministrativeZone.name }}
-                                on plot ID
-                                <span *ngFor="let plot of building.plots">
-                                    {{ plot.plotId }}
                                 </span>
                             </p>
                         </ng-template>
@@ -107,29 +153,9 @@
                             {{ selectedBuilding.name }}
                         </span></strong
                     >
-                    at
-                    <strong
-                        >{{ selectedBuilding.dzongkhag.name }},
-                        {{ selectedBuilding.administrativeZone.name }},
-                        {{
-                            selectedBuilding.subadministrativeZone.name
-                        }}</strong
-                    >
+
                     on plot
-                    <ng-container
-                        *ngFor="
-                            let plot of selectedBuilding.plots;
-                            let i = index
-                        "
-                    >
-                        <strong>
-                            {{ plot.plotId }}
-                        </strong>
-                        <ng-container
-                            *ngIf="i < selectedBuilding.plots.length - 1"
-                            >,</ng-container
-                        >
-                    </ng-container>
+                    {{ selectedPlot.plotId }}
                     is leased to the <strong>TENANT</strong> for
                     <strong>
                         {{ selectedUse }}

@@ -1,0 +1,42 @@
+<form [formGroup]="createOwnerForm" class="p-fluid p-2 flex flex-column gap-4">
+    <div class="flex flex-column gap-2">
+        <label for="nameEnglish">Owner Name English</label>
+        <input
+            pInputText
+            id="nameEnglish"
+            formControlName="nameEnglish"
+            type="text"
+        />
+    </div>
+    <div class="flex flex-column gap-2">
+        <label for="nameDzongkha">Owner Name Dzongkha</label>
+        <input
+            pInputText
+            id="nameDzongkha"
+            formControlName="nameDzongkha"
+            type="text"
+        />
+    </div>
+    <div class="flex flex-column gap-2">
+        <label for="phoneNumber">Phone Number</label>
+        <input
+            pInputText
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            type="text"
+        />
+    </div>
+    <div class="flex flex-column gap-2">
+        <label for="cid">CID</label>
+        <input pInputText id="cid" formControlName="cid" type="text" />
+    </div>
+
+    <div class="flex flex-column gap-2">
+        <label for="email">Email</label>
+        <input pInputText id="email" formControlName="email" type="text" />
+    </div>
+    <div class="flex justify-content-end gap-4">
+        <p-button (click)="createOwner()" label="Create Owner"></p-button>
+        <p-button severity="secondary" label="Cancel"></p-button>
+    </div>
+</form>

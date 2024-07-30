@@ -9,7 +9,11 @@ import {
 } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { BankAccountDataService } from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
+import { BankAccountDto } from 'src/app/core/dataservice/bankaccounts/bankaccount.dto';
+import {
+    BankAccountDataService,
+    BankListWithLogoDto,
+} from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
 
 @Component({
@@ -29,11 +33,11 @@ export class AdminCreateBankAccountComponent implements OnInit {
     banks = [];
     instance: DynamicDialogComponent | undefined;
 
-    bankName: string;
+    selectedBank: BankListWithLogoDto;
     accountNumber: number;
     accountName: string;
 
-    landlord: LandLordDTO;
+    remarks: string;
     constructor(
         private dialogService: DialogService,
         private ref: DynamicDialogRef,
@@ -41,10 +45,6 @@ export class AdminCreateBankAccountComponent implements OnInit {
     ) {
         this.instance = this.dialogService.getInstance(this.ref);
         this.banks = this.bankAccountDataService.BankListWithLogo;
-
-        if (this.instance && this.instance.data) {
-            this.landlord = this.instance.data;
-        }
     }
 
     ngOnInit() {}
@@ -56,9 +56,9 @@ export class AdminCreateBankAccountComponent implements OnInit {
     createBankAccount() {
         this.bankAccountDataService
             .CreateBankAccount({
-                bankName: this.bankName,
-                landlordId: this.landlord.id,
+                bankName: this.selectedBank.shorthand,
                 accountName: this.accountName,
+                remarks: this.remarks,
                 accountNumber: this.accountNumber,
             })
             .subscribe((res) => {

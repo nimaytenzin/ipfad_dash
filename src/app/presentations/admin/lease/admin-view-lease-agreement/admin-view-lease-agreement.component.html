@@ -25,29 +25,20 @@
     </p>
 
     <p class="text-center mb-2">
-        and Mr./Ms.
+        and
         <strong
-            >{{ leaseAgreement.landlord?.firstName }}
-            {{ leaseAgreement.landlord?.lastName }}</strong
-        >
-        holding CID No <strong>{{ leaseAgreement.landlord?.cid }}</strong> of
-        <strong>
-            {{ leaseAgreement.landlord?.subadministrativeZone?.name }}
+            >{{ leaseAgreement.owner?.nameEnglish }}
+            {{ leaseAgreement.owner?.nameDzongkha }}
         </strong>
-        ,
-        <strong>
-            {{ leaseAgreement.landlord?.administrativeZone?.name }}
-        </strong>
-        ,
-        <strong> {{ leaseAgreement.landlord?.dzongkhag?.name }} </strong>
-        Dzongåkhag, Owner of building
+        owner of the building
+
         <strong>
             {{ leaseAgreement.buildingId }},{{
                 "," + leaseAgreement.building?.streetName
             }}{{ "," + leaseAgreement.building?.quadrant
-            }}{{ "," + leaseAgreement.building?.quadrant
             }}{{ "," + leaseAgreement.building?.landmark }}
         </strong>
+
         at plot No
         <strong> {{ leaseAgreement.building?.plots[0].plotId }} </strong> and
         Thram no.
@@ -297,19 +288,9 @@
                     <p>
                         Name:
                         <strong>
-                            {{ leaseAgreement.landlord.firstName }}
-                            {{ leaseAgreement.landlord.middleName }}
-                            {{ leaseAgreement.landlord.lastName }}
+                            {{ leaseAgreement.owner.nameEnglish }} /
+                            {{ leaseAgreement.owner.nameDzongkha }}
                         </strong>
-                    </p>
-                    <p>
-                        cid: <strong>{{ leaseAgreement.landlord.cid }}</strong>
-                    </p>
-                    <p>
-                        Phone Number:
-                        <strong>{{
-                            leaseAgreement.landlord.phoneNumber
-                        }}</strong>
                     </p>
                 </div>
             </td>

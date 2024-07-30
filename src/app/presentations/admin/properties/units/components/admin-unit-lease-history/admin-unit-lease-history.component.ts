@@ -83,7 +83,7 @@ export class AdminUnitLeaseHistoryComponent implements OnInit {
             buildingId: lease.buildingId,
             tenantId: lease.tenantId,
             leaseAgreementId: lease.id,
-            landlordId: lease.landlordId,
+            ownerId: lease.ownerId,
             title: 'Rent payemnt for the month of June',
             month: 6,
             year: 2024,

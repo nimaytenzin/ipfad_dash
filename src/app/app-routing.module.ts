@@ -11,15 +11,15 @@ import { USERROLESENUM } from './core/constants/enums';
     imports: [
         RouterModule.forRoot(
             [
+                // {
+                //     path: '',
+                //     loadChildren: () =>
+                //         import(
+                //             './presentations/public/public-routing.module'
+                //         ).then((m) => m.PublicRoutingModule),
+                // },
                 {
                     path: '',
-                    loadChildren: () =>
-                        import(
-                            './presentations/public/public-routing.module'
-                        ).then((m) => m.PublicRoutingModule),
-                },
-                {
-                    path: 'auth',
                     loadChildren: () =>
                         import('./presentations/auth/auth.module').then(
                             (m) => m.AuthModule
@@ -47,6 +47,23 @@ import { USERROLESENUM } from './core/constants/enums';
                                 ).then(
                                     (m) => m.AdminMasterPropertiesRoutingModule
                                 ),
+                        },
+                        {
+                            path: 'master-bank-accounts',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/admin/bankaccounts/admin.bankaccount.routing.module'
+                                ).then(
+                                    (m) => m.AdminMasterBankAccountRoutingModule
+                                ),
+                        },
+
+                        {
+                            path: 'master-owners',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/admin/land/owner/admin-owner-routing.module'
+                                ).then((m) => m.AdminOwnerRoutingModule),
                         },
                         {
                             path: 'master-locations',
