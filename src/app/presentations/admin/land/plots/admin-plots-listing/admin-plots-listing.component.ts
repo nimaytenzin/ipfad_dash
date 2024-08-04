@@ -59,4 +59,5 @@ export class AdminPlotsListingComponent implements OnInit {
             },
         });
     }
+    downloadMasterTable() {}
 }

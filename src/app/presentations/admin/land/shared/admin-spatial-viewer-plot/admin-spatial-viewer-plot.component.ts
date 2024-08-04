@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
 import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { AdminMapviewPlotdetailsComponent } from '../../../properties/mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
+import { AdminMapviewPlotdetailsComponent } from '../../../buildings/mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';

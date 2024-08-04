@@ -107,4 +107,6 @@ export class AdminMasterTenantsComponent implements OnInit {
                 },
             });
     }
+
+    downloadMasterTable() {}
 }

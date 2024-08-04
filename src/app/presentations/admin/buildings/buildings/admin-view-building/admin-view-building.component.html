@@ -69,5 +69,15 @@
         <p-tabPanel header="Units">
             <router-outlet></router-outlet>
         </p-tabPanel>
+        <p-tabPanel header="Payment Status">
+            <app-admin-building-unit-payment-sheet
+                [buildingId]="buildingId"
+            ></app-admin-building-unit-payment-sheet>
+        </p-tabPanel>
+        <p-tabPanel header="Tenant List">
+            <app-admin-building-tenant-listing
+                [buildingId]="buildingId"
+            ></app-admin-building-tenant-listing>
+        </p-tabPanel>
     </p-tabView>
 </div>

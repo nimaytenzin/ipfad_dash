@@ -183,4 +183,6 @@ export class AdminListBuildingsComponent {
             data: buildingPlot,
         });
     }
+
+    downloadMasterTable() {}
 }

@@ -1,8 +1,22 @@
-<div class="flex align-items-center justify-content-between">
-    Tenants
-    <p-button icon="pi pi-plus" (click)="openAddTenantsModal()"></p-button>
+<div class="flex justify-content-between my-4">
+    <div>
+        <p class="text-xl">Tenants Master Table</p>
+    </div>
+    <div class="flex gap-2">
+        <p-button
+            label="Tenant"
+            icon="pi pi-plus"
+            (click)="openAddTenantsModal()"
+            size="small"
+        ></p-button>
+        <p-button
+            label="Download Excel"
+            icon="pi pi-file-excel"
+            size="small"
+            (click)="downloadMasterTable()"
+        ></p-button>
+    </div>
 </div>
-
 <i class="pi pi-pi-phone" style="font-size: 1rem"></i>
 <p-table
     [value]="paginatedTenants.data"

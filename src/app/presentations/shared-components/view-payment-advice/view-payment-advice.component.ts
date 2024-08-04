@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import {
@@ -20,6 +20,7 @@ import { AdminPgPaymentStepperComponent } from '../../admin/payment/admin-pg-pay
     imports: [DividerModule, CommonModule, TableModule, ButtonModule],
 })
 export class ViewPaymentAdviceComponent implements OnInit {
+    @Input()
     paymentAdvice: PaymentAdviceDto;
     companyDetails = ZHIDHAYCONTACTDETAILS;
     ref: DynamicDialogRef;

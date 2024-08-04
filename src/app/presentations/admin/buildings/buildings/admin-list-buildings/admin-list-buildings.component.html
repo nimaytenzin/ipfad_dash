@@ -1,21 +1,27 @@
-<router-outlet></router-outlet>
+<div class="flex align-items-center justify-content-between">
+    <p>Buildings</p>
+    <div class="flex gap-2">
+        <p-button
+            icon="pi pi-plus"
+            (click)="openAddBuildingModal()"
+            label="Building"
+            size="small"
+        >
+        </p-button>
+        <p-button
+            label="Download Excel"
+            icon="pi pi-file-excel"
+            size="small"
+            (click)="downloadMasterTable()"
+        ></p-button>
+    </div>
+</div>
 
 <p-table
     [value]="buildingsPaginated"
     class="p-datatable-sm"
     [tableStyle]="{ 'min-width': '50rem' }"
 >
-    <ng-template pTemplate="caption">
-        <div class="flex align-items-center justify-content-between">
-            Buildings
-            <p-button
-                icon="pi pi-plus"
-                (click)="openAddBuildingModal()"
-                label="Building"
-            >
-            </p-button>
-        </div>
-    </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th>ID</th>

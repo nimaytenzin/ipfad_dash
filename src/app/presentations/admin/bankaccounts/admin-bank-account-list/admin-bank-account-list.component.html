@@ -1,12 +1,20 @@
 <div>
     <div class="flex justify-content-between my-4">
         <p class="text-xl">Bank Account Master Table</p>
-        <p-button
-            label="Bank Account"
-            icon="pi pi-plus"
-            (click)="openAddBankAccountModal()"
-            size="small"
-        ></p-button>
+        <div class="flex gap-2">
+            <p-button
+                label="Bank Account"
+                icon="pi pi-plus"
+                (click)="openAddBankAccountModal()"
+                size="small"
+            ></p-button>
+            <p-button
+                label="Download Excel"
+                icon="pi pi-file-excel"
+                size="small"
+                (click)="downloadMasterTable()"
+            ></p-button>
+        </div>
     </div>
 
     <p-table [value]="bankAccounts" styleClass="p-datatable-striped">

@@ -20,6 +20,10 @@ import { CarouselModule } from 'primeng/carousel';
 import { AdminBuildingPhotosComponent } from '../components/admin-building-photos/admin-building-photos.component';
 import { AdminBuildingPlotComponent } from '../components/admin-building-plot/admin-building-plot.component';
 import { DividerModule } from 'primeng/divider';
+import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
+import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
+import { AdminBuildingTenantListingComponent } from '../components/admin-building-tenant-listing/admin-building-tenant-listing.component';
+import { AdminBuildingUnitPaymentSheetComponent } from '../components/admin-building-unit-payment-sheet/admin-building-unit-payment-sheet.component';
 
 @Component({
     selector: 'app-admin-view-building',
@@ -42,6 +46,8 @@ import { DividerModule } from 'primeng/divider';
         AdminBuildingPhotosComponent,
         AdminBuildingPlotComponent,
         DividerModule,
+        AdminBuildingTenantListingComponent,
+        AdminBuildingUnitPaymentSheetComponent,
     ],
     templateUrl: './admin-view-building.component.html',
     styleUrl: './admin-view-building.component.scss',
@@ -50,10 +56,11 @@ export class AdminViewBuildingComponent implements OnInit {
     buildingId: number;
     building: BuildingDTO = {} as BuildingDTO;
     responsiveOptions: any[] | undefined;
-
+    tenants: TenantDTO[];
     constructor(
         private route: ActivatedRoute,
-        private buildingDataService: BuildingDataService
+        private buildingDataService: BuildingDataService,
+        private tenantDataService: TenantDataService
     ) {}
     ngOnInit(): void {
         this.buildingId = Number(
@@ -65,6 +72,13 @@ export class AdminViewBuildingComponent implements OnInit {
             .subscribe((res) => {
                 this.building = res;
                 console.log(res);
+            });
+
+        this.tenantDataService
+            .GetActiveTenantsByBuilding(this.buildingId)
+            .subscribe((res) => {
+                this.tenants = res;
+                console.log(this.tenants);
             });
 
         this.responsiveOptions = [

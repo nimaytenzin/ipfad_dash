@@ -1,0 +1,145 @@
+<div>
+    <div #generator class="flex mb-4 justify-content-between align-items-end">
+        <div class="flex gap-2">
+            <p-calendar
+                [(ngModel)]="year"
+                [showIcon]="true"
+                [showOnFocus]="false"
+                view="year"
+                dateFormat="yy"
+                inputId="buttondisplay"
+            />
+            <p-button
+                label="Generate Report"
+                (click)="fetchPaymentData()"
+            ></p-button>
+        </div>
+        <div>
+            <p-button
+                size="small"
+                severity="danger"
+                label="Send SMS Reminder"
+            ></p-button>
+        </div>
+    </div>
+    <p-divider type="dashed"></p-divider>
+    <div class="flex justify-content-between mt-6 mb-4">
+        <div>
+            <p class="text-xl font-semibold">
+                Payment status for the year of {{ year.getFullYear() }}
+            </p>
+            <p class="text-sm">Double Click a cell to bring up detailed view</p>
+        </div>
+        <p-button size="small" label="Download Excel" icon="pi pi-file-excel">
+        </p-button>
+    </div>
+    <p-table
+        [value]="units"
+        [scrollable]="true"
+        styleClass="p-datatable-gridlines p-datatable-striped"
+    >
+        <ng-template pTemplate="caption">
+            <div class="">
+                <p>Total Due: Nu. 25923</p>
+                <p>Total Units: 4</p>
+                <p>Vacant Units: 0</p>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="min-width: max-content" pFrozenColumn>Unit</th>
+                <th>JAN</th>
+                <th>FEB</th>
+                <th>MAR</th>
+                <th>APR</th>
+                <th>MAY</th>
+                <th>JUN</th>
+                <th>JUL</th>
+                <th>AUG</th>
+                <th>SEP</th>
+                <th>OCT</th>
+                <th>NOV</th>
+                <th>DEC</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-unit>
+            <tr>
+                <td pFrozenColumn style="min-width: 80px">
+                    <p class="text-xl font-semibold">
+                        {{ unit.floorLevel }}-{{ unit.unitNumber }}
+                    </p>
+                </td>
+                <td *ngFor="let month of unit.payments; let i = index">
+                    <ng-container *ngIf="i < 7; else naTemplate">
+                        <div
+                            (dblclick)="openPADetails()"
+                            class="cursor-pointer hover:bg-gray-100"
+                        >
+                            <p style="text-wrap: nowrap">
+                                Status:
+                                <span
+                                    class="font-semibold mr-2 px-2 py-1 border-round-md text-sm"
+                                    [ngClass]="{
+                                        'text-green-50  bg-green-600  ':
+                                            month.status === 'Paid',
+                                        'text-red-50 bg-red-600  ':
+                                            month.status === 'Due'
+                                    }"
+                                >
+                                    {{ month.status }}</span
+                                >
+                            </p>
+                            <p style="text-wrap: nowrap">
+                                Paid On August 1 2024
+                            </p>
+                            <div
+                                *ngIf="month.status === 'Due'"
+                                class="text-red-600 mt-2"
+                            >
+                                <p style="text-wrap: nowrap">
+                                    Amount Due: Nu. {{ month.amountPaid }}
+                                </p>
+                                <p style="text-wrap: nowrap" class="mb-4">
+                                    Payaee:
+                                    <span> {{ month.tenant }} (17263764)</span>
+                                </p>
+                            </div>
+                            <div *ngIf="month.status === 'Paid'" class="mt-2">
+                                <p style="text-wrap: nowrap">
+                                    Amount Paid: Nu. {{ month.amountPaid }}
+                                </p>
+                                <p style="text-wrap: nowrap">
+                                    Paid by:
+                                    <span> {{ month.tenant }} (17263764)</span>
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #naTemplate>
+                        <p>NA</p>
+                    </ng-template>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-dialog
+        [modal]="true"
+        [(visible)]="showLoading"
+        closable="false"
+        styleClass="bg-transparent"
+        [style]="{ width: '25rem', background: 'transparent' }"
+    >
+        <div
+            class="flex h-full w-full flex-column gap-4 align-items-center justify-content-center"
+        >
+            <p>Generating Report</p>
+            <p-progressSpinner
+                styleClass="w-4rem h-4rem"
+                strokeWidth="8"
+                fill="var(--surface-ground)"
+                animationDuration=".5s"
+            />
+        </div>
+    </p-dialog>
+</div>

@@ -6,7 +6,6 @@ import { AdminViewUnitComponent } from './units/admin-view-unit/admin-view-unit.
 import { AdminMasterPropertiesComponent } from './admin-master-properties.component';
 import { AdminListUnitsComponent } from './units/admin-list-units/admin-list-units.component';
 import { AdminViewBuildingLayoutComponent } from './buildings/admin-view-building/admin-view-building-layout/admin-view-building-layout.component';
-import { AdminPropertyListingsComponent } from './listings/admin-property-listings/admin-property-listings.component';
 import { AdminPropertiesMapViewComponent } from './mapview/admin-properties-map-view/admin-properties-map-view.component';
 import { AdminThramListingsComponent } from '../land/thrams/admin-thram-listings/admin-thram-listings.component';
 import { AdminPlotsListingComponent } from '../land/plots/admin-plots-listing/admin-plots-listing.component';
@@ -18,10 +17,6 @@ const routes: Routes = [
         path: '',
         component: AdminMasterPropertiesComponent,
         children: [
-            {
-                path: '',
-                component: AdminPropertyListingsComponent,
-            },
             {
                 path: 'thrams',
                 component: AdminThramListingsComponent,

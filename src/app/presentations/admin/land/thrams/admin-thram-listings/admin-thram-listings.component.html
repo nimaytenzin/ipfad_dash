@@ -1,12 +1,20 @@
 <div>
     <div class="flex justify-content-between my-4">
         <p class="text-xl">Thram Master Table</p>
-        <p-button
-            label="Thram"
-            icon="pi pi-plus"
-            size="small"
-            (click)="openCreateThramModal()"
-        ></p-button>
+        <div class="flex gap-2">
+            <p-button
+                label="Thram"
+                icon="pi pi-plus"
+                size="small"
+                (click)="openCreateThramModal()"
+            ></p-button>
+            <p-button
+                label="Download Excel"
+                icon="pi pi-file-excel"
+                size="small"
+                (click)="downloadMasterTable()"
+            ></p-button>
+        </div>
     </div>
     <div>
         <p-table [value]="thrams" styleClass="p-datatable-striped">

@@ -35,4 +35,6 @@ export class AdminThramListingsComponent implements OnInit {
             header: 'Create Thram',
         });
     }
+
+    downloadMasterTable() {}
 }

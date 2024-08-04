@@ -40,6 +40,12 @@ export class TenantDataService {
     GetAllTenants(): Observable<TenantDTO[]> {
         return this.http.get<TenantDTO[]>(`${this.apiUrl}/tenant`);
     }
+
+    GetActiveTenantsByBuilding(buildingId): Observable<TenantDTO[]> {
+        return this.http.get<TenantDTO[]>(
+            `${this.apiUrl}/tenant/active/building/${buildingId}`
+        );
+    }
     SearchTenant(params?: {
         id?: number;
         phoneNumber?: number;

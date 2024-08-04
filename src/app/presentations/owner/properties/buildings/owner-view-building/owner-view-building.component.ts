@@ -9,7 +9,7 @@ import { OwnerBuildingSurchargeCardComponent } from './components/owner-building
 import { OwnerBuildingRulesCardComponent } from './components/owner-building-rules-card/owner-building-rules-card.component';
 import { OwnerBuildingDetailCardComponent } from './components/owner-building-detail-card/owner-building-detail-card.component';
 import { OwnerBuildingAmenitiesCardComponent } from './components/owner-building-amenities-card/owner-building-amenities-card.component';
-import { AdminBuildingPhotosComponent } from 'src/app/presentations/admin/properties/buildings/components/admin-building-photos/admin-building-photos.component';
+import { AdminBuildingPhotosComponent } from 'src/app/presentations/admin/buildings/buildings/components/admin-building-photos/admin-building-photos.component';
 
 @Component({
     selector: 'app-owner-view-building',

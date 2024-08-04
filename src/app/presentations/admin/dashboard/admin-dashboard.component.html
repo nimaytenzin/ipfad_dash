@@ -61,17 +61,34 @@
             >
                 <p class="text-2xl font-bold">Properties</p>
                 <p-divider></p-divider>
-                <div>
-                    <p class="text-2xl font-semibold">
-                        {{ summaryStats.buildingCount }}
-                    </p>
-                    <p class="text-sm text-gray-600">Buildings</p>
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <p class="text-2xl font-semibold">
+                            {{ summaryStats.buildingCount }}
+                        </p>
+                        <p class="text-sm text-gray-600">Buildings</p>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-2xl font-semibold">
+                            {{ summaryStats.unitCount }}
+                        </p>
+                        <p class="text-sm text-gray-600">Units</p>
+                    </div>
                 </div>
-                <div class="mt-4">
-                    <p class="text-2xl font-semibold">
-                        {{ summaryStats.unitCount }}
-                    </p>
-                    <p class="text-sm text-gray-600">Units</p>
+
+                <div class="flex gap-2">
+                    <div class="flex-1">
+                        <p class="text-2xl font-semibold">
+                            {{ summaryStats.thramCount }}
+                        </p>
+                        <p class="text-sm text-gray-600">Thrams</p>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-2xl font-semibold">
+                            {{ summaryStats.plotCount }}
+                        </p>
+                        <p class="text-sm text-gray-600">Plots</p>
+                    </div>
                 </div>
             </div>
             <div class="w-3 border-1 surface-border border-round-md p-2">

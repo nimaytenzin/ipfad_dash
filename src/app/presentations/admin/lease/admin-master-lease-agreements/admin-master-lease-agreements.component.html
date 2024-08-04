@@ -1,13 +1,21 @@
-<div class="flex align-items-center justify-content-between">
-    Lease Agreements
+<div class="flex justify-content-between my-4">
+    <p class="text-xl">Lease Agreements Master Table</p>
+    <div class="flex gap-2">
+        <p-button
+            label="Lease Agreement"
+            icon="pi pi-plus"
+            (click)="createLease()"
+            size="small"
+        ></p-button>
+        <p-button
+            label="Download Excel"
+            icon="pi pi-file-excel"
+            size="small"
+            (click)="downloadMasterTable()"
+        ></p-button>
+    </div>
 </div>
-<p-toast></p-toast>
 
-<p-button
-    icon="pi pi-plus"
-    label="Lease Agreement"
-    (click)="createLease()"
-></p-button>
 <p-table
     [value]="paginatedLeaseAgreements.data"
     class="p-datatable-sm"

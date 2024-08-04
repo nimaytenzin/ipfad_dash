@@ -43,7 +43,7 @@ import { USERROLESENUM } from './core/constants/enums';
                             path: 'master-properties',
                             loadChildren: () =>
                                 import(
-                                    './presentations/admin/properties/admin-master-properties-routing.module'
+                                    './presentations/admin/buildings/admin-master-properties-routing.module'
                                 ).then(
                                     (m) => m.AdminMasterPropertiesRoutingModule
                                 ),

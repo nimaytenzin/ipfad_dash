@@ -8,5 +8,9 @@ export interface OwnerSummaryStatsDTO {
     totalRentalIncome: number;
     pendingPaymentAmount: number;
 
+    thramCount: number;
+    plotCount: number;
+    ownerCount: number;
+
     buildings: BuildingDTO[];
 }
