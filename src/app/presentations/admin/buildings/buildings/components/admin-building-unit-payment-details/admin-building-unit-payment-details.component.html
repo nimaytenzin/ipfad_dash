@@ -4,10 +4,12 @@
 
 <div>
     <p>Tenant:</p>
-    <p>Name: Kinley Wangyel</p>
-    <p>CID: 1030200402</p>
-    <p>Phone: 17263762</p>
+    <p>
+        Name: {{ paymentAdvice?.tenant?.firstName }}
+        {{ paymentAdvice?.tenant?.middleName }}
+        {{ paymentAdvice?.tenant?.lastName }}
+    </p>
+    <p>CID: {{ paymentAdvice?.tenant?.cid }}</p>
+    <p>Phone: {{ paymentAdvice?.tenant?.phoneNumber }}</p>
     <p-divider></p-divider>
-    <p-button label="View Lease Agreeement" size="small" icon="pi pi-file-o">
-    </p-button>
 </div>

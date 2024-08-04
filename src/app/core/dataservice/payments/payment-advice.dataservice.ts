@@ -15,6 +15,7 @@ import {
     GenerateBuildingPADto,
     PaymentAdviceDto,
 } from '../../dto/payments/payment-advice/payment-advice.dto';
+import { UnitDTO } from '../../dto/units/unit.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -42,6 +43,7 @@ export class PaymentAdviceDataService {
             `${this.apiUrl}/payment-advice/pending/unit/${unitId}`
         );
     }
+
     GetAllPendingAdviceByBuilding(
         buildingId: number
     ): Observable<PaymentAdviceDto[]> {
@@ -66,6 +68,21 @@ export class PaymentAdviceDataService {
     GetPaidPaymentsByTenant(tenantId: number): Observable<PaymentAdviceDto[]> {
         return this.http.get<PaymentAdviceDto[]>(
             `${this.apiUrl}/payment-advice/paid/tenant/${tenantId}`
+        );
+    }
+
+    GetPaymentAdivicesByBuildingUnitsByYear(
+        buildingId: number,
+        year: number
+    ): Observable<UnitDTO[]> {
+        return this.http.get<UnitDTO[]>(
+            `${this.apiUrl}/building/payment-status/${buildingId}/${year}`
+        );
+    }
+
+    DownloadPaymentStatusExcel(buildingId: number): Observable<UnitDTO[]> {
+        return this.http.get<UnitDTO[]>(
+            `${this.apiUrl}/payment-advice/pending/report/building/${buildingId}`
         );
     }
 }

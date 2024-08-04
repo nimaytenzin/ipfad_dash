@@ -11,6 +11,10 @@ import { TableModule } from 'primeng/table';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { AdminBuildingUnitPaymentDetailsComponent } from '../admin-building-unit-payment-details/admin-building-unit-payment-details.component';
+import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { HttpClient } from '@angular/common/http';
+import { API_URL } from 'src/app/core/constants/constants';
 
 @Component({
     selector: 'app-admin-building-unit-payment-sheet',
@@ -34,325 +38,21 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
     @Input({ required: true }) buildingId: number;
     year: Date | undefined = new Date();
     showLoading: boolean = false;
+    unitsWithPA: UnitDTO[] = [];
 
-    units = [
-        {
-            floorLevel: 1,
-            unitNumber: '01',
-            payments: [
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.12000',
-                    amountDue: 'Nu.1200',
-                    tenant: 'Kinley Wangyel',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.12000',
-                    amountDue: 'Nu.1200',
-                    tenant: 'Kinley Wangyel',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.12000',
-                    amountDue: 'Nu.1200',
-                    tenant: 'Kinley Wangyel',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.12000',
-                    amountDue: 'Nu.1200',
-                    tenant: 'Kinley Wangyel',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.12000',
-                    amountDue: 'Nu.1200',
-                    tenant: 'Kinley Wangyel',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.12000',
-                    amountDue: 'Nu.1200',
-                    tenant: 'Kinley Wangyel',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.12000',
-                    amountDue: 'Nu.1200',
-                    tenant: 'Kinley Wangyel',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-            ],
-        },
-        {
-            floorLevel: 1,
-            unitNumber: '02',
-            payments: [
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.15000',
-                    amountDue: 'Nu.1500',
-                    tenant: 'Pema Dorji',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.15000',
-                    amountDue: 'Nu.1500',
-                    tenant: 'Pema Dorji',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.15000',
-                    amountDue: 'Nu.1500',
-                    tenant: 'Pema Dorji',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.15000',
-                    amountDue: 'Nu.1500',
-                    tenant: 'Pema Dorji',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.15000',
-                    amountDue: 'Nu.1500',
-                    tenant: 'Pema Dorji',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.15000',
-                    amountDue: 'Nu.1500',
-                    tenant: 'Pema Dorji',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.15000',
-                    amountDue: 'Nu.1500',
-                    tenant: 'Pema Dorji',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-            ],
-        },
-        {
-            floorLevel: 2,
-            unitNumber: '01',
-            payments: [
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.18000',
-                    amountDue: 'Nu.1800',
-                    tenant: 'Sonam Choden',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.18000',
-                    amountDue: 'Nu.1800',
-                    tenant: 'Sonam Choden',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.18000',
-                    amountDue: 'Nu.1800',
-                    tenant: 'Sonam Choden',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.18000',
-                    amountDue: 'Nu.1800',
-                    tenant: 'Sonam Choden',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.18000',
-                    amountDue: 'Nu.1800',
-                    tenant: 'Sonam Choden',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.18000',
-                    amountDue: 'Nu.1800',
-                    tenant: 'Sonam Choden',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.18000',
-                    amountDue: 'Nu.1800',
-                    tenant: 'Sonam Choden',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-            ],
-        },
-        {
-            floorLevel: 2,
-            unitNumber: '02',
-            payments: [
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.20000',
-                    amountDue: 'Nu.2000',
-                    tenant: 'Karma Zangmo',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.20000',
-                    amountDue: 'Nu.2000',
-                    tenant: 'Karma Zangmo',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.20000',
-                    amountDue: 'Nu.2000',
-                    tenant: 'Karma Zangmo',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.20000',
-                    amountDue: 'Nu.2000',
-                    tenant: 'Karma Zangmo',
-                },
-                {
-                    status: 'Paid',
-                    amountPaid: 'Nu.20000',
-                    amountDue: 'Nu.2000',
-                    tenant: 'Karma Zangmo',
-                },
-                {
-                    status: 'Due',
-                    amountPaid: 'Nu.20000',
-                    amountDue: 'Nu.2000',
-                    tenant: 'Karma Zangmo',
-                },
-                {
-                    status: 'Due',
-                    amountPaid: 'Nu.20000',
-                    amountDue: 'Nu.2000',
-                    tenant: 'Karma Zangmo',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-                {
-                    status: 'NA',
-                    amountPaid: 'NA',
-                    amountDue: 'NA',
-                    tenant: 'NA',
-                },
-            ],
-        },
-    ];
+    totalPending: number = 0;
+    vacantUnitCount: number = 0;
+
+    excelDownLoadLink: string;
+
     constructor(
         private unitDataService: UnitDataService,
-        private daialogService: DialogService
-    ) {}
+        private daialogService: DialogService,
+        private paDataService: PaymentAdviceDataService,
+        private http: HttpClient
+    ) {
+        this.excelDownLoadLink = `${API_URL}/payment-advice/pending/report/building/${this.buildingId}`;
+    }
 
     ngOnInit() {
         // this.unitDataService.GetAllUnitsByBuilding(this.buildingId).subscribe({
@@ -360,6 +60,27 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         //         this.units = res;
         //     },
         // });
+        this.paDataService
+            .GetPaymentAdivicesByBuildingUnitsByYear(
+                this.buildingId,
+                this.year.getFullYear()
+            )
+            .subscribe({
+                next: (res) => {
+                    console.log('PA STSTUS', res);
+                    this.unitsWithPA = res;
+                    for (const unit of res) {
+                        if (!unit.activeLeaseAgreement) {
+                            this.vacantUnitCount++;
+                        }
+                        for (const advice of unit.paymentAdvices) {
+                            if (advice && advice.status === 'DUE') {
+                                this.totalPending += advice.totalAmount;
+                            }
+                        }
+                    }
+                },
+            });
     }
 
     fetchPaymentData() {
@@ -369,11 +90,12 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         }, 2000);
     }
 
-    openPADetails() {
+    openPADetails(advice: PaymentAdviceDto) {
         this.ref = this.daialogService.open(
             AdminBuildingUnitPaymentDetailsComponent,
             {
                 header: 'Details',
+                data: { ...advice },
             }
         );
     }

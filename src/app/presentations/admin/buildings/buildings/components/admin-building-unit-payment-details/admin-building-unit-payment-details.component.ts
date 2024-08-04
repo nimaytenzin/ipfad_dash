@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
@@ -26,15 +27,12 @@ import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-compone
 export class AdminBuildingUnitPaymentDetailsComponent implements OnInit {
     companyDetails = ZHIDHAYCONTACTDETAILS;
     paymentAdvice: PaymentAdviceDto;
-    constructor(private paymentAdviceDataService: PaymentAdviceDataService) {}
-
-    ngOnInit() {
-        this.paymentAdviceDataService
-            .GetPaidPaymentsByTenant(1)
-            .subscribe((res) => {
-                console.log('PENDING PA BY UNIT PAYMENT');
-                console.log(res);
-                this.paymentAdvice = res[0];
-            });
+    constructor(
+        private paymentAdviceDataService: PaymentAdviceDataService,
+        private config: DynamicDialogConfig
+    ) {
+        this.paymentAdvice = config.data;
     }
+
+    ngOnInit() {}
 }

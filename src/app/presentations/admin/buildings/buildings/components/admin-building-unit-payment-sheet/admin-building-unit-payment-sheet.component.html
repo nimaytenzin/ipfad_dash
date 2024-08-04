@@ -30,19 +30,18 @@
             </p>
             <p class="text-sm">Double Click a cell to bring up detailed view</p>
         </div>
-        <p-button size="small" label="Download Excel" icon="pi pi-file-excel">
-        </p-button>
+        <a [href]="excelDownLoadLink"> Download Excel </a>
     </div>
     <p-table
-        [value]="units"
+        [value]="unitsWithPA"
         [scrollable]="true"
         styleClass="p-datatable-gridlines p-datatable-striped"
     >
         <ng-template pTemplate="caption">
             <div class="">
-                <p>Total Due: Nu. 25923</p>
-                <p>Total Units: 4</p>
-                <p>Vacant Units: 0</p>
+                <p>Total Due: Nu. {{ totalPending }}</p>
+                <p>Total Units: {{ unitsWithPA.length }}</p>
+                <p>Vacant Units: {{ vacantUnitCount }}</p>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -69,10 +68,10 @@
                         {{ unit.floorLevel }}-{{ unit.unitNumber }}
                     </p>
                 </td>
-                <td *ngFor="let month of unit.payments; let i = index">
-                    <ng-container *ngIf="i < 7; else naTemplate">
+                <td *ngFor="let advice of unit.paymentAdvices; let i = index">
+                    <ng-container *ngIf="advice && advice.id; else naTemplate">
                         <div
-                            (dblclick)="openPADetails()"
+                            (dblclick)="openPADetails(advice)"
                             class="cursor-pointer hover:bg-gray-100"
                         >
                             <p style="text-wrap: nowrap">
@@ -81,42 +80,57 @@
                                     class="font-semibold mr-2 px-2 py-1 border-round-md text-sm"
                                     [ngClass]="{
                                         'text-green-50  bg-green-600  ':
-                                            month.status === 'Paid',
+                                            advice.status === 'PAID',
                                         'text-red-50 bg-red-600  ':
-                                            month.status === 'Due'
+                                            advice.status === 'DUE'
                                     }"
                                 >
-                                    {{ month.status }}</span
+                                    {{ advice.status }}</span
                                 >
                             </p>
-                            <p style="text-wrap: nowrap">
-                                Paid On August 1 2024
-                            </p>
+
                             <div
-                                *ngIf="month.status === 'Due'"
+                                *ngIf="advice.status === 'DUE'"
                                 class="text-red-600 mt-2"
                             >
                                 <p style="text-wrap: nowrap">
-                                    Amount Due: Nu. {{ month.amountPaid }}
+                                    Amount Due: Nu. {{ advice.totalAmount }}
                                 </p>
-                                <p style="text-wrap: nowrap" class="mb-4">
+                                <div style="text-wrap: nowrap" class="my-2">
                                     Payaee:
-                                    <span> {{ month.tenant }} (17263764)</span>
-                                </p>
+                                    <p>
+                                        Name: {{ advice.tenant?.firstName }}
+                                        {{ advice.tenant?.middleName }}
+                                        {{ advice.tenant?.lastName }}
+                                    </p>
+                                    <p>
+                                        Phone: {{ advice.tenant?.phoneNumber }}
+                                    </p>
+                                    <p>CID: {{ advice.tenant?.cid }}</p>
+                                </div>
                             </div>
-                            <div *ngIf="month.status === 'Paid'" class="mt-2">
+                            <div *ngIf="advice.status === 'PAID'" class="mt-2">
                                 <p style="text-wrap: nowrap">
-                                    Amount Paid: Nu. {{ month.amountPaid }}
+                                    Amount Paid: Nu. {{ advice.totalAmount }}
                                 </p>
-                                <p style="text-wrap: nowrap">
+                                <div style="text-wrap: nowrap" class="my-2">
                                     Paid by:
-                                    <span> {{ month.tenant }} (17263764)</span>
-                                </p>
+                                    <p>
+                                        Name: {{ advice.tenant?.firstName }}
+                                        {{ advice.tenant?.middleName }}
+                                        {{ advice.tenant?.lastName }}
+                                    </p>
+                                    <p>
+                                        Phone: {{ advice.tenant?.phoneNumber }}
+                                    </p>
+                                    <p>CID: {{ advice.tenant?.cid }}</p>
+                                </div>
                             </div>
                         </div>
                     </ng-container>
                     <ng-template #naTemplate>
-                        <p>NA</p>
+                        <p *ngIf="unit.activeLeaseAgreement?.id">NA</p>
+                        <p *ngIf="!unit.activeLeaseAgreement?.id">Vacant</p>
                     </ng-template>
                 </td>
             </tr>
