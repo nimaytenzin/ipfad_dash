@@ -51,7 +51,6 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         private paDataService: PaymentAdviceDataService,
         private http: HttpClient
     ) {
-        this.excelDownLoadLink = `${API_URL}/payment-advice/pending/report/building/${this.buildingId}`;
     }
 
     ngOnInit() {
@@ -60,6 +59,7 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         //         this.units = res;
         //     },
         // });
+        this.excelDownLoadLink = `${API_URL}/payment-advice/pending/report/building/${this.buildingId}`;
         this.paDataService
             .GetPaymentAdivicesByBuildingUnitsByYear(
                 this.buildingId,
