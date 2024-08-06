@@ -72,11 +72,7 @@ export const ADMINSIDEBARITEMS = [
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/plots'],
             },
-            {
-                label: 'Search',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-properties/search/plots'],
-            },
+
             {
                 label: 'Map View',
                 icon: 'pi pi-fw pi-th-large',
@@ -93,10 +89,15 @@ export const ADMINSIDEBARITEMS = [
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/list-buildings'],
             },
+        ],
+    },
+    {
+        label: 'Search Module',
+        items: [
             {
                 label: 'Search',
                 icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-properties/search/buildings'],
+                routerLink: ['/admin/master-properties/search/plots'],
             },
         ],
     },

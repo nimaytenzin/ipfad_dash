@@ -10,6 +10,7 @@ import { AdminDTO } from 'src/app/core/dto/users/admin.dto';
 import { AdminDataService } from 'src/app/core/dataservice/users-and-auth/admin.user.dataservice';
 import { CommonModule } from '@angular/common';
 import { PaginatorModule } from 'primeng/paginator';
+import { AdminUpdateAdminComponent } from '../crud-dialog/admin-update-admin/admin-update-admin.component';
 
 @Component({
     selector: 'app-admin-master-admins',
@@ -49,7 +50,7 @@ export class AdminMasterAdminsComponent implements OnInit {
             width: '500px',
         });
         this.ref.onClose.subscribe((res) => {
-            if (res.added) {
+            if (res && res.added) {
                 this.getAdmins();
             }
         });
@@ -62,6 +63,16 @@ export class AdminMasterAdminsComponent implements OnInit {
             })
             .subscribe((res) => {
                 this.paginatedAdmins = res;
+
+                console.log('PAGINATED ADMINS', res);
             });
+    }
+    downloadMasterTable() {}
+
+    openUpdateAdminModal(user: AdminDTO) {
+        this.ref = this.dialogService.open(AdminUpdateAdminComponent, {
+            header: 'Update Admin',
+            data: { ...user },
+        });
     }
 }

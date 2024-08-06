@@ -50,11 +50,12 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         private daialogService: DialogService,
         private paDataService: PaymentAdviceDataService,
         private http: HttpClient
-    ) {
-        this.excelDownLoadLink = `${API_URL}/payment-advice/pending/report/building/${this.buildingId}`;
-    }
+    ) {}
 
     ngOnInit() {
+        this.excelDownLoadLink = `${API_URL}/payment-advice/pending/report/building/${this.buildingId}`;
+        console.log(this.excelDownLoadLink);
+
         // this.unitDataService.GetAllUnitsByBuilding(this.buildingId).subscribe({
         //     next: (res) => {
         //         this.units = res;

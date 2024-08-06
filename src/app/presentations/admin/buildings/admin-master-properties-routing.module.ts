@@ -9,8 +9,8 @@ import { AdminViewBuildingLayoutComponent } from './buildings/admin-view-buildin
 import { AdminPropertiesMapViewComponent } from './mapview/admin-properties-map-view/admin-properties-map-view.component';
 import { AdminThramListingsComponent } from '../land/thrams/admin-thram-listings/admin-thram-listings.component';
 import { AdminPlotsListingComponent } from '../land/plots/admin-plots-listing/admin-plots-listing.component';
-import { AdminSearchPlotComponent } from '../land/search/admin-search-plot/admin-search-plot.component';
 import { AdminSearchBuildingsComponent } from './search/admin-search-buildings/admin-search-buildings.component';
+import { AdminSearchPlotComponent } from '../search/admin-search-plot/admin-search-plot.component';
 
 const routes: Routes = [
     {

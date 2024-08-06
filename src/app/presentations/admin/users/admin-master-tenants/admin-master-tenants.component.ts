@@ -73,6 +73,7 @@ export class AdminMasterTenantsComponent implements OnInit {
             })
             .subscribe((res) => {
                 this.paginatedTenants = res;
+                console.log('pAGINATED DATA', res);
             });
     }
 
