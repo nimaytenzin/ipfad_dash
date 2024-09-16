@@ -125,7 +125,6 @@ export class AdminCreateLeasePropertiesComponent implements OnInit {
             .SearchForThram({
                 dzongkhagId: this.selectedDzongkhag.id,
                 administrativeZoneId: this.selectedAdministrativeZone.id,
-                subAdministrativeZoneId: this.selectedAdministrativeZone.id,
                 thramNo: this.thramNo,
             })
             .subscribe({

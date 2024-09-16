@@ -28,16 +28,6 @@
             </div>
         </div>
         <div class="flex gap-2 my-4 justify-content-end align-items-end">
-            <div class="flex flex-1 flex-column gap-2">
-                <label for="chiwog">Sub AdministrativeZone</label>
-                <p-dropdown
-                    id="chiwog"
-                    [options]="subAdministrativeZones"
-                    optionValue="id"
-                    optionLabel="name"
-                    formControlName="subAdministrativeZoneId"
-                ></p-dropdown>
-            </div>
             <div class="flex flex-column gap-2 flex-1">
                 <label for="nameEnglish">Thram Number</label>
                 <input
@@ -58,7 +48,7 @@
 
     <p-divider></p-divider>
     <div *ngIf="searchedThram">
-        <p class="text-lg font-semibold text-green-500">Thram Found</p>
+        <p class="text-lg font-semibold">Thram Details</p>
         <p>Thram No: {{ searchedThram.thramNo }}</p>
         <p>Dzongkhag: {{ searchedThram.dzongkhag?.name }}</p>
         <p>Adminstrative Zone: {{ searchedThram.administrativeZone?.name }}</p>
@@ -100,7 +90,7 @@
 
                 <p-dropdown
                     id="dzongkhag"
-                    [options]="plotCategories"
+                    [options]="ownerTypes"
                     formControlName="ownershipType"
                 ></p-dropdown>
             </div>

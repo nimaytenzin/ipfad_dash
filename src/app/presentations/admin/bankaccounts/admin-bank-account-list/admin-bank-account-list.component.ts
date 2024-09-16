@@ -7,6 +7,7 @@ import { BankAccountDto } from 'src/app/core/dataservice/bankaccounts/bankaccoun
 import { AdminCreateBankAccountComponent } from '../admin-create-bank-account/admin-create-bank-account.component';
 import { BankAccountDataService } from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
 import { AdminEditBankAccoutComponent } from '../admin-edit-bank-accout/admin-edit-bank-accout.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-admin-bank-account-list',
@@ -22,7 +23,8 @@ export class AdminBankAccountListComponent implements OnInit {
     bankAccounts: BankAccountDto[];
     constructor(
         private dialogService: DialogService,
-        private bankAccountDataService: BankAccountDataService
+        private bankAccountDataService: BankAccountDataService,
+        private messageService: MessageService
     ) {}
 
     ngOnInit() {
@@ -42,5 +44,26 @@ export class AdminBankAccountListComponent implements OnInit {
             data: { ...item },
         });
     }
-    downloadMasterTable() {}
+    downloadMasterTable() {
+        this.bankAccountDataService
+            .DownloadAllBankAccountsAsExcel()
+            .subscribe((res) => {
+                const blob = new Blob([res], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Bank_Accounts.xlsx'; // Specify the file name
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Bank Account List Downloaded',
+                });
+            });
+    }
 }

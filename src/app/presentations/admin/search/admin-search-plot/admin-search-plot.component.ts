@@ -14,8 +14,10 @@ import { LocationDataService } from 'src/app/core/dataservice/location/location.
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { AdminSpatialViewerPlotComponent } from '../../land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
     selector: 'app-admin-search-plot',
@@ -30,11 +32,13 @@ import { AdminSpatialViewerPlotComponent } from '../../land/shared/admin-spatial
         ButtonModule,
         TableModule,
         DividerModule,
+        TabViewModule,
     ],
     providers: [DialogService],
 })
 export class AdminSearchPlotComponent implements OnInit {
     ref: DynamicDialogRef;
+
     dzongkhags: DzongkhagDTO[];
     administrativeZones: AdministrativeZoneDTO[];
     subAdministrativeZones: SubAdministrativeZoneDTO[];
@@ -95,7 +99,7 @@ export class AdminSearchPlotComponent implements OnInit {
             .SearchForThram({
                 dzongkhagId: this.selectedDzongkhag.id,
                 administrativeZoneId: this.selectedAdministrativeZone.id,
-                subAdministrativeZoneId: this.selectedAdministrativeZone.id,
+
                 thramNo: this.thramNo,
             })
             .subscribe({

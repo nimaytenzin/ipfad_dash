@@ -7,12 +7,20 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
+import {
+    LOCATIONFLAGENUM,
+    PlotOwnershipENUM,
+} from 'src/app/core/constants/enums';
 import { CreateThramDTO } from 'src/app/core/dataservice/land/dto/thram.dto';
 import { ThramDataService } from 'src/app/core/dataservice/land/thram.dataservice';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
 import { OwnerDTO } from 'src/app/core/dataservice/owners/dto/owner.dto';
 import { OwnerDataService } from 'src/app/core/dataservice/owners/owner.dataservice';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
+import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
@@ -36,14 +44,17 @@ export class AdminThramCreateComponent implements OnInit {
     administrativeZones: AdministrativeZoneDTO[];
     subAdministrativeZones: SubAdministrativeZoneDTO[];
 
-    owners: OwnerDTO[];
+    owners: UserDTO[];
+    ownerTypes = Object.values(PlotOwnershipENUM);
+    locationFlags = Object.values(LOCATIONFLAGENUM);
 
-    ownerTypes = ['Gerab Dratshang', 'Private'];
     constructor(
         private fb: FormBuilder,
         private locationDataService: LocationDataService,
         private thramDataService: ThramDataService,
-        private ownerDataService: OwnerDataService
+        private ref: DynamicDialogRef,
+        private userDataService: UserDataService,
+        private authService: AuthService
     ) {}
 
     ngOnInit() {
@@ -60,10 +71,12 @@ export class AdminThramCreateComponent implements OnInit {
                 this.dzongkhags = res;
             },
         });
-        this.ownerDataService.GetAllOwners().subscribe((res) => {
-            this.owners = res;
-            console.log('OWNER', res);
-        });
+        this.userDataService
+            .AdminGetAllOwners(this.authService.GetAuthenticatedUser().id)
+            .subscribe((res) => {
+                this.owners = res;
+                console.log('OWNER', res);
+            });
     }
 
     createThram() {
@@ -73,7 +86,7 @@ export class AdminThramCreateComponent implements OnInit {
             })
             .subscribe({
                 next: (res) => {
-                    console.log(res);
+                    this.ref.close({ status: 201 });
                 },
             });
     }

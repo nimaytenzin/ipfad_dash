@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { API_URL } from '../../constants/constants';
 import { Observable } from 'rxjs';
 import { CreateThramDTO, SearchThramDTO, ThramDTO } from './dto/thram.dto';
+import { UserDTO } from '../users-and-auth/dto/user.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -17,6 +18,17 @@ export class ThramDataService {
     }
     GetAllThrams(): Observable<ThramDTO[]> {
         return this.http.get<ThramDTO[]>(`${this.apiUrl}/thram`);
+    }
+    GetAllThramsByAdmin(adminId: number): Observable<UserDTO[]> {
+        return this.http.get<UserDTO[]>(
+            `${this.apiUrl}/thram/admin/${adminId}`
+        );
+    }
+
+    GetAllThramsByOwner(ownerId: number): Observable<ThramDTO[]> {
+        return this.http.get<ThramDTO[]>(
+            `${this.apiUrl}/thram/owner/${ownerId}`
+        );
     }
 
     SearchForThram(data: SearchThramDTO): Observable<ThramDTO> {

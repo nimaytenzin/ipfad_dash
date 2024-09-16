@@ -1,52 +1,75 @@
-<p>Search Thram</p>
-<div class="p-fluid flex flex-column gap-2 mt-4">
-    <div class="flex gap-4 w-full mb-4">
-        <div class="flex flex-1 flex-column gap-2">
-            <label for="dzongkhag">Dzongkhag</label>
-            <p-dropdown
-                [options]="dzongkhags"
-                optionLabel="name"
-                placeholder="Select Dzongkhag"
-                (onChange)="dzongkhagSelected($event)"
-                [(ngModel)]="selectedDzongkhag"
-            ></p-dropdown>
+<p-tabView>
+    <p-tabPanel header="Search by Thram">
+        <div class="p-fluid flex flex-column gap-2 mt-4">
+            <div class="flex gap-4 w-full mb-4">
+                <div class="flex flex-1 flex-column gap-2">
+                    <label for="dzongkhag">Dzongkhag</label>
+                    <p-dropdown
+                        [options]="dzongkhags"
+                        optionLabel="name"
+                        placeholder="Select Dzongkhag"
+                        (onChange)="dzongkhagSelected($event)"
+                        [(ngModel)]="selectedDzongkhag"
+                    ></p-dropdown>
+                </div>
+                <div class="flex flex-1 flex-column gap-2">
+                    <label for="gewog">Administrative Zone</label>
+                    <p-dropdown
+                        optionLabel="name"
+                        placeholder="Select Administrative Zone"
+                        (onChange)="administrativeZoneSelect($event)"
+                        [options]="administrativeZones"
+                        [(ngModel)]="selectedAdministrativeZone"
+                    >
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="flex gap-4 my-4 justify-content-end align-items-end">
+                <div class="flex flex-1 flex-column gap-2">
+                    <label for="chiwog">Sub AdministrativeZone</label>
+                    <p-dropdown
+                        [options]="subAdministrativeZones"
+                        optionLabel="name"
+                        placeholder="Select Sub Administrative Zone"
+                        [(ngModel)]="selectedSubAdministrativeZone"
+                    ></p-dropdown>
+                </div>
+                <div class="flex flex-column gap-2 flex-1">
+                    <label for="nameEnglish">Thram Number</label>
+                    <input
+                        pInputText
+                        id="nameEnglish"
+                        [(ngModel)]="thramNo"
+                        type="text"
+                    />
+                </div>
+            </div>
+            <div class="flex justify-content-end">
+                <p-button
+                    label="Search for Thram"
+                    (click)="searchThram()"
+                ></p-button>
+            </div>
         </div>
-        <div class="flex flex-1 flex-column gap-2">
-            <label for="gewog">Administrative Zone</label>
-            <p-dropdown
-                optionLabel="name"
-                placeholder="Select Administrative Zone"
-                (onChange)="administrativeZoneSelect($event)"
-                [options]="administrativeZones"
-                [(ngModel)]="selectedAdministrativeZone"
-            >
-            </p-dropdown>
+    </p-tabPanel>
+    <p-tabPanel header="Search by Plot">
+        <div class="flex gap-4 my-4 justify-content-start align-items-end">
+            <div class="flex flex-column gap-2 flex-1">
+                <label for="nameEnglish">Thram Number</label>
+                <input
+                    pInputText
+                    id="nameEnglish"
+                    [(ngModel)]="thramNo"
+                    type="text"
+                />
+            </div>
+            <p-button
+                label="Search for Thram"
+                (click)="searchThram()"
+            ></p-button>
         </div>
-    </div>
-    <div class="flex gap-4 my-4 justify-content-end align-items-end">
-        <div class="flex flex-1 flex-column gap-2">
-            <label for="chiwog">Sub AdministrativeZone</label>
-            <p-dropdown
-                [options]="subAdministrativeZones"
-                optionLabel="name"
-                placeholder="Select Sub Administrative Zone"
-                [(ngModel)]="selectedSubAdministrativeZone"
-            ></p-dropdown>
-        </div>
-        <div class="flex flex-column gap-2 flex-1">
-            <label for="nameEnglish">Thram Number</label>
-            <input
-                pInputText
-                id="nameEnglish"
-                [(ngModel)]="thramNo"
-                type="text"
-            />
-        </div>
-    </div>
-    <div class="flex justify-content-end">
-        <p-button label="Search for Thram" (click)="searchThram()"></p-button>
-    </div>
-</div>
+    </p-tabPanel>
+</p-tabView>
 
 <p-divider></p-divider>
 

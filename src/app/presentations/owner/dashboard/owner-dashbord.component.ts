@@ -67,6 +67,7 @@ export class OwnerDashbordComponent implements OnInit, AfterViewChecked {
         buildings: [],
         thramCount: 0,
         plotCount: 0,
+        pendingPaymentAdviceCount: 0,
         ownerCount: 0,
     };
 

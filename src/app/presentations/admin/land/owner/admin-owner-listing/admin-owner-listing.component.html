@@ -1,4 +1,5 @@
 <div>
+    <p-confirmDialog />
     <div class="flex justify-content-between my-4">
         <p class="text-2xl">Owners Master Table</p>
         <div class="flex gap-2">
@@ -20,42 +21,115 @@
         <p-table [value]="owners" styleClass="p-datatable-striped">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Id</th>
-                    <th>Name English</th>
-                    <th>Name Dzongkha</th>
-                    <th>CID</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
+                    <th class="text-center">Id</th>
+                    <th>Auth Details</th>
+                    <th>Name</th>
+                    <th>Details</th>
+
                     <th></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-item>
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.nameEnglish }}</td>
-                    <td>{{ item.nameDzongkha }}</td>
-                    <td>{{ item.cid }}</td>
-                    <td>{{ item.phoneNumber }}</td>
-                    <td>{{ item.email }}</td>
+                <tr [ngClass]="item.isDeleted ? 'text-red-800 bg-red-50' : ''">
+                    <td>
+                        <div class="text-center">
+                            <p>
+                                {{ item.id }}
+                            </p>
+                            <p *ngIf="item.isDeleted" class="text-xs">
+                                *Soft Deleted
+                            </p>
+                        </div>
+                    </td>
+                    <td>
+                        <p
+                            class="mb-1 text-green-500 font-semibold"
+                            *ngIf="item.hasLoginAccess"
+                        >
+                            Login Enabled
+                        </p>
+                        <p
+                            class="mb-1 text-red-500 font-semibold"
+                            *ngIf="!item.hasLoginAccess"
+                        >
+                            Login Disabled
+                        </p>
+
+                        <p>
+                            Roles: [
+                            <span *ngFor="let role of item.roles">
+                                {{ role.name }}
+                            </span>
+                            ]
+                        </p>
+                        <p-divider></p-divider>
+                        <div class="flex gap-2">
+                            <p-button
+                                *ngIf="item.hasLoginAccess"
+                                label="Disable Login"
+                                size="small"
+                                severity="secondary"
+                            ></p-button>
+                            <p-button
+                                *ngIf="item.hasLoginAccess"
+                                label="Change Password"
+                                size="small"
+                                severity="secondary"
+                            ></p-button>
+
+                            <p-button
+                                *ngIf="!item.hasLoginAccess"
+                                label="Enable Login"
+                                size="small"
+                                severity="secondary"
+                            ></p-button>
+                        </div>
+                    </td>
+                    <td>
+                        <p>
+                            {{ item.nameDzongkha }}
+                        </p>
+
+                        <p>
+                            {{ item.nameEnglish }}
+                        </p>
+                    </td>
+                    <td>
+                        <p *ngIf="item.cid">CID: {{ item.cid }}</p>
+                        <p *ngIf="item.phoneNumber">
+                            Phone Number: {{ item.phoneNumber }}
+                        </p>
+                        <p *ngIf="item.email">Email: {{ item.email }}</p>
+                        <p
+                            *ngIf="
+                                !item.cid && !item.phoneNumber && !item.email
+                            "
+                        >
+                            No details added
+                        </p>
+                    </td>
+
                     <td>
                         <div class="flex gap-2">
                             <p-button
                                 size="small"
                                 icon="pi pi-pencil"
-                                (click)="openUpdateOwnerModal()"
+                                (click)="openUpdateOwnerModal(item)"
                             ></p-button>
                             <p-button
                                 size="small"
                                 severity="danger"
                                 icon="pi pi-trash"
-                                (click)="openDeleteOwnerModal()"
+                                *ngIf="!item.isDeleted"
+                                (click)="openDeleteOwnerModal(item)"
                             ></p-button>
 
                             <p-button
                                 size="small"
                                 severity="secondary"
-                                label="Thrams"
+                                label="Plots"
                                 icon="pi pi-eye"
+                                (click)="openViewThramModal(item)"
                             ></p-button>
                             <p-button
                                 size="small"

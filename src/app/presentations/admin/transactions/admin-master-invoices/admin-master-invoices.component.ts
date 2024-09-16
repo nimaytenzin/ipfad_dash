@@ -78,15 +78,15 @@ export class AdminMasterInvoicesComponent implements OnInit {
     }
 
     getInvoices() {
-        this.invoiceDataService
-            .GetAllInvoicesPaginated({
-                page: 0,
-                limit: this.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedInvoices = res;
-                console.log(res);
-            });
+        // this.invoiceDataService
+        //     .GetAllInvoicesPaginated({
+        //         page: 0,
+        //         limit: this.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedInvoices = res;
+        //         console.log(res);
+        //     });
     }
 
     openPayInvoiceModal(invoice: InvoiceDTO) {

@@ -23,7 +23,7 @@ export class invoiceDataService {
         return this.http.post<InvoiceDTO>(`${this.apiUrl}/invoice`, data);
     }
 
-    GetAllInvoicesPaginated(
+    GetAllPendingInvoicesPaginated(
         params?: PaginatedParamsOptions
     ): Observable<PaginatedData<InvoiceDTO>> {
         let httpParams = new HttpParams();
@@ -39,7 +39,7 @@ export class invoiceDataService {
             }
         }
         return this.http.get<PaginatedData<InvoiceDTO>>(
-            `${this.apiUrl}/invoice`,
+            `${this.apiUrl}/payment-advice/pending/p`,
             { params: httpParams }
         );
     }

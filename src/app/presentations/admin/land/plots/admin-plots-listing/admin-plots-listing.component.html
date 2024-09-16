@@ -43,29 +43,17 @@
                     <p>
                         {{ plot.plotId }}
                     </p>
-                    <a
-                        href=" https://esakorv1.nlcs.gov.bt/portal/public/app/verifyqrcode/f588e036d97f44e6648fb3da11dfde92aab76ae8"
-                        target="_blank"
-                    >
-                        Esakor Link
-                    </a>
-                    <p-button
-                        label="Map View"
-                        size="small"
-                        icon="pi pi-map"
-                        (click)="viewPlotsSpatially(plot)"
-                    ></p-button>
                 </td>
                 <td>{{ plot.plotCategory }}</td>
                 <td>
-                    {{ plot.subAdministrativeZone?.name }},
-                    {{ plot.administrativeZone?.name }},
                     {{ plot.dzongkhag?.name }},
+                    {{ plot.administrativeZone?.name }},
+                    {{ plot.subAdministrativeZone?.name }},
                 </td>
                 <td>{{ plot.ownershipType }}</td>
                 <td>{{ plot.thram?.thramNo }}</td>
                 <td>
-                    {{ thram?.owner?.nameEnglish }}/{{
+                    {{ plot.thram?.owner?.nameEnglish }}/{{
                         plot.thram?.owner?.nameDzongkha
                     }}
                 </td>
@@ -90,7 +78,14 @@
                         </div>
                     </div>
                 </td>
-                <td></td>
+                <td>
+                    <p-button
+                        label="Map View"
+                        size="small"
+                        icon="pi pi-map"
+                        (click)="viewPlotsSpatially(plot)"
+                    ></p-button>
+                </td>
             </tr>
         </ng-template>
     </p-table>

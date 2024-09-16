@@ -82,94 +82,56 @@
                         icon="pi pi-plus"
                         size="small"
                     ></p-button>
-                    <p-button
-                        label="Add Owner"
-                        size="small"
-                        icon="pi pi-plus"
-                        (click)="openAddBuildingOwnershipModal(building)"
-                    ></p-button>
                 </div>
             </td>
 
-            <!-- <td>
-                <div *ngFor="let owner of building.owners" class="mb-4">
-                    <p>
-                        <strong>Name:</strong>
-                        {{ owner.firstName }}
-                        {{ owner.middleName }}
-                        {{ owner.lastName }}
-                    </p>
-                    <p>
-                        Ownership Type:
-                        <strong>{{
-                            owner.BuildingOwnership.ownershipType
-                        }}</strong>
-                    </p>
-                    <p>
-                        Ownership Percentage:
-                        <strong>{{
-                            owner.BuildingOwnership.ownershipPercentage
-                        }}</strong>
-                    </p>
-
-                    <div class="flex gap-2 mt-2">
-                        <p-button
-                            size="small"
-                            icon="pi pi-pencil"
-                            (click)="
-                                openEditOwnershipModal(owner.BuildingOwnership)
-                            "
-                        ></p-button>
-                        <p-button
-                            size="small"
-                            icon="pi pi-eye"
-                            label="View Owner"
-                            (click)="viewOwnerDetailCard(owner)"
-                        ></p-button>
-                        <p-button
-                            icon="pi pi-trash"
-                            size="small"
-                            label="delete"
-                            severity="danger "
-                            (click)="
-                                openConfirmDeleteBuildingOwnershipDialog(
-                                    owner.BuildingOwnership
-                                )
-                            "
-                        />
-                    </div>
-                </div>
-                <div *ngIf="!building.owners.length" class="text-red-500">
-                    ! Building Ownership not mapped
-                </div>
-            </td> -->
             <td class="">
-                <div *ngFor="let plot of building.plots">
+                <div *ngFor="let item of building.plots">
+                    <p><strong>Thram No</strong>: {{ item.thram.thramNo }}</p>
                     <p>
-                        Thram: <strong> {{ plot.thram.thramNo }} </strong>
+                        <strong>Owner</strong>:
+                        {{ item.thram?.owner?.nameEnglish }}/
+                        {{ item.thram?.owner?.nameDzongkha }}
                     </p>
                     <p>
-                        PlotID: <strong> {{ plot.plotId }} </strong>
+                        <strong>Ownership Type</strong>:
+                        {{ item.thram?.ownerType }}
+                    </p>
+                    <hr />
+                    <p>
+                        <strong>PlotID</strong>:
+                        <strong> {{ item.plotId }} </strong>
                     </p>
                     <p>
-                        Precicnt: {{ plot.precinctName }} ({{
-                            plot.precinctCode
+                        <strong>Area</strong>:
+
+                        {{ item?.netArea }} {{ item?.areaUnit }}
+                    </p>
+                    <p><strong>Locality </strong>: {{ item.lapName }}</p>
+
+                    <p>
+                        <strong>Precicnt</strong>: {{ item.precinctName }} ({{
+                            item.precinctCode
                         }})
                     </p>
                     <div class="flex gap-2 mt-4">
-                        <p-button
+                        <!-- <p-button
                             icon="pi pi-pencil"
                             size="small"
                             label="Edit"
                             severity="primary"
                             (click)="openEditBuildingPlotModal(plot)"
-                        />
+                        /> -->
                         <p-button
                             icon="pi pi-trash"
                             size="small"
-                            label="delete"
+                            label="Remove Mapping"
                             severity="danger "
-                            (click)="openConfirmDeleteBuildingPlotDialog(plot)"
+                            (click)="
+                                openConfirmDeleteBuildingPlotDialog(
+                                    item.BuildingPlot
+                                )
+                            "
                         />
                     </div>
                 </div>
@@ -182,7 +144,7 @@
 
     <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
-            Showing {{ buildingsPaginated.length }} Buildings
+            Showing {{ buildingsPaginated?.length }} Buildings
         </div>
         <div></div>
     </ng-template>

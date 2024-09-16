@@ -6,12 +6,21 @@ import {
     FormGroup,
     FormBuilder,
 } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogComponent } from 'primeng/dynamicdialog';
+import {
+    DynamicDialogComponent,
+    DynamicDialogConfig,
+    DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { LANDAREAUNITS, PLOTCATEGORYENUM } from 'src/app/core/constants/enums';
+import {
+    LANDAREAUNITS,
+    PLOTCATEGORYENUM,
+    PlotOwnershipENUM,
+} from 'src/app/core/constants/enums';
 import { CreatePlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { ThramDTO } from 'src/app/core/dataservice/land/dto/thram.dto';
 import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
@@ -39,7 +48,6 @@ import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-adminis
     ],
 })
 export class AdminPlotCreateComponent implements OnInit {
-    ref: DynamicDialogComponent;
     createPlotForm: FormGroup;
     dzongkhags: DzongkhagDTO[];
     administrativeZones: AdministrativeZoneDTO[];
@@ -50,25 +58,34 @@ export class AdminPlotCreateComponent implements OnInit {
 
     landAreaUnits = Object.values(LANDAREAUNITS);
 
-    ownerTypes = ['Gerab Dratshang', 'Private'];
+    ownerTypes = Object.values(PlotOwnershipENUM);
 
     thramFound: boolean = false;
     searchedThram: ThramDTO;
+    thramDataPassed: boolean = false;
+
     constructor(
         private fb: FormBuilder,
         private locationDataService: LocationDataService,
         private thramDataService: ThramDataService,
         private ownerDataService: OwnerDataService,
-        private plotDataService: PlotDataService
+        private plotDataService: PlotDataService,
+        private config: DynamicDialogConfig,
+        private ref: DynamicDialogRef,
+        private messageService: MessageService
     ) {}
 
     ngOnInit() {
+        if (this.config.data && this.config.data.thram) {
+            this.thramDataPassed = true;
+            this.thramFound = true;
+            this.searchedThram = this.config.data.thram;
+        }
         this.createPlotForm = this.fb.group({
             thramNo: [],
             dzongkhagId: [],
             administrativeZoneId: [],
             subAdministrativeZoneId: [],
-
             plotId: [],
             plotCategory: [],
             ownershipType: [],
@@ -93,17 +110,14 @@ export class AdminPlotCreateComponent implements OnInit {
     }
 
     createPlot() {
-        console.log(this.createPlotForm.value);
         const data: CreatePlotDTO = {
             thramId: this.searchedThram.id,
             plotId: this.createPlotForm.controls['plotId'].value,
             plotCategory: this.createPlotForm.controls['plotCategory'].value,
             ownershipType: this.createPlotForm.controls['ownershipType'].value,
-            dzongkhagId: this.createPlotForm.controls['dzongkhagId'].value,
-            administrativeZoneId:
-                this.createPlotForm.controls['administrativeZoneId'].value,
-            subAdministrativeZoneId:
-                this.createPlotForm.controls['subAdministrativeZoneId'].value,
+            dzongkhagId: this.searchedThram.dzongkhagId,
+            administrativeZoneId: this.searchedThram.administrativeZoneId,
+            subAdministrativeZoneId: this.searchedThram.subAdministrativeZoneId,
             netArea: this.createPlotForm.controls['netArea'].value,
             areaUnit: this.createPlotForm.controls['areaUnit'].value,
             lapName: this.createPlotForm.controls['lapName'].value,
@@ -115,7 +129,12 @@ export class AdminPlotCreateComponent implements OnInit {
 
         this.plotDataService.CreatePlot(data).subscribe((res) => {
             if (res) {
-                this.ref.close();
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Created',
+                    detail: 'Plot Created Successfully',
+                });
+                this.ref.close({ status: 201 });
             }
         });
     }
@@ -153,16 +172,28 @@ export class AdminPlotCreateComponent implements OnInit {
                 dzongkhagId: this.createPlotForm.controls['dzongkhagId'].value,
                 administrativeZoneId:
                     this.createPlotForm.controls['administrativeZoneId'].value,
-                subAdministrativeZoneId:
-                    this.createPlotForm.controls['subAdministrativeZoneId']
-                        .value,
+
                 thramNo: this.createPlotForm.controls['thramNo'].value,
             })
             .subscribe({
                 next: (res) => {
                     console.log(res);
+                    console.log(res);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Found',
+                        detail: 'Thram Found',
+                    });
+
                     this.searchedThram = res;
                     this.thramFound = true;
+                },
+                error: (err) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Not Found',
+                        detail: 'Tharm Not found',
+                    });
                 },
             });
     }

@@ -22,9 +22,12 @@ export class PlotDataService {
     }
 
     SearchPlotById(plotId: string): Observable<PlotDTO> {
-        const params = new HttpParams().set('plotId', plotId);
-        return this.http.get<PlotDTO>(`${this.apiUrl}/plot/search`, {
-            params,
-        });
+        return this.http.get<PlotDTO>(`${this.apiUrl}/plot/search/${plotId}`);
+    }
+
+    GetBuildingsByPlot(plotId: string): Observable<PlotDTO> {
+        return this.http.get<PlotDTO>(
+            `${this.apiUrl}/plot/buildings/${plotId}`
+        );
     }
 }

@@ -19,6 +19,7 @@ import { BuildingOwnershipDto } from 'src/app/core/dto/properties/building-owner
 import { AdminEditBuildingownershipComponent } from '../../../ownership/crud-modals/admin-edit-buildingownership/admin-edit-buildingownership.component';
 import { AdminEditBuildingplotComponent } from '../../../ownership/crud-modals/admin-edit-buildingplot/admin-edit-buildingplot.component';
 import { AdminBuildingDetailsCardComponent } from '../components/admin-building-details-card/admin-building-details-card.component';
+import { BuildingPlotDataService } from 'src/app/core/dataservice/ownership/buildingplot.dataservice';
 
 @Component({
     selector: 'app-admin-list-buildings',
@@ -41,7 +42,8 @@ export class AdminListBuildingsComponent {
     constructor(
         public dialogService: DialogService,
         private buildingDataService: BuildingDataService,
-        private router: Router
+        private router: Router,
+        private buildingPlotDataService: BuildingPlotDataService
     ) {}
 
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
@@ -144,6 +146,11 @@ export class AdminListBuildingsComponent {
                 buildingId: buildingId,
             },
         });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.getPaginatedBuildings();
+            }
+        });
     }
 
     viewOwnerDetailCard(owner) {
@@ -166,16 +173,22 @@ export class AdminListBuildingsComponent {
         this.showConfirmDeleteBuildingPlotDialog = true;
     }
     deleteBuildingPlot() {
-        alert('DELTETING ' + this.selectedBuildingPlot.plotId);
+        this.buildingPlotDataService
+            .DeleteBuildingPlot(this.selectedBuildingPlot.id)
+            .subscribe((res) => {
+                console.log(res);
+                if (res) {
+                    this.showConfirmDeleteBuildingPlotDialog = false;
+                    this.getPaginatedBuildings();
+                }
+            });
     }
 
     openConfirmDeleteBuildingOwnershipDialog(selectedBuildingOwnership) {
         this.selectedBuildingOwnership = selectedBuildingOwnership;
         this.showConfirmDeleteBuildingOwnershipDialog = true;
     }
-    deleteBuildingOwnership() {
-        alert('DELTETING ' + this.selectedBuildingOwnership.id);
-    }
+    deleteBuildingOwnership() {}
 
     openEditBuildingPlotModal(buildingPlot) {
         this.ref = this.dialogService.open(AdminEditBuildingplotComponent, {

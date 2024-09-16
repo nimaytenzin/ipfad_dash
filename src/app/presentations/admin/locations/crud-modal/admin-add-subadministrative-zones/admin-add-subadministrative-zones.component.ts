@@ -69,7 +69,7 @@ export class AdminAddSubadministrativeZonesComponent {
         const data: CreateSubAdministrativeZoneDTO = {
             name: this.createSubAdministrativeZoneForm.controls['name'].value,
             nameDzo:
-                this.createSubAdministrativeZoneForm.controls['name'].value,
+                this.createSubAdministrativeZoneForm.controls['nameDzo'].value,
             dzongkhagId:
                 this.createSubAdministrativeZoneForm.controls['dzongkhagId']
                     .value,

@@ -7,6 +7,7 @@ export interface OwnerSummaryStatsDTO {
     activeLeaseCount: number;
     totalRentalIncome: number;
     pendingPaymentAmount: number;
+    pendingPaymentAdviceCount: number;
 
     thramCount: number;
     plotCount: number;

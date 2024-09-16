@@ -45,6 +45,7 @@ export class BuildingPlotDataService {
     }
 
     DeleteBuildingPlot(id: number) {
+        console.log('DELETING BUILDIG PLOT', id);
         return this.http.delete(`${this.apiUrl}/building-plot/${id}`);
     }
 }

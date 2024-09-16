@@ -150,3 +150,24 @@ export enum PLOTCATEGORYENUM {
     LUC = 'Land Use Certificate',
     UN = 'Unknown',
 }
+
+export enum PlotOwnershipENUM {
+    CSO = 'Civil Society Organizations',
+    CL = 'Community Land',
+    CO = 'Corporations',
+    CP = 'Crown Property',
+    FO = 'Family Ownership',
+    GD = 'Gerab Dratshang',
+    GI = 'Government Institutions',
+    I = 'Individual Ownership',
+    JO = 'Joint Ownership',
+    PC = 'Private Corporation',
+    PLY = 'Pvt Lhakhang Yogey',
+    RI = 'Religious Institutions',
+    SL = 'State Land',
+}
+
+export enum LOCATIONFLAGENUM {
+    R = 'Rural',
+    U = 'Urban',
+}

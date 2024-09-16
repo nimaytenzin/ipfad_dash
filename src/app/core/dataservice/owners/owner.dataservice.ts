@@ -15,8 +15,27 @@ export class OwnerDataService {
     CreateOwner(data: CreateOwnerDTO): Observable<OwnerDTO> {
         return this.http.post<OwnerDTO>(`${this.apiUrl}/owner`, data);
     }
+    UpdateOwner(
+        data: Partial<CreateOwnerDTO>,
+        ownerId: number
+    ): Observable<OwnerDTO> {
+        return this.http.patch<OwnerDTO>(
+            `${this.apiUrl}/owner/${ownerId}`,
+            data
+        );
+    }
 
     GetAllOwners(): Observable<OwnerDTO[]> {
         return this.http.get<OwnerDTO[]>(`${this.apiUrl}/owner`);
+    }
+
+    DeleteOwner(id: number) {
+        return this.http.delete(`${this.apiUrl}/owner/${id}`);
+    }
+
+    DownloadAllOwnersAsExcel() {
+        return this.http.get(`${this.apiUrl}/owner/export/excel`, {
+            responseType: 'blob',
+        });
     }
 }

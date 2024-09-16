@@ -33,6 +33,9 @@ import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
 import { CreateBuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { BlockUIModule } from 'primeng/blockui';
+import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 
 @Component({
     selector: 'app-admin-add-building',
@@ -50,7 +53,7 @@ import { CreateBuildingDTO } from 'src/app/core/dto/properties/building.dto';
         InputGroupModule,
         InputGroupAddonModule,
     ],
-    providers: [DialogService, MessageService],
+    providers: [DialogService],
     templateUrl: './admin-add-building.component.html',
     styleUrl: './admin-add-building.component.scss',
 })
@@ -62,10 +65,15 @@ export class AdminAddBuildingComponent {
         private locationDataService: LocationDataService,
         private buildingDataService: BuildingDataService,
         public ref: DynamicDialogRef,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private plotDataService: PlotDataService
     ) {}
 
     instance: DynamicDialogComponent | undefined;
+    plotFound: boolean = false;
+    plotError: boolean = false;
+
+    plotDetails: PlotDTO;
 
     dzongkhags: DzongkhagDTO[];
     admninistrativeZones: AdministrativeZoneDTO[];
@@ -80,6 +88,7 @@ export class AdminAddBuildingComponent {
 
     ngOnInit() {
         this.createBuildingForm = this.fb.group({
+            plotId: [],
             isActive: [true, Validators.required],
             zhicharBuildingId: [''],
             zhicharQrUuid: [''],
@@ -103,6 +112,11 @@ export class AdminAddBuildingComponent {
             administrativeZoneId: ['', Validators.required],
             subadminsitrativeZoneId: ['', Validators.required],
         });
+
+        if (this.plotFound) {
+            this.createBuildingForm.disable();
+        }
+        this.createBuildingForm.controls['plotId'].enable();
 
         this.getDzongkhags();
     }
@@ -214,10 +228,41 @@ export class AdminAddBuildingComponent {
         }
     }
 
+    convertToUppercase(event: any) {
+        const input = event.target.value.toUpperCase();
+        this.createBuildingForm.controls['plotId'].setValue(input, {
+            emitEvent: false,
+        });
+    }
+
     clearFormValues() {
         this.searched = false;
         this.createBuildingForm.reset();
         this.createBuildingForm.enable();
+    }
+
+    checkPlotDetails() {
+        let plotId = this.createBuildingForm.controls['plotId'].value;
+        this.plotDataService.SearchPlotById(plotId).subscribe({
+            next: (res) => {
+                if (res) {
+                    this.plotFound = true;
+                    this.plotError = false;
+                    this.plotDetails = res;
+                }
+            },
+            error: (err) => {
+                this.plotError = true;
+
+                this.messageService.add({
+                    key: 'tst',
+                    severity: 'error',
+                    summary: 'Couldnot Fetch Data',
+                    detail: err.error.message,
+                });
+                console.log(err);
+            },
+        });
     }
 
     getDzongkhags() {

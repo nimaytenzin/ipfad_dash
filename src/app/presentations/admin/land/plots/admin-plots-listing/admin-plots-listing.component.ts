@@ -30,9 +30,12 @@ export class AdminPlotsListingComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.getAllPlots();
+    }
+
+    getAllPlots() {
         this.plotDataService.GetAllPlots().subscribe({
             next: (res) => {
-                console.log(res);
                 this.plots = res;
             },
         });
@@ -41,6 +44,11 @@ export class AdminPlotsListingComponent implements OnInit {
     openCreatePlotModal() {
         this.ref = this.dialogService.open(AdminPlotCreateComponent, {
             header: 'Create Plot',
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.getAllPlots();
+            }
         });
     }
 

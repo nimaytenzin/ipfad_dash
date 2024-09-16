@@ -45,7 +45,7 @@ export class AdminDashboardComponent implements OnInit {
 
     buildings: BuildingDTO[] = [];
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
-    expiringLeaseAgreements: LeaseAgreementDTO[];
+    expiringLeaseAgreements: LeaseAgreementDTO[] = [];
 
     buildingImages = [
         'https://www.waytobhutan.com/wp-content/uploads/2020/02/dscf26071-1024x768.jpg',
@@ -62,6 +62,7 @@ export class AdminDashboardComponent implements OnInit {
         buildings: [],
         thramCount: 0,
         plotCount: 0,
+        pendingPaymentAdviceCount: 0,
         ownerCount: 0,
     };
 
@@ -202,7 +203,6 @@ export class AdminDashboardComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        console.log(this.authService.GetAuthenticatedUser());
         this.statsService.GetStatsByOwner(1).subscribe({
             next: (res) => {
                 this.summaryStats = res;

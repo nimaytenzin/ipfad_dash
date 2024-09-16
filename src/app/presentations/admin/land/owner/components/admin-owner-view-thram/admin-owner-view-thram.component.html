@@ -1,0 +1,114 @@
+<p>Listing Thrams for {{ owner.nameEnglish }} / {{ owner.nameDzongkha }}</p>
+
+<div *ngIf="thrams.length">
+    <p-table [value]="thrams" styleClass="p-datatable-striped">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>Thram No</th>
+                <th>Dzongkhag</th>
+                <th>Administrative Zone</th>
+                <th>Sub Administrative Zone</th>
+                <th>Owner</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.thramNo }}</td>
+                <td>{{ item.dzongkhag?.name }}</td>
+                <td>{{ item.administrativeZone?.name }}</td>
+                <td>{{ item.subAdministrativeZone?.name }}</td>
+                <td>
+                    {{ item.owner.nameEnglish }} |
+                    {{ item.owner.nameDzongkha }}
+                </td>
+                <td>
+                    <div class="flex gap-2">
+                        <p-button size="small" icon="pi pi-pencil"></p-button>
+                        <p-button
+                            size="small"
+                            severity="danger"
+                            icon="pi pi-trash"
+                        ></p-button>
+
+                        <p-button
+                            size="small"
+                            severity="secondary"
+                            label="Plots"
+                            icon="pi pi-eye"
+                        ></p-button>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="item.plots.length">
+                <td colspan="7" style="padding: 4 !important">
+                    <p class="font-semibold mt-2 mb-4">
+                        Plots under the Thram {{ item.thramNo }}
+                    </p>
+                    <p-table [value]="item.plots">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Plot Id</th>
+                                <th>Plot Category</th>
+                                <th>Location</th>
+                                <th>Ownership Type</th>
+
+                                <th>Net Area</th>
+
+                                <th>Lap Name</th>
+
+                                <th>Precinct Name</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-plot>
+                            <tr>
+                                <td>
+                                    <p>
+                                        {{ plot.plotId }}
+                                    </p>
+                                    <a
+                                        href=" https://esakorv1.nlcs.gov.bt/portal/public/app/verifyqrcode/f588e036d97f44e6648fb3da11dfde92aab76ae8"
+                                        target="_blank"
+                                    >
+                                        Esakor Link
+                                    </a>
+                                    <p-button
+                                        label="Map View"
+                                        size="small"
+                                        icon="pi pi-map"
+                                        (click)="viewPlotsSpatially(plot)"
+                                    ></p-button>
+                                </td>
+                                <td>{{ plot.plotCategory }}</td>
+                                <td>
+                                    {{ plot.subAdministrativeZone?.name }},
+                                    {{ plot.administrativeZone?.name }},
+                                    {{ plot.dzongkhag?.name }},
+                                </td>
+                                <td>{{ plot.ownershipType }}</td>
+
+                                <td>{{ plot.netArea }} {{ plot.areaUnit }}</td>
+
+                                <td>{{ plot.lapName }}/ {{ plot.lapCode }}</td>
+
+                                <td>
+                                    {{ plot.precinctName }} /{{
+                                        plot.precinctCode
+                                    }}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+
+                    <p-divider type="dashed"></p-divider>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div *ngIf="!thrams.length" class="my-4 font-semibold">
+    No Plots under the selected owner
+</div>

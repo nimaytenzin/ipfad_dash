@@ -9,37 +9,54 @@
         />
     </div>
 
-    <div class="flex flex-column gap-2">
-        <label for="chiwog">Owner Type</label>
-        <p-dropdown
-            id="chiwog"
-            [options]="ownerTypes"
-            formControlName="ownerType"
-        ></p-dropdown>
+    <div class="flex p-fluid justify-content-between gap-4">
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="chiwog">Location Flag</label>
+            <p-dropdown
+                id="chiwog"
+                [options]="locationFlags"
+                formControlName="ownerType"
+                appendTo="body"
+            ></p-dropdown>
+        </div>
+
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="chiwog">Owner Type</label>
+            <p-dropdown
+                id="chiwog"
+                [options]="ownerTypes"
+                appendTo="body"
+                formControlName="ownerType"
+            ></p-dropdown>
+        </div>
     </div>
 
-    <div class="flex flex-column gap-2">
-        <label for="dzongkhag">Dzongkhag</label>
-        <p-dropdown
-            id="dzongkhag"
-            [options]="dzongkhags"
-            optionValue="id"
-            optionLabel="name"
-            (onChange)="dzongkhagSelected($event)"
-            formControlName="dzongkhagId"
-        ></p-dropdown>
-    </div>
-    <div class="flex flex-column gap-2">
-        <label for="gewog">Administrative Zone</label>
-        <p-dropdown
-            id="bankName"
-            optionValue="id"
-            optionLabel="name"
-            (onChange)="administrativeZoneSelect($event)"
-            [options]="administrativeZones"
-            formControlName="administrativeZoneId"
-        >
-        </p-dropdown>
+    <div class="flex justify-content-between gap-4">
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="dzongkhag">Dzongkhag</label>
+            <p-dropdown
+                id="dzongkhag"
+                [options]="dzongkhags"
+                optionValue="id"
+                optionLabel="name"
+                appendTo="body"
+                (onChange)="dzongkhagSelected($event)"
+                formControlName="dzongkhagId"
+            ></p-dropdown>
+        </div>
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="gewog">Administrative Zone</label>
+            <p-dropdown
+                id="bankName"
+                optionValue="id"
+                optionLabel="name"
+                appendTo="body"
+                (onChange)="administrativeZoneSelect($event)"
+                [options]="administrativeZones"
+                formControlName="administrativeZoneId"
+            >
+            </p-dropdown>
+        </div>
     </div>
     <div class="flex flex-column gap-2">
         <label for="chiwog">Sub AdministrativeZone</label>
@@ -48,6 +65,7 @@
             [options]="subAdministrativeZones"
             optionValue="id"
             optionLabel="name"
+            appendTo="body"
             formControlName="subadministrativeZoneId"
         ></p-dropdown>
     </div>
@@ -60,7 +78,7 @@
             optionValue="id"
             [filter]="true"
             filterBy="nameEnglish"
-            bindTo="body"
+            appendTo="body"
             optionLabel="nameEnglish"
             formControlName="ownerId"
         ></p-dropdown>

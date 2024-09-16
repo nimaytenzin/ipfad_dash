@@ -31,6 +31,6 @@ export interface CreateThramDTO {
 export interface SearchThramDTO {
     dzongkhagId: number;
     administrativeZoneId: number;
-    subAdministrativeZoneId: number;
+
     thramNo: string;
 }

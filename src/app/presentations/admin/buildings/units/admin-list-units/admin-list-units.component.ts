@@ -155,16 +155,4 @@ export class AdminListUnitsComponent implements OnInit {
             },
         });
     }
-
-    generateBuildingPA() {
-        this.ref = this.dialogService.open(
-            AdminGenerateBuildingPaymentAdviceComponent,
-            {
-                header: 'Generate PA for Building ID: ' + this.buildingId,
-                data: {
-                    buildingId: this.buildingId,
-                },
-            }
-        );
-    }
 }

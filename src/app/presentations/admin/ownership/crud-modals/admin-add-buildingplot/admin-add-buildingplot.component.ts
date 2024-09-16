@@ -30,7 +30,6 @@ import { CreateBuildingPlotDTO } from 'src/app/core/dto/ownership/buildingplot.d
         ButtonModule,
         ToastModule,
     ],
-    providers: [MessageService],
     templateUrl: './admin-add-buildingplot.component.html',
     styleUrl: './admin-add-buildingplot.component.scss',
 })
@@ -55,7 +54,6 @@ export class AdminAddBuildingplotComponent implements OnInit {
     }
     ngOnInit(): void {
         this.createBuildingPlotForm = this.fb.group({
-            thramNumber: ['', Validators.required],
             plotId: ['', Validators.required],
         });
     }
@@ -63,7 +61,6 @@ export class AdminAddBuildingplotComponent implements OnInit {
     createBuildingPlot() {
         const data: CreateBuildingPlotDTO = {
             buildingId: this.buildingId,
-
             plotId: this.createBuildingPlotForm.controls['plotId'].value,
         };
 
@@ -75,14 +72,15 @@ export class AdminAddBuildingplotComponent implements OnInit {
                         summary: 'Added',
                         detail: 'Record Added',
                     });
+                    this.ref.close({ status: 201 });
                 }
             },
             error: (err) => {
                 console.log(err);
                 this.messageService.add({
                     severity: 'error',
-                    summary: 'Updated',
-                    detail: 'error',
+                    summary: 'Plot Not found',
+                    detail: err.error.message,
                 });
             },
         });

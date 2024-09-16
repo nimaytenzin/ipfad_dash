@@ -26,7 +26,6 @@ export class LoginComponent {
 
     showLoading: boolean = false;
     companyDetails = ZHIDHAYCONTACTDETAILS;
-    password!: string;
 
     pin: string[] = [];
     pinPlaceholder: string[] = ['_', '_', '_', '_'];
@@ -68,9 +67,10 @@ export class LoginComponent {
     ) {
         this.loginForm = this.fb.group({
             phoneNumber: [
-                '',
+                '17263764',
                 [Validators.required, Validators.pattern(/^[0-9]{8}$/)],
             ],
+            password: ['5731', [Validators.required]],
         });
 
         let user = this.authService.GetAuthenticatedUser();
@@ -82,19 +82,35 @@ export class LoginComponent {
     }
 
     login() {
+        if (!this.loginForm.value.phoneNumber) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Missing Field',
+                detail: 'Please enter your Phone Number la.',
+            });
+            return;
+        }
+
+        if (!this.loginForm.value.password) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Missing Field',
+                detail: 'Please enter your password la.',
+            });
+            return;
+        }
         const loginData = {
             phoneNumber: this.loginForm.value.phoneNumber,
-            password: this.pin.join(''),
+            password: this.loginForm.value.password,
         };
+
         this.showLoading = true;
 
         this.authService.Login(loginData).subscribe({
             next: (res: any) => {
-                console.log(res);
                 this.authService.SetAuthToken(res.token);
                 setTimeout(() => {
                     this.showLoading = false;
-
                     this.determineNextRoute(
                         this.authService.GetAuthenticatedUser().role
                     );

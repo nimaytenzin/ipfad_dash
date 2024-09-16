@@ -45,6 +45,11 @@ export class BankAccountDataService {
             data
         );
     }
+    DownloadAllBankAccountsAsExcel() {
+        return this.http.get(`${this.apiUrl}/bank-account/export/excel`, {
+            responseType: 'blob',
+        });
+    }
 
     BankListWithLogo: BankListWithLogoDto[] = [
         {

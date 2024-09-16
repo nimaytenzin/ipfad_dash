@@ -15,6 +15,7 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'src/app/core/constants/constants';
+import { AdminGenerateBuildingPaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-building-payment-advice/admin-generate-building-payment-advice.component';
 
 @Component({
     selector: 'app-admin-building-unit-payment-sheet',
@@ -49,7 +50,8 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         private unitDataService: UnitDataService,
         private daialogService: DialogService,
         private paDataService: PaymentAdviceDataService,
-        private http: HttpClient
+        private http: HttpClient,
+        private dialogService: DialogService
     ) {}
 
     ngOnInit() {
@@ -98,6 +100,18 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
             {
                 header: 'Details',
                 data: { ...advice },
+            }
+        );
+    }
+
+    generateBuildingPA() {
+        this.ref = this.dialogService.open(
+            AdminGenerateBuildingPaymentAdviceComponent,
+            {
+                header: 'Generate PA for Building ID: ' + this.buildingId,
+                data: {
+                    buildingId: this.buildingId,
+                },
             }
         );
     }
