@@ -1,4 +1,5 @@
 import { BuildingType } from '../../constants/enums';
+import { PlotDTO } from '../../dataservice/land/dto/plot.dto';
 import { AdministrativeZoneDTO } from '../locations/administrative-zone.dto';
 import { DzongkhagDTO } from '../locations/dzongkhag.dto';
 import { LocalityDTO } from '../locations/locality.dto';
@@ -15,60 +16,60 @@ import { BuildingSurchargeDTO } from './building-surcharge.dto';
 
 export interface CreateBuildingDTO {
     isActive: number;
-    zhicharBuildingId: number | null;
-    zhicharQrUuid: string | null;
+    zhicharBuildingId: number;
+    zhicharQrUuid: string;
 
-    buildingType: BuildingType | null;
-    regularFloorCount: number;
+    name: string;
+    buildingNumber: string;
+    buildingType: string;
+
     basementCount: number;
     stiltCount: number;
+    regularFloorCount: number;
     atticCount: number;
     jamthogCount: number;
-    areaSqM: number | null;
 
     latitude: number;
     longitude: number;
-
-    name: string | null;
-    buildingNumber: string | null;
-    streetName: string | null;
-    quadrant: string | null;
-    landmark: string | null;
+    address: string;
+    landmark: string;
+    areaSqM: number;
 
     dzongkhagId: number;
     administrativeZoneId: number;
     subadministrativeZoneId: number;
+
+    plots: PlotDTO[];
 }
 
 export interface BuildingDTO {
     id: number;
-
     isActive: number;
-    zhicharBuildingId: number | null;
-    zhicharQrUuid: number | null;
+    zhicharBuildingId: number;
+    zhicharQrUuid: string;
 
-    buildingType: BuildingType | null;
-    regularFloorCount: number | null;
+    name: string;
+    buildingNumber: string;
+    buildingType: string;
+
     basementCount: number;
     stiltCount: number;
+    regularFloorCount: number;
     atticCount: number;
     jamthogCount: number;
-    areaSqM: number | null;
 
     latitude: number;
     longitude: number;
-
-    name: string | null;
-    buildingNumber: string | null;
-    streetName: string | null;
-    quadrant: string | null;
-    landmark: string | null;
+    address: string;
+    landmark: string;
+    areaSqM: number;
 
     dzongkhagId: number;
-    dzongkhag: DzongkhagDTO;
     administrativeZoneId: number;
-    administrativeZone: AdministrativeZoneDTO;
     subadministrativeZoneId: number;
+
+    dzongkhag: DzongkhagDTO;
+    administrativeZone: AdministrativeZoneDTO;
     subadministrativeZone: SubAdministrativeZoneDTO;
 
     buildingAmenities: BuildingAmenityDTO[];
@@ -76,9 +77,7 @@ export interface BuildingDTO {
     buildingImages: BuildingImageDTO[];
     buildingSurcharges: BuildingSurchargeDTO[];
     units: UnitDTO[];
-    BuildingOwnership?: BuildingOwnershipDto;
-    owners: LandLordDTO[];
-    plots: BuildingPlotDTO[];
+    plots: PlotDTO[];
 }
 
 export interface UpdateBuildingDto {

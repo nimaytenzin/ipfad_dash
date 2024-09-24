@@ -50,10 +50,16 @@
                         <td>{{ item.dzongkhag?.name }}</td>
                         <td>{{ item.administrativeZone?.name }}</td>
                         <td>{{ item.subAdministrativeZone?.name }}</td>
-                        <td>{{ item.ownerType }}</td>
+                        <td>{{ item.ownershipType }}</td>
                         <td>
-                            <p *ngFor="let plot of item.plots">
-                                - {{ plot.plotId }}
+                            <p style="text-wrap: wrap">
+                                <span
+                                    *ngFor="let plot of item.plots"
+                                    class="cursor-pointer hover:underline text-blue-700"
+                                    (click)="openViewPlotModal(plot)"
+                                >
+                                    {{ plot.plotId }} ,
+                                </span>
                             </p>
                             <p *ngIf="!item.plots.length">No Plots</p>
                         </td>
@@ -63,11 +69,7 @@
                                 <p-button
                                     size="small"
                                     icon="pi pi-pencil"
-                                ></p-button>
-                                <p-button
-                                    size="small"
-                                    severity="danger"
-                                    icon="pi pi-trash"
+                                    (click)="openUpdateThramModal(item)"
                                 ></p-button>
 
                                 <p-button

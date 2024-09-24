@@ -1,49 +1,18 @@
-<p>
-    Guide: Red Outline: <span class="text-red-600">Plots</span>, yellow Outline:
-    <span class="text-yellow-300">Building</span>
-</p>
-<div class="flex border-round-lg" id="map" style="height: 40vh"></div>
+<div class="w-full flex">
+    <div
+        class="flex border-round-lg"
+        id="map"
+        style="height: 40vh; min-width: 20vw"
+    ></div>
+    <div class="px-6">
+        <p>Plot ID: {{ plot.plotId }}</p>
+        <p>Category:{{ plot.plotCategory }}</p>
+        <p>Area: {{ plot.netArea }} {{ plot.areaUnit }}</p>
 
-<p-dialog
-    header="Edit Profile"
-    [modal]="true"
-    [draggable]="false"
-    [(visible)]="viewBuildingSummary"
-    [style]="{ width: '25rem' }"
->
-    <div *ngIf="selectedBuilding">
-        <p>
-            Building Name: <strong>{{ selectedBuilding.name }}</strong>
-        </p>
-        <p>
-            Floor Config:
-            <strong>
-                {{
-                    getBuildingFloorConfiguration(
-                        selectedBuilding.regularFloorCount,
-                        selectedBuilding.basementCount,
-                        selectedBuilding.stiltCount,
-                        selectedBuilding.atticCount,
-                        selectedBuilding.jamthogCount
-                    )
-                }}</strong
-            >
-        </p>
-        <p>
-            Type: <strong>{{ selectedBuilding.buildingType }}</strong>
-        </p>
+        <p>LAP name: {{ plot.lapName }}</p>
 
-        <p>
-            Address:{{ selectedBuilding.buildingNumber }}
-            {{ selectedBuilding.streetName }},
-            {{ selectedBuilding.quadrant }}
-        </p>
-        <p-divider></p-divider>
-        <p-button
-            size="small"
-            label="View Details"
-            (click)="navigateToBuilding()"
-            severity="secondary"
-        />
+        <p>LAP Code: {{ plot.lapCode }}</p>
+        <p>Precinct: {{ plot.precinctName }} ({{ plot.precinctCode }})</p>
+        <p>Remarks: {{ plot.remarks ? plot.remarks : "NA" }}</p>
     </div>
-</p-dialog>
+</div>

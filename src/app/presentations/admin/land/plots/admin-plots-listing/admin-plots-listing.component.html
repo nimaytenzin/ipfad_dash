@@ -23,7 +23,7 @@
                 <th>Plot Id</th>
                 <th>Plot Category</th>
                 <th>Location</th>
-                <th>Ownership Type</th>
+
                 <th>Thram No</th>
                 <th>Owner</th>
 
@@ -40,22 +40,24 @@
         <ng-template pTemplate="body" let-plot>
             <tr>
                 <td>
-                    <p>
+                    <p
+                        class="text-blue-600 hover:underline cursor-pointer"
+                        (click)="viewPlotsSpatially(plot)"
+                    >
                         {{ plot.plotId }}
                     </p>
                 </td>
                 <td>{{ plot.plotCategory }}</td>
                 <td>
-                    {{ plot.dzongkhag?.name }},
-                    {{ plot.administrativeZone?.name }},
-                    {{ plot.subAdministrativeZone?.name }},
+                    {{ plot.thram?.dzongkhag?.name }},
+                    {{ plot.thram?.administrativeZone?.name }},
+                    {{ plot.thram?.subAdministrativeZone?.name }}
                 </td>
-                <td>{{ plot.ownershipType }}</td>
                 <td>{{ plot.thram?.thramNo }}</td>
                 <td>
-                    {{ plot.thram?.owner?.nameEnglish }}/{{
-                        plot.thram?.owner?.nameDzongkha
-                    }}
+                    <p *ngFor="let owner of plot.thram.owners">
+                        - {{ owner.nameEnglish }}/{{ owner.nameDzongkha }}
+                    </p>
                 </td>
                 <td>{{ plot.netArea }} {{ plot.areaUnit }}</td>
 
@@ -66,25 +68,14 @@
                 <td>
                     <div>
                         <p *ngIf="!plot.buildings.length">No Buildings Added</p>
-                        <div
+                        <p
                             *ngFor="let building of plot.buildings"
-                            class="p-fluid"
+                            class="cursor-pointer font-semibold hover:underline"
+                            (click)="navigateToBuilding(building.id)"
                         >
-                            <p-button
-                                [label]="building.name"
-                                [link]="true"
-                                (click)="navigateToBuilding(building.id)"
-                            />
-                        </div>
+                            - {{ building.name }}
+                        </p>
                     </div>
-                </td>
-                <td>
-                    <p-button
-                        label="Map View"
-                        size="small"
-                        icon="pi pi-map"
-                        (click)="viewPlotsSpatially(plot)"
-                    ></p-button>
                 </td>
             </tr>
         </ng-template>

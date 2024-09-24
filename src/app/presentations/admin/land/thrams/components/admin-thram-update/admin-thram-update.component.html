@@ -1,21 +1,16 @@
-<form [formGroup]="createThramForm" class="p-fluid p-2 flex flex-column gap-4">
+<form [formGroup]="updateThramForm" class="p-fluid p-2 flex flex-column gap-4">
     <div class="flex flex-column gap-2">
-        <label for="nameEnglish">Thram Number</label>
-        <input
-            pInputText
-            id="nameEnglish"
-            formControlName="thramNo"
-            type="text"
-        />
+        <label for="thramNo">Thram Number</label>
+        <input pInputText id="thramNo" formControlName="thramNo" type="text" />
 
         <div
             *ngIf="
-                createThramForm.get('thramNo')?.invalid &&
-                createThramForm.get('thramNo')?.touched
+                updateThramForm.get('thramNo')?.invalid &&
+                updateThramForm.get('thramNo')?.touched
             "
             class="p-error"
         >
-            <small *ngIf="createThramForm.get('thramNo')?.errors?.['required']"
+            <small *ngIf="updateThramForm.get('thramNo')?.errors?.['required']"
                 >Thram Number is required.</small
             >
         </div>
@@ -23,17 +18,17 @@
 
     <div class="flex p-fluid justify-content-between gap-4">
         <div class="flex flex-column gap-2 flex-1">
-            <label for="chiwog">Ownership Type</label>
+            <label for="ownershipType">Ownership Type</label>
             <p-dropdown
-                id="chiwog"
+                id="ownershipType"
                 [options]="ownerTypes"
                 appendTo="body"
                 formControlName="ownershipType"
             ></p-dropdown>
             <div
                 *ngIf="
-                    createThramForm.get('ownershipType')?.invalid &&
-                    createThramForm.get('ownershipType')?.touched
+                    updateThramForm.get('ownershipType')?.invalid &&
+                    updateThramForm.get('ownershipType')?.touched
                 "
                 class="p-error"
             >
@@ -44,9 +39,9 @@
 
     <div class="flex justify-content-between gap-4">
         <div class="flex flex-column gap-2 flex-1">
-            <label for="dzongkhag">Dzongkhag</label>
+            <label for="dzongkhagId">Dzongkhag</label>
             <p-dropdown
-                id="dzongkhag"
+                id="dzongkhagId"
                 [options]="dzongkhags"
                 optionValue="id"
                 optionLabel="name"
@@ -56,8 +51,8 @@
             ></p-dropdown>
             <div
                 *ngIf="
-                    createThramForm.get('dzongkhagId')?.invalid &&
-                    createThramForm.get('dzongkhagId')?.touched
+                    updateThramForm.get('dzongkhagId')?.invalid &&
+                    updateThramForm.get('dzongkhagId')?.touched
                 "
                 class="p-error"
             >
@@ -65,9 +60,9 @@
             </div>
         </div>
         <div class="flex flex-column gap-2 flex-1">
-            <label for="gewog">Administrative Zone</label>
+            <label for="administrativeZoneId">Administrative Zone</label>
             <p-dropdown
-                id="bankName"
+                id="administrativeZoneId"
                 optionValue="id"
                 optionLabel="name"
                 appendTo="body"
@@ -78,8 +73,8 @@
             </p-dropdown>
             <div
                 *ngIf="
-                    createThramForm.get('administrativeZoneId')?.invalid &&
-                    createThramForm.get('administrativeZoneId')?.touched
+                    updateThramForm.get('administrativeZoneId')?.invalid &&
+                    updateThramForm.get('administrativeZoneId')?.touched
                 "
                 class="p-error"
             >
@@ -88,9 +83,9 @@
         </div>
     </div>
     <div class="flex flex-column gap-2">
-        <label for="chiwog">Sub AdministrativeZone</label>
+        <label for="subAdministrativeZoneId">Sub AdministrativeZone</label>
         <p-dropdown
-            id="chiwog"
+            id="subAdministrativeZoneId"
             [options]="subAdministrativeZones"
             optionValue="id"
             optionLabel="name"
@@ -99,8 +94,8 @@
         ></p-dropdown>
         <div
             *ngIf="
-                createThramForm.get('subAdministrativeZoneId')?.invalid &&
-                createThramForm.get('subAdministrativeZoneId')?.touched
+                updateThramForm.get('subAdministrativeZoneId')?.invalid &&
+                updateThramForm.get('subAdministrativeZoneId')?.touched
             "
             class="p-error"
         >
@@ -111,7 +106,7 @@
     <div class="flex flex-column gap-2">
         <label for="chiwog">Owners</label>
         <p class="font-semibold">
-            <span *ngFor="let owner of this.createThramForm.value.owners">
+            <span *ngFor="let owner of this.updateThramForm.value.owners">
                 {{ owner.nameEnglish }}/{{ owner.nameDzongkha }} ,
             </span>
         </p>
@@ -122,14 +117,15 @@
             [filter]="true"
             filterBy="nameEnglish"
             appendTo="body"
+            dataKey="id"
             formControlName="owners"
             optionLabel="nameEnglish"
         />
 
         <div
             *ngIf="
-                createThramForm.get('ownerId')?.invalid &&
-                createThramForm.get('ownerId')?.touched
+                updateThramForm.get('owners')?.invalid &&
+                updateThramForm.get('owners')?.touched
             "
             class="p-error"
         >
@@ -139,9 +135,9 @@
 
     <div class="flex justify-content-end gap-4">
         <p-button
-            (click)="createThram()"
-            label="Create Thram"
-            [disabled]="createThramForm.invalid"
+            (click)="updateThram()"
+            label="Update Thram"
+            [disabled]="updateThramForm.invalid"
         ></p-button>
         <p-button
             severity="secondary"

@@ -9,6 +9,9 @@ import { ThramDTO } from 'src/app/core/dataservice/land/dto/thram.dto';
 import { AdminPlotCreateComponent } from '../../plots/components/admin-plot-create/admin-plot-create.component';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AdminThramUpdateComponent } from '../components/admin-thram-update/admin-thram-update.component';
+import { AdminSpatialViewerPlotComponent } from '../../shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 
 @Component({
     selector: 'app-admin-thram-listings',
@@ -55,6 +58,20 @@ export class AdminThramListingsComponent implements OnInit {
         });
     }
 
+    openUpdateThramModal(item: ThramDTO) {
+        this.ref = this.dialogService.open(AdminThramUpdateComponent, {
+            header: 'Update Thram',
+            width: '30vw',
+            data: { ...item },
+        });
+
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.getAllThrams();
+            }
+        });
+    }
+
     downloadMasterTable() {}
 
     openCreatePlotModal(item: ThramDTO) {
@@ -68,6 +85,15 @@ export class AdminThramListingsComponent implements OnInit {
             if (res && res.status === 201) {
                 this.getAllThrams();
             }
+        });
+    }
+
+    openViewPlotModal(plot: PlotDTO) {
+        this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
+            header: plot.plotId,
+            data: {
+                ...plot,
+            },
         });
     }
 }

@@ -12,30 +12,41 @@
         ></p-button>
     </div>
     <p>
-        Building Name: <strong>{{ building.name }}</strong>
+        Building Name: <strong>{{ building.name }}</strong
+        >,
     </p>
-    <p>
-        Floor Config:
-        <strong>
-            {{
-                getBuildingFloorConfiguration(
-                    building.regularFloorCount,
-                    building.basementCount,
-                    building.stiltCount,
-                    building.atticCount,
-                    building.jamthogCount
-                )
-            }}</strong
-        >
-    </p>
-    <p>
-        Type: <strong>{{ building.buildingType }}</strong>
-    </p>
+    <div>
+        <p>
+            Floor Config:
+            <strong>
+                {{
+                    getBuildingFloorConfiguration(
+                        building.regularFloorCount,
+                        building.basementCount,
+                        building.stiltCount,
+                        building.atticCount,
+                        building.jamthogCount
+                    )
+                }}</strong
+            >
+        </p>
+        <p>
+            Type: <strong>{{ building.buildingType }}</strong>
+        </p>
+        <p>
+            Building Number: <strong>{{ building.buildingNumber }}</strong>
+        </p>
 
-    <p>
-        Address:{{ building.buildingNumber }} {{ building.streetName }},
-        {{ building.quadrant }}, {{ building.subadministrativeZone?.name }},
-        {{ building.administrativeZone?.name }},
-        {{ building.dzongkhag?.name }}
-    </p>
+        <p>
+            Address: <strong>{{ building.address }}</strong>
+        </p>
+        <p>
+            Location:
+            <strong
+                >{{ building.subadministrativeZone?.name }},
+                {{ building.administrativeZone?.name }},
+                {{ building.dzongkhag?.name }}</strong
+            >
+        </p>
+    </div>
 </div>

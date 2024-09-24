@@ -10,11 +10,6 @@ export interface PlotDTO {
     thramId: string;
     plotId: string;
     plotCategory: string;
-    ownershipType: string;
-
-    dzongkhagId: number;
-    administrativeZoneId: number;
-    subAdministrativeZoneId: number;
 
     netArea: number;
     areaUnit: string;
@@ -26,9 +21,6 @@ export interface PlotDTO {
 
     remarks: string;
 
-    dzongkhag?: DzongkhagDTO;
-    administrativeZone: AdministrativeZoneDTO;
-    subAdministrativeZone: SubAdministrativeZoneDTO;
     thram?: ThramDTO;
 
     buildings: BuildingDTO[];
@@ -38,11 +30,6 @@ export interface CreatePlotDTO {
     thramId: number;
     plotId: string;
     plotCategory: string;
-    ownershipType: string;
-
-    dzongkhagId: number;
-    administrativeZoneId: number;
-    subAdministrativeZoneId: number;
 
     netArea: number;
     areaUnit: string;

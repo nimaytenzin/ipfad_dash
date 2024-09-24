@@ -102,8 +102,7 @@ export class AdminEditBuildingComponent implements OnInit {
             latitude: ['', Validators.required],
             longitude: ['', Validators.required],
             buildingNumber: [''],
-            streetName: [''],
-            quadrant: [''],
+            address: [''],
             landmark: [''],
 
             dzongkhagId: ['', Validators.required],

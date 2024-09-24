@@ -26,8 +26,6 @@
         <tr>
             <th>ID</th>
             <th>Building</th>
-
-            <!-- <th>Ownership</th> -->
             <th>Plot Mapping</th>
         </tr>
     </ng-template>
@@ -87,41 +85,23 @@
 
             <td class="">
                 <div *ngFor="let item of building.plots">
-                    <p><strong>Thram No</strong>: {{ item.thram.thramNo }}</p>
                     <p>
-                        <strong>Owner</strong>:
-                        {{ item.thram?.owner?.nameEnglish }}/
-                        {{ item.thram?.owner?.nameDzongkha }}
+                        <span class="font-semibold">Thram No</span>:
+                        {{ item.thram.thramNo }}
                     </p>
                     <p>
-                        <strong>Ownership Type</strong>:
-                        {{ item.thram?.ownerType }}
+                        <span class="font-semibold">PlotID</span>:
+                        {{ item.plotId }}
                     </p>
-                    <hr />
-                    <p>
-                        <strong>PlotID</strong>:
-                        <strong> {{ item.plotId }} </strong>
-                    </p>
-                    <p>
-                        <strong>Area</strong>:
+                    <div>
+                        <p class="font-semibold">Owner/s:</p>
+                        <p *ngFor="let owner of item.thram.owners">
+                            - {{ owner.nameEnglish
+                            }}{{ "/" + owner.nameDzongkha }}
+                        </p>
+                    </div>
 
-                        {{ item?.netArea }} {{ item?.areaUnit }}
-                    </p>
-                    <p><strong>Locality </strong>: {{ item.lapName }}</p>
-
-                    <p>
-                        <strong>Precicnt</strong>: {{ item.precinctName }} ({{
-                            item.precinctCode
-                        }})
-                    </p>
                     <div class="flex gap-2 mt-4">
-                        <!-- <p-button
-                            icon="pi pi-pencil"
-                            size="small"
-                            label="Edit"
-                            severity="primary"
-                            (click)="openEditBuildingPlotModal(plot)"
-                        /> -->
                         <p-button
                             icon="pi pi-trash"
                             size="small"

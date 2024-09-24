@@ -67,11 +67,8 @@ export class AdminSpatialViewerPlotComponent implements OnInit {
                     weight: 2,
                 },
             }).addTo(this.map);
-            // Calculate the bounds of the GeoJSON layer
             const bounds = geoJsonLayer.getBounds();
-            // Calculate the center of the bounds
             const center = bounds.getCenter();
-            // Set the map view to the center with a specified zoom level (e.g., zoom level 15)
             this.map.setView(center, 19);
         });
     }
@@ -91,12 +88,6 @@ export class AdminSpatialViewerPlotComponent implements OnInit {
                         layer.on('click', () => {
                             this.selectedBuilding = this.plot.buildings[0];
                             this.viewBuildingSummary = true;
-                            // this.ref = this.dialogService.open(
-                            //     AdminMapviewPlotdetailsComponent,
-                            //     {
-                            //         header: feature.properties.plotId,
-                            //     }
-                            // );
                         });
                     },
                 }).addTo(this.map);

@@ -43,21 +43,6 @@ export const ADMINSIDEBARITEMS = [
             },
         ],
     },
-    {
-        label: 'Core',
-        items: [
-            {
-                label: 'Owner',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-owners'],
-            },
-            {
-                label: 'Bank Accounts',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-bank-accounts'],
-            },
-        ],
-    },
 
     {
         label: 'Land',
@@ -72,12 +57,6 @@ export const ADMINSIDEBARITEMS = [
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/plots'],
             },
-
-            {
-                label: 'Map View',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-properties/map-view'],
-            },
         ],
     },
 
@@ -85,9 +64,29 @@ export const ADMINSIDEBARITEMS = [
         label: 'Buildings',
         items: [
             {
-                label: 'List',
+                label: 'Buildings',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/list-buildings'],
+            },
+            {
+                label: 'Flats',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/list-buildings'],
+            },
+        ],
+    },
+    {
+        label: 'Lease',
+        items: [
+            {
+                label: 'Building & Flat Lease',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-lease'],
+            },
+            {
+                label: 'Land Lease',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-lease'],
             },
         ],
     },
@@ -98,6 +97,11 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Search',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/search/plots'],
+            },
+            {
+                label: 'Map View',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/map-view'],
             },
         ],
     },
@@ -126,33 +130,24 @@ export const ADMINSIDEBARITEMS = [
     {
         label: 'Users',
         items: [
-            // {
-            //     label: 'Owners',
-            //     icon: 'pi pi-fw pi-th-large',
-            //     routerLink: ['/admin/master-users/owners'],
-            // },
+            {
+                label: 'Owner',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-owners'],
+            },
             {
                 label: 'Tenants',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-users/tenants'],
             },
-            {
-                label: 'Admins',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-users/admins'],
-            },
+            // {
+            //     label: 'Admins',
+            //     icon: 'pi pi-fw pi-th-large',
+            //     routerLink: ['/admin/master-users/admins'],
+            // },
         ],
     },
-    {
-        label: 'Lease',
-        items: [
-            {
-                label: 'Lease Agreements',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-lease'],
-            },
-        ],
-    },
+
     {
         label: 'Transactions',
         items: [
@@ -174,8 +169,13 @@ export const ADMINSIDEBARITEMS = [
         ],
     },
     {
-        label: 'Tools',
+        label: 'System',
         items: [
+            {
+                label: 'Bank Accounts',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-bank-accounts'],
+            },
             {
                 label: 'Rental Income Report Generator',
                 icon: 'pi pi-fw pi-th-large',

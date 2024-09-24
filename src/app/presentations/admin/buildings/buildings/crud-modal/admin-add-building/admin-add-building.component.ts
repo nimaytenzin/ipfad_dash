@@ -6,7 +6,7 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import {
@@ -70,10 +70,9 @@ export class AdminAddBuildingComponent {
     ) {}
 
     instance: DynamicDialogComponent | undefined;
-    plotFound: boolean = false;
-    plotError: boolean = false;
 
-    plotDetails: PlotDTO;
+    checkingPlot: boolean = false;
+    plotMappings: PlotDTO[] = [];
 
     dzongkhags: DzongkhagDTO[];
     admninistrativeZones: AdministrativeZoneDTO[];
@@ -88,24 +87,24 @@ export class AdminAddBuildingComponent {
 
     ngOnInit() {
         this.createBuildingForm = this.fb.group({
-            plotId: [],
+            plotId: [''],
             isActive: [true, Validators.required],
             zhicharBuildingId: [''],
             zhicharQrUuid: [''],
             name: [''],
+            buildingNumber: ['', Validators.required],
             buildingType: [BuildingType.CONTEMPORARY, Validators.required],
-            regularFloorCount: ['1'],
-            basementCount: ['0'],
-            stiltCount: ['0'],
-            atticCount: ['0'],
-            jamthogCount: ['0'],
+
+            regularFloorCount: ['1', Validators.required],
+            basementCount: ['0', Validators.required],
+            stiltCount: ['0', Validators.required],
+            atticCount: ['0', Validators.required],
+            jamthogCount: ['0', Validators.required],
 
             areaSqM: [],
             latitude: ['', Validators.required],
             longitude: ['', Validators.required],
-            buildingNumber: [''],
-            streetName: [''],
-            quadrant: [''],
+            address: [''],
             landmark: [''],
 
             dzongkhagId: ['', Validators.required],
@@ -113,9 +112,6 @@ export class AdminAddBuildingComponent {
             subadminsitrativeZoneId: ['', Validators.required],
         });
 
-        if (this.plotFound) {
-            this.createBuildingForm.disable();
-        }
         this.createBuildingForm.controls['plotId'].enable();
 
         this.getDzongkhags();
@@ -189,9 +185,7 @@ export class AdminAddBuildingComponent {
                 name: this.createBuildingForm.controls['name'].value,
                 buildingNumber:
                     this.createBuildingForm.controls['buildingNumber'].value,
-                streetName:
-                    this.createBuildingForm.controls['streetName'].value,
-                quadrant: this.createBuildingForm.controls['quadrant'].value,
+                address: this.createBuildingForm.controls['address'].value,
                 landmark: this.createBuildingForm.controls['landmark'].value,
                 dzongkhagId:
                     this.createBuildingForm.controls['dzongkhagId'].value,
@@ -201,13 +195,20 @@ export class AdminAddBuildingComponent {
                 subadministrativeZoneId:
                     this.createBuildingForm.controls['subadminsitrativeZoneId']
                         .value,
+                plots: this.plotMappings,
             };
+            console.log(data);
 
             this.buildingDataService.CreateNewBuilding(data).subscribe({
                 next: (res) => {
                     if (res.id) {
                         this.ref.close({
-                            added: true,
+                            status: 201,
+                        });
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: 'Building Addeed',
                         });
                     }
                 },
@@ -241,28 +242,34 @@ export class AdminAddBuildingComponent {
         this.createBuildingForm.enable();
     }
 
-    checkPlotDetails() {
+    checkPlotDetailsAndAdd() {
         let plotId = this.createBuildingForm.controls['plotId'].value;
         this.plotDataService.SearchPlotById(plotId).subscribe({
             next: (res) => {
                 if (res) {
-                    this.plotFound = true;
-                    this.plotError = false;
-                    this.plotDetails = res;
+                    this.plotMappings.push(res);
+                    this.createBuildingForm.controls['plotId'].reset();
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Plot Details Found',
+                        detail: res.plotId + ' added to plot mapping.',
+                    });
                 }
             },
             error: (err) => {
-                this.plotError = true;
-
                 this.messageService.add({
-                    key: 'tst',
                     severity: 'error',
                     summary: 'Couldnot Fetch Data',
                     detail: err.error.message,
                 });
-                console.log(err);
             },
         });
+    }
+
+    removePlotMapping(plot: PlotDTO) {
+        this.plotMappings = this.plotMappings.filter(
+            (plotMapping) => plotMapping.plotId !== plot.plotId
+        );
     }
 
     getDzongkhags() {

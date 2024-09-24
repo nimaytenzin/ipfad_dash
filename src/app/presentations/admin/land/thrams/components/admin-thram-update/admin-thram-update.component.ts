@@ -10,62 +10,75 @@ import {
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
 import {
-    LOCATIONFLAGENUM,
     PlotOwnershipENUM,
+    LOCATIONFLAGENUM,
 } from 'src/app/core/constants/enums';
-import { CreateThramDTO } from 'src/app/core/dataservice/land/dto/thram.dto';
+import {
+    ThramDTO,
+    UpdateThramDTO,
+} from 'src/app/core/dataservice/land/dto/thram.dto';
 import { ThramDataService } from 'src/app/core/dataservice/land/thram.dataservice';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
-import { OwnerDTO } from 'src/app/core/dataservice/owners/dto/owner.dto';
-import { OwnerDataService } from 'src/app/core/dataservice/owners/owner.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
-import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
-    selector: 'app-admin-thram-create',
-    templateUrl: './admin-thram-create.component.html',
-    styleUrls: ['./admin-thram-create.component.css'],
+    selector: 'app-admin-thram-update',
+    templateUrl: './admin-thram-update.component.html',
+    styleUrls: ['./admin-thram-update.component.css'],
     standalone: true,
     imports: [
+        CommonModule,
         ReactiveFormsModule,
-        ButtonModule,
         DropdownModule,
         InputTextModule,
-        FormsModule,
-        CommonModule,
+        ButtonModule,
         MultiSelectModule,
+        FormsModule,
     ],
 })
-export class AdminThramCreateComponent implements OnInit {
-    createThramForm: FormGroup;
+export class AdminThramUpdateComponent implements OnInit {
+    updateThramForm: FormGroup;
+    thram: ThramDTO;
+
     dzongkhags: DzongkhagDTO[];
     administrativeZones: AdministrativeZoneDTO[];
     subAdministrativeZones: SubAdministrativeZoneDTO[];
 
     owners: UserDTO[];
+    selectedOwners: UserDTO[];
     ownerTypes = Object.values(PlotOwnershipENUM);
     locationFlags = Object.values(LOCATIONFLAGENUM);
 
     constructor(
         private fb: FormBuilder,
+        private config: DynamicDialogConfig,
         private locationDataService: LocationDataService,
         private thramDataService: ThramDataService,
         private ref: DynamicDialogRef,
         private userDataService: UserDataService,
         private authService: AuthService,
         private messageService: MessageService
-    ) {}
+    ) {
+        this.getAllOwners();
+        this.thram = this.config.data;
+        this.getAllDzongkhags();
+        this.getAdminsitrativeZones(this.thram.dzongkhagId);
+        this.getSubadministrativeZones(this.thram.administrativeZoneId);
+        console.log('Passed thram data', this.thram);
+        this.selectedOwners = this.thram.owners;
+    }
 
     ngOnInit() {
-        this.createThramForm = this.fb.group({
+        this.updateThramForm = this.fb.group({
             thramNo: ['', Validators.required],
             dzongkhagId: ['', Validators.required],
             administrativeZoneId: ['', Validators.required],
@@ -73,37 +86,33 @@ export class AdminThramCreateComponent implements OnInit {
             owners: ['', Validators.required],
             ownershipType: ['', Validators.required],
         });
-        this.locationDataService.GetAllDzonghags().subscribe({
-            next: (res) => {
-                this.dzongkhags = res;
-            },
+        this.updateThramForm.patchValue({
+            ...this.thram,
         });
-        this.userDataService
-            .AdminGetAllOwners(this.authService.GetAuthenticatedUser().id)
-            .subscribe((res) => {
-                this.owners = res;
-                console.log('OWNER', res);
-            });
     }
 
-    createThram() {
-        if (this.createThramForm.valid) {
-            const newThram: CreateThramDTO = {
-                dzongkhagId: this.createThramForm.value.dzongkhagId,
+    updateThram() {
+        if (this.updateThramForm.valid) {
+            const data: UpdateThramDTO = {
+                dzongkhagId: this.updateThramForm.value.dzongkhagId,
                 administrativeZoneId:
-                    this.createThramForm.value.administrativeZoneId,
+                    this.updateThramForm.value.administrativeZoneId,
                 subAdministrativeZoneId:
-                    this.createThramForm.value.subAdministrativeZoneId,
-                thramNo: this.createThramForm.value.thramNo,
-                ownershipType: this.createThramForm.value.ownershipType,
-                owners: this.createThramForm.value.owners,
+                    this.updateThramForm.value.subAdministrativeZoneId,
+                thramNo: this.updateThramForm.value.thramNo,
+                ownershipType: this.updateThramForm.value.ownershipType,
+                owners: this.updateThramForm.value.owners,
             };
-            this.thramDataService.CreateThram(newThram).subscribe({
+            this.thramDataService.UpdateThram(data, this.thram.id).subscribe({
                 next: (res) => {
-                    this.ref.close({ status: 201 });
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Thram Data Updated',
+                    });
+                    this.ref.close({ status: 200 });
                 },
                 error: (err) => {
-                    console.log(err);
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error',
@@ -121,6 +130,13 @@ export class AdminThramCreateComponent implements OnInit {
         }
     }
 
+    dzongkhagSelected(e) {
+        this.getAdminsitrativeZones(e.value);
+    }
+    administrativeZoneSelect(e) {
+        this.getSubadministrativeZones(e.value);
+    }
+
     getAdminsitrativeZones(dzongkhagId: number) {
         this.locationDataService
             .GetAllAdministrativeZones({
@@ -131,13 +147,6 @@ export class AdminThramCreateComponent implements OnInit {
             });
     }
 
-    dzongkhagSelected(e) {
-        this.getAdminsitrativeZones(e.value);
-    }
-    administrativeZoneSelect(e) {
-        this.getSubadministrativeZones(e.value);
-    }
-
     getSubadministrativeZones(administrativeZoneId: number) {
         this.locationDataService
             .GetAllSubAdministrativeZones({
@@ -146,6 +155,23 @@ export class AdminThramCreateComponent implements OnInit {
             .subscribe((res: any) => {
                 this.subAdministrativeZones = res;
             });
+    }
+
+    getAllOwners() {
+        this.userDataService
+            .AdminGetAllOwners(this.authService.GetAuthenticatedUser().id)
+            .subscribe((res) => {
+                console.log(res);
+                this.owners = res;
+            });
+    }
+
+    getAllDzongkhags() {
+        this.locationDataService.GetAllDzonghags().subscribe({
+            next: (res) => {
+                this.dzongkhags = res;
+            },
+        });
     }
     close() {
         this.ref.close();

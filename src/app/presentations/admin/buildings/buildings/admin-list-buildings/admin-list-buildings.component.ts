@@ -97,7 +97,7 @@ export class AdminListBuildingsComponent {
             width: '600px',
         });
         this.ref.onClose.subscribe((res) => {
-            if (res && res.added) {
+            if (res && res.staus === 201) {
                 this.getPaginatedBuildings();
             }
         });

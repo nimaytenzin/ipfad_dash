@@ -1,37 +1,40 @@
 <form [formGroup]="createBuildingForm" class="p-fluid p-2">
     <div class="grid">
-        <p class="col-12 font-semibold">Plot Details</p>
-        <hr class="col-12 m-0 p-0" />
-        <div class="flex">
-            <div class="mt-4 px-4">
-                <label for="zhichar">Plot ID</label>
-                <div class="flex gap-4 align-items-center">
-                    <input
-                        pInputText
-                        id="zhichar"
-                        formControlName="plotId"
-                        type="text"
-                        class="flex-1"
-                        (input)="convertToUppercase($event)"
-                    />
-                    <p-button
-                        label="Check Plot"
-                        size="small"
-                        (click)="checkPlotDetails()"
-                    ></p-button>
-                </div>
+        <p class="col-12 font-semibold">
+            Plot Details *A building may occupy one or more plot.
+        </p>
+        <div class="mt-1 px-4">
+            <label for="zhichar">Plot ID</label>
+            <div class="flex mt-2 mb-2 gap-4 align-items-center">
+                <input
+                    pInputText
+                    id="zhichar"
+                    formControlName="plotId"
+                    type="text"
+                    class="flex-1"
+                    (input)="convertToUppercase($event)"
+                />
+                <p-button
+                    label="Check And Add"
+                    size="small"
+                    [loading]="checkingPlot"
+                    (click)="checkPlotDetailsAndAdd()"
+                ></p-button>
             </div>
         </div>
-        <div *ngIf="plotFound" class="mb-2 col-12 text-green-500">
-            <p>Plot Data Found</p>
-        </div>
-        <div *ngIf="plotError" class="mb-2 col-12 text-red-500">
-            <p>
-                Plot Data Not Found.Please check the PlotID or first add the
-                Plot Details.
-            </p>
-        </div>
-        <div *ngIf="plotFound">
+
+        <div *ngIf="plotMappings.length" class="grid">
+            <div class="col-12 text-xl">
+                <p class="">Plot Mapping</p>
+                <p *ngFor="let plot of plotMappings" class="font-bold">
+                    {{ plot.plotId }}
+                    <span
+                        class="cursor-pointer hover:underline text-red-600"
+                        (click)="removePlotMapping(plot)"
+                        >-remove</span
+                    >
+                </p>
+            </div>
             <p class="col-12 font-semibold">
                 Linkage with Building Information System(www.zhichar.bt)
             </p>
@@ -39,13 +42,23 @@
 
             <div class="field col-12 md:col-4">
                 <label for="zhichar">Zhichar Building ID</label>
-                <input
-                    pInputText
-                    id="zhichar"
-                    (keyup)="getZhicharBuildingInformation($event)"
+
+                <p-inputNumber
                     formControlName="zhicharBuildingId"
-                    type="text"
+                    mode="decimal"
+                    (keyup)="getZhicharBuildingInformation($event)"
+                    inputId="withoutgrouping"
+                    [useGrouping]="false"
                 />
+
+                <div
+                    *ngIf="
+                        createBuildingForm.get('zhicharBuildingId')?.invalid &&
+                        createBuildingForm.get('zhicharBuildingId')?.touched
+                    "
+                >
+                    <small>Zhichar Building ID is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -168,24 +181,15 @@
             </div>
 
             <div class="field col-12 md:col-4">
-                <label for="streetName">Street Name</label>
+                <label for="address">Address</label>
                 <input
                     pInputText
-                    id="streetName"
+                    id="address"
                     type="text"
-                    formControlName="streetName"
+                    formControlName="address"
                 />
             </div>
 
-            <div class="field col-12 md:col-4">
-                <label for="quadrant">Quadrant</label>
-                <input
-                    pInputText
-                    id="quadrant"
-                    type="text"
-                    formControlName="quadrant"
-                />
-            </div>
             <div class="field col-12 md:col-4">
                 <label for="landmark">Land Mark</label>
                 <textarea
@@ -241,6 +245,8 @@
             </div>
             <p-button
                 (click)="createBuilding()"
+                type="submit"
+                [disabled]="createBuildingForm.invalid"
                 label="Create Building"
             ></p-button>
         </div>

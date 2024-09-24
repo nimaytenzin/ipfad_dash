@@ -80,15 +80,13 @@ export class AdminPlotCreateComponent implements OnInit {
             this.thramDataPassed = true;
             this.thramFound = true;
             this.searchedThram = this.config.data.thram;
+            console.log('PASSED THRAM', this.searchedThram);
         }
         this.createPlotForm = this.fb.group({
             thramNo: [],
-            dzongkhagId: [],
-            administrativeZoneId: [],
-            subAdministrativeZoneId: [],
+
             plotId: [],
             plotCategory: [],
-            ownershipType: [],
             netArea: [],
             areaUnit: [],
 
@@ -114,10 +112,6 @@ export class AdminPlotCreateComponent implements OnInit {
             thramId: this.searchedThram.id,
             plotId: this.createPlotForm.controls['plotId'].value,
             plotCategory: this.createPlotForm.controls['plotCategory'].value,
-            ownershipType: this.createPlotForm.controls['ownershipType'].value,
-            dzongkhagId: this.searchedThram.dzongkhagId,
-            administrativeZoneId: this.searchedThram.administrativeZoneId,
-            subAdministrativeZoneId: this.searchedThram.subAdministrativeZoneId,
             netArea: this.createPlotForm.controls['netArea'].value,
             areaUnit: this.createPlotForm.controls['areaUnit'].value,
             lapName: this.createPlotForm.controls['lapName'].value,

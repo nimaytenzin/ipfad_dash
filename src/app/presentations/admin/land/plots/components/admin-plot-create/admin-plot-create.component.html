@@ -2,31 +2,6 @@
     <div *ngIf="!thramFound">
         <p class="text-lg font-semibold mb-2">Search Thram</p>
 
-        <div class="flex gap-2 w-full mb-4">
-            <div class="flex flex-1 flex-column gap-2">
-                <label for="dzongkhag">Dzongkhag</label>
-                <p-dropdown
-                    id="dzongkhag"
-                    [options]="dzongkhags"
-                    optionValue="id"
-                    optionLabel="name"
-                    (onChange)="dzongkhagSelected($event)"
-                    formControlName="dzongkhagId"
-                ></p-dropdown>
-            </div>
-            <div class="flex flex-1 flex-column gap-2">
-                <label for="gewog">Administrative Zone</label>
-                <p-dropdown
-                    id="bankName"
-                    optionValue="id"
-                    optionLabel="name"
-                    (onChange)="administrativeZoneSelect($event)"
-                    [options]="administrativeZones"
-                    formControlName="administrativeZoneId"
-                >
-                </p-dropdown>
-            </div>
-        </div>
         <div class="flex gap-2 my-4 justify-content-end align-items-end">
             <div class="flex flex-column gap-2 flex-1">
                 <label for="nameEnglish">Thram Number</label>
@@ -57,9 +32,10 @@
             {{ searchedThram.subAdministrativeZone?.name }}
         </p>
         <p>
-            Owner: {{ searchedThram.owner?.nameEnglish }}/{{
-                searchedThram.owner?.nameDzongkha
-            }}
+            Owner/s:
+            <span *ngFor="let owner of searchedThram.owners"
+                >{{ owner?.nameEnglish }}/{{ owner?.nameDzongkha }}</span
+            >
         </p>
     </div>
     <p-divider></p-divider>
@@ -83,15 +59,6 @@
                     id="dzongkhag"
                     [options]="plotCategories"
                     formControlName="plotCategory"
-                ></p-dropdown>
-            </div>
-            <div class="flex flex-column gap-2 flex-1">
-                <label for="nameEnglish">Ownership Type</label>
-
-                <p-dropdown
-                    id="dzongkhag"
-                    [options]="ownerTypes"
-                    formControlName="ownershipType"
                 ></p-dropdown>
             </div>
         </div>

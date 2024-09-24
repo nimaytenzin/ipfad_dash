@@ -1,6 +1,7 @@
 import { ThramDTO } from '../../land/dto/thram.dto';
 
 export interface UserDTO {
+    id: number;
     hasLoginAccess: boolean;
 
     nameEnglish: string;
