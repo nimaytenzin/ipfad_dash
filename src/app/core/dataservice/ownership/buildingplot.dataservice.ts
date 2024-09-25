@@ -44,8 +44,10 @@ export class BuildingPlotDataService {
         );
     }
 
-    DeleteBuildingPlot(id: number) {
-        console.log('DELETING BUILDIG PLOT', id);
-        return this.http.delete(`${this.apiUrl}/building-plot/${id}`);
+    DeleteBuildingPlot(plotId: number, buildingId: number) {
+        console.log('DELTING BUILDING POT');
+        return this.http.delete(
+            `${this.apiUrl}/building-plot/b/${buildingId}/p/${plotId}`
+        );
     }
 }

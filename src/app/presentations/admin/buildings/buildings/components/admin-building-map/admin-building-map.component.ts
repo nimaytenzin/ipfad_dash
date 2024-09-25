@@ -22,6 +22,10 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
     building: BuildingDTO;
     googleSatUrl = 'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}';
     map!: L.Map;
+
+    buildingFootprintFound: boolean = false;
+    plotFootprintFound: boolean = false;
+
     constructor(
         private buildingDataService: BuildingDataService,
         private http: HttpClient,
@@ -59,37 +63,43 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
 
     loadPlotGeometry() {
         const url = `assets/geojson/${this.building.plots[0].plotId}.geojson`;
-        this.http.get<any>(url).subscribe((data) => {
-            const geoJsonLayer = L.geoJSON(data, {
-                style: {
-                    color: 'red',
-                    fillColor: 'red',
-                    fillOpacity: 0,
-                    weight: 2,
-                },
-                onEachFeature: (feature, layer) => {
-                    layer.on('click', () => {
-                        this.ref = this.dialogService.open(
-                            AdminMapviewPlotdetailsComponent,
-                            {
-                                header: this.building.plots[0].plotId,
-                                data: {
-                                    plotId: this.building.plots[0].plotId,
-                                },
-                            }
-                        );
-                    });
-                },
-            }).addTo(this.map);
+        this.http.get<any>(url).subscribe({
+            next: (res) => {
+                (res) => {
+                    const geoJsonLayer = L.geoJSON(res, {
+                        style: {
+                            color: 'red',
+                            fillColor: 'red',
+                            fillOpacity: 0,
+                            weight: 2,
+                        },
+                        onEachFeature: (feature, layer) => {
+                            layer.on('click', () => {
+                                this.ref = this.dialogService.open(
+                                    AdminMapviewPlotdetailsComponent,
+                                    {
+                                        header: this.building.plots[0].plotId,
+                                        data: {
+                                            plotId: this.building.plots[0]
+                                                .plotId,
+                                        },
+                                    }
+                                );
+                            });
+                        },
+                    }).addTo(this.map);
 
-            // Calculate the bounds of the GeoJSON layer
-            const bounds = geoJsonLayer.getBounds();
+                    const bounds = geoJsonLayer.getBounds();
 
-            // Calculate the center of the bounds
-            const center = bounds.getCenter();
+                    const center = bounds.getCenter();
 
-            // Set the map view to the center with a specified zoom level (e.g., zoom level 15)
-            this.map.setView(center, 19);
+                    // Set the map view to the center with a specified zoom level (e.g., zoom level 15)
+                    this.map.setView(center, 19);
+                };
+            },
+            error: (err) => {
+                console.log(err);
+            },
         });
     }
 

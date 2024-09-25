@@ -42,8 +42,8 @@
                             <app-admin-building-details-card
                                 [building]="building"
                                 [editMode]="true"
+                                (buildingInfoChanged)="getBuilding()"
                             ></app-admin-building-details-card>
-                            <p-divider type="dashed" />
                         </div>
                         <p-divider layout="vertical" type="dashed" />
 
@@ -51,16 +51,11 @@
                             <app-admin-building-plot
                                 [plots]="building.plots"
                                 [buildingId]="buildingId"
+                                (buildingInfoChanged)="getBuilding()"
                             ></app-admin-building-plot>
-                            <!-- <app-admin-building-ownership-card
-                                [owners]="building.owners"
-                                [editMode]="true"
-                            >
-                            </app-admin-building-ownership-card> -->
                         </div>
                     </div>
 
-                    <p-divider type="dashed" />
                     <app-admin-building-map [buildingId]="buildingId">
                     </app-admin-building-map>
                 </div>
@@ -69,7 +64,7 @@
         <p-tabPanel header="Units">
             <router-outlet></router-outlet>
         </p-tabPanel>
-        <p-tabPanel header="Payment Status">
+        <!-- <p-tabPanel header="Payment Status">
             <app-admin-building-unit-payment-sheet
                 [buildingId]="buildingId"
             ></app-admin-building-unit-payment-sheet>
@@ -78,6 +73,6 @@
             <app-admin-building-tenant-listing
                 [buildingId]="buildingId"
             ></app-admin-building-tenant-listing>
-        </p-tabPanel>
+        </p-tabPanel> -->
     </p-tabView>
 </div>

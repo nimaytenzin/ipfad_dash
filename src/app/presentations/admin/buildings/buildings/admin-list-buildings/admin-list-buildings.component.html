@@ -1,4 +1,4 @@
-<div class="flex align-items-center justify-content-between">
+<div class="flex align-items-center justify-content-between my-4">
     <p>Buildings</p>
     <div class="flex gap-2">
         <p-button
@@ -25,8 +25,14 @@
     <ng-template pTemplate="header">
         <tr>
             <th>ID</th>
-            <th>Building</th>
-            <th>Plot Mapping</th>
+            <th>Plot ID</th>
+            <th>Building Name</th>
+            <th>Building Number</th>
+            <th>Building Type</th>
+            <th>Floor Config</th>
+            <th>Address</th>
+            <th>Location</th>
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-building>
@@ -36,31 +42,67 @@
                     <p class="text-sm">
                         {{ building.isActive ? "Active" : "Idle" }}
                     </p>
-                    <qrcode
-                        *ngIf="building?.zhicharQrUuid"
-                        [qrdata]="getQr(building?.zhicharQrUuid)"
-                        [errorCorrectionLevel]="'M'"
-                        [allowEmptyString]="true"
-                        [cssClass]="'center'"
-                        [errorCorrectionLevel]="'high'"
-                        [colorDark]="'#111827'"
-                        [colorLight]="'#FFFFFF00'"
-                        [elementType]="'svg'"
-                        [errorCorrectionLevel]="'H'"
-                        [scale]="1"
-                        [title]="'BuildingQr'"
-                        [width]="100"
-                        class="m-0 p-0"
-                    ></qrcode>
+
                     <small> ID: {{ building.id }} </small>
                 </div>
             </td>
             <td>
-                <app-admin-building-details-card
-                    [building]="building"
-                    [editMode]="false"
-                ></app-admin-building-details-card>
-                <hr />
+                <p>
+                    <span
+                        *ngFor="let item of building.plots"
+                        (click)="openViewPlotModal(item)"
+                        class="text-blue-700 hover:underline cursor-pointer hover:font-semibold"
+                    >
+                        {{ item.plotId + "," }}
+                    </span>
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ building.name }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ building.buildingNumber }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ building.buildingType }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    <strong>
+                        {{
+                            getBuildingFloorConfiguration(
+                                building.regularFloorCount,
+                                building.basementCount,
+                                building.stiltCount,
+                                building.atticCount,
+                                building.jamthogCount
+                            )
+                        }}</strong
+                    >
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ building.address }}
+                </p>
+            </td>
+
+            <td>
+                <p>
+                    <strong
+                        >{{ building.subadministrativeZone?.name }},
+                        {{ building.administrativeZone?.name }},
+                        {{ building.dzongkhag?.name }}</strong
+                    >
+                </p>
+            </td>
+            <td>
                 <div class="flex gap-2">
                     <p-button
                         size="small"
@@ -71,18 +113,12 @@
                     <p-button
                         size="small"
                         icon="pi pi-eye"
-                        label="Detailed view"
+                        label="View"
                         (click)="openViewBuildingDetails(building)"
-                    ></p-button>
-                    <p-button
-                        label="Add Plot"
-                        (click)="openCreateBuildingPlotModal(building.id)"
-                        icon="pi pi-plus"
-                        size="small"
                     ></p-button>
                 </div>
             </td>
-
+            <!-- 
             <td class="">
                 <div *ngFor="let item of building.plots">
                     <p>
@@ -118,7 +154,7 @@
                 <div *ngIf="!building.plots.length" class="text-red-500">
                     ! Building Plot not mapped
                 </div>
-            </td>
+            </td> -->
         </tr>
     </ng-template>
 
@@ -129,58 +165,3 @@
         <div></div>
     </ng-template>
 </p-table>
-
-<p-dialog
-    header="Owner Details"
-    [modal]="true"
-    [(visible)]="showOwnerDetailCard"
-    [style]="{ width: '25rem' }"
->
-    <div *ngIf="selectedOwner">
-        <p>First Name: {{ selectedOwner.firstName }}</p>
-        <p>Middle Name: {{ selectedOwner.middleName }}</p>
-        <p>Last Name: {{ selectedOwner.lastName }}</p>
-    </div>
-</p-dialog>
-
-<p-dialog
-    header="Delete Building Plot"
-    [modal]="true"
-    [(visible)]="showConfirmDeleteBuildingPlotDialog"
-    [style]="{ width: '25rem' }"
->
-    <p>Are u sure u want to delete?</p>
-    <div class="flex justify-content-start gap-4 mt-4">
-        <p-button
-            label="Cancel"
-            severity="secondary"
-            (click)="showConfirmDeleteBuildingPlotDialog = false"
-        />
-        <p-button
-            label="Delete"
-            severity="danger"
-            (click)="deleteBuildingPlot()"
-        />
-    </div>
-</p-dialog>
-
-<p-dialog
-    header="Delete Building Ownership"
-    [modal]="true"
-    [(visible)]="showConfirmDeleteBuildingOwnershipDialog"
-    [style]="{ width: '25rem' }"
->
-    <p>Are u sure u want to delete?</p>
-    <div class="flex justify-content-start gap-4 mt-4">
-        <p-button
-            label="Cancel"
-            severity="secondary"
-            (click)="showConfirmDeleteBuildingPlotDialog = false"
-        />
-        <p-button
-            label="Delete"
-            severity="danger"
-            (click)="deleteBuildingOwnership()"
-        />
-    </div>
-</p-dialog>

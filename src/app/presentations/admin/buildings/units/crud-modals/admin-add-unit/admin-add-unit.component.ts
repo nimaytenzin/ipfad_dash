@@ -42,14 +42,13 @@ export class AdminAddUnitComponent implements OnInit {
         private fb: FormBuilder,
         private unitDataService: UnitDataService,
         public ref: DynamicDialogRef,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private messageService: MessageService
     ) {
         this.instance = this.dialogService.getInstance(this.ref);
     }
     instance: DynamicDialogComponent | undefined;
     buildingId: number;
-
-    messages: Message[] | undefined;
 
     createUnitForm!: FormGroup;
 
@@ -79,7 +78,7 @@ export class AdminAddUnitComponent implements OnInit {
             toiletCount: [1, [Validators.required]],
             balconyCount: [0, [Validators.required]],
             floorArea: [null, [Validators.required]],
-            powerConsumerId: [null, Validators.required],
+            powerConsumerId: [null],
             zhicharUnitId: [null, Validators.required],
             zhicharQrUuid: [null, Validators.required],
         });
@@ -87,44 +86,56 @@ export class AdminAddUnitComponent implements OnInit {
     }
 
     createUnit() {
-        const newUnit: CreateUnitDTO = {
-            buildingId: this.buildingId,
-            zhicharUnitId: Number(
-                this.createUnitForm.controls['zhicharUnitId'].value
-            ),
-            zhicharQrUuid: this.createUnitForm.controls['zhicharQrUuid'].value,
-            floorLevel: this.createUnitForm.controls['floorLevel'].value,
-            unitNumber: this.createUnitForm.controls['unitNumber'].value,
-            bedroomCount: this.createUnitForm.controls['bedroomCount'].value,
-            toiletCount: this.createUnitForm.controls['toiletCount'].value,
-            balconyCount: this.createUnitForm.controls['balconyCount'].value,
-            powerConsumerId:
-                this.createUnitForm.controls['powerConsumerId'].value,
-            floorArea: Number(this.createUnitForm.controls['floorArea'].value),
-        };
-        console.log(newUnit);
-        this.unitDataService.CreateUnit(newUnit).subscribe({
-            next: (res) => {
-                this.messages = [
-                    {
+        if (this.createUnitForm.valid) {
+            const newUnit: CreateUnitDTO = {
+                buildingId: this.buildingId,
+                zhicharUnitId: Number(
+                    this.createUnitForm.controls['zhicharUnitId'].value
+                ),
+                zhicharQrUuid:
+                    this.createUnitForm.controls['zhicharQrUuid'].value,
+                floorLevel: this.createUnitForm.controls['floorLevel'].value,
+                unitNumber: this.createUnitForm.controls['unitNumber'].value,
+                bedroomCount:
+                    this.createUnitForm.controls['bedroomCount'].value,
+                toiletCount: this.createUnitForm.controls['toiletCount'].value,
+                balconyCount:
+                    this.createUnitForm.controls['balconyCount'].value,
+                powerConsumerId:
+                    this.createUnitForm.controls['powerConsumerId'].value,
+                floorArea: Number(
+                    this.createUnitForm.controls['floorArea'].value
+                ),
+            };
+            this.unitDataService.CreateUnit(newUnit).subscribe({
+                next: (res) => {
+                    this.messageService.add({
                         severity: 'success',
-                        summary: '200',
-                        detail: 'Unit Added',
-                    },
-                ];
-                this.ref.close({
-                    added: true,
-                });
-            },
-            error: (err) => {
-                this.messages = [
-                    {
+                        summary: 'Added',
+                        detail: 'Unit added',
+                    });
+                    this.ref.close({
+                        added: true,
+                    });
+                },
+                error: (err) => {
+                    this.messageService.add({
                         severity: 'error',
-                        summary: 'Error: ' + err.error.statusCode,
+                        summary: 'Error',
                         detail: err.error.message,
-                    },
-                ];
-            },
-        });
+                    });
+                },
+            });
+        } else {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Form Validation Error',
+                detail: 'Please add all required fields',
+            });
+        }
+    }
+
+    close() {
+        this.ref.close();
     }
 }

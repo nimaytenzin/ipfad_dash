@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
@@ -26,11 +26,14 @@ export class AdminBuildingDetailsCardComponent {
     editMode: boolean;
     @Input() customStyles: Partial<CSSStyleDeclaration>;
 
+    @Output() buildingInfoChanged = new EventEmitter<string>();
+
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
     ref: DynamicDialogRef | undefined;
     constructor(private dialogService: DialogService) {}
 
     openEditBuildingModal() {
+        console.log('open edit building modal');
         this.ref = this.dialogService.open(AdminEditBuildingComponent, {
             header: 'Edit Building',
             width: '600px',
@@ -38,6 +41,8 @@ export class AdminBuildingDetailsCardComponent {
                 ...this.building,
             },
         });
-        this.ref.onClose.subscribe((res) => {});
+        this.ref.onClose.subscribe((res) => {
+            this.buildingInfoChanged.emit('changed');
+        });
     }
 }

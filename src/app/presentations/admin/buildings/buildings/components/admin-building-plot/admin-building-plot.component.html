@@ -1,41 +1,51 @@
-<p class="font-bold text-xl">Plot & Ownership</p>
+<p-confirmDialog></p-confirmDialog>
 
-<div class="flex gap-4">
-    <div *ngFor="let plot of plots">
-        <p class="text-lg">
-            Owner:
-            <span class="font-semibold"
-                >{{ plot.thram.owner.nameEnglish }}/
-                {{ plot.thram.owner.nameDzongkha }}</span
-            >
-        </p>
-        <p class="mt-2">
-            Thram: <strong> {{ plot.thram.thramNo }} </strong>
-        </p>
-        <p>
-            PlotID: <strong> {{ plot.plotId }} </strong>
-        </p>
-        <p>Precinct: {{ plot.precinctName }}({{ plot.precinctCode }})</p>
-        <p>
-            {{ plot.administrativeZone?.name }},
-            {{ plot.subAdministrativeZone?.name }}
-        </p>
-        <!-- <div class="flex gap-2 mt-1">
-            <p-button
-                icon="pi pi-pencil"
-                size="small"
-                label="Edit"
-                severity="primary"
-                (click)="openEditBuildingPlotModal(plot)"
-            />
+<div class="flex justify-content-between">
+    <p class="font-semibold">Plot & Ownership</p>
+    <p-button
+        icon="pi pi-plus"
+        size="small"
+        label="Plot Mapping"
+        severity="primary"
+        (click)="openMapPlotBuilding()"
+    />
+</div>
+
+<hr />
+<div>
+    <div *ngFor="let plot of plots" class="mt-4">
+        <div class="flex gap-2 align-items-end justify-content-between pb-2">
+            <p>
+                PlotID: <strong> {{ plot.plotId }} </strong>
+            </p>
             <p-button
                 icon="pi pi-trash"
                 size="small"
-                label="delete"
+                [label]="plot.plotId"
                 severity="danger "
                 (click)="openConfirmDeleteBuildingPlotDialog(plot)"
             />
-        </div> -->
+        </div>
+        <hr class="my-0 py-0" />
+
+        <p>
+            Thram: <strong> {{ plot.thram?.thramNo }} </strong>
+        </p>
+        <p>
+            Location:
+            <strong
+                >{{ plot.thram?.dzongkhag?.name }},
+                {{ plot.thram?.administrativeZone?.name }},
+                {{ plot.thram?.subAdministrativeZone?.name }}</strong
+            >
+        </p>
+        <p>
+            Owner/s:
+            <strong *ngFor="let owner of plot.thram.owners">
+                {{ owner.nameEnglish
+                }}{{ "(" + owner.nameDzongkha + ")" + ", " }}
+            </strong>
+        </p>
     </div>
 </div>
 <div *ngIf="!plots?.length" class="text-red-500">

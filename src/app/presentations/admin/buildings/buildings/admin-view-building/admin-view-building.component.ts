@@ -66,13 +66,7 @@ export class AdminViewBuildingComponent implements OnInit {
         this.buildingId = Number(
             this.route.snapshot.paramMap.get('buildingId')
         );
-
-        this.buildingDataService
-            .GetOneById(this.buildingId)
-            .subscribe((res) => {
-                this.building = res;
-                console.log(res);
-            });
+        this.getBuilding();
 
         this.tenantDataService
             .GetActiveTenantsByBuilding(this.buildingId)
@@ -102,5 +96,14 @@ export class AdminViewBuildingComponent implements OnInit {
 
     getQr(val) {
         return val;
+    }
+
+    getBuilding() {
+        this.buildingDataService
+            .GetOneById(this.buildingId)
+            .subscribe((res) => {
+                this.building = res;
+                console.log('Building view', res);
+            });
     }
 }

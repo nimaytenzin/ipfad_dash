@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
@@ -26,10 +27,13 @@ export class AdminBuildingPlotCreateComponent implements OnInit {
     plotDetailsFound: boolean = false;
     plotId: string;
     plot: PlotDTO;
+
     constructor(
         private plotDataService: PlotDataService,
+        private ref: DynamicDialogRef,
         private config: DynamicDialogConfig,
-        private buildingPlotDataService: BuildingPlotDataService
+        private buildingPlotDataService: BuildingPlotDataService,
+        private messageService: MessageService
     ) {}
 
     ngOnInit() {}
@@ -51,8 +55,22 @@ export class AdminBuildingPlotCreateComponent implements OnInit {
                 buildingId: this.config.data.buildingId,
                 plotId: this.plot.id,
             })
-            .subscribe((res) => {
-                console.log(res);
+            .subscribe({
+                next: (res) => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Mapped',
+                        detail: this.plot.plotId + ' mapped',
+                    });
+                    this.ref.close({ status: 201 });
+                },
+                error: (err) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
+                },
             });
     }
 }

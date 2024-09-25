@@ -154,8 +154,6 @@ export class AdminAddBuildingComponent {
 
     createBuilding() {
         if (this.createBuildingForm.valid) {
-            console.log(this.createBuildingForm.value);
-
             const data: CreateBuildingDTO = {
                 isActive: this.createBuildingForm.controls['isActive'].value,
                 zhicharBuildingId:
@@ -197,7 +195,6 @@ export class AdminAddBuildingComponent {
                         .value,
                 plots: this.plotMappings,
             };
-            console.log(data);
 
             this.buildingDataService.CreateNewBuilding(data).subscribe({
                 next: (res) => {
@@ -247,13 +244,26 @@ export class AdminAddBuildingComponent {
         this.plotDataService.SearchPlotById(plotId).subscribe({
             next: (res) => {
                 if (res) {
-                    this.plotMappings.push(res);
-                    this.createBuildingForm.controls['plotId'].reset();
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Plot Details Found',
-                        detail: res.plotId + ' added to plot mapping.',
-                    });
+                    const exists = this.plotMappings.some(
+                        (item) => item.id === res.id
+                    );
+
+                    if (exists) {
+                        this.messageService.add({
+                            severity: 'info',
+                            summary: 'Plot Already added ',
+                            detail:
+                                res.plotId + ' already exists in the mapping.',
+                        });
+                    } else {
+                        this.plotMappings.push(res);
+                        this.createBuildingForm.controls['plotId'].reset();
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Plot Details Found',
+                            detail: res.plotId + ' added to plot mapping.',
+                        });
+                    }
                 }
             },
             error: (err) => {
@@ -304,5 +314,8 @@ export class AdminAddBuildingComponent {
             .subscribe((res: any) => {
                 this.subAdministrativeZones = res;
             });
+    }
+    close() {
+        this.ref.close();
     }
 }

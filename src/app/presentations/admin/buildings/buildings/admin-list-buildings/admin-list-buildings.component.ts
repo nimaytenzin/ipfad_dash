@@ -20,6 +20,8 @@ import { AdminEditBuildingownershipComponent } from '../../../ownership/crud-mod
 import { AdminEditBuildingplotComponent } from '../../../ownership/crud-modals/admin-edit-buildingplot/admin-edit-buildingplot.component';
 import { AdminBuildingDetailsCardComponent } from '../components/admin-building-details-card/admin-building-details-card.component';
 import { BuildingPlotDataService } from 'src/app/core/dataservice/ownership/buildingplot.dataservice';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { AdminSpatialViewerPlotComponent } from '../../../land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 
 @Component({
     selector: 'app-admin-list-buildings',
@@ -39,43 +41,21 @@ import { BuildingPlotDataService } from 'src/app/core/dataservice/ownership/buil
     styleUrl: './admin-list-buildings.component.scss',
 })
 export class AdminListBuildingsComponent {
+    getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
+    showOwnerDetailCard: boolean = false;
+
+    showConfirmDeleteBuildingPlotDialog: boolean = false;
+    selectedBuildingPlot: any;
+
+    ref: DynamicDialogRef;
+    buildingsPaginated: BuildingDTO[] = [];
+
     constructor(
         public dialogService: DialogService,
         private buildingDataService: BuildingDataService,
         private router: Router,
         private buildingPlotDataService: BuildingPlotDataService
     ) {}
-
-    getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
-    showOwnerDetailCard: boolean = false;
-
-    //delete buildingplot
-    showConfirmDeleteBuildingPlotDialog: boolean = false;
-    selectedBuildingPlot: any;
-
-    //delete building ownership
-    showConfirmDeleteBuildingOwnershipDialog: boolean = false;
-    selectedBuildingOwnership: any;
-
-    ref: DynamicDialogRef | undefined;
-    buildingsPaginated: BuildingDTO[] = [];
-
-    selectedOwner: LandLordDTO;
-
-    responsiveOptions: any[] = [
-        {
-            breakpoint: '1024px',
-            numVisible: 5,
-        },
-        {
-            breakpoint: '768px',
-            numVisible: 3,
-        },
-        {
-            breakpoint: '560px',
-            numVisible: 1,
-        },
-    ];
 
     ngOnInit(): void {
         this.getPaginatedBuildings();
@@ -97,7 +77,7 @@ export class AdminListBuildingsComponent {
             width: '600px',
         });
         this.ref.onClose.subscribe((res) => {
-            if (res && res.staus === 201) {
+            if (res && res.status === 201) {
                 this.getPaginatedBuildings();
             }
         });
@@ -112,6 +92,9 @@ export class AdminListBuildingsComponent {
             if (res && res.status === 201) {
                 this.getPaginatedBuildings();
             }
+            console.log('ADD BUILDING DIALOG CLOSE');
+
+            this.getPaginatedBuildings();
         });
     }
 
@@ -153,12 +136,6 @@ export class AdminListBuildingsComponent {
         });
     }
 
-    viewOwnerDetailCard(owner) {
-        console.log(owner);
-        this.selectedOwner = owner;
-        this.showOwnerDetailCard = true;
-    }
-
     openEditOwnershipModal(ownership: BuildingOwnershipDto) {
         this.ref = this.dialogService.open(
             AdminEditBuildingownershipComponent,
@@ -172,23 +149,6 @@ export class AdminListBuildingsComponent {
         this.selectedBuildingPlot = selectedBuildingPlot;
         this.showConfirmDeleteBuildingPlotDialog = true;
     }
-    deleteBuildingPlot() {
-        this.buildingPlotDataService
-            .DeleteBuildingPlot(this.selectedBuildingPlot.id)
-            .subscribe((res) => {
-                console.log(res);
-                if (res) {
-                    this.showConfirmDeleteBuildingPlotDialog = false;
-                    this.getPaginatedBuildings();
-                }
-            });
-    }
-
-    openConfirmDeleteBuildingOwnershipDialog(selectedBuildingOwnership) {
-        this.selectedBuildingOwnership = selectedBuildingOwnership;
-        this.showConfirmDeleteBuildingOwnershipDialog = true;
-    }
-    deleteBuildingOwnership() {}
 
     openEditBuildingPlotModal(buildingPlot) {
         this.ref = this.dialogService.open(AdminEditBuildingplotComponent, {
@@ -198,4 +158,13 @@ export class AdminListBuildingsComponent {
     }
 
     downloadMasterTable() {}
+
+    openViewPlotModal(plot: PlotDTO) {
+        this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
+            header: plot.plotId,
+            data: {
+                ...plot,
+            },
+        });
+    }
 }
