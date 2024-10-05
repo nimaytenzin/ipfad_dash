@@ -26,7 +26,6 @@ import { OwnerAddBuildingComponent } from '../shared/owner-add-building/owner-ad
 import { OwnerGenerateLeaseStepperComponent } from '../shared/owner-generate-lease-stepper/owner-generate-lease-stepper.component';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { OwnerRentalIncomeBreakdownComponent } from '../shared/owner-rental-income-breakdown/owner-rental-income-breakdown.component';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 
 @Component({
@@ -50,7 +49,7 @@ export class OwnerDashbordComponent implements OnInit, AfterViewChecked {
 
     buildings: BuildingDTO[] = [];
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
-    expiringLeaseAgreements: LeaseAgreementDTO[];
+    expiringLeaseAgreements = [];
 
     buildingImages = [
         'https://www.waytobhutan.com/wp-content/uploads/2020/02/dscf26071-1024x768.jpg',
@@ -263,13 +262,13 @@ export class OwnerDashbordComponent implements OnInit, AfterViewChecked {
     }
 
     getExpiringLease() {
-        this.leaseaDataService
-            .GetExpiringLeaseByBuilding(1)
-            .subscribe((res) => {
-                console.log('LEASE AGREEMENT');
-                console.log(res);
-                this.expiringLeaseAgreements = res;
-            });
+        // this.leaseaDataService
+        //     .GetExpiringLeaseByBuilding(1)
+        //     .subscribe((res) => {
+        //         console.log('LEASE AGREEMENT');
+        //         console.log(res);
+        //         this.expiringLeaseAgreements = res;
+        //     });
     }
 
     openViewPaymentAdvice(item: PaymentAdviceDto) {

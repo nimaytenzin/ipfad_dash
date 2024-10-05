@@ -1,5 +1,4 @@
 import { BankAccountDto } from '../../dataservice/bankaccounts/bankaccount.dto';
-import { LeaseAgreementDTO } from '../../dataservice/lease/lease-agreement.dto';
 import { PaymentAdviceDto } from '../payments/payment-advice/payment-advice.dto';
 import { BuildingDTO } from '../properties/building.dto';
 
@@ -21,7 +20,7 @@ export interface UnitDTO {
     building?: BuildingDTO;
     bankAccount?: BankAccountDto;
 
-    activeLeaseAgreement?: LeaseAgreementDTO;
+    // activeLeaseAgreement?: LeaseAgreementDTO;
     paymentAdvices?: PaymentAdviceDto[];
 }
 

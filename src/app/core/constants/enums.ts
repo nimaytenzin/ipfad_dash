@@ -4,6 +4,38 @@ export enum USERROLESENUM {
     'ADMIN' = 'ADMIN',
 }
 
+export enum LEASETYPE {
+    'LAND' = 'LAND',
+    'BUILDING' = 'BUILDING',
+    'UNIT' = 'UNIT',
+}
+
+export enum LEASESTATUS {
+    ACTIVE = 'ACTIVE', // Lease is currently active
+    UPCOMING_EXPIRATION = 'UPCOMING_EXPIRATION', // Lease is nearing its end
+    EXPIRED = 'EXPIRED', // Lease has expired or ended tenant moved out
+    TERMINATED_BY_TENANT = 'TERMINATED_BY_TENANT', // Tenant terminated the lease
+    TERMINATED_BY_OWNER = 'TERMINATED_BY_OWNER', // Owner terminated the lease
+    PENDING = 'PENDING', // Lease agreement has been created but not yet active
+    HOLDOVER = 'HOLDOVER', // Tenant is still occupying after expiration without a renewal
+    CANCELLED = 'CANCELLED', // Lease was canceled before it became active
+    SUSPENDED = 'SUSPENDED', // Lease temporarily paused (e.g., due to legal issues)
+}
+export enum LESSORTYPE {
+    INDIVIDUAL = 'INDIVIDUAL',
+    BUSINESS = 'BUSINESS',
+    INSTITUTION = 'INSTITUTION',
+}
+
+export enum LEASEUSES {
+    RESIDENTIAL = 'RESIDENTIAL',
+    COMMERCIAL = 'COMMERCIAL',
+    HOTELSANDRESORTS = 'HOTELS_AND_RESORTS',
+    PRIVATEOFFICE = 'PRIVATE_OFFICES',
+    INSTUTIONAL = 'INSTITUTIONAL',
+    RELIGIOUSSOCIALINSTITUTES = 'RELIGIOUS_SOCIAL_INSTITUTION',
+}
+
 export enum ADMINROLES {
     'ADMIN' = 'SYSADMIN',
     'FINANCE' = 'FINANCEADMIN',
@@ -101,11 +133,6 @@ export enum INVOICESTATUS {
     'Remitted' = 'REMITTED',
 }
 
-export enum LEASESTATUS {
-    'ACTIVE' = 'ACTIVE',
-    'EXPIRED' = 'EXPIRED',
-}
-
 export enum INVOICETRANSACTIONTYPES {
     'TENANTPAYMENT' = 'TENANTPAYMENT',
     'LANDLORDPAYMENT' = 'LANDLORDPAYMENT',
@@ -170,4 +197,14 @@ export enum PlotOwnershipENUM {
 export enum LOCATIONFLAGENUM {
     R = 'Rural',
     U = 'Urban',
+}
+
+export enum ORGANIZATIONTYPES {
+    BUSINESS = 'BUSINESS',
+    INSTITUTION = 'INSTITUTION',
+}
+
+export enum ORGANIZATIONUSERTYPES {
+    OWNER = 'OWNER',
+    MANAGER = 'MANAGER',
 }

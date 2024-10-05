@@ -3,7 +3,6 @@ import { LocationDataService } from 'src/app/core/dataservice/location/location.
 import { TableModule } from 'primeng/table';
 import * as L from 'leaflet';
 import { ButtonModule } from 'primeng/button';
-import { GeometryDataService } from 'src/app/core/dataservice/geometry.dataservice';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AdminAddBuildingComponent } from '../../buildings/buildings/crud-modal/admin-add-building/admin-add-building.component';
 import { AdminAddDzongkhagComponent } from '../crud-modal/admin-add-dzongkhag/admin-add-dzongkhag.component';

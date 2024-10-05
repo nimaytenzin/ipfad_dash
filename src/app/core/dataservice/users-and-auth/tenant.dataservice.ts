@@ -17,25 +17,23 @@ export class TenantDataService {
 
     constructor(private http: HttpClient) {}
 
-    GetTenantsPaginated(
-        params?: PaginatedParamsOptions
-    ): Observable<PaginatedData<TenantDTO>> {
-        let httpParams = new HttpParams();
-        if (params) {
-            if (params.page !== undefined) {
-                httpParams = httpParams.append('page', params.page.toString());
-            }
-            if (params.limit !== undefined) {
-                httpParams = httpParams.append(
-                    'limit',
-                    params.limit.toString()
-                );
-            }
-        }
-        return this.http.get<PaginatedData<TenantDTO>>(
-            `${this.apiUrl}/tenant/paginate`,
-            { params: httpParams }
-        );
+    GetTenantsPaginated(params?: PaginatedParamsOptions) {
+        // let httpParams = new HttpParams();
+        // if (params) {
+        //     if (params.page !== undefined) {
+        //         httpParams = httpParams.append('page', params.page.toString());
+        //     }
+        //     if (params.limit !== undefined) {
+        //         httpParams = httpParams.append(
+        //             'limit',
+        //             params.limit.toString()
+        //         );
+        //     }
+        // }
+        // return this.http.get<PaginatedData<TenantDTO>>(
+        //     `${this.apiUrl}/tenant/paginate`,
+        //     { params: httpParams }
+        // );
     }
     GetAllTenants(): Observable<TenantDTO[]> {
         return this.http.get<TenantDTO[]>(`${this.apiUrl}/tenant`);

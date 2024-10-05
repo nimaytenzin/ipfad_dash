@@ -23,7 +23,7 @@ export interface PlotDTO {
 
     thram?: ThramDTO;
 
-    buildings: BuildingDTO[];
+    buildings?: BuildingDTO[];
 }
 
 export interface CreatePlotDTO {

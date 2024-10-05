@@ -17,22 +17,36 @@
         </div>
     </div>
 
-    <p-table [value]="plots" styleClass="p-datatable-striped">
+    <div class="flex align-items-center mb-2 justify-content-between">
+        <div>
+            <p>
+                Showing {{ paginatedPlotData.data.length }} of
+                {{ paginatedPlotData.count }} Entries
+            </p>
+        </div>
+        <div class="">
+            <p-paginator
+                (onPageChange)="onPageChange($event)"
+                [first]="firstPageNumber"
+                [rows]="rows"
+                [totalRecords]="paginatedPlotData.count"
+                [rowsPerPageOptions]="rowsPerPageOptions"
+                [showFirstLastIcon]="true"
+                #paginator
+            ></p-paginator>
+        </div>
+    </div>
+
+    <p-table [value]="paginatedPlotData.data" styleClass="p-datatable-striped">
         <ng-template pTemplate="header">
             <tr>
                 <th>Plot Id</th>
                 <th>Plot Category</th>
-                <th>Location</th>
-
-                <th>Thram No</th>
-                <th>Owner</th>
-
                 <th>Net Area</th>
-
                 <th>Lap Name</th>
-
                 <th>Precinct Name</th>
-
+                <th>Thram</th>
+                <th>Owner/s</th>
                 <th>Buildings</th>
                 <th></th>
             </tr>
@@ -48,22 +62,20 @@
                     </p>
                 </td>
                 <td>{{ plot.plotCategory }}</td>
+                <td>{{ plot.netArea }} {{ plot.areaUnit }}</td>
+                <td>{{ plot.lapName }}/ {{ plot.lapCode }}</td>
+                <td>{{ plot.precinctName }} /{{ plot.precinctCode }}</td>
+
                 <td>
-                    {{ plot.thram?.dzongkhag?.name }},
-                    {{ plot.thram?.administrativeZone?.name }},
-                    {{ plot.thram?.subAdministrativeZone?.name }}
-                </td>
-                <td>{{ plot.thram?.thramNo }}</td>
-                <td>
-                    <p *ngFor="let owner of plot.thram.owners">
-                        - {{ owner.nameEnglish }}/{{ owner.nameDzongkha }}
+                    <p>
+                        {{ plot.thram?.thramNo }}
                     </p>
                 </td>
-                <td>{{ plot.netArea }} {{ plot.areaUnit }}</td>
-
-                <td>{{ plot.lapName }}/ {{ plot.lapCode }}</td>
-
-                <td>{{ plot.precinctName }} /{{ plot.precinctCode }}</td>
+                <td>
+                    <p *ngFor="let owner of plot.thram.owners">
+                        {{ owner.nameEnglish }}/{{ owner.nameDzongkha }}
+                    </p>
+                </td>
 
                 <td>
                     <div>

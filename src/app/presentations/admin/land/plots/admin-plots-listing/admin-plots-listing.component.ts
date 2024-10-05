@@ -9,6 +9,10 @@ import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { DividerModule } from 'primeng/divider';
 import { Router } from '@angular/router';
 import { AdminSpatialViewerPlotComponent } from '../../shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
+import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
     selector: 'app-admin-plots-listing',
@@ -16,21 +20,70 @@ import { AdminSpatialViewerPlotComponent } from '../../shared/admin-spatial-view
     styleUrls: ['./admin-plots-listing.component.css'],
     standalone: true,
 
-    imports: [CommonModule, TableModule, ButtonModule, DividerModule],
+    imports: [
+        CommonModule,
+        TableModule,
+        ButtonModule,
+        DividerModule,
+        PaginatorModule,
+    ],
     providers: [DialogService],
 })
 export class AdminPlotsListingComponent implements OnInit {
     ref: DynamicDialogRef;
 
     plots: PlotDTO[];
+    paginatedPlotData: PaginatedData<PlotDTO> = {
+        firstPage: 0,
+        currentPage: 0,
+        previousPage: 0,
+        nextPage: 0,
+        lastPage: 0,
+        limit: 0,
+        count: 0,
+        data: [],
+    };
+    rowsPerPageOptions = ROWSPERPAGEOPTION;
+    firstPageNumber = 0;
+    rows = ROWSPERPAGEOPTION[0];
+    currentPage = 0;
+
     constructor(
         private dialogService: DialogService,
         private plotDataService: PlotDataService,
-        private router: Router
+        private router: Router,
+        private authService: AuthService
     ) {}
 
     ngOnInit() {
-        this.getAllPlots();
+        this.handlePagination();
+    }
+
+    onPageChange(event: PageEvent): void {
+        this.firstPageNumber = event.first;
+        this.currentPage = event.page;
+        this.rows = event.rows;
+        this.handlePagination();
+    }
+
+    private handlePagination(): void {
+        const queryParams: any = {
+            pageNo: this.currentPage,
+            pageSize: this.rows,
+        };
+
+        console.log(queryParams);
+        this.plotDataService
+            .GetAllPlotsByAdminPaginated(
+                this.authService.GetAuthenticatedUser().id,
+                queryParams
+            )
+            .subscribe({
+                next: (res) => {
+                    this.paginatedPlotData = res;
+                    console.log('PAGINATED WONER WITH THRAM', res);
+                },
+            });
     }
 
     getAllPlots() {

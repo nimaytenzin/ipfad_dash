@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import { DialogService, DynamicDialogConfig } from 'primeng/dynamicdialog';
+import {
+    DialogService,
+    DynamicDialogConfig,
+    DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { AdminMapviewPlotdetailsComponent } from '../../../buildings/mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { DialogModule } from 'primeng/dialog';
@@ -11,28 +15,43 @@ import { CommonModule } from '@angular/common';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
 import { DividerModule } from 'primeng/divider';
 import { Router } from '@angular/router';
+import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
+import { MessageService } from 'primeng/api';
+import { TabViewModule } from 'primeng/tabview';
 @Component({
     selector: 'app-admin-spatial-viewer-plot',
     templateUrl: './admin-spatial-viewer-plot.component.html',
     styleUrls: ['./admin-spatial-viewer-plot.component.css'],
     standalone: true,
-    imports: [DialogModule, ButtonModule, CommonModule, DividerModule],
+    imports: [
+        DialogModule,
+        ButtonModule,
+        CommonModule,
+        DividerModule,
+        TabViewModule,
+    ],
 })
 export class AdminSpatialViewerPlotComponent implements OnInit {
     googleSatUrl = 'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}';
     map!: L.Map;
     plot: PlotDTO;
     selectedBuilding: BuildingDTO;
+
+    plotsGeojsonLayer!: L.GeoJSON;
+    buildingsGeojsonLayer!: L.GeoJSON;
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
     viewBuildingSummary: boolean = false;
 
     constructor(
         private http: HttpClient,
         private config: DynamicDialogConfig,
-        private router: Router
+        private router: Router,
+        private geometryDataService: GeometryDataService,
+        private messageService: MessageService,
+        private ref: DynamicDialogRef
     ) {
         this.plot = this.config.data;
-        console.log('DATA', this.config.data, this.plot);
+        console.log('DATA', this.plot);
     }
 
     ngOnInit(): void {
@@ -51,53 +70,66 @@ export class AdminSpatialViewerPlotComponent implements OnInit {
             maxZoom: 30,
             renderer: L.canvas({ tolerance: 3 }),
         }).setView([27.43503, 89.651983], 17);
-
         this.loadPlotGeometry();
-        this.loadBuildingGeometry();
     }
-
     loadPlotGeometry() {
-        const url = `assets/geojson/${this.plot.plotId}.geojson`;
-        this.http.get<any>(url).subscribe((data) => {
-            const geoJsonLayer = L.geoJSON(data, {
-                style: {
-                    color: 'red',
-                    fillColor: 'red',
-                    fillOpacity: 0,
-                    weight: 2,
-                },
-            }).addTo(this.map);
-            const bounds = geoJsonLayer.getBounds();
-            const center = bounds.getCenter();
-            this.map.setView(center, 19);
-        });
+        this.geometryDataService
+            .GetPlotsGeomByPlotIdCsv(this.plot.plotId)
+            .subscribe((res: any) => {
+                console.log(res);
+                this.plotsGeojsonLayer = L.geoJSON(res, {
+                    style: (feature) => {
+                        return {
+                            fillColor: 'transparent',
+                            weight: 2,
+                            opacity: 1,
+                            color: 'red',
+                        };
+                    },
+                }).addTo(this.map);
+                this.map.fitBounds(this.plotsGeojsonLayer.getBounds());
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Plot Details Found',
+                    detail: 'Plot added to the map',
+                });
+                this.loadBuildingGeometry();
+            });
     }
 
     loadBuildingGeometry() {
         if (this.plot.buildings.length) {
-            const url = `assets/geojson/${this.plot.buildings[0].id}.geojson`;
-            this.http.get<any>(url).subscribe((data) => {
-                L.geoJSON(data, {
-                    style: {
-                        color: 'yellow',
-                        fillColor: 'yellow',
-                        fillOpacity: 0.2,
-                        weight: 1,
-                    },
-                    onEachFeature: (feature, layer) => {
-                        layer.on('click', () => {
-                            this.selectedBuilding = this.plot.buildings[0];
-                            this.viewBuildingSummary = true;
-                        });
-                    },
-                }).addTo(this.map);
-            });
+            const buildingIdCSV = this.plot.buildings
+                .map((building) => building.zhicharBuildingId)
+                .join(',');
+
+            this.geometryDataService
+                .GetBuildingsGeomByBuildingIdCsv(buildingIdCSV)
+                .subscribe((res: any) => {
+                    console.log(res);
+                    this.plotsGeojsonLayer = L.geoJSON(res, {
+                        style: (feature) => {
+                            return {
+                                fillColor: 'transparent',
+                                weight: 2,
+                                opacity: 1,
+                                color: 'white',
+                            };
+                        },
+                    }).addTo(this.map);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Buildings  Found',
+                        detail: 'Building Geometry added to the map',
+                    });
+                });
         }
     }
 
-    navigateToBuilding() {
+    navigateToBuilding(buildingId: string) {
+        this.ref.close();
         this.router.navigate([
-            `admin/master-properties/building/${this.selectedBuilding.id}`,
+            `admin/master-properties/building/${buildingId}`,
         ]);
     }
 }

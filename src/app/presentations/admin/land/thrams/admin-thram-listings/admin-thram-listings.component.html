@@ -17,36 +17,51 @@
         </div>
     </div>
     <div>
-        <div *ngFor="let owner of ownersWithThram">
+        <div class="flex align-items-center mb-2 justify-content-between">
+            <div>
+                <p>
+                    Showing {{ paginatedOwnerWithThram.data.length }} of
+                    {{ paginatedOwnerWithThram.count }} Entries
+                </p>
+            </div>
+            <div class="">
+                <p-paginator
+                    (onPageChange)="onPageChange($event)"
+                    [first]="firstPageNumber"
+                    [rows]="rows"
+                    [totalRecords]="paginatedOwnerWithThram.count"
+                    [rowsPerPageOptions]="rowsPerPageOptions"
+                    [showFirstLastIcon]="true"
+                    #paginator
+                ></p-paginator>
+            </div>
+        </div>
+        <div>
             <p-table
-                [value]="owner.thrams"
+                [value]="paginatedOwnerWithThram.data"
                 styleClass="p-datatable-striped mb-2"
             >
-                <ng-template pTemplate="caption">
-                    <div
-                        class="flex align-items-center justify-content-between"
-                    >
-                        Owner: {{ owner.nameEnglish }}/ {{ owner.nameDzongkha }}
-                    </div>
-                </ng-template>
-
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>ID</th>
                         <th>Thram No</th>
+                        <th>Owner/s</th>
                         <th>Dzongkhag</th>
                         <th>Administrative Zone</th>
                         <th>Sub Administrative Zone</th>
                         <th>Ownership Type</th>
                         <th>Plots</th>
-
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
                     <tr>
-                        <td>{{ item.id }}</td>
                         <td>{{ item.thramNo }}</td>
+                        <td>
+                            <p *ngFor="let owner of item.owners">
+                                {{ owner.nameEnglish }}
+                                {{ "/" + owner.nameDzongkha }}
+                            </p>
+                        </td>
                         <td>{{ item.dzongkhag?.name }}</td>
                         <td>{{ item.administrativeZone?.name }}</td>
                         <td>{{ item.subAdministrativeZone?.name }}</td>
@@ -58,7 +73,7 @@
                                     class="cursor-pointer hover:underline text-blue-700"
                                     (click)="openViewPlotModal(plot)"
                                 >
-                                    {{ plot.plotId }} ,
+                                    {{ plot.plotId + "," }}
                                 </span>
                             </p>
                             <p *ngIf="!item.plots.length">No Plots</p>

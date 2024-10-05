@@ -1,31 +1,91 @@
 <div *ngIf="leaseAgreement">
     <p class="text-center text-xl lg:text-3xl font-semibold">Lease Agreement</p>
     <p-divider type="dashed"></p-divider>
-    <p class="text-center mb-2">
-        This Rental/lease Agreement is executed on Day
-        <strong>{{ leaseAgreement.agreementDay }}</strong> of
-        <strong>{{ getMonthName(leaseAgreement.agreementMonth) }} Month</strong>
-        of the year <strong>{{ leaseAgreement.agreementYear }}</strong> BETWEEN
-        Mr.
-        <strong
-            >{{ leaseAgreement.tenant?.firstName }}
-            {{ leaseAgreement.tenant?.lastName }}</strong
-        >
-        holding Citizen ID No.
-        <strong>{{ leaseAgreement.tenant?.cid }}</strong> of
-        <strong>
-            {{ leaseAgreement.tenant?.subadministrativeZone?.name }}
-        </strong>
-        ,
-        <strong> {{ leaseAgreement.tenant?.administrativeZone?.name }} </strong>
-        ,
-        <strong> {{ leaseAgreement.tenant?.dzongkhag?.name }} </strong>
-        Dzongkhag, Herein after referred to as the
-        <strong>“Tenant/ lessee”</strong> PARTY OF ONE PART
-    </p>
+
+    <div #agreementDate class="text-center">
+        <p>
+            This Rental/lease Agreement is executed on Day
+            <strong>{{ leaseAgreement.agreementDay }}</strong> of
+            <strong
+                >{{ getMonthName(leaseAgreement.agreementMonth) }} Month</strong
+            >
+            of the year <strong>{{ leaseAgreement.agreementYear }}</strong>
+        </p>
+    </div>
+    <p class="text-center my-4">BETWEEN</p>
+
+    <div class="flex gap-2 my-2">
+        <div class="w-5" #ownerParty>
+            <p *ngFor="let item of leaseAgreement.plot?.thram?.owners">
+                Name:
+                <strong> {{ item.nameEnglish }}/{{ item.nameDzongkha }}</strong>
+            </p>
+            <p>
+                Owner of the plot
+                <strong>{{ leaseAgreement.plot.plotId }}</strong> and the
+                properties on it,
+            </p>
+            <p>
+                under Thram
+                <strong>{{ leaseAgreement.plot.thram.thramNo }}</strong> located
+                at
+                <strong
+                    >{{ leaseAgreement.plot.thram.administrativeZone.name }}/{{
+                        leaseAgreement.plot.thram.administrativeZone.nameDzo
+                    }},
+                    {{
+                        leaseAgreement.plot.thram.subAdministrativeZone.name
+                    }}/{{
+                        leaseAgreement.plot.thram.subAdministrativeZone.nameDzo
+                    }}</strong
+                >
+            </p>
+        </div>
+        <div class="w-2 flex align-items-center justify-content-center">
+            <p>AND</p>
+        </div>
+        <div class="w-5" #tenantParty>
+            <p>Type: {{ leaseAgreement.lessorType }}</p>
+            <p>
+                Name:
+                <strong
+                    >{{ leaseAgreement.tenant?.nameEnglish }}
+                    {{ leaseAgreement.tenant?.nameDzongkha }}</strong
+                >
+            </p>
+            <p>
+                CID: <strong>{{ leaseAgreement.tenant?.cid }}</strong>
+            </p>
+            <p>
+                Phone Number:
+                <strong>{{ leaseAgreement.tenant?.phoneNumber }}</strong>
+            </p>
+            <p>
+                Permanent Address
+                <strong>
+                    {{ leaseAgreement.tenant?.permanentAddress }}
+                </strong>
+            </p>
+        </div>
+    </div>
+    <div class="flex gap-2 my-2">
+        <div class="w-5" #ownerParty>
+            <p>
+                herein after referred to as the <strong>"Owner"</strong>, PARTY
+                OF FIRST PART.
+            </p>
+        </div>
+        <div class="w-2"></div>
+        <div class="w-5" #tenantParty>
+            <p>
+                herein after referred to as the <strong>Tenant"</strong>, PARTY
+                OF OTHER PART.
+            </p>
+        </div>
+    </div>
 
     <p class="text-center mb-2">
-        and
+        <!-- and
         <strong
             >{{ leaseAgreement.owner?.nameEnglish }}
             {{ leaseAgreement.owner?.nameDzongkha }}
@@ -40,57 +100,53 @@
         </strong>
 
         at plot No
-        <strong> {{ leaseAgreement.building?.plots[0].plotId }} </strong> and
-        Thram no.
-        <strong>{{ leaseAgreement.building?.plots[0].thramNumber }} </strong>
-        herein after referred to as the <strong>“Owner/Lessor”</strong>, PARTY
-        OF OTHER PART.
+        <strong> {{ leaseAgreement.plot.plotId }} </strong> and Thram no. herein
+        after referred to as the <strong>“Owner"</strong>, PARTY OF OTHER PART. -->
     </p>
 
-    <hr />
-
-    <p>
+    <p class="text-center my-2">
         And whereas the parties hereto had due deliberations and discussions and
         the consequence thereof they have reached an understanding, which they
         have decided to reduce into writing.
     </p>
 
-    <p>
-        NOW THIS AGREEMENT WITNESS and it is hereby mutually agreed by and
-        between the parties;
-    </p>
-
-    <hr />
-
-    <p>
+    <div #unitAndUse class="my-2">
         That the owner/lessor thus hereby grants and confers
         <strong
             >{{ leaseAgreement.unit?.floorLevel }}-{{
                 leaseAgreement.unit?.unitNumber
             }} </strong
-        >, unit ID: <strong>{{ leaseAgreement.unitId }}</strong
-        >, of the afroementioned building in favour of the aforesaid tenant on
-        rent and on such terms and condition stated below.
-    </p>
+        >, of Building
+        <strong>{{ leaseAgreement.building.buildingNumber }}</strong
+        >, in favour of the aforesaid tenant on rent and on such terms and
+        condition stated below.
+    </div>
 
     <ol>
         <li>
-            That the period of tenancy/lease for the rental unit shall be for a
-            period of
-            <strong>{{ leaseAgreement.leaseDurationMonths }}</strong> month,
+            The rental unit is rented for the purpose of:
+            <strong>{{ leaseAgreement.use }}</strong>
+        </li>
+        <li>
+            That the period of tenancy for the rental unit shall be for a period
+            of
+            <strong>{{ leaseAgreement.leaseDurationMonths }}</strong> months,
             commencing from
             <strong>{{ leaseAgreement.leaseStartDate }}</strong> to
             <strong>{{ leaseAgreement.leaseEndDate }}</strong
             >.
         </li>
         <li>
-            That the rent for the said unit/premises is agreed to be paid every
-            month at Nu <strong>{{ leaseAgreement.rent }}</strong> per month.
+            That the rent for the said unit/premises is agreed at
+            <strong>Nu {{ leaseAgreement.rent }}</strong> per month.
         </li>
         <li>
-            The rental unit is rented for the purpose of:
-            <strong>{{ leaseAgreement.use }}</strong>
+            The total monthly charges inclusive of rent and other building &
+            unit surcharges is at
+            <strong>Nu {{ totalMonthlyPayable }}</strong>
+            per month.
         </li>
+
         <li>
             That the rent as payable every month shall be tendered by the tenant
             to the owner on or before day
@@ -98,6 +154,13 @@
             month, failing which the owner shall charge and the tenant shall pay
             an interest at 24% per annum on the amount of rent payable for every
             day of default.
+        </li>
+        <li>
+            The rent shall be increased by <strong>10%</strong> after every
+            <strong>two years </strong>
+            from the date of commencement of this agreement on the monthly rent
+            and security deposit shall also be updated based on the revised
+            rental amount(10% increment of ever two month's security deposit)
         </li>
         <li>
             That the aforesaid tenant shall deposit a sum of Nu
@@ -270,65 +333,24 @@
         </li>
     </ol>
 
-    <p>
-        IN WITNESS WHEREOF the parties have signed here under at
-        <strong> Thimphu </strong> on Day
-        <strong>{{ leaseAgreement.agreementDay }}</strong> of
-        <strong> {{ getMonthName(leaseAgreement.agreementMonth) }} </strong> of
-        the year <strong>{{ leaseAgreement.agreementYear }}</strong
-        >.
-    </p>
+    <div class="mt-4 text-center">
+        <p>
+            This E-Agreement has been generated at
+            <strong> Thimphu </strong> on Day
+            <strong>{{ leaseAgreement.agreementDay }}</strong> of
+            <strong> {{ getMonthName(leaseAgreement.agreementMonth) }} </strong>
+            of the year <strong>{{ leaseAgreement.agreementYear }}</strong
+            >.
+        </p>
+        <p>Lease agreement generated as per the Tenancy ACT of Bhutan 2015</p>
+    </div>
 
-    <table class="w-full mt-6">
-        <tr>
-            <td>
-                <div>
-                    <img src="assets/sign/sign1.png" style="height: 70px" />
-                    <p>Owner</p>
-                    <p>
-                        Name:
-                        <strong>
-                            {{ leaseAgreement.owner.nameEnglish }} /
-                            {{ leaseAgreement.owner.nameDzongkha }}
-                        </strong>
-                    </p>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <img [src]="tenantSignatureUri" style="height: 70px" />
-                    <p>Tenant</p>
-                    <p>
-                        Name:
-                        <strong>
-                            {{ leaseAgreement.tenant.firstName }}
-                            {{ leaseAgreement.tenant.middleName }}
-                            {{ leaseAgreement.tenant.lastName }}
-                        </strong>
-                    </p>
-                    <p>
-                        cid: <strong>{{ leaseAgreement.tenant.cid }}</strong>
-                    </p>
-                    <p>
-                        Phone Number:
-                        <strong>{{ leaseAgreement.tenant.phoneNumber }}</strong>
-                    </p>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div>
-                    <img src="assets/sign/sign4.png" style="height: 70px" />
-                    <p>Witness</p>
-                    <p>Name: <strong>Namgay Dorji </strong></p>
-                    <p>CEO, SegmentX Private Limited</p>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <p-divider></p-divider>
 
-    <p class="mt-4 text-center font-semibold">
-        Lease agreement generated as per the Tenancy ACT of Bhutan 2015
-    </p>
+    <p-button
+        label="Download PDF"
+        icon="pi pi-save"
+        (click)="downloadLeasePdf()"
+    >
+    </p-button>
 </div>

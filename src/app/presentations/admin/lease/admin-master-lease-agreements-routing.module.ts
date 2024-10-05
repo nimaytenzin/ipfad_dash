@@ -9,8 +9,14 @@ import { AdminCreateLeaseChargesComponent } from './admin-create-lease-stepper/c
 import { AdminCreateLeaseTermsComponent } from './admin-create-lease-stepper/components/admin-create-lease-terms/admin-create-lease-terms.component';
 import { AdminCreateLeaseFinalizeComponent } from './admin-create-lease-stepper/components/admin-create-lease-finalize/admin-create-lease-finalize.component';
 import { SampleLeaseComponent } from './admin-create-lease-stepper/components/sample-lease/sample-lease.component';
+import { AdminLandLeaseListingsComponent } from './admin-land-lease-listings/admin-land-lease-listings.component';
+import { AdminBuildingLeaseListingsComponent } from './admin-building-lease-listings/admin-building-lease-listings.component';
+import { AdminUnitLeaseListingsComponent } from './admin-unit-lease-listings/admin-unit-lease-listings.component';
 const routes: Routes = [
     { path: '', component: AdminMasterLeaseAgreementsComponent },
+    { path: 'lands', component: AdminLandLeaseListingsComponent },
+    { path: 'buildings', component: AdminBuildingLeaseListingsComponent },
+    { path: 'units', component: AdminUnitLeaseListingsComponent },
     { path: 'sample', component: SampleLeaseComponent },
     {
         path: 'create',

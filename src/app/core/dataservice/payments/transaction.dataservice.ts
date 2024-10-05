@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { API_URL } from '../../constants/constants';
 import { CreateInvoiceDTO } from '../../dto/payments/invoice/create-invoice.dto';
 import { InvoiceDTO } from '../../dto/payments/invoice/invoice.dto';
-import { LeaseAgreementDTO } from '../lease/lease-agreement.dto';
 import {
     PaginatedParamsOptions,
     PaginatedData,

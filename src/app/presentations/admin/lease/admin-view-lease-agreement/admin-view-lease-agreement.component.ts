@@ -6,7 +6,6 @@ import {
     DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { ButtonModule } from 'primeng/button';
@@ -14,6 +13,9 @@ import { DividerModule } from 'primeng/divider';
 import { GETMONTHNAME } from 'src/app/core/utility/date.helper';
 import { CommonModule } from '@angular/common';
 import { API_URL } from 'src/app/core/constants/constants';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
+import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -24,44 +26,55 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     imports: [ButtonModule, DividerModule, CommonModule],
 })
 export class AdminViewLeaseAgreementComponent implements OnInit {
-    leaseAgreement: LeaseAgreementDTO;
+    leaseAgreement: LeaseAgreeementDTO = {
+        plot: {
+            thram: {
+                owners: [],
+            },
+        },
+    } as LeaseAgreeementDTO;
     leaseAgreementId: number;
+    leaseCharges: LeaseSurchargeDTO[] = [];
+    totalMonthlyPayable = 0;
+
     getMonthName = GETMONTHNAME;
 
     tenantSignatureUri: string;
 
     constructor(
         private ref: DynamicDialogRef,
-        private dialogService: DialogService,
-        private config: DynamicDialogConfig
+        private config: DynamicDialogConfig,
+        private pdfGeneratorDataService: PDFGeneratorDataService
     ) {
         console.log('Openeingn lease agreement view modal');
         console.log(this.config.data);
 
         this.leaseAgreement = this.config.data;
-        this.tenantSignatureUri =
-            API_URL + '/' + this.leaseAgreement.tenant.signatureUri;
-    }
-    generatePdf() {
-        const data = [
-            ['Name', 'Email', 'Country'],
-            ['John Doe', 'johndoe@example.com', 'USA'],
-            ['Jane Smith', 'janesmith@example.com', 'Canada'],
-            ['Bob Johnson', 'bobjohnson@example.com', 'UK'],
-        ];
+        this.leaseCharges = this.leaseAgreement.leaseSurcharges;
 
-        const docDefinition = {
-            content: [
-                { text: 'User Data', style: 'header' },
-                { table: { body: data } },
-            ],
-            styles: {
-                header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
-            },
-        };
+        this.totalMonthlyPayable = Number(this.leaseAgreement.rent);
+        // this.leaseCharges.forEach((item) => {
+        //     this.totalMonthlyPayable += item.amount;
+        // });
 
-        pdfMake.createPdf(docDefinition).download('userdata.pdf');
+        // this.tenantSignatureUri =
+        //     API_URL + '/' + this.leaseAgreement.tenant.signatureUri;
     }
 
     ngOnInit() {}
+
+    downloadLeasePdf() {
+        this.pdfGeneratorDataService
+            .DownloadLeaseAgreementPdf(this.leaseAgreement.id)
+            .subscribe({
+                next: (blob: Blob) => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'lease-agreement.pdf';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+            });
+    }
 }

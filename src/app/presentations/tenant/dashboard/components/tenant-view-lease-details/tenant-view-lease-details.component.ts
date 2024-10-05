@@ -7,7 +7,6 @@ import {
     DialogService,
 } from 'primeng/dynamicdialog';
 import { TabViewModule } from 'primeng/tabview';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
 
 @Component({
@@ -19,7 +18,7 @@ import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
 })
 export class TenantViewLeaseDetailsComponent implements OnInit {
     instance: DynamicDialogComponent | undefined;
-    lease: LeaseAgreementDTO;
+    lease;
     parseFloorLevel = PARSEFLOORLEVELS;
 
     constructor(
@@ -32,7 +31,7 @@ export class TenantViewLeaseDetailsComponent implements OnInit {
 
     ngOnInit() {}
 
-    computeMonthlyPayable(item: LeaseAgreementDTO) {
+    computeMonthlyPayable(item) {
         let total = item.rent;
         for (let i = 0; i < item.leaseSurcharges.length; i++) {
             total += item.leaseSurcharges[i].amount;

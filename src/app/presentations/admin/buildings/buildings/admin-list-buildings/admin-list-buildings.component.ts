@@ -22,6 +22,10 @@ import { AdminBuildingDetailsCardComponent } from '../components/admin-building-
 import { BuildingPlotDataService } from 'src/app/core/dataservice/ownership/buildingplot.dataservice';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { AdminSpatialViewerPlotComponent } from '../../../land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-admin-list-buildings',
@@ -35,6 +39,7 @@ import { AdminSpatialViewerPlotComponent } from '../../../land/shared/admin-spat
         RouterModule,
         DialogModule,
         AdminBuildingDetailsCardComponent,
+        PaginatorModule,
     ],
     providers: [DialogService],
     templateUrl: './admin-list-buildings.component.html',
@@ -48,17 +53,33 @@ export class AdminListBuildingsComponent {
     selectedBuildingPlot: any;
 
     ref: DynamicDialogRef;
-    buildingsPaginated: BuildingDTO[] = [];
+
+    paginatedBuildings: PaginatedData<BuildingDTO> = {
+        firstPage: 0,
+        currentPage: 0,
+        previousPage: 0,
+        nextPage: 0,
+        lastPage: 0,
+        limit: 0,
+        count: 0,
+        data: [],
+    };
+
+    rowsPerPageOptions = ROWSPERPAGEOPTION;
+    firstPageNumber = 0;
+    rows = ROWSPERPAGEOPTION[0];
+    currentPage = 0;
 
     constructor(
         public dialogService: DialogService,
         private buildingDataService: BuildingDataService,
         private router: Router,
-        private buildingPlotDataService: BuildingPlotDataService
+        private buildingPlotDataService: BuildingPlotDataService,
+        private authService: AuthService
     ) {}
 
     ngOnInit(): void {
-        this.getPaginatedBuildings();
+        this.handlePagination();
     }
 
     getQr(val) {
@@ -72,68 +93,58 @@ export class AdminListBuildingsComponent {
         ]);
     }
     openAddBuildingModal() {
-        this.ref = this.dialogService.open(AdminAddBuildingComponent, {
-            header: 'Add Building',
-            width: '600px',
-        });
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.getPaginatedBuildings();
-            }
-        });
+        // this.ref = this.dialogService.open(AdminAddBuildingComponent, {
+        //     header: 'Add Building',
+        //     width: '600px',
+        // });
+        // this.ref.onClose.subscribe((res) => {
+        //     if (res && res.status === 201) {
+        //         this.getPaginatedBuildings();
+        //     }
+        // });
     }
     openAddBuildingOwnershipModal(building: BuildingDTO) {
-        this.ref = this.dialogService.open(AdminAddBuildingownershipComponent, {
-            header: 'Add Building Owner',
-            width: '600px',
-            data: building,
-        });
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.getPaginatedBuildings();
-            }
-            console.log('ADD BUILDING DIALOG CLOSE');
-
-            this.getPaginatedBuildings();
-        });
+        // this.ref = this.dialogService.open(AdminAddBuildingownershipComponent, {
+        //     header: 'Add Building Owner',
+        //     width: '600px',
+        //     data: building,
+        // });
+        // this.ref.onClose.subscribe((res) => {
+        //     if (res && res.status === 201) {
+        //         this.getPaginatedBuildings();
+        //     }
+        //     console.log('ADD BUILDING DIALOG CLOSE');
+        //     this.getPaginatedBuildings();
+        // });
     }
 
     openEditBuildingModal(data: BuildingDTO) {
-        this.ref = this.dialogService.open(AdminEditBuildingComponent, {
-            header: 'Edit Building',
-            width: '600px',
-            data: {
-                ...data,
-            },
-        });
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.updated) {
-                this.getPaginatedBuildings();
-            }
-        });
-    }
-
-    getPaginatedBuildings() {
-        this.buildingDataService.GetBuildingsPaginated().subscribe({
-            next: (res) => {
-                console.log('LIST OF BUILDINGS', res);
-                this.buildingsPaginated = res;
-            },
-        });
+        // this.ref = this.dialogService.open(AdminEditBuildingComponent, {
+        //     header: 'Edit Building',
+        //     width: '600px',
+        //     data: {
+        //         ...data,
+        //     },
+        // });
+        // this.ref.onClose.subscribe((res) => {
+        //     if (res && res.updated) {
+        //         this.getPaginatedBuildings();
+        //     }
+        // });
     }
 
     openCreateBuildingPlotModal(buildingId: number) {
-        this.ref = this.dialogService.open(AdminAddBuildingplotComponent, {
-            header: 'Create Building Plot',
-            data: {
-                buildingId: buildingId,
-            },
-        });
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.getPaginatedBuildings();
-            }
-        });
+        // this.ref = this.dialogService.open(AdminAddBuildingplotComponent, {
+        //     header: 'Create Building Plot',
+        //     data: {
+        //         buildingId: buildingId,
+        //     },
+        // });
+        // this.ref.onClose.subscribe((res) => {
+        //     if (res && res.status === 201) {
+        //         this.getPaginatedBuildings();
+        //     }
+        // });
     }
 
     openEditOwnershipModal(ownership: BuildingOwnershipDto) {
@@ -166,5 +177,39 @@ export class AdminListBuildingsComponent {
                 ...plot,
             },
         });
+    }
+
+    onPageChange(event: PageEvent): void {
+        this.firstPageNumber = event.first;
+        this.currentPage = event.page;
+        this.rows = event.rows;
+        this.handlePagination();
+    }
+
+    private handlePagination(): void {
+        const queryParams: any = {
+            pageNo: this.currentPage,
+            pageSize: this.rows,
+        };
+
+        console.log(queryParams);
+        this.buildingDataService
+            .GetAllBuildingsByAdminPaginated(
+                this.authService.GetAuthenticatedUser().id,
+                queryParams
+            )
+            .subscribe((res) => {
+                this.paginatedBuildings = res;
+            });
+        // this.plotDataService
+        //     .GetAllPlotsByAdminPaginated(
+        //
+        //     )
+        //     .subscribe({
+        //         next: (res) => {
+        //             this.paginatedPlotData = res;
+        //             console.log('PAGINATED WONER WITH THRAM', res);
+        //         },
+        //     });
     }
 }

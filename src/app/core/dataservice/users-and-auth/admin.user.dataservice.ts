@@ -18,24 +18,22 @@ export class AdminDataService {
 
     constructor(private http: HttpClient) {}
 
-    GetAdminsPaginated(
-        params?: PaginatedParamsOptions
-    ): Observable<PaginatedData<AdminDTO>> {
-        let httpParams = new HttpParams();
-        if (params) {
-            if (params.page !== undefined) {
-                httpParams = httpParams.append('page', params.page.toString());
-            }
-            if (params.limit !== undefined) {
-                httpParams = httpParams.append(
-                    'limit',
-                    params.limit.toString()
-                );
-            }
-        }
-        return this.http.get<PaginatedData<AdminDTO>>(`${this.apiUrl}/admin`, {
-            params: httpParams,
-        });
+    GetAdminsPaginated(params?: PaginatedParamsOptions) {
+        // let httpParams = new HttpParams();
+        // if (params) {
+        //     if (params.page !== undefined) {
+        //         httpParams = httpParams.append('page', params.page.toString());
+        //     }
+        //     if (params.limit !== undefined) {
+        //         httpParams = httpParams.append(
+        //             'limit',
+        //             params.limit.toString()
+        //         );
+        //     }
+        // }
+        // return this.http.get<PaginatedData<AdminDTO>>(`${this.apiUrl}/admin`, {
+        //     params: httpParams,
+        // });
     }
 
     SearchAdmin(params?: {

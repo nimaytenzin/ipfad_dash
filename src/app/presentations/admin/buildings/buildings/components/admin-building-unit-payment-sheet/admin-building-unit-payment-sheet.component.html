@@ -45,6 +45,7 @@
         <a [href]="excelDownLoadLink"> Download Excel </a>
     </div>
     <p-table
+        *ngIf="unitsWithPA"
         [value]="unitsWithPA"
         [scrollable]="true"
         styleClass="p-datatable-gridlines p-datatable-striped"
@@ -148,6 +149,7 @@
             </tr>
         </ng-template>
     </p-table>
+    <p *ngIf="!unitsWithPA">No Payment history to show.</p>
 
     <p-dialog
         [modal]="true"

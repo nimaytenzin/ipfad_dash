@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MenuItem } from 'primeng/api';
-import { TabViewModule } from 'primeng/tabview';
+import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { CommonModule } from '@angular/common';
 import { GalleriaModule } from 'primeng/galleria';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
 import { ButtonModule } from 'primeng/button';
-import { AdminListUnitsComponent } from '../../units/admin-list-units/admin-list-units.component';
+import { AdminListUnitsComponent } from '../../building-units/admin-list-units/admin-list-units.component';
 import { AdminBuildingDetailsCardComponent } from '../components/admin-building-details-card/admin-building-details-card.component';
 import { AdminBuildingSurchargesComponent } from '../components/admin-building-surcharges/admin-building-surcharges.component';
 import { AdminBuildingRulesComponent } from '../components/admin-building-rules/admin-building-rules.component';
@@ -24,6 +24,7 @@ import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
 import { AdminBuildingTenantListingComponent } from '../components/admin-building-tenant-listing/admin-building-tenant-listing.component';
 import { AdminBuildingUnitPaymentSheetComponent } from '../components/admin-building-unit-payment-sheet/admin-building-unit-payment-sheet.component';
+import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.selection.preferences';
 
 @Component({
     selector: 'app-admin-view-building',
@@ -57,12 +58,21 @@ export class AdminViewBuildingComponent implements OnInit {
     building: BuildingDTO = {} as BuildingDTO;
     responsiveOptions: any[] | undefined;
     tenants: TenantDTO[];
+    activeIndex: number;
+
     constructor(
         private route: ActivatedRoute,
         private buildingDataService: BuildingDataService,
-        private tenantDataService: TenantDataService
+        private tenantDataService: TenantDataService,
+        private adminTabSelectionPreferenceService: AdminTabPreferenceService
     ) {}
     ngOnInit(): void {
+        this.adminTabSelectionPreferenceService.adminViewBuildingSelectedTabIndex$.subscribe(
+            (tabIndex) => {
+                this.activeIndex = tabIndex;
+            }
+        );
+
         this.buildingId = Number(
             this.route.snapshot.paramMap.get('buildingId')
         );
@@ -92,6 +102,12 @@ export class AdminViewBuildingComponent implements OnInit {
                 numScroll: 1,
             },
         ];
+    }
+
+    handleTabChange(event: TabViewChangeEvent) {
+        this.adminTabSelectionPreferenceService.updateAdminViewBuildingSelectedTab(
+            event.index
+        );
     }
 
     getQr(val) {

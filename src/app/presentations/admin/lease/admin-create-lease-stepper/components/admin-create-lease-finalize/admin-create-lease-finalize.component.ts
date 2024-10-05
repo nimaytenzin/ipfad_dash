@@ -49,61 +49,61 @@ export class AdminCreateLeaseFinalizeComponent implements OnInit {
 
     prevPage() {}
     createLeaseAgreement() {
-        const data: CreateLeaseAgreementDTO = {
-            leaseStatus: 'ACTIVE',
-            entryDamageReportSubmitted: false,
-            tenantId: this.leaseInformation.parties.tenantId,
-            ownerId: this.leaseInformation.parties.landlordId,
-            witnessId: 1,
-            agreementDay: this.leaseInformation.parties.agreementDay,
-            agreementMonth: this.leaseInformation.parties.agreementMonth,
-            agreementYear: this.leaseInformation.parties.agreementMonth,
-            buildingId: this.leaseInformation.properties.buildingId,
-            unitId: this.leaseInformation.properties.unitId,
-            use: this.leaseInformation.properties.use,
-            leaseDurationMonths:
-                this.leaseInformation.duration.leaseDurationMonths,
-            leaseStartDate: this.leaseInformation.duration.leaseStartDate,
-            leaseEndDate: this.leaseInformation.duration.leaseEndDate,
-            tenantSubletAuthority:
-                this.leaseInformation.terms.tenantSubletAuthority,
-            tenantPrematureTermination:
-                this.leaseInformation.terms.tenantPrematureTermination,
-            ownerPrematureTermination:
-                this.leaseInformation.terms.ownerPrematureTermination,
-            rentIncreaseNoticePeriod:
-                this.leaseInformation.terms.rentIncreaseNoticePeriod,
-            evictionNoticePeriod:
-                this.leaseInformation.terms.evictionNoticePeriod,
-            vacationNoticePeriod:
-                this.leaseInformation.terms.vacationNoticePeriod,
-            leaseRules: this.leaseInformation.terms.leaseRules,
-            paymentDueDay: this.leaseInformation.terms.paymentDueDay,
-            applyLatePaymentFee:
-                this.leaseInformation.terms.applyLatePaymentFee,
-            rent: this.leaseInformation.charges.rent,
-            leaseSurcharges: this.leaseInformation.charges.leaseSurcharges,
-            securityDepositAmount:
-                this.leaseInformation.charges.securityDepositAmount,
-        };
-        this.leaseAgreementDataService.CreateLeaseAgreement(data).subscribe({
-            next: (res) => {
-                if (res) {
-                    this.router.navigate(['admin/master-lease']);
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Success',
-                        detail: 'Lease agreement created',
-                    });
-                }
-            },
-            error: (err) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: err.error.message,
-                });
-            },
-        });
+        // const data: CreateLeaseAgreementDTO = {
+        //     leaseStatus: 'ACTIVE',
+        //     entryDamageReportSubmitted: false,
+        //     tenantId: this.leaseInformation.parties.tenantId,
+        //     ownerId: this.leaseInformation.parties.landlordId,
+        //     witnessId: 1,
+        //     agreementDay: this.leaseInformation.parties.agreementDay,
+        //     agreementMonth: this.leaseInformation.parties.agreementMonth,
+        //     agreementYear: this.leaseInformation.parties.agreementMonth,
+        //     buildingId: this.leaseInformation.properties.buildingId,
+        //     unitId: this.leaseInformation.properties.unitId,
+        //     use: this.leaseInformation.properties.use,
+        //     leaseDurationMonths:
+        //         this.leaseInformation.duration.leaseDurationMonths,
+        //     leaseStartDate: this.leaseInformation.duration.leaseStartDate,
+        //     leaseEndDate: this.leaseInformation.duration.leaseEndDate,
+        //     tenantSubletAuthority:
+        //         this.leaseInformation.terms.tenantSubletAuthority,
+        //     tenantPrematureTermination:
+        //         this.leaseInformation.terms.tenantPrematureTermination,
+        //     ownerPrematureTermination:
+        //         this.leaseInformation.terms.ownerPrematureTermination,
+        //     rentIncreaseNoticePeriod:
+        //         this.leaseInformation.terms.rentIncreaseNoticePeriod,
+        //     evictionNoticePeriod:
+        //         this.leaseInformation.terms.evictionNoticePeriod,
+        //     vacationNoticePeriod:
+        //         this.leaseInformation.terms.vacationNoticePeriod,
+        //     leaseRules: this.leaseInformation.terms.leaseRules,
+        //     paymentDueDay: this.leaseInformation.terms.paymentDueDay,
+        //     applyLatePaymentFee:
+        //         this.leaseInformation.terms.applyLatePaymentFee,
+        //     rent: this.leaseInformation.charges.rent,
+        //     leaseSurcharges: this.leaseInformation.charges.leaseSurcharges,
+        //     securityDepositAmount:
+        //         this.leaseInformation.charges.securityDepositAmount,
+        // };
+        // this.leaseAgreementDataService.CreateLeaseAgreement(data).subscribe({
+        //     next: (res) => {
+        //         if (res) {
+        //             this.router.navigate(['admin/master-lease']);
+        //             this.messageService.add({
+        //                 severity: 'success',
+        //                 summary: 'Success',
+        //                 detail: 'Lease agreement created',
+        //             });
+        //         }
+        //     },
+        //     error: (err) => {
+        //         this.messageService.add({
+        //             severity: 'error',
+        //             summary: 'Error',
+        //             detail: err.error.message,
+        //         });
+        //     },
+        // });
     }
 }

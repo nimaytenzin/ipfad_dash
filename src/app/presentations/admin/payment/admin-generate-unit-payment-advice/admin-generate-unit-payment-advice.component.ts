@@ -4,7 +4,6 @@ import {
     DynamicDialogRef,
     DialogService,
 } from 'primeng/dynamicdialog';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
@@ -27,7 +26,7 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 })
 export class AdminGenerateUnitPaymentAdviceComponent implements OnInit {
     instance: DynamicDialogComponent | undefined;
-    leaseAgreement: LeaseAgreementDTO;
+    leaseAgreement;
     date: Date | undefined;
 
     extractMonthYear = ExtractMonthAndYear;
@@ -51,48 +50,48 @@ export class AdminGenerateUnitPaymentAdviceComponent implements OnInit {
             '-' +
             this.leaseAgreement.unit.unitNumber;
         const monthName = this.getMonthName(monthYear.month);
-        const newPaymentAdvice: CreatePaymentAdviceDto = {
-            unitId: this.leaseAgreement.unitId,
-            buildingId: this.leaseAgreement.buildingId,
-            tenantId: this.leaseAgreement.tenantId,
-            leaseAgreementId: this.leaseAgreement.id,
-            ownerId: this.leaseAgreement.ownerId,
-            title:
-                'Payment for the month of ' +
-                monthName +
-                '-' +
-                monthYear.year +
-                ' for unit ' +
-                unitName,
-            month: monthYear.month,
-            year: monthYear.year,
-            totalAmount: total,
-            amountDue: total,
-            status: 'DUE',
-            paymentAdviseItem: [
-                {
-                    particular: 'Rent',
-                    amount: this.leaseAgreement.rent,
-                },
-            ],
-        };
+        // const newPaymentAdvice: CreatePaymentAdviceDto = {
+        //     unitId: this.leaseAgreement.unitId,
+        //     buildingId: this.leaseAgreement.buildingId,
+        //     tenantId: this.leaseAgreement.tenantId,
+        //     leaseAgreementId: this.leaseAgreement.id,
+        //     ownerId: this.leaseAgreement.ownerId,
+        //     title:
+        //         'Payment for the month of ' +
+        //         monthName +
+        //         '-' +
+        //         monthYear.year +
+        //         ' for unit ' +
+        //         unitName,
+        //     month: monthYear.month,
+        //     year: monthYear.year,
+        //     totalAmount: total,
+        //     amountDue: total,
+        //     status: 'DUE',
+        //     paymentAdviseItem: [
+        //         {
+        //             particular: 'Rent',
+        //             amount: this.leaseAgreement.rent,
+        //         },
+        //     ],
+        // };
 
-        this.leaseAgreement.leaseSurcharges.forEach((item) => {
-            newPaymentAdvice.paymentAdviseItem.push({
-                particular: item.particular,
-                amount: item.amount,
-            });
-        });
-        console.log(newPaymentAdvice);
+        // this.leaseAgreement.leaseSurcharges.forEach((item) => {
+        //     newPaymentAdvice.paymentAdviseItem.push({
+        //         particular: item.particular,
+        //         amount: item.amount,
+        //     });
+        // });
+        // console.log(newPaymentAdvice);
 
-        this.paymentAdviceDataService
-            .CreatePaymentAdvice(newPaymentAdvice)
-            .subscribe((res) => {
-                console.log(res);
-            });
+        // this.paymentAdviceDataService
+        //     .CreatePaymentAdvice(newPaymentAdvice)
+        //     .subscribe((res) => {
+        //         console.log(res);
+        //     });
     }
 
-    computeMonthlyPayable(item: LeaseAgreementDTO) {
+    computeMonthlyPayable(item) {
         let total = item.rent;
         for (let i = 0; i < item.leaseSurcharges.length; i++) {
             total += item.leaseSurcharges[i].amount;

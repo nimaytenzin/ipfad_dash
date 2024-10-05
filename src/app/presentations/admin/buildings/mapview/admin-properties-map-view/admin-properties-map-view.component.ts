@@ -8,6 +8,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
+import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
+import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-admin-properties-map-view',
     templateUrl: './admin-properties-map-view.component.html',
@@ -28,6 +30,9 @@ export class AdminPropertiesMapViewComponent implements OnInit {
         'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
     googleSatUrl = 'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}';
     map!: L.Map;
+    plotsGeojsonLayer: L.GeoJSON;
+    buildingsGeoJsonLayer: L.GeoJSON;
+
     ref: DynamicDialogRef;
 
     cities = [
@@ -42,7 +47,9 @@ export class AdminPropertiesMapViewComponent implements OnInit {
 
     constructor(
         private http: HttpClient,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private geometryDataService: GeometryDataService,
+        private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
@@ -63,35 +70,49 @@ export class AdminPropertiesMapViewComponent implements OnInit {
             renderer: L.canvas({ tolerance: 3 }),
         }).setView([27.43503, 89.651983], 15);
 
-        this.loadGeoJSON();
+        this.loadPlotGeometry();
     }
 
-    loadGeoJSON() {
-        this.http
-            .get<any>('assets/geojson/gerabplotsmaple.geojson')
-            .subscribe((data) => {
-                L.geoJSON(data, {
-                    style: {
+    loadPlotGeometry() {
+        this.geometryDataService.GetAllPlotsGeom().subscribe((res: any) => {
+            console.log(res);
+            this.plotsGeojsonLayer = L.geoJSON(res, {
+                style: (feature) => {
+                    return {
+                        fillColor: 'transparent',
+                        weight: 2,
+                        opacity: 1,
                         color: 'red',
-                        fillColor: 'red',
-                        fillOpacity: 0,
-                        weight: 1,
-                    },
-                    onEachFeature: (feature, layer) => {
-                        layer.on('click', () => {
-                            console.log(feature);
-                            this.ref = this.dialogService.open(
-                                AdminMapviewPlotdetailsComponent,
-                                {
-                                    header: feature.properties.plotId,
-                                    data: {
-                                        plotId: feature.properties.plotId,
-                                    },
-                                }
-                            );
-                        });
-                    },
-                }).addTo(this.map);
+                    };
+                },
+            }).addTo(this.map);
+            this.map.fitBounds(this.plotsGeojsonLayer.getBounds());
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Plot Details Found',
+                detail: 'Plot added to the map',
             });
+            this.loadBuildingGeometry();
+        });
+    }
+
+    loadBuildingGeometry() {
+        this.geometryDataService.GetAllBuildingsGeom().subscribe((res: any) => {
+            this.buildingsGeoJsonLayer = L.geoJSON(res, {
+                style: (feature) => {
+                    return {
+                        fillColor: 'white',
+                        weight: 2,
+                        opacity: 1,
+                        color: 'yellow',
+                    };
+                },
+            }).addTo(this.map);
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Building Details Found',
+                detail: 'Buildings added to the map',
+            });
+        });
     }
 }

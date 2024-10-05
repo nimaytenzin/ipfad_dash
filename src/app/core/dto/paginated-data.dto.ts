@@ -10,6 +10,6 @@ export interface PaginatedData<T> {
 }
 
 export interface PaginatedParamsOptions {
-    page?: number;
-    limit?: number;
+    pageNo?: number;
+    pageSize?: number;
 }

@@ -1,4 +1,3 @@
-import { LeaseAgreementDTO } from '../../dataservice/lease/lease-agreement.dto';
 import { AdministrativeZoneDTO } from '../locations/administrative-zone.dto';
 import { DzongkhagDTO } from '../locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from '../locations/sub-administrative-zone.dto';
@@ -26,7 +25,7 @@ export interface TenantDTO {
     subadministrativeZoneId: number;
     subadministrativeZone: SubAdministrativeZoneDTO;
 
-    leaseAgreements?: LeaseAgreementDTO[];
+    // leaseAgreements?: LeaseAgreementDTO[];
 
     createdAt?: string;
 }

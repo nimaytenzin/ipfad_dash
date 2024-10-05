@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { API_URL } from '../constants/constants';
 import { Observable } from 'rxjs';
-import { LeaseAgreementDTO } from './lease/lease-agreement.dto';
 import { PaymentAdviceDto } from '../dto/payments/payment-advice/payment-advice.dto';
 
 export interface SendSMSOTP {
@@ -22,7 +21,7 @@ export interface NotificationDTO {
     leaseAgreementId?: number;
     paymentAdviseId?: number;
 
-    leaseAgreement?: LeaseAgreementDTO;
+    // leaseAgreement?: LeaseAgreementDTO;
     paymentAdivise?: PaymentAdviceDto;
 }
 

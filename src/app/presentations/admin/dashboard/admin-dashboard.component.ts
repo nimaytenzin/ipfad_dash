@@ -5,7 +5,6 @@ import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { StatsDataService } from 'src/app/core/dataservice/statistics/statistics.dataservice';
 import { OwnerSummaryStatsDTO } from 'src/app/core/dataservice/statistics/statistics.dto';
@@ -45,7 +44,7 @@ export class AdminDashboardComponent implements OnInit {
 
     buildings: BuildingDTO[] = [];
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
-    expiringLeaseAgreements: LeaseAgreementDTO[] = [];
+    expiringLeaseAgreements = [];
 
     buildingImages = [
         'https://www.waytobhutan.com/wp-content/uploads/2020/02/dscf26071-1024x768.jpg',
@@ -257,13 +256,13 @@ export class AdminDashboardComponent implements OnInit {
     }
 
     getExpiringLease() {
-        this.leaseaDataService
-            .GetExpiringLeaseByBuilding(1)
-            .subscribe((res) => {
-                console.log('LEASE AGREEMENT');
-                console.log(res);
-                this.expiringLeaseAgreements = res;
-            });
+        // this.leaseaDataService
+        //     .GetExpiringLeaseByBuilding(1)
+        //     .subscribe((res) => {
+        //         console.log('LEASE AGREEMENT');
+        //         console.log(res);
+        //         this.expiringLeaseAgreements = res;
+        //     });
     }
 
     openViewPaymentAdvice(item: PaymentAdviceDto) {

@@ -9,6 +9,11 @@ import {
     UpdateThramDTO,
 } from './dto/thram.dto';
 import { UserDTO } from '../users-and-auth/dto/user.dto';
+import {
+    PaginatedParamsOptions,
+    PaginatedData,
+} from '../../dto/paginated-data.dto';
+import { PaymentAdviceDto } from '../../dto/payments/payment-advice/payment-advice.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -29,12 +34,34 @@ export class ThramDataService {
         );
     }
 
-    GetAllThrams(): Observable<ThramDTO[]> {
-        return this.http.get<ThramDTO[]>(`${this.apiUrl}/thram`);
-    }
-    GetAllThramsByAdmin(adminId: number): Observable<UserDTO[]> {
-        return this.http.get<UserDTO[]>(
-            `${this.apiUrl}/thram/admin/${adminId}`
+    GetAllThramsByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<ThramDTO>> {
+        let httpParams = new HttpParams();
+
+        console.log(params);
+        // Check if params exist and append query parameters accordingly
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        console.log(httpParams);
+        // Return the HTTP GET request with the params
+        return this.http.get<PaginatedData<ThramDTO>>(
+            `${this.apiUrl}/thram/admin/p/${adminId}`,
+            { params: httpParams }
         );
     }
 
@@ -44,7 +71,12 @@ export class ThramDataService {
         );
     }
 
-    SearchForThram(data: SearchThramDTO): Observable<ThramDTO> {
+    SearchForThramByThramNo(data: SearchThramDTO): Observable<ThramDTO> {
         return this.http.post<ThramDTO>(`${this.apiUrl}/thram/search`, data);
+    }
+    SearchForThramByPlotId(plotId): Observable<ThramDTO> {
+        return this.http.get<ThramDTO>(
+            `${this.apiUrl}/thram/search/plot/${plotId}`
+        );
     }
 }

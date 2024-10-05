@@ -53,24 +53,24 @@ export class AdminPaymentAdviceSearchByBuildingComponent implements OnInit {
 
     searchBuildingByPlot() {
         this.plot = null;
-        this.plotDataService.GetBuildingsByPlot(this.plotId).subscribe({
-            next: (res) => {
-                if (res) {
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Details Found',
-                        detail: 'Plot Details Loaded',
-                    });
-                    this.plot = res;
-                } else {
-                    this.messageService.add({
-                        severity: 'info',
-                        summary: 'No Plot Data',
-                        detail: 'Plot Details not found. Please check the PlotID',
-                    });
-                }
-            },
-        });
+        // this.plotDataService.GetBuildingsByPlot(this.plotId).subscribe({
+        //     next: (res) => {
+        //         if (res) {
+        //             this.messageService.add({
+        //                 severity: 'success',
+        //                 summary: 'Details Found',
+        //                 detail: 'Plot Details Loaded',
+        //             });
+        //             this.plot = res;
+        //         } else {
+        //             this.messageService.add({
+        //                 severity: 'info',
+        //                 summary: 'No Plot Data',
+        //                 detail: 'Plot Details not found. Please check the PlotID',
+        //             });
+        //         }
+        //     },
+        // });
     }
 
     loadData(building: BuildingDTO) {

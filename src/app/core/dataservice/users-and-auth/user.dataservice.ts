@@ -19,4 +19,15 @@ export class UserDataService {
     AdminGetAllOwners(adminId: number): Observable<UserDTO[]> {
         return this.http.get<UserDTO[]>(`${this.apiUrl}/auth/owner/${adminId}`);
     }
+    AdminGetAllTenants(adminId: number): Observable<UserDTO[]> {
+        return this.http.get<UserDTO[]>(
+            `${this.apiUrl}/auth/tenant/${adminId}`
+        );
+    }
+
+    AdminSearchTenantByPhoneNumber(phoneNumber: number): Observable<UserDTO> {
+        return this.http.get<UserDTO>(
+            `${this.apiUrl}/auth/tenant/phone/${phoneNumber}`
+        );
+    }
 }

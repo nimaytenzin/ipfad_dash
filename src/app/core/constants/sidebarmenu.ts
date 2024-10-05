@@ -69,9 +69,9 @@ export const ADMINSIDEBARITEMS = [
                 routerLink: ['/admin/master-properties/list-buildings'],
             },
             {
-                label: 'Flats',
+                label: 'Units',
                 icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-properties/list-buildings'],
+                routerLink: ['/admin/master-properties/list-units'],
             },
         ],
     },
@@ -79,14 +79,24 @@ export const ADMINSIDEBARITEMS = [
         label: 'Lease',
         items: [
             {
-                label: 'Building & Flat Lease',
+                label: 'Old',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-lease'],
             },
             {
                 label: 'Land Lease',
                 icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-lease'],
+                routerLink: ['/admin/master-lease/lands'],
+            },
+            {
+                label: 'Building Lease',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-lease/buildings'],
+            },
+            {
+                label: 'Unit Lease',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-lease/units'],
             },
         ],
     },
@@ -107,6 +117,26 @@ export const ADMINSIDEBARITEMS = [
     },
 
     {
+        label: 'Users',
+        items: [
+            {
+                label: 'Owner',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-users/owners'],
+            },
+            {
+                label: 'Tenants',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-users/tenants'],
+            },
+            // {
+            //     label: 'Admins',
+            //     icon: 'pi pi-fw pi-th-large',
+            //     routerLink: ['/admin/master-users/admins'],
+            // },
+        ],
+    },
+    {
         label: 'Locations',
         items: [
             {
@@ -124,27 +154,6 @@ export const ADMINSIDEBARITEMS = [
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-locations/subadm-zones'],
             },
-        ],
-    },
-
-    {
-        label: 'Users',
-        items: [
-            {
-                label: 'Owner',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-owners'],
-            },
-            {
-                label: 'Tenants',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-users/tenants'],
-            },
-            // {
-            //     label: 'Admins',
-            //     icon: 'pi pi-fw pi-th-large',
-            //     routerLink: ['/admin/master-users/admins'],
-            // },
         ],
     },
 

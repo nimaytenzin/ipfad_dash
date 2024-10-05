@@ -3,7 +3,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AdminViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
@@ -40,10 +39,10 @@ export class TenantActiveLeasecomponent implements OnInit {
     zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
 
     showLeasePaymentBreakdownModal: boolean = false;
-    selectedLease: LeaseAgreementDTO;
+    selectedLease;
 
     ref: DynamicDialogRef | undefined;
-    activeLeaseAgreements: LeaseAgreementDTO[];
+    activeLeaseAgreements = [];
     parseFloorLevel = PARSEFLOORLEVELS;
     constructor(
         private leaseAgreementDataService: LeaseAgreementDataService,
@@ -55,15 +54,15 @@ export class TenantActiveLeasecomponent implements OnInit {
     }
 
     getActiveLeaseAgreements() {
-        this.leaseAgreementDataService
-            .GetActiveLeaseAgreementsByTenant(this.tenantId)
-            .subscribe((res) => {
-                this.activeLeaseAgreements = res;
-                console.log(res);
-                console.log('ACTIVE LEASE AGREEMNT', res);
-            });
+        // this.leaseAgreementDataService
+        //     .GetActiveLeaseAgreementsByTenant(this.tenantId)
+        //     .subscribe((res) => {
+        //         this.activeLeaseAgreements = res;
+        //         console.log(res);
+        //         console.log('ACTIVE LEASE AGREEMNT', res);
+        //     });
     }
-    computeMonthlyPayable(item: LeaseAgreementDTO) {
+    computeMonthlyPayable(item) {
         let total = item.rent;
         for (let i = 0; i < item.leaseSurcharges.length; i++) {
             total += item.leaseSurcharges[i].amount;
@@ -75,7 +74,7 @@ export class TenantActiveLeasecomponent implements OnInit {
         return new Date(date).toDateString();
     }
 
-    viewLease(leaeAgreement: LeaseAgreementDTO) {
+    viewLease(leaeAgreement) {
         this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
             header: 'View Lease',
 
@@ -86,19 +85,19 @@ export class TenantActiveLeasecomponent implements OnInit {
             },
         });
     }
-    viewLeasePaymentBreakdown(item: LeaseAgreementDTO) {
+    viewLeasePaymentBreakdown(item) {
         this.selectedLease = item;
         this.showLeasePaymentBreakdownModal = true;
     }
 
-    openLeaseDetailedView(item: LeaseAgreementDTO) {
+    openLeaseDetailedView(item) {
         this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
             header: 'Lease Details',
             width: '600px',
             data: { ...item },
         });
     }
-    openLeaseSumaryView(item: LeaseAgreementDTO) {
+    openLeaseSumaryView(item) {
         this.ref = this.dialogService.open(TenantViewLeaseDetailsComponent, {
             header: 'Lease Details',
             width: '600px',
@@ -106,7 +105,7 @@ export class TenantActiveLeasecomponent implements OnInit {
         });
     }
 
-    openSubmitDamageReportModal(item: LeaseAgreementDTO) {
+    openSubmitDamageReportModal(item) {
         this.ref = this.dialogService.open(
             TenantSubmitDamageReportModalComponent,
             {

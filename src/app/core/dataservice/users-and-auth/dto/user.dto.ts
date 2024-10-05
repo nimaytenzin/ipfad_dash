@@ -1,4 +1,5 @@
 import { ThramDTO } from '../../land/dto/thram.dto';
+import { OrganiztionDTO } from '../../organization/organization.dto';
 
 export interface UserDTO {
     id: number;
@@ -13,6 +14,8 @@ export interface UserDTO {
     adminId?: number;
 
     thrams?: ThramDTO[];
+
+    organizations: OrganiztionDTO[];
 }
 
 export interface CreateUserDTO {

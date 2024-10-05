@@ -4,7 +4,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
 import { AdminAddDzongkhagComponent } from '../crud-modal/admin-add-dzongkhag/admin-add-dzongkhag.component';
-import { AdminAddAdminComponent } from '../../users/crud-dialog/admin-add-admin/admin-add-admin.component';
+import { AdminAddAdminComponent } from '../../usersold/crud-dialog/admin-add-admin/admin-add-admin.component';
 import { AdminAddAdministrativeZonesComponent } from '../crud-modal/admin-add-administrative-zones/admin-add-administrative-zones.component';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 

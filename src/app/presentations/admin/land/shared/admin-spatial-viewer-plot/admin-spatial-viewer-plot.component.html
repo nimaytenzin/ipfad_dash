@@ -1,18 +1,62 @@
-<div class="w-full flex">
-    <div
-        class="flex border-round-lg"
-        id="map"
-        style="height: 40vh; min-width: 20vw"
-    ></div>
-    <div class="px-6">
-        <p>Plot ID: {{ plot.plotId }}</p>
-        <p>Category:{{ plot.plotCategory }}</p>
-        <p>Area: {{ plot.netArea }} {{ plot.areaUnit }}</p>
+<div class="w-full flex" style="max-width: 40vw">
+    <div class="flex w-6" id="map" style="height: 40vh; min-width: 20vw"></div>
+    <p-tabView class="w-6">
+        <p-tabPanel header="Plot Details">
+            <div class="">
+                <p class="text-lg">
+                    <strong>Plot ID: </strong>{{ plot.plotId }}
+                </p>
+                <hr class="my-4" />
+                <p><strong>Plot Category:</strong>{{ plot.plotCategory }}</p>
+                <p>
+                    <strong>Area:</strong> {{ plot.netArea }}
+                    {{ plot.areaUnit }}
+                </p>
 
-        <p>LAP name: {{ plot.lapName }}</p>
+                <p><strong>LAP name:</strong> {{ plot.lapName }}</p>
 
-        <p>LAP Code: {{ plot.lapCode }}</p>
-        <p>Precinct: {{ plot.precinctName }} ({{ plot.precinctCode }})</p>
-        <p>Remarks: {{ plot.remarks ? plot.remarks : "NA" }}</p>
-    </div>
+                <p><strong>LAP Code:</strong> {{ plot.lapCode }}</p>
+                <p>
+                    <strong>Precinct:</strong> {{ plot.precinctName }} ({{
+                        plot.precinctCode
+                    }})
+                </p>
+                <p><strong>Remarks:</strong> {{ plot.remarks }}</p>
+                <hr class="my-4" />
+                <p><strong>Thram No:</strong> {{ plot.thram?.thramNo }}</p>
+                <p>
+                    <strong>OwnershipType:</strong>
+                    {{ plot.thram?.ownershipType }}
+                </p>
+                <p>
+                    <strong>Location:</strong>
+                    {{ plot.thram?.dzongkhag?.name }},{{
+                        plot.thram?.administrativeZone?.name
+                    }},{{ plot.thram?.subAdministrativeZone?.name }}
+                </p>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Buildings">
+            <p>Buildings</p>
+            <div *ngIf="plot.buildings.length">
+                <div *ngFor="let building of plot.buildings">
+                    <p-divider></p-divider>
+                    <p><strong> Name: </strong>{{ building.name }}</p>
+                    <p class="mb-2">
+                        <strong> Number: </strong>{{ building.buildingNumber }}
+                    </p>
+
+                    <p-button
+                        label="Building"
+                        size="small"
+                        icon="pi pi-eye"
+                        severity="secondary"
+                        (click)="navigateToBuilding(building.id)"
+                    >
+                    </p-button>
+                </div>
+            </div>
+            <div *ngIf="!plot.buildings.length">No Building/s on this plot</div>
+        </p-tabPanel>
+    </p-tabView>
 </div>

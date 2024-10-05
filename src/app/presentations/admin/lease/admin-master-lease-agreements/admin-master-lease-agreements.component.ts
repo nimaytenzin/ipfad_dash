@@ -10,8 +10,7 @@ import { Router } from '@angular/router';
 // import { OwnerDataService } from 'src/app/core/dataservice/users-and-auth/owner.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
-import { AdminAddLandlordComponent } from '../../users/crud-dialog/admin-add-landlord/admin-add-landlord.component';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { AdminAddLandlordComponent } from '../../usersold/crud-dialog/admin-add-landlord/admin-add-landlord.component';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
@@ -23,6 +22,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import { AdminViewLeaseAgreementComponent } from '../admin-view-lease-agreement/admin-view-lease-agreement.component';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 
 @Component({
     selector: 'app-admin-master-lease-agreements',
@@ -51,7 +51,7 @@ export class AdminMasterLeaseAgreementsComponent {
     ) {}
 
     ref: DynamicDialogRef | undefined;
-    paginatedLeaseAgreements: PaginatedData<LeaseAgreementDTO> = {
+    paginatedLeaseAgreements: PaginatedData<LeaseAgreeementDTO> = {
         firstPage: 0,
         currentPage: 0,
         previousPage: 0,
@@ -63,17 +63,6 @@ export class AdminMasterLeaseAgreementsComponent {
     };
     rows = 10;
 
-    pagina: PaginatedData<LeaseAgreementDTO> = {
-        firstPage: 0,
-        currentPage: 0,
-        previousPage: 0,
-        nextPage: 0,
-        lastPage: 0,
-        limit: 0,
-        count: 0,
-        data: [],
-    };
-
     ngOnInit(): void {
         this.getLeaseAgreements();
     }
@@ -83,30 +72,30 @@ export class AdminMasterLeaseAgreementsComponent {
     }
 
     onPageChange(e) {
-        console.log(e);
-        this.leaseAgreementDataService
-            .GetLeaseAgreementsPaginated({
-                page: e.page,
-                limit: e.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedLeaseAgreements = res;
-            });
+        // console.log(e);
+        // this.leaseAgreementDataService
+        //     .GetLeaseAgreementsPaginated({
+        //         page: e.page,
+        //         limit: e.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedLeaseAgreements = res;
+        //     });
     }
 
     getLeaseAgreements() {
-        this.leaseAgreementDataService
-            .GetLeaseAgreementsPaginated({
-                page: 0,
-                limit: this.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedLeaseAgreements = res;
-                console.log(res);
-            });
+        // this.leaseAgreementDataService
+        //     .GetLeaseAgreementsPaginated({
+        //         page: 0,
+        //         limit: this.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedLeaseAgreements = res;
+        //         console.log(res);
+        //     });
     }
 
-    computeMonthlyPayable(item: LeaseAgreementDTO) {
+    computeMonthlyPayable(item: LeaseAgreeementDTO) {
         let total = item.rent;
         for (let i = 0; i < item.leaseSurcharges.length; i++) {
             total += item.leaseSurcharges[i].amount;
@@ -119,55 +108,53 @@ export class AdminMasterLeaseAgreementsComponent {
         return Object.keys(obj);
     }
 
-    generateInvoice(item: LeaseAgreementDTO) {
-        console.log(item);
-        const data: CreateInvoiceDTO = {
-            unitId: item.unitId,
-            buildingId: item.buildingId,
-            title: 'Payment for the month of May 2024',
-            tenantId: item.tenantId,
-            landlordId: item.ownerId,
-            leaseAgreementId: item.id,
-            month: 5,
-            year: 2024,
-            totalAmount: this.computeMonthlyPayable(item),
-            status: INVOICESTATUS.Due,
-            invoiceItems: [
-                {
-                    particular: 'House Rent for May 2024',
-                    amount: item.rent,
-                },
-            ],
-        };
-
-        item.leaseSurcharges.forEach((r) => {
-            data.invoiceItems.push({
-                particular: r.particular + ' for May 2024',
-                amount: r.amount,
-            });
-        });
-        console.log(data);
-
-        this.invoiceDataService.CreateInvoice(data).subscribe({
-            next: (res) => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail:
-                        'Invoice generated for unit ID:' +
-                        item.unitId +
-                        ' for the month of ' +
-                        '5/2024',
-                });
-            },
-            error: (err) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: err.error.statusCode,
-                    detail: err.error.message,
-                });
-            },
-        });
+    generateInvoice(item) {
+        // console.log(item);
+        // const data: CreateInvoiceDTO = {
+        //     unitId: item.unitId,
+        //     buildingId: item.buildingId,
+        //     title: 'Payment for the month of May 2024',
+        //     tenantId: item.tenantId,
+        //     landlordId: item.ownerId,
+        //     leaseAgreementId: item.id,
+        //     month: 5,
+        //     year: 2024,
+        //     totalAmount: this.computeMonthlyPayable(item),
+        //     status: INVOICESTATUS.Due,
+        //     invoiceItems: [
+        //         {
+        //             particular: 'House Rent for May 2024',
+        //             amount: item.rent,
+        //         },
+        //     ],
+        // };
+        // item.leaseSurcharges.forEach((r) => {
+        //     data.invoiceItems.push({
+        //         particular: r.particular + ' for May 2024',
+        //         amount: r.amount,
+        //     });
+        // });
+        // console.log(data);
+        // this.invoiceDataService.CreateInvoice(data).subscribe({
+        //     next: (res) => {
+        //         this.messageService.add({
+        //             severity: 'success',
+        //             summary: 'Success',
+        //             detail:
+        //                 'Invoice generated for unit ID:' +
+        //                 item.unitId +
+        //                 ' for the month of ' +
+        //                 '5/2024',
+        //         });
+        //     },
+        //     error: (err) => {
+        //         this.messageService.add({
+        //             severity: 'error',
+        //             summary: err.error.statusCode,
+        //             detail: err.error.message,
+        //         });
+        //     },
+        // });
     }
 
     getSeverity(status: string) {
@@ -183,7 +170,7 @@ export class AdminMasterLeaseAgreementsComponent {
         }
     }
 
-    viewLease(leaeAgreement: LeaseAgreementDTO) {
+    viewLease(leaeAgreement) {
         this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
             header: 'View Lease',
 

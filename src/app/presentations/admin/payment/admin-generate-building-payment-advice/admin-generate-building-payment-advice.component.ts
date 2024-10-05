@@ -51,7 +51,6 @@ export class AdminGenerateBuildingPaymentAdviceComponent implements OnInit {
                 year: monthYear.year,
             })
             .subscribe((res: any) => {
-                console.log(res);
                 this.results = res;
             });
     }

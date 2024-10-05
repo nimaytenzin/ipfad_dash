@@ -38,23 +38,23 @@ export class AdminPaymentAdvicePendingListComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.paymentAdviceDataService
-            .GetAllPendingPaymentAdvicePaginated()
-            .subscribe((res) => {
-                this.paginatedPaymentAdvice = res;
-            });
+        // this.paymentAdviceDataService
+        //     .GetAllPendingPaymentAdvicePaginated()
+        //     .subscribe((res) => {
+        //         this.paginatedPaymentAdvice = res;
+        //     });
     }
 
     onPageChange(e) {
         console.log(e);
-        this.paymentAdviceDataService
-            .GetAllPendingPaymentAdvicePaginated({
-                page: e.page,
-                limit: e.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedPaymentAdvice = res;
-            });
+        // this.paymentAdviceDataService
+        //     .GetAllPendingPaymentAdvicePaginated({
+        //         page: e.page,
+        //         limit: e.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedPaymentAdvice = res;
+        //     });
     }
 
     downloadMasterTable() {}

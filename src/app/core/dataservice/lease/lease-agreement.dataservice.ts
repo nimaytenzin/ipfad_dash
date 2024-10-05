@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { API_URL } from '../../constants/constants';
 import {
     CreateLeaseAgreementDTO,
-    LeaseAgreementDTO,
+    LeaseAgreeementDTO,
 } from './lease-agreement.dto';
 import {
     PaginatedData,
@@ -19,77 +19,111 @@ export class LeaseAgreementDataService {
 
     constructor(private http: HttpClient) {}
 
-    CreateLeaseAgreement(data: CreateLeaseAgreementDTO) {
-        return this.http.post(`${this.apiUrl}/lease-agreement`, data);
-    }
-
-    GetLeaseAgreementsPaginated(
+    //UNIT LEASE AGREEMENT//
+    GetAllUnitLeaseByAdminPaginated(
+        adminId: number,
         params?: PaginatedParamsOptions
-    ): Observable<PaginatedData<LeaseAgreementDTO>> {
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
         let httpParams = new HttpParams();
         if (params) {
-            if (params.page !== undefined) {
-                httpParams = httpParams.append('page', params.page.toString());
-            }
-            if (params.limit !== undefined) {
+            if (params.pageNo !== undefined) {
                 httpParams = httpParams.append(
-                    'limit',
-                    params.limit.toString()
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
                 );
             }
         }
-        return this.http.get<PaginatedData<LeaseAgreementDTO>>(
-            `${this.apiUrl}/lease-agreement`,
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/unit/p/${adminId}`,
             { params: httpParams }
         );
     }
 
-    FindLeaseAgreement(id: number): Observable<LeaseAgreementDTO> {
-        return this.http.get<LeaseAgreementDTO>(
-            `${this.apiUrl}/lease-agreement/${id}`
+    GetLeaseAgreementDetailed(
+        leaseAgreementId: number
+    ): Observable<LeaseAgreeementDTO> {
+        return this.http.get<LeaseAgreeementDTO>(
+            `${this.apiUrl}/lease-agreement/${leaseAgreementId}`
         );
+    }
+
+    CreateLeaseAgreement(
+        data: CreateLeaseAgreementDTO
+    ): Observable<LeaseAgreeementDTO> {
+        return this.http.post<LeaseAgreeementDTO>(
+            `${this.apiUrl}/lease-agreement`,
+            data
+        );
+    }
+
+    GetLeaseAgreementsPaginated(params?: PaginatedParamsOptions) {
+        // let httpParams = new HttpParams();
+        // if (params) {
+        //     if (params.page !== undefined) {
+        //         httpParams = httpParams.append('page', params.page.toString());
+        //     }
+        //     if (params.limit !== undefined) {
+        //         httpParams = httpParams.append(
+        //             'limit',
+        //             params.limit.toString()
+        //         );
+        //     }
+        // }
+        // return this.http.get<PaginatedData<LeaseAgreementDTO>>(
+        //     `${this.apiUrl}/lease-agreement`,
+        //     { params: httpParams }
+        // );
     }
 
     GetLeaseAgreementsPaginatedByUnit(
         unitId: number,
         params?: PaginatedParamsOptions
-    ): Observable<PaginatedData<LeaseAgreementDTO>> {
-        let httpParams = new HttpParams();
-        if (params) {
-            if (params.page !== undefined) {
-                httpParams = httpParams.append('page', params.page.toString());
-            }
-            if (params.limit !== undefined) {
-                httpParams = httpParams.append(
-                    'limit',
-                    params.limit.toString()
-                );
-            }
-        }
-        return this.http.get<PaginatedData<LeaseAgreementDTO>>(
-            `${this.apiUrl}/lease-agreement/unit/q/${unitId}`,
-            { params: httpParams }
-        );
+    ) {
+        // let httpParams = new HttpParams();
+        // if (params) {
+        //     if (params.page !== undefined) {
+        //         httpParams = httpParams.append('page', params.page.toString());
+        //     }
+        //     if (params.limit !== undefined) {
+        //         httpParams = httpParams.append(
+        //             'limit',
+        //             params.limit.toString()
+        //         );
+        //     }
+        // }
+        // return this.http.get<PaginatedData<LeaseAgreementDTO>>(
+        //     `${this.apiUrl}/lease-agreement/unit/q/${unitId}`,
+        //     { params: httpParams }
+        // );
     }
 
     GetActiveLeaseAgreementByUnit(
         unitId: number
-    ): Observable<LeaseAgreementDTO> {
-        return this.http.get<LeaseAgreementDTO>(
+    ): Observable<LeaseAgreeementDTO> {
+        return this.http.get<LeaseAgreeementDTO>(
             `${this.apiUrl}/lease-agreement/active/unit/${unitId}`
         );
     }
-    GetActiveLeaseAgreementsByTenant(
-        tenantId: number
-    ): Observable<LeaseAgreementDTO[]> {
-        return this.http.get<LeaseAgreementDTO[]>(
-            `${this.apiUrl}/lease-agreement/active/tenant/${tenantId}`
-        );
-    }
+    // GetActiveLeaseAgreementsByTenant(
+    //     tenantId: number
+    // ): Observable<LeaseAgreementDTO[]> {
+    //     return this.http.get<LeaseAgreementDTO[]>(
+    //         `${this.apiUrl}/lease-agreement/active/tenant/${tenantId}`
+    //     );
+    // }
 
-    GetExpiringLeaseByBuilding(buildingId: number) {
-        return this.http.get<LeaseAgreementDTO[]>(
-            `${this.apiUrl}/lease-agreement/expiring/building/${buildingId}`
-        );
-    }
+    // GetExpiringLeaseByBuilding(buildingId: number) {
+    //     return this.http.get<LeaseAgreementDTO[]>(
+    //         `${this.apiUrl}/lease-agreement/expiring/building/${buildingId}`
+    //     );
+    // }
+
+    ///NEW ROUTES //
 }

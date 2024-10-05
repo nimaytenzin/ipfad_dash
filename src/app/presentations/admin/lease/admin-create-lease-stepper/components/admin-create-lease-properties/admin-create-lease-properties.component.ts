@@ -121,19 +121,19 @@ export class AdminCreateLeasePropertiesComponent implements OnInit {
             subAdministrativeZoneId: this.selectedAdministrativeZone.id,
             thramNo: this.thramNo,
         });
-        this.thramDataService
-            .SearchForThram({
-                dzongkhagId: this.selectedDzongkhag.id,
-                administrativeZoneId: this.selectedAdministrativeZone.id,
-                thramNo: this.thramNo,
-            })
-            .subscribe({
-                next: (res) => {
-                    this.thram = res;
-                    console.log(res);
-                    this.plots = res.plots;
-                },
-            });
+        // this.thramDataService
+        //     .SearchForThram({
+        //         dzongkhagId: this.selectedDzongkhag.id,
+        //         administrativeZoneId: this.selectedAdministrativeZone.id,
+        //         thramNo: this.thramNo,
+        //     })
+        //     .subscribe({
+        //         next: (res) => {
+        //             this.thram = res;
+        //             console.log(res);
+        //             this.plots = res.plots;
+        //         },
+        //     });
     }
 
     restoreStateIfExists() {

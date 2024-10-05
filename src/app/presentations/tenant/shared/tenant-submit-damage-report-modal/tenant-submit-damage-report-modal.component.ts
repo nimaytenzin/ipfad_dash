@@ -8,7 +8,6 @@ import {
 } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { TenantEntryDamageItemCreateModalComponent } from './subcomponents/tenant-entry-damage-item-create-modal/tenant-entry-damage-item-create-modal.component';
-import { LeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import {
     CreateEntryDamageReportItemDTO,
     EntryDamageReportItemDTO,
@@ -41,7 +40,7 @@ import { API_URL } from 'src/app/core/constants/constants';
     providers: [DialogService],
 })
 export class TenantSubmitDamageReportModalComponent implements OnInit {
-    leaseAgreement: LeaseAgreementDTO;
+    leaseAgreement;
     damageReportItems: EntryDamageReportItemDTO[] = [];
     agree: boolean = false;
 

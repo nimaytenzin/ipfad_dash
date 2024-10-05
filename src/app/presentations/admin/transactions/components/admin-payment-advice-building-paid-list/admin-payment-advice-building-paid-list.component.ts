@@ -44,13 +44,13 @@ export class AdminPaymentAdviceBuildingPaidListComponent
     downloadMasterTable() {}
 
     loadPendingPaymentAdvicesByBuilding() {
-        this.paginatedPaymentAdvice = null;
-        this.paymentAdviceDataService
-            .GetAllPaidPaymentAdvicePaginatedByBuilding(this.building.id)
-            .subscribe((res) => {
-                console.log('PADINGATED BY BUILDING PAID', res);
-                this.paginatedPaymentAdvice = res;
-            });
+        // this.paginatedPaymentAdvice = null;
+        // this.paymentAdviceDataService
+        //     .GetAllPaidPaymentAdvicePaginatedByBuilding(this.building.id)
+        //     .subscribe((res) => {
+        //         console.log('PADINGATED BY BUILDING PAID', res);
+        //         this.paginatedPaymentAdvice = res;
+        //     });
     }
     ngOnChanges(changes: SimpleChanges) {
         if (changes['building'] && !changes['building'].firstChange) {
@@ -59,13 +59,13 @@ export class AdminPaymentAdviceBuildingPaidListComponent
     }
     onPageChange(e) {
         console.log(e);
-        this.paymentAdviceDataService
-            .GetAllPaidPaymentAdvicePaginatedByBuilding(this.building.id, {
-                page: e.page,
-                limit: e.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedPaymentAdvice = res;
-            });
+        // this.paymentAdviceDataService
+        //     .GetAllPaidPaymentAdvicePaginatedByBuilding(this.building.id, {
+        //         page: e.page,
+        //         limit: e.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedPaymentAdvice = res;
+        //     });
     }
 }

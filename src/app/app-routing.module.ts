@@ -59,11 +59,11 @@ import { USERROLESENUM } from './core/constants/enums';
                         },
 
                         {
-                            path: 'master-owners',
+                            path: 'master-users',
                             loadChildren: () =>
                                 import(
-                                    './presentations/admin/land/owner/admin-owner-routing.module'
-                                ).then((m) => m.AdminOwnerRoutingModule),
+                                    './presentations/admin/users/admin-user-routing.module'
+                                ).then((m) => m.AdminUserRoutingModule),
                         },
                         {
                             path: 'master-locations',
@@ -78,7 +78,7 @@ import { USERROLESENUM } from './core/constants/enums';
                             path: 'master-users',
                             loadChildren: () =>
                                 import(
-                                    './presentations/admin/users/admin-master-users-routing.module'
+                                    './presentations/admin/usersold/admin-master-users-routing.module'
                                 ).then((m) => m.AdmingMasterUsersRoutingModule),
                         },
 

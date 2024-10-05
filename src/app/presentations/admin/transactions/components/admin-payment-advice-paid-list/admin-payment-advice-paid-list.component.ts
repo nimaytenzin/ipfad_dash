@@ -30,23 +30,23 @@ export class AdminPaymentAdvicePaidListComponent implements OnInit {
     constructor(private paymentAdviceDataService: PaymentAdviceDataService) {}
 
     ngOnInit() {
-        this.paymentAdviceDataService
-            .GetAllPaidPaymentAdvicePaginated()
-            .subscribe((res) => {
-                this.paginatedPaymentAdvice = res;
-            });
+        // this.paymentAdviceDataService
+        //     .GetAllPaidPaymentAdvicePaginated()
+        //     .subscribe((res) => {
+        //         this.paginatedPaymentAdvice = res;
+        //     });
     }
 
     onPageChange(e) {
         console.log(e);
-        this.paymentAdviceDataService
-            .GetAllPaidPaymentAdvicePaginated({
-                page: e.page,
-                limit: e.rows,
-            })
-            .subscribe((res) => {
-                this.paginatedPaymentAdvice = res;
-            });
+        // this.paymentAdviceDataService
+        //     .GetAllPaidPaymentAdvicePaginated({
+        //         page: e.page,
+        //         limit: e.rows,
+        //     })
+        //     .subscribe((res) => {
+        //         this.paginatedPaymentAdvice = res;
+        //     });
     }
 
     downloadMasterTable() {}

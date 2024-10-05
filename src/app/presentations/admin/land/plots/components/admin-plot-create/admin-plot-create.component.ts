@@ -161,34 +161,32 @@ export class AdminPlotCreateComponent implements OnInit {
     }
 
     searchThram() {
-        this.thramDataService
-            .SearchForThram({
-                dzongkhagId: this.createPlotForm.controls['dzongkhagId'].value,
-                administrativeZoneId:
-                    this.createPlotForm.controls['administrativeZoneId'].value,
-
-                thramNo: this.createPlotForm.controls['thramNo'].value,
-            })
-            .subscribe({
-                next: (res) => {
-                    console.log(res);
-                    console.log(res);
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Found',
-                        detail: 'Thram Found',
-                    });
-
-                    this.searchedThram = res;
-                    this.thramFound = true;
-                },
-                error: (err) => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Not Found',
-                        detail: 'Tharm Not found',
-                    });
-                },
-            });
+        // this.thramDataService
+        //     .SearchForThram({
+        //         dzongkhagId: this.createPlotForm.controls['dzongkhagId'].value,
+        //         administrativeZoneId:
+        //             this.createPlotForm.controls['administrativeZoneId'].value,
+        //         thramNo: this.createPlotForm.controls['thramNo'].value,
+        //     })
+        //     .subscribe({
+        //         next: (res) => {
+        //             console.log(res);
+        //             console.log(res);
+        //             this.messageService.add({
+        //                 severity: 'success',
+        //                 summary: 'Found',
+        //                 detail: 'Thram Found',
+        //             });
+        //             this.searchedThram = res;
+        //             this.thramFound = true;
+        //         },
+        //         error: (err) => {
+        //             this.messageService.add({
+        //                 severity: 'error',
+        //                 summary: 'Not Found',
+        //                 detail: 'Tharm Not found',
+        //             });
+        //         },
+        //     });
     }
 }

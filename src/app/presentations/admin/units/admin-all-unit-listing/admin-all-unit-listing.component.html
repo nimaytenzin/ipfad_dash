@@ -1,0 +1,103 @@
+<div class="flex align-items-center justify-content-between my-4">
+    <p>Units</p>
+    <div class="flex gap-2">
+        <p-button
+            label="Download Excel"
+            icon="pi pi-file-excel"
+            size="small"
+            (click)="downloadMasterTable()"
+        ></p-button>
+    </div>
+</div>
+
+<div class="flex align-items-center mb-2 justify-content-between">
+    <div>
+        <p>
+            Showing {{ paginatedUnits.data.length }} of
+            {{ paginatedUnits.count }} Entries
+        </p>
+    </div>
+    <div class="">
+        <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [first]="firstPageNumber"
+            [rows]="rows"
+            [totalRecords]="paginatedUnits.count"
+            [rowsPerPageOptions]="rowsPerPageOptions"
+            [showFirstLastIcon]="true"
+            #paginator
+        ></p-paginator>
+    </div>
+</div>
+
+<p-table
+    [value]="paginatedUnits.data"
+    class="p-datatable-sm"
+    [tableStyle]="{ 'min-width': '50rem' }"
+>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Plot ID</th>
+            <th>Building Name</th>
+            <th>Unit Number</th>
+            <th>Location</th>
+            <th>Lease</th>
+            <th>Tenant</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+        <tr>
+            <td>
+                <p *ngFor="let plot of item.building?.plots">
+                    {{ plot.plotId }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ item.building?.name }}
+                </p>
+                <p>
+                    {{ item.building.buildingNumber }}
+                </p>
+            </td>
+            <td>
+                <p>{{ item.floorLevel }}-{{ item.unitNumber }}</p>
+            </td>
+            <td>
+                <p>
+                    <strong
+                        >{{ item.building.subadministrativeZone?.name }},
+                        {{ item.building.administrativeZone?.name }},
+                        {{ item.building.dzongkhag?.name }}</strong
+                    >
+                </p>
+            </td>
+
+            <td>
+                <p>No Active Lease</p>
+            </td>
+            <td>
+                <p>No Active Lease</p>
+            </td>
+
+            <td>
+                <div class="flex gap-2">
+                    <p-button
+                        size="small"
+                        icon="pi pi-eye"
+                        label="View"
+                        (click)="openViewUnit(item.id, item.building.id)"
+                    ></p-button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Showing {{ paginatedUnits?.length }} Units
+        </div>
+        <div></div>
+    </ng-template>
+</p-table>

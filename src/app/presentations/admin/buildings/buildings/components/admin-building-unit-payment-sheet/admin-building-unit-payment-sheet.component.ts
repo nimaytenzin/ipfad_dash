@@ -56,14 +56,6 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
 
     ngOnInit() {
         this.excelDownLoadLink = `${API_URL}/payment-advice/pending/report/building/${this.buildingId}`;
-        console.log(this.excelDownLoadLink);
-
-        // this.unitDataService.GetAllUnitsByBuilding(this.buildingId).subscribe({
-        //     next: (res) => {
-        //         this.units = res;
-        //     },
-        // });
-        this.excelDownLoadLink = `${API_URL}/payment-advice/pending/report/building/${this.buildingId}`;
         this.paDataService
             .GetPaymentAdivicesByBuildingUnitsByYear(
                 this.buildingId,
@@ -73,16 +65,21 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
                 next: (res) => {
                     console.log('PA STSTUS', res);
                     this.unitsWithPA = res;
-                    for (const unit of res) {
-                        if (!unit.activeLeaseAgreement) {
-                            this.vacantUnitCount++;
-                        }
-                        for (const advice of unit.paymentAdvices) {
-                            if (advice && advice.status === 'DUE') {
-                                this.totalPending += advice.totalAmount;
-                            }
+                    if (res) {
+                        for (const unit of res) {
+                            // if (!unit.activeLeaseAgreement) {
+                            //     this.vacantUnitCount++;
+                            // }
+                            // for (const advice of unit.paymentAdvices) {
+                            //     if (advice && advice.status === 'DUE') {
+                            //         this.totalPending += advice.totalAmount;
+                            //     }
+                            // }
                         }
                     }
+                },
+                error: (err) => {
+                    console.log(err);
                 },
             });
     }

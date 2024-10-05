@@ -33,14 +33,8 @@
         </div>
     </div>
 
-    <div
-        *ngIf="!buildingRules || buildingRules.length === 0"
-        class="flex flex-column w-full align-items-center justify-content-center"
-    >
-        <img style="width: 100px" class="mt-5" src="assets/logo/nodata.png" />
-        <p>
-            <small> Not rules added </small>
-        </p>
+    <div *ngIf="!buildingRules || buildingRules.length === 0">
+        <p>...No building rules</p>
     </div>
 
     <p-dialog

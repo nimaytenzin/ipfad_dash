@@ -5,7 +5,6 @@ import { environment } from 'src/environments/environment';
 import { API_URL } from '../../constants/constants';
 import { CreateInvoiceDTO } from '../../dto/payments/invoice/create-invoice.dto';
 import { InvoiceDTO } from '../../dto/payments/invoice/invoice.dto';
-import { LeaseAgreementDTO } from '../lease/lease-agreement.dto';
 import {
     PaginatedParamsOptions,
     PaginatedData,
@@ -23,24 +22,22 @@ export class invoiceDataService {
         return this.http.post<InvoiceDTO>(`${this.apiUrl}/invoice`, data);
     }
 
-    GetAllPendingInvoicesPaginated(
-        params?: PaginatedParamsOptions
-    ): Observable<PaginatedData<InvoiceDTO>> {
-        let httpParams = new HttpParams();
-        if (params) {
-            if (params.page !== undefined) {
-                httpParams = httpParams.append('page', params.page.toString());
-            }
-            if (params.limit !== undefined) {
-                httpParams = httpParams.append(
-                    'limit',
-                    params.limit.toString()
-                );
-            }
-        }
-        return this.http.get<PaginatedData<InvoiceDTO>>(
-            `${this.apiUrl}/payment-advice/pending/p`,
-            { params: httpParams }
-        );
+    GetAllPendingInvoicesPaginated(params?: PaginatedParamsOptions) {
+        // let httpParams = new HttpParams();
+        // if (params) {
+        //     if (params.page !== undefined) {
+        //         httpParams = httpParams.append('page', params.page.toString());
+        //     }
+        //     if (params.limit !== undefined) {
+        //         httpParams = httpParams.append(
+        //             'limit',
+        //             params.limit.toString()
+        //         );
+        //     }
+        // }
+        // return this.http.get<PaginatedData<InvoiceDTO>>(
+        //     `${this.apiUrl}/payment-advice/pending/p`,
+        //     { params: httpParams }
+        // );
     }
 }

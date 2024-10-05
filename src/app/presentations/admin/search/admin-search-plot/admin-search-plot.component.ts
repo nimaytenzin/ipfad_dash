@@ -47,6 +47,8 @@ export class AdminSearchPlotComponent implements OnInit {
     selectedAdministrativeZone: AdministrativeZoneDTO;
     selectedSubAdministrativeZone: SubAdministrativeZoneDTO;
     thramNo: string;
+    plotId: string;
+
     thram: ThramDTO;
     plots: PlotDTO[];
 
@@ -96,7 +98,7 @@ export class AdminSearchPlotComponent implements OnInit {
 
     searchThram() {
         this.thramDataService
-            .SearchForThram({
+            .SearchForThramByThramNo({
                 dzongkhagId: this.selectedDzongkhag.id,
                 administrativeZoneId: this.selectedAdministrativeZone.id,
 
@@ -118,6 +120,14 @@ export class AdminSearchPlotComponent implements OnInit {
                         });
                     }
                 },
+            });
+    }
+
+    searchThramByPlotId() {
+        this.thramDataService
+            .SearchForThramByPlotId(this.plotId)
+            .subscribe((res) => {
+                this.thram = res;
             });
     }
 
