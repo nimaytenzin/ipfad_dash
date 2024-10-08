@@ -21,10 +21,15 @@ export enum LEASESTATUS {
     CANCELLED = 'CANCELLED', // Lease was canceled before it became active
     SUSPENDED = 'SUSPENDED', // Lease temporarily paused (e.g., due to legal issues)
 }
-export enum LESSORTYPE {
+export enum LESSEETYPE {
     INDIVIDUAL = 'INDIVIDUAL',
     BUSINESS = 'BUSINESS',
     INSTITUTION = 'INSTITUTION',
+}
+
+export enum LESSORTYPE {
+    OWNER = 'OWNER',
+    ADMIN = 'ADMIN',
 }
 
 export enum LEASEUSES {

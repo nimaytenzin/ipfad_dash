@@ -7,8 +7,11 @@ import { BuildingDataService } from 'src/app/core/dataservice/building/building.
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { StatsDataService } from 'src/app/core/dataservice/statistics/statistics.dataservice';
-import { OwnerSummaryStatsDTO } from 'src/app/core/dataservice/statistics/statistics.dto';
-import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AdminSummaryStatisticsDTO } from 'src/app/core/dataservice/statistics/statistics.dto';
+import {
+    AuthenticatedUser,
+    AuthService,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
@@ -52,13 +55,12 @@ export class AdminDashboardComponent implements OnInit {
     ];
 
     value = [{ label: 'Space used', value: 15, color: '#34d399' }];
-    summaryStats: OwnerSummaryStatsDTO = {
+    summaryStats: AdminSummaryStatisticsDTO = {
         buildingCount: 0,
         unitCount: 0,
         activeLeaseCount: 0,
         totalRentalIncome: 0,
         pendingPaymentAmount: 0,
-        buildings: [],
         thramCount: 0,
         plotCount: 0,
         pendingPaymentAdviceCount: 0,
@@ -66,6 +68,7 @@ export class AdminDashboardComponent implements OnInit {
     };
 
     totalPending: number = 0;
+    authenticatedUser: AuthenticatedUser;
 
     payments: PaymentAdviceDto[] = [];
     requests = [
@@ -202,13 +205,20 @@ export class AdminDashboardComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.statsService.GetStatsByOwner(1).subscribe({
-            next: (res) => {
-                this.summaryStats = res;
-                this.fetchPendingPAByBuilding(res.buildings[0].id);
-            },
-        });
+        this.authenticatedUser = this.authService.GetAuthenticatedUser();
+        this.statsService
+            .GetSummaryStatsByAdmin(this.authService.GetAuthenticatedUser().id)
+            .subscribe({
+                next: (res) => {
+                    this.summaryStats = res;
+                    // this.fetchPendingPAByBuilding(res.buildings[0].id);
+                },
+            });
         this.getExpiringLease();
+    }
+
+    roundUp(number: number) {
+        return Math.ceil(number);
     }
     ngAfterViewChecked() {
         this.cdr.detectChanges();
@@ -229,9 +239,9 @@ export class AdminDashboardComponent implements OnInit {
 
     loadPaymentAdvice(event) {
         const selectedIndex = event.index;
-        const selectedBuilding = this.summaryStats.buildings[selectedIndex];
+        // const selectedBuilding = this.summaryStats.buildings[selectedIndex];
 
-        this.fetchPendingPAByBuilding(selectedBuilding.id);
+        // this.fetchPendingPAByBuilding(selectedBuilding.id);
     }
 
     fetchPendingPAByBuilding(buildingId) {
@@ -273,12 +283,12 @@ export class AdminDashboardComponent implements OnInit {
     }
 
     openBroadcastSmsModal() {
-        this.ref = this.dialogService.open(OwnerBroadcastSmsComponent, {
-            header: 'Broadcast SMS',
-            data: {
-                buildings: this.summaryStats.buildings,
-            },
-        });
+        // this.ref = this.dialogService.open(OwnerBroadcastSmsComponent, {
+        //     header: 'Broadcast SMS',
+        //     data: {
+        //         buildings: this.summaryStats.buildings,
+        //     },
+        // });
     }
     openAddBuildingModal() {
         this.ref = this.dialogService.open(OwnerAddBuildingComponent, {

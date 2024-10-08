@@ -1,6 +1,6 @@
 import { BuildingDTO } from '../../dto/properties/building.dto';
 
-export interface OwnerSummaryStatsDTO {
+export interface AdminSummaryStatisticsDTO {
     buildingCount: number;
     unitCount: number;
 
@@ -12,6 +12,4 @@ export interface OwnerSummaryStatsDTO {
     thramCount: number;
     plotCount: number;
     ownerCount: number;
-
-    buildings: BuildingDTO[];
 }

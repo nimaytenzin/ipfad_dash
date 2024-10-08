@@ -5,6 +5,10 @@ import {
     COMPANY_NAME,
     ZHIDHAYCONTACTDETAILS,
 } from 'src/app/core/constants/constants';
+import {
+    AuthenticatedUser,
+    AuthService,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-admin-topbar',
@@ -20,5 +24,12 @@ export class AdminTopbarComponent {
 
     @ViewChild('topbarmenu') menu!: ElementRef;
 
-    constructor(public layoutService: AdminLayoutService) {}
+    authenticatedUser: AuthenticatedUser;
+
+    constructor(
+        public layoutService: AdminLayoutService,
+        private authService: AuthService
+    ) {
+        this.authenticatedUser = this.authService.GetAuthenticatedUser();
+    }
 }

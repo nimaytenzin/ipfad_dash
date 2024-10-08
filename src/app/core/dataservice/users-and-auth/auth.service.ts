@@ -16,6 +16,8 @@ export interface AuthenticatedUser {
     iat: number;
     isVerified: number;
     userAuthId: number;
+    nameEnglish: string;
+    nameDzongkha: string;
 }
 export interface UpdatePinDto {
     userAuthId: number;

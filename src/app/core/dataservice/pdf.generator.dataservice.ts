@@ -11,9 +11,12 @@ export class PDFGeneratorDataService {
 
     constructor(private http: HttpClient) {}
 
-    DownloadLeaseAgreementPdf(leaseAgreementId: number) {
-        return this.http.get(
-            `${this.apiUrl}/pdf-generator/lease-agreement/${leaseAgreementId}`
+    DownloadLeaseAgreementPdf(leaseAgreementId: number): Observable<Blob> {
+        return this.http.get<Blob>(
+            `${this.apiUrl}/pdf-generator/lease-agreement/${leaseAgreementId}`,
+            {
+                responseType: 'blob' as 'json', // Explicitly specify the response type
+            }
         );
     }
 }

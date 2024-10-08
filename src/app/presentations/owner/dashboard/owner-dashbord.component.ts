@@ -10,7 +10,6 @@ import { CardModule } from 'primeng/card';
 import { GalleriaModule } from 'primeng/galleria';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
 import { StatsDataService } from 'src/app/core/dataservice/statistics/statistics.dataservice';
-import { OwnerSummaryStatsDTO } from 'src/app/core/dataservice/statistics/statistics.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
 import { MeterGroupModule } from 'primeng/metergroup';
@@ -57,19 +56,7 @@ export class OwnerDashbordComponent implements OnInit, AfterViewChecked {
     ];
 
     value = [{ label: 'Space used', value: 15, color: '#34d399' }];
-    summaryStats: OwnerSummaryStatsDTO = {
-        buildingCount: 0,
-        unitCount: 0,
-        activeLeaseCount: 0,
-        totalRentalIncome: 0,
-        pendingPaymentAmount: 0,
-        buildings: [],
-        thramCount: 0,
-        plotCount: 0,
-        pendingPaymentAdviceCount: 0,
-        ownerCount: 0,
-    };
-
+    summaryStats;
     totalPending: number = 0;
 
     payments: PaymentAdviceDto[] = [];
@@ -207,13 +194,13 @@ export class OwnerDashbordComponent implements OnInit, AfterViewChecked {
     ) {}
 
     ngOnInit() {
-        console.log(this.authService.GetAuthenticatedUser());
-        this.statsService.GetStatsByOwner(1).subscribe({
-            next: (res) => {
-                this.summaryStats = res;
-                this.fetchPendingPAByBuilding(res.buildings[0].id);
-            },
-        });
+        // console.log(this.authService.GetAuthenticatedUser());
+        // this.statsService.(1).subscribe({
+        //     next: (res) => {
+        //         this.summaryStats = res;
+        //         this.fetchPendingPAByBuilding(res.buildings[0].id);
+        //     },
+        // });
         this.getExpiringLease();
     }
     ngAfterViewChecked() {

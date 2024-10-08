@@ -75,10 +75,33 @@
             </td>
 
             <td>
-                <p>No Active Lease</p>
+                <div *ngFor="let lease of item.leaseAgreements">
+                    {{ lease.status }}
+                </div>
             </td>
             <td>
-                <p>No Active Lease</p>
+                <div *ngFor="let lease of item.leaseAgreements">
+                    <div *ngIf="lease.lesseeType === LESSEETYPES.INDIVIDUAL">
+                        <p>
+                            Name: {{ lease.tenant.nameEnglish }}
+                            {{ lease.tenant.nameDzongkha }}
+                        </p>
+                        <p>Phone Number: {{ lease.tenant.phoneNumber }}</p>
+                        <p>CID: {{ lease.tenant.cid }}</p>
+                    </div>
+                    <div *ngIf="lease.lesseeType !== LESSEETYPES.INDIVIDUAL">
+                        <p>Name: {{ lease.organization.name }}</p>
+                        <p class="font-semibold mt-1 mb-2">
+                            {{ lease.organization.userType }} Details
+                        </p>
+                        <p>
+                            Name: {{ lease.tenant.nameEnglish }}
+                            {{ lease.tenant.nameDzongkha }}
+                        </p>
+                        <p>Phone Number: {{ lease.tenant.phoneNumber }}</p>
+                        <p>CID: {{ lease.tenant.cid }}</p>
+                    </div>
+                </div>
             </td>
 
             <td>

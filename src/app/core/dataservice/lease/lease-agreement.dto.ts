@@ -2,6 +2,7 @@ import {
     LEASESTATUS,
     LEASETYPE,
     LEASEUSES,
+    LESSEETYPE,
     LESSORTYPE,
 } from '../../constants/enums';
 import { PaymentAdviceDto } from '../../dto/payments/payment-advice/payment-advice.dto';
@@ -12,6 +13,7 @@ import { LandLordDTO } from '../../dto/users/landlord.dto';
 import { TenantDTO } from '../../dto/users/tenant.dto';
 import { BankAccountDto } from '../bankaccounts/bankaccount.dto';
 import { PlotDTO } from '../land/dto/plot.dto';
+import { OrganiztionDTO } from '../organization/organization.dto';
 import { OwnerDTO } from '../owners/dto/owner.dto';
 import { UserDTO } from '../users-and-auth/dto/user.dto';
 import { LeaseRuleDTO } from './lease-rule.dto';
@@ -24,6 +26,7 @@ export interface LeaseAgreeementDTO {
     bankAccount: BankAccountDto;
 
     status: LEASESTATUS;
+    lesseeType: LESSEETYPE;
     lessorType: LESSORTYPE;
 
     entryDamageReportSubmitted: boolean;
@@ -42,6 +45,9 @@ export interface LeaseAgreeementDTO {
 
     tenantId: number;
     tenant: UserDTO;
+
+    organizationId?: number;
+    organization?: OrganiztionDTO;
     buildingId?: number;
     building?: BuildingDTO;
     unitId?: number;
@@ -69,6 +75,9 @@ export interface LeaseAgreeementDTO {
     areaLeased?: number;
     areaUnit?: string;
     ratePerArea?: number;
+
+    terminationRemarks?: string;
+    terminationDate?: string;
 }
 
 export interface CreateLeaseAgreementDTO {
@@ -76,6 +85,7 @@ export interface CreateLeaseAgreementDTO {
     bankAccountId: number;
 
     status: LEASESTATUS;
+    lesseeType: LESSEETYPE;
     lessorType: LESSORTYPE;
 
     entryDamageReportSubmitted: boolean;
@@ -91,6 +101,8 @@ export interface CreateLeaseAgreementDTO {
 
     plotId: number;
     tenantId: number;
+    organizationId?: number;
+
     buildingId?: number;
     unitId?: number;
 
@@ -122,7 +134,7 @@ export interface CreateBuildingLeaseAgreementDTO {
     bankAccountId: number;
 
     status: LEASESTATUS;
-    lessorType: LESSORTYPE;
+    lesseeType: LESSEETYPE;
 
     entryDamageReportSubmitted: boolean;
     securityDepositPaid: boolean;
@@ -137,6 +149,8 @@ export interface CreateBuildingLeaseAgreementDTO {
 
     plotId: number;
     tenantId: number;
+    organizationId?: number;
+
     buildingId: number;
     rent: number;
     use: LEASEUSES;
@@ -162,7 +176,7 @@ export interface CreatePlotLeaseAgreementDTO {
     bankAccountId: number;
 
     status: LEASESTATUS;
-    lessorType: LESSORTYPE;
+    lesseeType: LESSEETYPE;
 
     entryDamageReportSubmitted: boolean;
     securityDepositPaid: boolean;
@@ -177,6 +191,8 @@ export interface CreatePlotLeaseAgreementDTO {
 
     plotId: number;
     tenantId: number;
+    organizationId?: number;
+
     areaLeased: number;
     areaUnit: string;
     ratePerArea: number;
@@ -200,56 +216,9 @@ export interface CreatePlotLeaseAgreementDTO {
     leaseRules: LeaseRuleDTO[];
 }
 
+export interface TerminateLeaseAgreementDTO {
+    terminationRemarks: string;
+    terminationDate: string;
+}
+
 //OLD MODELS
-
-export interface LeaseAgreementPartiesDTO {
-    tenantId: number;
-    landlordId: number;
-    witnessId: number;
-
-    tenant: TenantDTO;
-    landlord: LandLordDTO;
-
-    agreementDay: number;
-    agreementMonth: number;
-    agreementYear: number;
-}
-
-export interface LeaseAgreementPropertiesDTO {
-    buildingId: number;
-    building: BuildingDTO;
-    unit: UnitDTO;
-    unitId: number;
-    use: string;
-}
-
-export interface LeaseAgreementDurationDTO {
-    leaseDurationMonths: number;
-    leaseStartDate: Date;
-    leaseEndDate: Date;
-}
-export interface LeaseAgreementChargesDTO {
-    rent: number;
-    leaseSurcharges: LeaseSurchargeDTO[];
-    securityDepositAmount: number;
-}
-
-export interface LeaseAgreementTermsDTO {
-    tenantSubletAuthority: boolean;
-    tenantPrematureTermination: boolean;
-    ownerPrematureTermination: boolean;
-    rentIncreaseNoticePeriod: number;
-    evictionNoticePeriod: number;
-    vacationNoticePeriod: number;
-    leaseRules: LeaseRuleDTO[];
-    paymentDueDay: number;
-    applyLatePaymentFee: boolean;
-}
-
-export interface GroupedLeaseAgreementDTO {
-    parties: LeaseAgreementPartiesDTO;
-    properties: LeaseAgreementPropertiesDTO;
-    terms: LeaseAgreementTermsDTO;
-    charges: LeaseAgreementChargesDTO;
-    duration: LeaseAgreementDurationDTO;
-}

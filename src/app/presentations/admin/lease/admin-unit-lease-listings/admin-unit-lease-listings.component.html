@@ -44,11 +44,12 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Status</th>
-                        <th>Type</th>
                         <th>Plot</th>
                         <th>Building</th>
                         <th>Unit</th>
-                        <th>Tenant</th>
+                        <th>Lessor Type</th>
+                        <th>Lessee Type</th>
+                        <th>Lessee</th>
                         <th>Use</th>
                         <th>Start Date</th>
                         <th>Duration</th>
@@ -61,9 +62,7 @@
                         <td>
                             {{ item.status }}
                         </td>
-                        <td>
-                            {{ item.type }}
-                        </td>
+
                         <td>
                             {{ item.plot.plotId }}
                         </td>
@@ -77,9 +76,41 @@
                             }}
                         </td>
                         <td>
-                            {{ item.tenant?.nameEnglish }}/{{
-                                item.tenant.nameDzongkha
-                            }}
+                            <p>
+                                {{ item.lessorType }}
+                            </p>
+                            <p *ngIf="item.lessorType === LessorTypes.ADMIN">
+                                -{{ admin.nameEnglish }}/{{
+                                    admin.nameDzongkha
+                                }}
+                            </p>
+                        </td>
+                        <td>
+                            {{ item.lesseeType }}
+                        </td>
+                        <td>
+                            <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
+                                <p>
+                                    Name: {{ item.tenant?.nameEnglish }}/{{
+                                        item.tenant.nameDzongkha
+                                    }}
+                                </p>
+                                <p>
+                                    Phone Number: {{ item.tenant.phoneNumber }}
+                                </p>
+                            </div>
+
+                            <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
+                                <p>Name: {{ item.organization.name }}</p>
+                                <p>
+                                    {{ item.organization.userType }} Name:{{
+                                        item.tenant?.nameEnglish
+                                    }}/{{ item.tenant.nameDzongkha }}
+                                </p>
+                                <p>
+                                    Phone Number: {{ item.tenant.phoneNumber }}
+                                </p>
+                            </div>
                         </td>
                         <td>
                             {{ item.use }}
@@ -99,18 +130,18 @@
                                     severity="secondary"
                                     icon="pi pi-eye"
                                 ></p-button>
-                                <p-button
+                                <!-- <p-button
                                     size="small"
                                     severity="secondary"
                                     label="Renew"
                                     icon="pi pi-refresh"
-                                ></p-button>
-                                <p-button
+                                ></p-button> -->
+                                <!-- <p-button
                                     size="small"
                                     severity="secondary"
                                     label="Terminate"
                                     icon="pi pi-times"
-                                ></p-button>
+                                ></p-button> -->
                             </div>
                         </td>
                     </tr>

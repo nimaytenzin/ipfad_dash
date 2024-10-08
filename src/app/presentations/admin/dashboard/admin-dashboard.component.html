@@ -1,7 +1,11 @@
 <div class="flex gap-6 px-4">
     <div class="w-8">
         <div class="flex gap-4 my-4 justify-content-between align-items-end">
-            <p>Welcome Kinley</p>
+            <p>
+                Welcome {{ authenticatedUser.nameEnglish }}/{{
+                    authenticatedUser.nameDzongkha
+                }}
+            </p>
             <p-button
                 label="Broadcast SMS"
                 severity="secondary"
@@ -102,9 +106,11 @@
             <div class="w-3 border-1 surface-border border-round-md p-2">
                 <p class="text-2xl font-bold">
                     Occupancy ({{
-                        (summaryStats.activeLeaseCount /
-                            summaryStats.unitCount) *
-                            100
+                        roundUp(
+                            (summaryStats.activeLeaseCount /
+                                summaryStats.unitCount) *
+                                100
+                        )
                     }}
                     %)
                 </p>
@@ -264,7 +270,7 @@
                     <p class="text-xl font-semibold">Payments</p>
                     <p-divider type="dashed"></p-divider>
                     <p-tabView (onChange)="loadPaymentAdvice($event)">
-                        <p-tabPanel
+                        <!-- <p-tabPanel
                             *ngFor="let building of summaryStats.buildings"
                             [header]="building.name"
                         >
@@ -1253,7 +1259,7 @@
                                     </svg>
                                 </div>
                             </ng-template>
-                        </p-tabPanel>
+                        </p-tabPanel> -->
                     </p-tabView>
                 </div>
             </div>

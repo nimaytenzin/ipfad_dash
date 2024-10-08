@@ -27,7 +27,7 @@
                 <th>Floor Level</th>
                 <th>Unit Number</th>
                 <th>Detail</th>
-                <th>Active Lease</th>
+
                 <th>Tenant Details</th>
                 <th>Actions</th>
             </tr>
@@ -52,21 +52,34 @@
                     </p>
                 </td>
                 <td>
-                    <div *ngIf="unit.activeLeaseAgreement">
-                        <p>Leased</p>
-                        <p>insert lease details here</p>
-                    </div>
-                    <div
-                        *ngIf="!unit.activeLeaseAgreement"
-                        class="flex flex-column gap-2"
-                    >
-                        <p class="text-red-500">No Active Lease Agreement</p>
+                    <div *ngFor="let lease of unit.leaseAgreements">
+                        <div
+                            *ngIf="lease.lesseeType === LESSEETYPES.INDIVIDUAL"
+                        >
+                            <p>
+                                Name: {{ lease.tenant.nameEnglish }}
+                                {{ lease.tenant.nameDzongkha }}
+                            </p>
+                            <p>Phone Number: {{ lease.tenant.phoneNumber }}</p>
+                            <p>CID: {{ lease.tenant.cid }}</p>
+                        </div>
+                        <div
+                            *ngIf="lease.lesseeType !== LESSEETYPES.INDIVIDUAL"
+                        >
+                            <p>Name: {{ lease.organization.name }}</p>
+                            <p class="font-semibold mt-1 mb-2">
+                                {{ lease.organization.userType }} Details
+                            </p>
+                            <p>
+                                Name: {{ lease.tenant.nameEnglish }}
+                                {{ lease.tenant.nameDzongkha }}
+                            </p>
+                            <p>Phone Number: {{ lease.tenant.phoneNumber }}</p>
+                            <p>CID: {{ lease.tenant.cid }}</p>
+                        </div>
                     </div>
                 </td>
-                <td>
-                    <p>Name:Nima Yoezer Tenzin</p>
-                    <p>Phone:17262763</p>
-                </td>
+
                 <td>
                     <div class="flex gap-2">
                         <p-button

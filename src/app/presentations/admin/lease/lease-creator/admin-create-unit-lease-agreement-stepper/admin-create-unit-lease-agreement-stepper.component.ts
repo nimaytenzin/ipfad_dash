@@ -1,94 +1,93 @@
 import { CommonModule } from '@angular/common';
-import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import {
-    DialogService,
-    DynamicDialogConfig,
-    DynamicDialogRef,
-} from 'primeng/dynamicdialog';
-import { StepperModule } from 'primeng/stepper';
-import { StepsModule } from 'primeng/steps';
-import { ToastModule } from 'primeng/toast';
-import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
-import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
-import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
-import { AdminAddTenantComponent } from '../../usersold/crud-dialog/admin-add-tenant/admin-add-tenant.component';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { AdminUsersCreateModalComponent } from '../../users/components/admin-users-create-modal/admin-users-create-modal.component';
-import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
-import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
+import { Component, OnInit } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
-import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
-import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
-import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
-import { CardModule } from 'primeng/card';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
-import { BuildingSurchargeDataService } from 'src/app/core/dataservice/building/building-surcharge.data.service';
-import { UnitSurchargeDataService } from 'src/app/core/dataservice/units/unit-surcharge.data.service';
-import { BuildingSurchargeDTO } from 'src/app/core/dto/properties/building-surcharge.dto';
-import { UnitSurchargeDTO } from 'src/app/core/dto/units/unit-surcharge.dto';
-import { TableModule } from 'primeng/table';
-import { LeaseRuleDTO } from 'src/app/core/dataservice/lease/lease-rule.dto';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
-import { GETDMYFROMDATE, GETMONTHDIFF } from 'src/app/core/utility/date.helper';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DividerModule } from 'primeng/divider';
+import { DropdownModule } from 'primeng/dropdown';
+import {
+    DialogService,
+    DynamicDialogConfig,
+    DynamicDialogRef,
+} from 'primeng/dynamicdialog';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
 import {
     LEASESTATUS,
     LEASETYPE,
     LEASEUSES,
+    LESSEETYPE,
     LESSORTYPE,
 } from 'src/app/core/constants/enums';
-import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { CreateLeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { BankAccountDto } from 'src/app/core/dataservice/bankaccounts/bankaccount.dto';
 import { BankAccountDataService } from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
+import { BuildingSurchargeDataService } from 'src/app/core/dataservice/building/building-surcharge.data.service';
+import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
+import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
+import { CreateLeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { LeaseRuleDTO } from 'src/app/core/dataservice/lease/lease-rule.dto';
+import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
+import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organization.dto';
+import { UnitSurchargeDataService } from 'src/app/core/dataservice/units/unit-surcharge.data.service';
+import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
+import {
+    AuthenticatedUser,
+    AuthService,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
+import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
+import { BuildingSurchargeDTO } from 'src/app/core/dto/properties/building-surcharge.dto';
+import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { UnitSurchargeDTO } from 'src/app/core/dto/units/unit-surcharge.dto';
+import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
+import { GETDMYFROMDATE, GETMONTHDIFF } from 'src/app/core/utility/date.helper';
+import { AdminUsersCreateModalComponent } from '../../../users/components/admin-users-create-modal/admin-users-create-modal.component';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @Component({
-    selector: 'app-admin-create-lease-stepper',
+    selector: 'app-admin-create-unit-lease-agreement-stepper',
+    templateUrl: './admin-create-unit-lease-agreement-stepper.component.html',
+    styleUrls: ['./admin-create-unit-lease-agreement-stepper.component.css'],
     standalone: true,
     imports: [
         CommonModule,
         ButtonModule,
-        InputNumberModule,
-        FormsModule,
         InputTextModule,
-        DropdownModule,
-        CardModule,
-        FormsModule,
+        InputNumberModule,
+        DividerModule,
         InputGroupModule,
         TableModule,
-        InputGroupAddonModule,
-        RadioButtonModule,
-        ConfirmPopupModule,
-        ReactiveFormsModule,
+        DropdownModule,
+        FormsModule,
         ConfirmDialogModule,
-        DialogModule,
-        InputTextareaModule,
         CalendarModule,
+        ConfirmPopupModule,
+        InputGroupAddonModule,
+        DialogModule,
+        ReactiveFormsModule,
+        InputTextareaModule,
+        RadioButtonModule,
     ],
-    providers: [DialogService, ConfirmationService],
-    templateUrl: './admin-create-lease-stepper.component.html',
-    styleUrl: './admin-create-lease-stepper.component.scss',
+    providers: [ConfirmationService, DialogService],
 })
-export class AdminCreateLeaseStepperComponent implements OnInit {
+export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
     ref: DynamicDialogRef;
-    plotId: string;
+    plotId: string = 'LT1-366';
 
     //Properties
     plot: PlotDTO | null = null;
@@ -99,9 +98,15 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
 
     units: UnitDTO[] = [];
     selectedUnit: UnitDTO | null = null;
-
-    //Owners
     owners: UserDTO[] | null = null;
+
+    //Tenant PArty
+    selectedOrganization: OrganiztionDTO | null = null;
+    searchPhoneNumber: number = 17317237;
+    searchedUser: UserDTO;
+    tenantPartySelected: boolean = false;
+
+    lesseeTypeEnum = LESSEETYPE;
 
     //Genral terms
     currentDate = new Date();
@@ -110,8 +115,13 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
     calculateMonthsDifference = GETMONTHDIFF;
 
     uses = Object.values(LEASEUSES);
+    lesseeTypes = Object.values(LESSEETYPE);
+    selectedLesseeType: string = this.lesseeTypes[0];
+
     lessorTypes = Object.values(LESSORTYPE);
-    selectedLessorType: string = this.lessorTypes[0];
+    selectedLessorType = LESSORTYPE.OWNER;
+    admin: AuthenticatedUser;
+
     selectedUse: LEASEUSES = this.uses[0];
 
     //charges
@@ -141,10 +151,6 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
     evictionNoticePeriod: number = 2;
     vacationNoticePeriod: number = 2;
 
-    searchPhoneNumber: number;
-    tenantFound: boolean = false;
-    tenant: UserDTO;
-
     steps: string[] = [
         'Property',
         'Tenant',
@@ -171,10 +177,8 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
         private leaseAgreementDataService: LeaseAgreementDataService,
         private bankAccountDataService: BankAccountDataService
     ) {
-        if (this.config.data?.unit) {
-            this.unit = this.config.data.unit;
-        }
-
+        this.admin = this.authService.GetAuthenticatedUser();
+        console.log('AUTHENTICAED USRE', this.admin);
         this.createLeaseChargeForm = this.fb.group({
             particular: [null],
             amount: [null],
@@ -191,14 +195,6 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
                 console.log(res);
             },
         });
-        // this.unitDataService
-        //     .GetDetailedUnitInformation(this.unit.id)
-        //     .subscribe({
-        //         next: (res) => {
-        //             console.log('DETAILED INIT', res);
-        //             this.unit = res;
-        //         },
-        //     });
     }
 
     //PROPERTY STEPPER
@@ -206,7 +202,6 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
         this.getPlotDetails();
         this.buildingDataService.GetBuildingsByPlot(this.plotId).subscribe({
             next: (res) => {
-                console.log(res);
                 if (res.length) {
                     this.buildings = res;
                     this.selectedBuilding = this.buildings[0];
@@ -219,6 +214,13 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
                     });
                 }
             },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error Fetching Buildings',
+                    detail: 'An error occurred while loading buildings.',
+                });
+            },
         });
     }
     getPlotDetails() {
@@ -230,12 +232,31 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
         });
     }
     selectUnit() {
-        this.unit = this.selectedUnit;
-        this.building = this.selectedBuilding;
+        console.log(
+            'VALIDATING selected unit',
+            this.selectedUnit.floorArea,
+            this.selectedUnit.unitNumber
+        );
+        this.leaseAgreementDataService
+            .CheckUnitEligibilityForLease(this.selectedUnit.id)
+            .subscribe({
+                next: (res) => {
+                    console.log('VALIDATING UNIT ');
+                    console.log(res);
+                    this.unit = this.selectedUnit;
+                    this.building = this.selectedBuilding;
 
-        this.getUnitSurcharges(this.selectedUnit.id);
-        this.getbuildingSurcharges(this.selectedBuilding.id);
-        console.log('LEASE CHARGES', this.leaseCharges);
+                    this.getUnitSurcharges(this.selectedUnit.id);
+                    this.getbuildingSurcharges(this.selectedBuilding.id);
+                },
+                error: (err) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Unit Not Eligible for Lease',
+                        detail: err.error.message,
+                    });
+                },
+            });
     }
 
     loadUnitsByBuilding(buildingId: number) {
@@ -243,7 +264,6 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
             next: (res) => {
                 if (res.length) {
                     this.units = res;
-                    console.log('UNITS', res);
                     this.selectedUnit = this.units[0];
                 } else {
                     this.messageService.add({
@@ -264,9 +284,25 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
             .AdminSearchTenantByPhoneNumber(this.searchPhoneNumber)
             .subscribe({
                 next: (res) => {
-                    console.log('Tenant found', res);
-                    this.tenantFound = true;
-                    this.tenant = res;
+                    this.searchedUser = res;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Tenant Found!',
+                        detail:
+                            'Tenant with phone ' +
+                            this.searchedUser.phoneNumber +
+                            '  found.',
+                    });
+                },
+                error: (err) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Tenant Not Found!',
+                        detail:
+                            'Tenant with phone ' +
+                            this.searchPhoneNumber +
+                            ' not found.',
+                    });
                 },
             });
     }
@@ -393,7 +429,9 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
         let data: CreateLeaseAgreementDTO = {
             type: LEASETYPE.UNIT,
             status: LEASESTATUS.PENDING,
+
             bankAccountId: this.selectedOwnerBankAccount.id,
+            lesseeType: LESSEETYPE[this.selectedLesseeType],
             lessorType: LESSORTYPE[this.selectedLessorType],
             entryDamageReportSubmitted: false,
             securityDepositPaid: false,
@@ -420,16 +458,35 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
             evictionNoticePeriod: this.evictionNoticePeriod,
             plotId: this.plot.id,
             buildingId: this.building.id,
-            tenantId: this.tenant.id,
+            tenantId: this.searchedUser.id,
             unitId: this.unit.id,
             leaseSurcharges: this.leaseCharges,
             leaseRules: this.leaseRules,
         };
-        this.leaseAgreementDataService
-            .CreateLeaseAgreement(data)
-            .subscribe((res) => {
-                console.log(res);
-            });
+        console.log(data.lesseeType);
+
+        if (data.lesseeType !== LESSEETYPE.INDIVIDUAL) {
+            data.organizationId = this.selectedOrganization.id;
+        }
+
+        this.leaseAgreementDataService.CreateLeaseAgreement(data).subscribe({
+            next: (res) => {
+                if (res) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Created',
+                        detail: 'Lease Agreement Created! Tenant Must accept the agreement to activate the agreement.',
+                    });
+                }
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Failed to Create',
+                    detail: err.error.message,
+                });
+            },
+        });
     }
     //navitaion
 
@@ -460,7 +517,7 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
             case 4:
                 return true;
             default:
-                return false;
+                return true;
         }
     }
 
@@ -496,8 +553,52 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
         return true;
     }
 
+    clearUnitSelection() {
+        this.unit = null;
+        this.building = null;
+        this.plot = null;
+        this.owners = null;
+    }
+
+    confirmTenantPartySelection() {
+        if (!this.searchedUser) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please search for a valid tenant',
+                life: 3000,
+            });
+            return false;
+        }
+        if (this.selectedLesseeType !== this.lesseeTypeEnum.INDIVIDUAL) {
+            if (!this.selectedOrganization) {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Select Organiation',
+                    detail: 'For Lessee Type other than individual, a business or institution entity must be selected',
+                    life: 3000,
+                });
+                return false;
+            }
+        }
+        this.tenantPartySelected = true;
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Tenant Details Valid',
+            life: 3000,
+        });
+        return true;
+    }
+
+    clearTenantPartySelection() {
+        this.searchedUser = null;
+        this.selectedOrganization = null;
+        this.tenantPartySelected = false;
+    }
+
     checkTenantDetails(): boolean {
-        if (!this.tenant) {
+        if (!this.tenantPartySelected) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Input Error',
@@ -511,7 +612,7 @@ export class AdminCreateLeaseStepperComponent implements OnInit {
 
     checkGeneralTerms(): boolean {
         if (
-            !this.selectedLessorType ||
+            !this.selectedLesseeType ||
             !this.leaseStartDate ||
             !this.leaseEndDate ||
             !this.selectedUse

@@ -10,15 +10,18 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
-import { INVOICESTATUS } from 'src/app/core/constants/enums';
+import { INVOICESTATUS, LESSORTYPE } from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { CreateInvoiceDTO } from 'src/app/core/dto/payments/invoice/create-invoice.dto';
 import { AdminViewLeaseAgreementComponent } from '../admin-view-lease-agreement/admin-view-lease-agreement.component';
-import { AdminCreateLeaseStepperComponent } from '../admin-create-lease-stepper/admin-create-lease-stepper.component';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
-import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import {
+    AuthenticatedUser,
+    AuthService,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { AdminCreateUnitLeaseAgreementStepperComponent } from '../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 
 @Component({
     selector: 'app-admin-unit-lease-listings',
@@ -39,6 +42,9 @@ import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreeme
 })
 export class AdminUnitLeaseListingsComponent implements OnInit {
     ref: DynamicDialogRef | undefined;
+    LessorTypes = LESSORTYPE;
+
+    admin: AuthenticatedUser;
     paginatedUnitLease = {
         firstPage: 0,
         currentPage: 0,
@@ -61,16 +67,21 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         private leaseAgreementDataService: LeaseAgreementDataService,
         private messageService: MessageService,
         private authService: AuthService
-    ) {}
+    ) {
+        this.admin = this.authService.GetAuthenticatedUser();
+    }
 
     ngOnInit(): void {
         this.handlePagination();
     }
 
     openCreateUnitLeaseAgreementModal() {
-        this.ref = this.dialogService.open(AdminCreateLeaseStepperComponent, {
-            header: 'Unit Lease',
-        });
+        this.ref = this.dialogService.open(
+            AdminCreateUnitLeaseAgreementStepperComponent,
+            {
+                header: 'Unit Lease',
+            }
+        );
     }
 
     onPageChange(event: PageEvent): void {

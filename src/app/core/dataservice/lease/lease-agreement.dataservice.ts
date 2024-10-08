@@ -54,6 +54,12 @@ export class LeaseAgreementDataService {
         );
     }
 
+    CheckUnitEligibilityForLease(unitId: number) {
+        return this.http.get(
+            `${this.apiUrl}/lease-agreement/validate/unit/${unitId}`
+        );
+    }
+
     CreateLeaseAgreement(
         data: CreateLeaseAgreementDTO
     ): Observable<LeaseAgreeementDTO> {

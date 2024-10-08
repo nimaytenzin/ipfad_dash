@@ -17,10 +17,8 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { AdminViewLeaseAgreementComponent } from '../../../lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
-import { AdminGenerateBuildingPaymentAdviceComponent } from '../../../payment/admin-generate-building-payment-advice/admin-generate-building-payment-advice.component';
-import { AdminCreateLeaseAgreementComponent } from '../../../lease/crud-modals/admin-create-lease-agreement/admin-create-lease-agreement.component';
-import { AdminCreateLeasePartiesComponent } from '../../../lease/admin-create-lease-stepper/components/admin-create-lease-parties/admin-create-lease-parties.component';
-import { AdminCreateLeaseStepperComponent } from '../../../lease/admin-create-lease-stepper/admin-create-lease-stepper.component';
+import { LESSEETYPE } from 'src/app/core/constants/enums';
+import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease/lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 
 @Component({
     selector: 'app-admin-list-units',
@@ -50,7 +48,7 @@ export class AdminListUnitsComponent implements OnInit {
         private messageService: MessageService,
         private leaseAgreementDataService: LeaseAgreementDataService
     ) {}
-
+    LESSEETYPES = LESSEETYPE;
     ref: DynamicDialogRef | undefined;
     units: UnitDTO[];
 
@@ -85,13 +83,19 @@ export class AdminListUnitsComponent implements OnInit {
     }
 
     openCreateLeaseAgreementModal(unit: UnitDTO) {
-        this.ref = this.dialogService.open(AdminCreateLeaseStepperComponent, {
-            header:
-                'Create Lease for ' + unit.floorLevel + '-' + unit.unitNumber,
-            data: {
-                unit: unit,
-            },
-        });
+        this.ref = this.dialogService.open(
+            AdminCreateUnitLeaseAgreementStepperComponent,
+            {
+                header:
+                    'Create Lease for ' +
+                    unit.floorLevel +
+                    '-' +
+                    unit.unitNumber,
+                data: {
+                    unit: unit,
+                },
+            }
+        );
     }
     openAddUnitModal() {
         this.ref = this.dialogService.open(AdminAddUnitComponent, {

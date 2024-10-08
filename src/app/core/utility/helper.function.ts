@@ -81,3 +81,13 @@ export function PARSEFULLNAME(firstName, middleName, lastName) {
 
     return fullName.trim();
 }
+
+export function GETUNITCONFIGSTRING(bedroomCount, toiletCount, balconyCount) {
+    const bedroomConfig = `${bedroomCount} BHK`;
+    const toiletConfig = `${toiletCount} Bath${toiletCount > 1 ? 's' : ''}`;
+    const balconyConfig = `${balconyCount} Balcon${
+        balconyCount > 1 ? 'ies' : 'y'
+    }`;
+
+    return `${bedroomConfig}, ${toiletConfig}, ${balconyConfig}`;
+}

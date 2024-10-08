@@ -79,11 +79,6 @@ export const ADMINSIDEBARITEMS = [
         label: 'Lease',
         items: [
             {
-                label: 'Old',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-lease'],
-            },
-            {
                 label: 'Land Lease',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-lease/lands'],

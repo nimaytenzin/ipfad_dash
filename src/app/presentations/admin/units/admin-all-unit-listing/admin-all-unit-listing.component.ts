@@ -23,6 +23,7 @@ import { AdminEditBuildingownershipComponent } from '../../ownership/crud-modals
 import { AdminEditBuildingplotComponent } from '../../ownership/crud-modals/admin-edit-buildingplot/admin-edit-buildingplot.component';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
+import { LESSEETYPE } from 'src/app/core/constants/enums';
 
 @Component({
     selector: 'app-admin-all-unit-listing',
@@ -45,6 +46,7 @@ import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 export class AdminAllUnitListingComponent implements OnInit {
     ref: DynamicDialogRef;
 
+    LESSEETYPES = LESSEETYPE;
     paginatedUnits: PaginatedData<UnitDTO> = {
         firstPage: 0,
         currentPage: 0,

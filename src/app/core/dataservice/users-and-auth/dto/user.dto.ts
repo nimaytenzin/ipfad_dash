@@ -15,7 +15,7 @@ export interface UserDTO {
 
     thrams?: ThramDTO[];
 
-    organizations: OrganiztionDTO[];
+    organizations?: OrganiztionDTO[];
 }
 
 export interface CreateUserDTO {
