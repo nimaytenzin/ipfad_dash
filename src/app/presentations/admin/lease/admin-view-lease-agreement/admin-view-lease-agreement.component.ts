@@ -8,7 +8,7 @@ import {
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
-import { GETMONTHNAME } from 'src/app/core/utility/date.helper';
+import { GETMONTHDIFF, GETMONTHNAME } from 'src/app/core/utility/date.helper';
 import { CommonModule } from '@angular/common';
 import { API_URL } from 'src/app/core/constants/constants';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
@@ -19,6 +19,7 @@ import {
     LEASETYPE,
     LESSEETYPE,
     LESSORTYPE,
+    NOTIFICATIONTYPES,
 } from 'src/app/core/constants/enums';
 import { GETUNITCONFIGSTRING } from 'src/app/core/utility/helper.function';
 
@@ -33,6 +34,7 @@ import {
     AuthenticatedUser,
     AuthService,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
 
 @Component({
     selector: 'app-admin-view-lease-agreement',
@@ -77,7 +79,7 @@ export class AdminViewLeaseAgreementComponent implements OnInit {
 
     getUnitConfigString = GETUNITCONFIGSTRING;
     getMonthName = GETMONTHNAME;
-
+    calculateMonthsDifference = GETMONTHDIFF;
     tenantSignatureUri: string;
     admin: AuthenticatedUser;
 
@@ -87,7 +89,9 @@ export class AdminViewLeaseAgreementComponent implements OnInit {
         private pdfGeneratorDataService: PDFGeneratorDataService,
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
-        private authService: AuthService
+        private authService: AuthService,
+        private leaseAgreemenetDataService: LeaseAgreementDataService,
+        private notificationService: NotificationService
     ) {
         console.log('Openeingn lease agreement view modal');
         console.log(this.config.data);
@@ -96,6 +100,7 @@ export class AdminViewLeaseAgreementComponent implements OnInit {
 
         this.leaseAgreement = this.config.data;
         this.leaseCharges = this.leaseAgreement.leaseSurcharges;
+        this.newLeaseEndDate = new Date(this.leaseAgreement.leaseEndDate);
 
         this.totalMonthlyPayable = Number(this.leaseAgreement.rent);
         this.leaseCharges.forEach((item) => {
@@ -139,24 +144,158 @@ export class AdminViewLeaseAgreementComponent implements OnInit {
     confirmLeaseTermination() {
         this.messageService.add({
             severity: 'info',
-            summary: 'Lease Terminated',
-            detail: 'Lease has been terminated and tenants have been notified',
+            summary: 'Terminating Lease',
+            detail: 'terminating lease...',
             life: 3000,
         });
+        this.leaseAgreemenetDataService
+            .OwnerTerminateLeaseAgreement({
+                terminationRemarks: this.leaseTerminationRemarks,
+                terminationDate: this.terminationDate.toDateString(),
+                leaseAgreementId: this.leaseAgreement.id,
+            })
+            .subscribe({
+                next: (res) => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Lease Terminated',
+                        detail: 'Lease has been Terminated',
+                        life: 3000,
+                    });
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Sending Notification',
+                        detail: 'Sending Lease Termination Notification....',
+                        life: 3000,
+                    });
+
+                    this.notificationService
+                        .SendNotification({
+                            fromUserId:
+                                this.authService.GetAuthenticatedUser().id,
+                            toUserId: this.leaseAgreement.tenantId,
+                            notificationType:
+                                NOTIFICATIONTYPES.LEASE_TERMINATION,
+                            leaseAgreementId: this.leaseAgreement.id,
+                        })
+                        .subscribe({
+                            next: (res) => {
+                                if (res) {
+                                    this.messageService.add({
+                                        severity: 'success',
+                                        summary: 'Sent',
+                                        detail: 'Lease Termination Notification Sent.',
+                                        life: 3000,
+                                    });
+                                }
+                            },
+                            error: (err) => {
+                                this.messageService.add({
+                                    severity: 'error',
+                                    summary: 'Error',
+                                    detail: err.error.message,
+                                    life: 3000,
+                                });
+                            },
+                        });
+                },
+                error: (err) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'error',
+                        detail: err.error.message,
+                        life: 3000,
+                    });
+                },
+            });
+
         this.showTerminateLeaseModal = false;
     }
     openRenewLeaseModal() {
         this.showRenewLeaseModal = true;
     }
     confirmLeaseRenewal() {
+        const leaseDuationMonths = this.calculateMonthsDifference(
+            new Date(this.leaseAgreement.leaseStartDate),
+            this.newLeaseEndDate
+        );
         this.messageService.add({
             severity: 'info',
-            summary: 'Lease Renewed',
-            detail: 'Lease has been renewed and tenants have been notified',
+            summary: 'Renewing',
+            detail: 'Renweing lease...',
             life: 3000,
         });
+
+        this.leaseAgreemenetDataService
+            .RenewLeaseAgreementWithSameTerms(
+                this.leaseAgreement.id,
+                this.formatDate(this.newLeaseEndDate),
+                leaseDuationMonths.toString()
+            )
+            .subscribe({
+                next: (res) => {
+                    console.log(res);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Lease Renewed',
+                        detail: 'Lease has been Renewed',
+                        life: 3000,
+                    });
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Sending Notification',
+                        detail: 'Sending Lease Renewal Notification....',
+                        life: 3000,
+                    });
+
+                    this.notificationService
+                        .SendNotification({
+                            fromUserId:
+                                this.authService.GetAuthenticatedUser().id,
+                            toUserId: this.leaseAgreement.tenantId,
+                            notificationType: NOTIFICATIONTYPES.LEASE_RENEWAL,
+                            leaseAgreementId: this.leaseAgreement.id,
+                        })
+                        .subscribe({
+                            next: (res) => {
+                                if (res) {
+                                    this.messageService.add({
+                                        severity: 'success',
+                                        summary: 'Sent',
+                                        detail: 'Lease Renewal Sent.',
+                                        life: 3000,
+                                    });
+                                }
+                            },
+                            error: (err) => {
+                                this.messageService.add({
+                                    severity: 'error',
+                                    summary: 'Error',
+                                    detail: err.error.message,
+                                    life: 3000,
+                                });
+                            },
+                        });
+                },
+                error: (err) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'error',
+                        detail: err.error.message,
+                        life: 3000,
+                    });
+                },
+            });
         this.showRenewLeaseModal = false;
     }
+
+    formatDate = (date: Date): string => {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are 0-based
+        const day = ('0' + date.getDate()).slice(-2);
+
+        return `${year}-${month}-${day}`;
+    };
 
     downloadLeasePdf() {
         this.messageService.add({

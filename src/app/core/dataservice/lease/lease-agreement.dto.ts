@@ -219,6 +219,7 @@ export interface CreatePlotLeaseAgreementDTO {
 export interface TerminateLeaseAgreementDTO {
     terminationRemarks: string;
     terminationDate: string;
+    leaseAgreementId: number;
 }
 
 //OLD MODELS

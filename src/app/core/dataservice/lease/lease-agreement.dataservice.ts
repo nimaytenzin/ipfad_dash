@@ -4,6 +4,7 @@ import { API_URL } from '../../constants/constants';
 import {
     CreateLeaseAgreementDTO,
     LeaseAgreeementDTO,
+    TerminateLeaseAgreementDTO,
 } from './lease-agreement.dto';
 import {
     PaginatedData,
@@ -51,6 +52,30 @@ export class LeaseAgreementDataService {
     ): Observable<LeaseAgreeementDTO> {
         return this.http.get<LeaseAgreeementDTO>(
             `${this.apiUrl}/lease-agreement/${leaseAgreementId}`
+        );
+    }
+
+    RenewLeaseAgreementWithSameTerms(
+        leaseAgreementId: number,
+        leaseEndDate: string,
+        leaseDurationMonths: string
+    ) {
+        return this.http.get(
+            `${this.apiUrl}/lease-agreement/renewal/same/${leaseAgreementId}/${leaseEndDate}/${leaseDurationMonths}`
+        );
+    }
+
+    OwnerTerminateLeaseAgreement(data: TerminateLeaseAgreementDTO) {
+        console.log('FONRTENT TERMINATING LEASE', data);
+        return this.http.post(
+            `${this.apiUrl}/lease-agreement/terminate/owner`,
+            data
+        );
+    }
+    TenantTerminateLeaseAgreement(data: TerminateLeaseAgreementDTO) {
+        return this.http.post(
+            `${this.apiUrl}/lease-agreement/terminate/tenant`,
+            data
         );
     }
 

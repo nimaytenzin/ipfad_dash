@@ -119,27 +119,18 @@ export class LoginComponent {
             error: (err) => {
                 console.log(err);
                 this.showLoading = false;
-                if (err.status >= 500) {
+                if (err.error.statusCode >= 500) {
                     // Backend is down or internal server error
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Server Down',
                         detail: 'Our backend services are currently down. Please try again later.',
                     });
-                } else if (err.status === 0) {
-                    // Network or connection error (backend unreachable)
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Backend Services down',
-                        detail: 'Unable to connect to the server.Please Contact zhidhay IT Team',
-                    });
                 } else {
                     this.messageService.add({
                         severity: 'error',
-                        summary: 'Login Error',
-                        detail:
-                            err.error.message ||
-                            'Login failed. Please try again.',
+                        summary: 'Error ',
+                        detail: err.error.message,
                     });
                 }
             },

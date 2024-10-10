@@ -6,7 +6,8 @@ import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 import {
     NotificationDTO,
     NotificationService,
-} from 'src/app/core/dataservice/notification.service';
+} from 'src/app/core/dataservice/notification/notification.service';
+
 import {
     AuthenticatedUser,
     AuthService,

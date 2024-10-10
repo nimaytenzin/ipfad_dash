@@ -52,20 +52,42 @@
                         <th>Lessee</th>
                         <th>Use</th>
                         <th>Start Date</th>
+                        <th>End Date</th>
                         <th>Duration</th>
                         <th>Rent</th>
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-item>
-                    <tr>
-                        <td>
-                            {{ item.status }}
-                        </td>
 
+                <ng-template pTemplate="body" let-item>
+                    <tr
+                        [ngClass]="{
+                            'bg-red-100':
+                                item.status ===
+                                    leaseStatus.TERMINATED_BY_OWNER ||
+                                item.status === leaseStatus.TERMINATED_BY_TENANT
+                        }"
+                    >
                         <td>
-                            {{ item.plot.plotId }}
+                            <p>{{ item.status }}</p>
+                            <div
+                                *ngIf="
+                                    item.status ===
+                                        leaseStatus.TERMINATED_BY_OWNER ||
+                                    item.status ===
+                                        leaseStatus.TERMINATED_BY_TENANT
+                                "
+                            >
+                                Remarks: {{ item.terminationRemarks }}
+                                <p>
+                                    Terminated on
+                                    {{
+                                        item.terminationDate | date : "longDate"
+                                    }}
+                                </p>
+                            </div>
                         </td>
+                        <td>{{ item.plot.plotId }}</td>
                         <td>
                             {{ item.building.name }},
                             {{ item.building.buildingNumber }}
@@ -76,18 +98,14 @@
                             }}
                         </td>
                         <td>
-                            <p>
-                                {{ item.lessorType }}
-                            </p>
+                            <p>{{ item.lessorType }}</p>
                             <p *ngIf="item.lessorType === LessorTypes.ADMIN">
                                 -{{ admin.nameEnglish }}/{{
                                     admin.nameDzongkha
                                 }}
                             </p>
                         </td>
-                        <td>
-                            {{ item.lesseeType }}
-                        </td>
+                        <td>{{ item.lesseeType }}</td>
                         <td>
                             <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
                                 <p>
@@ -99,28 +117,24 @@
                                     Phone Number: {{ item.tenant.phoneNumber }}
                                 </p>
                             </div>
-
                             <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
                                 <p>Name: {{ item.organization.name }}</p>
                                 <p>
-                                    {{ item.organization.userType }} Name:{{
-                                        item.tenant?.nameEnglish
-                                    }}/{{ item.tenant.nameDzongkha }}
+                                    {{ item.organization.userType }} Name:
+                                    {{ item.tenant?.nameEnglish }}/{{
+                                        item.tenant.nameDzongkha
+                                    }}
                                 </p>
                                 <p>
                                     Phone Number: {{ item.tenant.phoneNumber }}
                                 </p>
                             </div>
                         </td>
-                        <td>
-                            {{ item.use }}
-                        </td>
-                        <td>
-                            {{ item.leaseStartDate }}
-                        </td>
+                        <td>{{ item.use }}</td>
+                        <td>{{ item.leaseStartDate }}</td>
+                        <td>{{ item.leaseEndDate }}</td>
                         <td>{{ item.leaseDurationMonths }} Months</td>
                         <td>Nu.{{ item.rent }}</td>
-
                         <td>
                             <div class="flex gap-2">
                                 <p-button
@@ -130,18 +144,6 @@
                                     severity="secondary"
                                     icon="pi pi-eye"
                                 ></p-button>
-                                <!-- <p-button
-                                    size="small"
-                                    severity="secondary"
-                                    label="Renew"
-                                    icon="pi pi-refresh"
-                                ></p-button> -->
-                                <!-- <p-button
-                                    size="small"
-                                    severity="secondary"
-                                    label="Terminate"
-                                    icon="pi pi-times"
-                                ></p-button> -->
                             </div>
                         </td>
                     </tr>

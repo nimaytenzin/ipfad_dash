@@ -20,10 +20,7 @@ import {
 import { TenantUpdatePincodeComponent } from '../shared/tenant-update-pincode/tenant-update-pincode.component';
 import { TenantPaymentReceiptComponent } from '../shared/tenant-payment-receipt/tenant-payment-receipt.component';
 import { TenantPaymentPaidPaymentsComponent } from '../payments/components/tenant-payment-paid-payments/tenant-payment-paid-payments.component';
-import {
-    NotificationDTO,
-    NotificationService,
-} from 'src/app/core/dataservice/notification.service';
+
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import {
     API_URL,
@@ -36,6 +33,10 @@ import { TabViewModule } from 'primeng/tabview';
 import { TenantTopbarComponent } from '../../layout/tenant/tenant-topbar/tenant-topbar.component';
 import { TenantHeaderComponent } from '../../layout/tenant/tenant-header/tenant-header.component';
 import { MessageService } from 'primeng/api';
+import {
+    NotificationDTO,
+    NotificationService,
+} from 'src/app/core/dataservice/notification/notification.service';
 
 @Component({
     selector: 'app-tenant-dashboard',

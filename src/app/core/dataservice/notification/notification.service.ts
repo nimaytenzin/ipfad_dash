@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { API_URL } from '../constants/constants';
+import { API_URL } from '../../constants/constants';
 import { Observable } from 'rxjs';
-import { PaymentAdviceDto } from '../dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from '../../dto/payments/payment-advice/payment-advice.dto';
+import { SendNotificationDTO } from './notification.dto';
 
 export interface SendSMSOTP {
     contact: number;
@@ -33,8 +34,8 @@ export class NotificationService {
 
     constructor(private http: HttpClient) {}
 
-    SendSMS(data: SendSMSOTP) {
-        return this.http.post(`${this.apiUrl}/notification/sms-notif`, data);
+    SendNotification(data: SendNotificationDTO) {
+        return this.http.post(`${this.apiUrl}/notification`, data);
     }
 
     GetNotificationsByTenant(tenantId: number): Observable<NotificationDTO[]> {

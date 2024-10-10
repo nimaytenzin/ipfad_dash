@@ -10,7 +10,11 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
-import { INVOICESTATUS, LESSORTYPE } from 'src/app/core/constants/enums';
+import {
+    INVOICESTATUS,
+    LEASESTATUS,
+    LESSORTYPE,
+} from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { CreateInvoiceDTO } from 'src/app/core/dto/payments/invoice/create-invoice.dto';
@@ -44,6 +48,7 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
     ref: DynamicDialogRef | undefined;
     LessorTypes = LESSORTYPE;
 
+    leaseStatus = LEASESTATUS;
     admin: AuthenticatedUser;
     paginatedUnitLease = {
         firstPage: 0,
