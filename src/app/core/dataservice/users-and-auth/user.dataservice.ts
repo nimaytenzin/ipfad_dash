@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from '../../constants/constants';
 import { Observable } from 'rxjs';
-import { CreateUserDTO, UserDTO } from './dto/user.dto';
+import { CreateUserDTO, UpdateUserDetailsDTO, UserDTO } from './dto/user.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -14,6 +14,15 @@ export class UserDataService {
 
     AdminCreateUser(data: CreateUserDTO): Observable<UserDTO> {
         return this.http.post<UserDTO>(`${this.apiUrl}/auth/signup`, data);
+    }
+    AdminUpdateUserDetails(
+        userId: number,
+        data: UpdateUserDetailsDTO
+    ): Observable<UserDTO> {
+        return this.http.patch<UserDTO>(
+            `${this.apiUrl}/auth/update/${userId}`,
+            data
+        );
     }
 
     AdminGetAllOwners(adminId: number): Observable<UserDTO[]> {

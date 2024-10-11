@@ -3,11 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
-import { AdminOwnerCreateComponent } from '../../land/owner/components/admin-owner-create/admin-owner-create.component';
 import { OwnerDataService } from 'src/app/core/dataservice/owners/owner.dataservice';
 import { OwnerDTO } from 'src/app/core/dataservice/owners/dto/owner.dto';
-import { AdminOwnerUpdateComponent } from '../../land/owner/components/admin-owner-update/admin-owner-update.component';
-import { AdminOwnerViewThramComponent } from '../../land/owner/components/admin-owner-view-thram/admin-owner-view-thram.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ChipModule } from 'primeng/chip';
@@ -15,6 +12,10 @@ import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.da
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { DividerModule } from 'primeng/divider';
+import { AdminUsersCreateModalComponent } from '../components/admin-users-create-modal/admin-users-create-modal.component';
+import { USERROLESENUM } from 'src/app/core/constants/enums';
+import { AdminViewPropertiesModalComponent } from '../components/admin-view-properties-modal/admin-view-properties-modal.component';
+import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
 
 @Component({
     selector: 'app-admin-owner-listing',
@@ -50,8 +51,15 @@ export class AdminOwnerListingComponent implements OnInit {
     }
 
     openCreateOwnerModal() {
-        this.ref = this.dialogService.open(AdminOwnerCreateComponent, {
+        // this.role = this.config.data.role;
+        // this.adminId = this.config.data.adminId;
+
+        this.ref = this.dialogService.open(AdminUsersCreateModalComponent, {
             header: 'Create Owner',
+            data: {
+                adminId: this.authService.GetAuthenticatedUser().id,
+                role: USERROLESENUM.OWNER,
+            },
         });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 201) {
@@ -61,8 +69,8 @@ export class AdminOwnerListingComponent implements OnInit {
     }
 
     openUpdateOwnerModal(owner: OwnerDTO) {
-        this.ref = this.dialogService.open(AdminOwnerUpdateComponent, {
-            header: 'Update',
+        this.ref = this.dialogService.open(AdminUsersUpdateModalComponent, {
+            header: 'Update Owner',
             data: {
                 ...owner,
             },
@@ -134,9 +142,9 @@ export class AdminOwnerListingComponent implements OnInit {
             });
         });
     }
-    openViewThramModal(item: OwnerDTO) {
-        this.ref = this.dialogService.open(AdminOwnerViewThramComponent, {
-            header: 'View Thrams',
+    openViewPropertiesModal(item: OwnerDTO) {
+        this.ref = this.dialogService.open(AdminViewPropertiesModalComponent, {
+            header: 'View Properties',
             data: {
                 ...item,
             },

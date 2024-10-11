@@ -99,13 +99,7 @@
                                 icon="pi pi-pencil"
                                 (click)="openUpdateOwnerModal(item)"
                             ></p-button>
-                            <p-button
-                                size="small"
-                                severity="danger"
-                                icon="pi pi-trash"
-                                *ngIf="!item.isDeleted"
-                                (click)="openDeleteOwnerModal(item)"
-                            ></p-button>
+
                             <p-button
                                 *ngIf="item.hasLoginAccess"
                                 label="Disable Login"
@@ -123,21 +117,16 @@
                                 *ngIf="!item.hasLoginAccess"
                                 label="Enable Login"
                                 size="small"
+                                icon="pi pi-lock"
                                 severity="secondary"
                             ></p-button>
 
                             <p-button
                                 size="small"
                                 severity="secondary"
-                                label="Thrams"
+                                label="Properties"
                                 icon="pi pi-eye"
-                                (click)="openViewThramModal(item)"
-                            ></p-button>
-                            <p-button
-                                size="small"
-                                severity="secondary"
-                                label="Buildings"
-                                icon="pi pi-eye"
+                                (click)="openViewPropertiesModal(item)"
                             ></p-button>
                         </div>
                     </td>

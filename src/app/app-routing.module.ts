@@ -78,8 +78,8 @@ import { USERROLESENUM } from './core/constants/enums';
                             path: 'master-users',
                             loadChildren: () =>
                                 import(
-                                    './presentations/admin/usersold/admin-master-users-routing.module'
-                                ).then((m) => m.AdmingMasterUsersRoutingModule),
+                                    './presentations/admin/users/admin-user-routing.module'
+                                ).then((m) => m.AdminUserRoutingModule),
                         },
 
                         {
@@ -158,7 +158,7 @@ import { USERROLESENUM } from './core/constants/enums';
                     path: 'owner',
                     component: OwnerLayoutComponent,
                     canActivate: [RoleGuard],
-                    data: { roles: [USERROLESENUM.LANDLORD] },
+                    data: { roles: [USERROLESENUM.OWNER] },
                     children: [
                         {
                             path: '',

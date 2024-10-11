@@ -12,9 +12,6 @@ import { OwnerDataService } from 'src/app/core/dataservice/owners/owner.dataserv
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
-import { AdminOwnerCreateComponent } from '../../land/owner/components/admin-owner-create/admin-owner-create.component';
-import { AdminOwnerUpdateComponent } from '../../land/owner/components/admin-owner-update/admin-owner-update.component';
-import { AdminOwnerViewThramComponent } from '../../land/owner/components/admin-owner-view-thram/admin-owner-view-thram.component';
 import { AdminUserAddOrganizationModalComponent } from '../components/admin-user-add-organization-modal/admin-user-add-organization-modal.component';
 import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organization.dto';
 import { AdminEditOrganizationModalComponent } from '../components/admin-edit-organization-modal/admin-edit-organization-modal.component';
@@ -53,29 +50,29 @@ export class AdminTenantListingComponent implements OnInit {
     }
 
     openCreateOwnerModal() {
-        this.ref = this.dialogService.open(AdminOwnerCreateComponent, {
-            header: 'Create Owner',
-        });
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.getAllTenants();
-            }
-        });
+        // this.ref = this.dialogService.open(AdminOwnerCreateComponent, {
+        //     header: 'Create Owner',
+        // });
+        // this.ref.onClose.subscribe((res) => {
+        //     if (res && res.status === 201) {
+        //         this.getAllTenants();
+        //     }
+        // });
     }
 
     openUpdateOwnerModal(owner: OwnerDTO) {
-        this.ref = this.dialogService.open(AdminOwnerUpdateComponent, {
-            header: 'Update',
-            data: {
-                ...owner,
-            },
-        });
-        this.ref.onClose.subscribe((res) => {
-            console.log(res, 'DIALOG CLOSe', res.status);
-            if (res && res.status === 200) {
-                this.getAllTenants();
-            }
-        });
+        // this.ref = this.dialogService.open(AdminOwnerUpdateComponent, {
+        //     header: 'Update',
+        //     data: {
+        //         ...owner,
+        //     },
+        // });
+        // this.ref.onClose.subscribe((res) => {
+        //     console.log(res, 'DIALOG CLOSe', res.status);
+        //     if (res && res.status === 200) {
+        //         this.getAllTenants();
+        //     }
+        // });
     }
     openDeleteOwnerModal(owner: OwnerDTO) {
         this.confirmationService.confirm({
@@ -168,14 +165,6 @@ export class AdminTenantListingComponent implements OnInit {
                 summary: 'Downloaded',
                 detail: 'Owner List Downloaded',
             });
-        });
-    }
-    openViewThramModal(item: OwnerDTO) {
-        this.ref = this.dialogService.open(AdminOwnerViewThramComponent, {
-            header: 'View Thrams',
-            data: {
-                ...item,
-            },
         });
     }
 }

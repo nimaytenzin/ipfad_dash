@@ -1,4 +1,8 @@
-<form [formGroup]="createOwnerForm" class="p-fluid p-2 flex flex-column gap-4">
+<form
+    [formGroup]="updateUserForm"
+    class="p-fluid p-2 flex flex-column gap-4"
+    style="min-width: 20vw"
+>
     <div class="flex gap-3">
         <p-checkbox
             formControlName="hasLoginAccess"
@@ -8,7 +12,7 @@
         <label for="hasLoginAccess">Allow Login Access</label>
     </div>
     <div class="flex flex-column gap-2">
-        <label for="nameEnglish">Owner Name English (*required) </label>
+        <label for="nameEnglish"> Name English </label>
         <input
             pInputText
             id="nameEnglish"
@@ -17,7 +21,7 @@
         />
     </div>
     <div class="flex flex-column gap-2">
-        <label for="nameDzongkha">Owner Name Dzongkha (optional) </label>
+        <label for="nameDzongkha"> Name Dzongkha (optional) </label>
         <input
             pInputText
             id="nameDzongkha"
@@ -36,13 +40,8 @@
         <input pInputText id="email" formControlName="email" type="text" />
     </div>
 
-    <div *ngIf="createOwnerForm.get('hasLoginAccess')?.value">
-        <p class="mb-2">
-            Please enter a phone number and a password <br />
-            to create login credentials. The login credentials <br />
-            will be sent to the number entered below
-        </p>
-        <div class="flex flex-column gap-2">
+    <div *ngIf="updateUserForm.get('hasLoginAccess')?.value">
+        <div class="flex flex-column gap-2 mb-2">
             <label for="phoneNumber">Phone Number (*required) </label>
             <p-inputNumber
                 formControlName="phoneNumber"
@@ -51,19 +50,22 @@
                 [useGrouping]="false"
             />
         </div>
-        <div class="flex flex-column gap-2">
+        <div class="flex flex-column gap-2 my-2">
             <label for="password">Password (*required) </label>
-            <p-inputNumber
-                formControlName="password"
-                mode="decimal"
-                inputId="withoutgrouping"
-                [useGrouping]="false"
-            />
+            <input type="text" pInputText formControlName="password" />
         </div>
     </div>
 
     <div class="flex justify-content-end gap-4">
-        <p-button (click)="createOwner()" label="Create Owner"></p-button>
-        <p-button severity="secondary" label="Cancel"></p-button>
+        <p-button
+            (click)="updateUser()"
+            [disabled]="isSubmitting"
+            label="Update User"
+        ></p-button>
+        <p-button
+            severity="secondary"
+            label="Cancel"
+            (click)="close()"
+        ></p-button>
     </div>
 </form>

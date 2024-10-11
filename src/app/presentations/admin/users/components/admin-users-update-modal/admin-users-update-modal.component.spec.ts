@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AdminOwnerCreateComponent } from './admin-owner-create.component';
+import { AdminUsersUpdateModalComponent } from './admin-users-update-modal.component';
 
-describe('AdminOwnerCreateComponent', () => {
-  let component: AdminOwnerCreateComponent;
-  let fixture: ComponentFixture<AdminOwnerCreateComponent>;
+describe('AdminUsersUpdateModalComponent', () => {
+  let component: AdminUsersUpdateModalComponent;
+  let fixture: ComponentFixture<AdminUsersUpdateModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminOwnerCreateComponent ]
+      declarations: [ AdminUsersUpdateModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminOwnerCreateComponent);
+    fixture = TestBed.createComponent(AdminUsersUpdateModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

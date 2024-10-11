@@ -32,3 +32,16 @@ export interface CreateUserDTO {
 
     role: string;
 }
+
+export interface UpdateUserDetailsDTO {
+    hasLoginAccess: boolean;
+
+    nameEnglish: string;
+    nameDzongkha?: string;
+    cid?: string;
+    email?: string;
+    phoneNumber?: number;
+    password?: string;
+
+    adminId?: number;
+}

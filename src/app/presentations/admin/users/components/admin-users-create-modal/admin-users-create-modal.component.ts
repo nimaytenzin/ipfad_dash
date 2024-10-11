@@ -20,13 +20,9 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { USERROLESENUM } from 'src/app/core/constants/enums';
-import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { CreateUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
-import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
-import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
-import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
 
 @Component({
     selector: 'app-admin-users-create-modal',
@@ -47,12 +43,11 @@ import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-adminis
     providers: [DialogService],
 })
 export class AdminUsersCreateModalComponent implements OnInit {
-    //modal component
-    //Role and adminId must be passed while invoking this component
     createUserForm: FormGroup;
     role: USERROLESENUM;
     adminId: number;
     allowLoginAccess: boolean = false;
+    isSubmitting: boolean = false; // Add this flag
 
     constructor(
         private fb: FormBuilder,
@@ -62,9 +57,10 @@ export class AdminUsersCreateModalComponent implements OnInit {
         private config: DynamicDialogConfig,
         private messageService: MessageService
     ) {
+        console.log('PASSED DATA', this.config.data);
         this.role = this.config.data.role;
         this.adminId = this.config.data.adminId;
-        this.allowLoginAccess = this.config.data.allowLoginAccess;
+        this.allowLoginAccess = false;
     }
 
     ngOnInit() {
@@ -80,7 +76,10 @@ export class AdminUsersCreateModalComponent implements OnInit {
     }
 
     createUser() {
+        if (this.isSubmitting) return;
+
         let data: CreateUserDTO;
+        this.isSubmitting = true;
 
         if (this.createUserForm.get('hasLoginAccess')?.value) {
             data = {
@@ -102,9 +101,21 @@ export class AdminUsersCreateModalComponent implements OnInit {
             };
         }
 
-        console.log('CREATING user', data);
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Creating',
+            detail: 'Creating user...',
+            life: 3000,
+        });
         this.userDataService.AdminCreateUser(data).subscribe({
             next: (res) => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'User created',
+                    life: 3000,
+                });
+                this.isSubmitting = false;
                 this.ref.close({ status: 201, newUser: res });
             },
             error: (err) => {
@@ -113,9 +124,11 @@ export class AdminUsersCreateModalComponent implements OnInit {
                     summary: 'Error Creating User',
                     detail: err.error.message,
                 });
+                this.isSubmitting = false;
             },
         });
     }
+
     close() {
         this.ref.close();
     }

@@ -1,5 +1,5 @@
 export enum USERROLESENUM {
-    'LANDLORD' = 'LANDLORD',
+    'OWNER' = 'OWNER',
     'TENANT' = 'TENANT',
     'ADMIN' = 'ADMIN',
 }
