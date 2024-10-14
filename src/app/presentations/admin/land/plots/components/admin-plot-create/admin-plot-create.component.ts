@@ -5,6 +5,7 @@ import {
     FormsModule,
     FormGroup,
     FormBuilder,
+    Validators,
 } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -48,7 +49,11 @@ import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-adminis
     ],
 })
 export class AdminPlotCreateComponent implements OnInit {
+    isSubmitting: boolean = false;
+
     createPlotForm: FormGroup;
+    searchThramForm: FormGroup;
+
     dzongkhags: DzongkhagDTO[];
     administrativeZones: AdministrativeZoneDTO[];
     subAdministrativeZones: SubAdministrativeZoneDTO[];
@@ -80,21 +85,22 @@ export class AdminPlotCreateComponent implements OnInit {
             this.thramDataPassed = true;
             this.thramFound = true;
             this.searchedThram = this.config.data.thram;
-            console.log('PASSED THRAM', this.searchedThram);
         }
         this.createPlotForm = this.fb.group({
-            thramNo: [],
-
-            plotId: [],
-            plotCategory: [],
-            netArea: [],
-            areaUnit: [],
-
-            lapName: [],
-            lapCode: [],
-            precinctName: [],
-            precinctCode: [],
-            remarks: [],
+            plotId: ['', [Validators.required]],
+            plotCategory: ['', Validators.required],
+            netArea: ['', [Validators.required, Validators.min(1)]],
+            areaUnit: [LANDAREAUNITS.SQFT, Validators.required],
+            lapName: [''],
+            lapCode: [''],
+            precinctName: [''],
+            precinctCode: [''],
+            remarks: [''],
+        });
+        this.searchThramForm = this.fb.group({
+            thramNo: ['', Validators.required],
+            dzongkhagId: ['', Validators.required],
+            administrativeZoneId: ['', Validators.required],
         });
         this.locationDataService.GetAllDzonghags().subscribe({
             next: (res) => {
@@ -108,11 +114,21 @@ export class AdminPlotCreateComponent implements OnInit {
     }
 
     createPlot() {
+        if (this.createPlotForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Invalid Data',
+                detail: 'Please fill all the required fields correctly.',
+            });
+            return;
+        }
+        this.isSubmitting = true;
+
         const data: CreatePlotDTO = {
             thramId: this.searchedThram.id,
             plotId: this.createPlotForm.controls['plotId'].value,
             plotCategory: this.createPlotForm.controls['plotCategory'].value,
-            netArea: this.createPlotForm.controls['netArea'].value,
+            netArea: Number(this.createPlotForm.controls['netArea'].value),
             areaUnit: this.createPlotForm.controls['areaUnit'].value,
             lapName: this.createPlotForm.controls['lapName'].value,
             lapCode: this.createPlotForm.controls['lapCode'].value,
@@ -121,15 +137,25 @@ export class AdminPlotCreateComponent implements OnInit {
             remarks: this.createPlotForm.controls['remarks'].value,
         };
 
-        this.plotDataService.CreatePlot(data).subscribe((res) => {
-            if (res) {
+        this.plotDataService.CreatePlot(data).subscribe({
+            next: (res) => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Created',
                     detail: 'Plot Created Successfully',
                 });
                 this.ref.close({ status: 201 });
-            }
+                this.isSubmitting = false;
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error.message,
+                });
+                this.isSubmitting = false;
+                this.ref.close();
+            },
         });
     }
 
@@ -161,32 +187,40 @@ export class AdminPlotCreateComponent implements OnInit {
     }
 
     searchThram() {
-        // this.thramDataService
-        //     .SearchForThram({
-        //         dzongkhagId: this.createPlotForm.controls['dzongkhagId'].value,
-        //         administrativeZoneId:
-        //             this.createPlotForm.controls['administrativeZoneId'].value,
-        //         thramNo: this.createPlotForm.controls['thramNo'].value,
-        //     })
-        //     .subscribe({
-        //         next: (res) => {
-        //             console.log(res);
-        //             console.log(res);
-        //             this.messageService.add({
-        //                 severity: 'success',
-        //                 summary: 'Found',
-        //                 detail: 'Thram Found',
-        //             });
-        //             this.searchedThram = res;
-        //             this.thramFound = true;
-        //         },
-        //         error: (err) => {
-        //             this.messageService.add({
-        //                 severity: 'error',
-        //                 summary: 'Not Found',
-        //                 detail: 'Tharm Not found',
-        //             });
-        //         },
-        //     });
+        if (this.searchThramForm.valid) {
+            this.thramDataService
+                .SearchForThramByThramNo({
+                    dzongkhagId:
+                        this.searchThramForm.controls['dzongkhagId'].value,
+                    administrativeZoneId:
+                        this.searchThramForm.controls['administrativeZoneId']
+                            .value,
+                    thramNo: this.searchThramForm.controls['thramNo'].value,
+                })
+                .subscribe({
+                    next: (res) => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Found',
+                            detail: 'Thram Found',
+                        });
+                        this.searchedThram = res;
+                        this.thramFound = true;
+                    },
+                    error: (err) => {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Not Found',
+                            detail: 'Tharm Not found',
+                        });
+                    },
+                });
+        } else {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Missing Input',
+                detail: 'Please Select Dzongkhag,Administrative Zone and enter the thram No',
+            });
+        }
     }
 }

@@ -7,6 +7,8 @@ import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
 import { MessageService } from 'primeng/api';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { AdminSpatialViewerPlotComponent } from 'src/app/presentations/admin/land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 @Component({
     selector: 'app-admin-building-map',
     templateUrl: './admin-building-map.component.html',
@@ -82,13 +84,25 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
                             color: 'red',
                         };
                     },
+                    onEachFeature: (feature, layer) => {
+                        layer.on('click', () => {
+                            this.ref = this.dialogService.open(
+                                AdminSpatialViewerPlotComponent,
+                                {
+                                    header: this.building.plots[0].plotId,
+                                    style: { 'min-width': '40vw' },
+                                    data: {
+                                        ...this.building.plots[0],
+                                        buildings: [this.building],
+                                        showBuilding: false,
+                                    },
+                                }
+                            );
+                        });
+                    },
                 }).addTo(this.map);
                 this.map.fitBounds(this.plotsGeojsonLayer.getBounds());
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Plot Details Found',
-                    detail: 'Plot added to the map',
-                });
+
                 this.loadBuildingGeometry();
             });
     }
@@ -110,78 +124,6 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
                         };
                     },
                 }).addTo(this.map);
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Buildings  Found',
-                    detail: 'Building Geometry added to the map',
-                });
             });
     }
-
-    // loadPlotGeometry() {
-    //     const url = `assets/geojson/${this.building.plots[0].plotId}.geojson`;
-    //     this.http.get<any>(url).subscribe({
-    //         next: (res) => {
-    //             (res) => {
-    //                 this.buildingFootprintFound = true;
-    //                 const geoJsonLayer = L.geoJSON(res, {
-    //                     style: {
-    //                         color: 'red',
-    //                         fillColor: 'red',
-    //                         fillOpacity: 0,
-    //                         weight: 2,
-    //                     },
-    //                     onEachFeature: (feature, layer) => {
-    //                         layer.on('click', () => {
-    //                             this.ref = this.dialogService.open(
-    //                                 AdminMapviewPlotdetailsComponent,
-    //                                 {
-    //                                     header: this.building.plots[0].plotId,
-    //                                     data: {
-    //                                         plotId: this.building.plots[0]
-    //                                             .plotId,
-    //                                     },
-    //                                 }
-    //                             );
-    //                         });
-    //                     },
-    //                 }).addTo(this.map);
-
-    //                 const bounds = geoJsonLayer.getBounds();
-
-    //                 const center = bounds.getCenter();
-
-    //                 // Set the map view to the center with a specified zoom level (e.g., zoom level 15)
-    //                 this.map.setView(center, 19);
-    //             };
-    //         },
-    //         error: (err) => {
-    //             console.log(err);
-    //         },
-    //     });
-    // }
-
-    // loadBuildingGeometry() {
-    //     const url = `assets/geojson/${this.building.id}.geojson`;
-    //     this.http.get<any>(url).subscribe((data) => {
-    //         L.geoJSON(data, {
-    //             style: {
-    //                 color: 'yellow',
-    //                 fillColor: 'yellow',
-    //                 fillOpacity: 0.2,
-    //                 weight: 1,
-    //             },
-    //             onEachFeature: (feature, layer) => {
-    //                 layer.on('click', () => {
-    //                     // this.ref = this.dialogService.open(
-    //                     //     AdminMapviewPlotdetailsComponent,
-    //                     //     {
-    //                     //         header: feature.properties.plotId,
-    //                     //     }
-    //                     // );
-    //                 });
-    //             },
-    //         }).addTo(this.map);
-    //     });
-    // }
 }

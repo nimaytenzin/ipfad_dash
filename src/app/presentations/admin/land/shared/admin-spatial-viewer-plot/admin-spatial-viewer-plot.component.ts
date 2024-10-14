@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
 import { MessageService } from 'primeng/api';
 import { TabViewModule } from 'primeng/tabview';
+import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
 @Component({
     selector: 'app-admin-spatial-viewer-plot',
     templateUrl: './admin-spatial-viewer-plot.component.html',
@@ -48,10 +49,10 @@ export class AdminSpatialViewerPlotComponent implements OnInit {
         private router: Router,
         private geometryDataService: GeometryDataService,
         private messageService: MessageService,
-        private ref: DynamicDialogRef
+        private ref: DynamicDialogRef,
+        private plotDataService: PlotDataService
     ) {
         this.plot = this.config.data;
-        console.log('DATA', this.plot);
     }
 
     ngOnInit(): void {
@@ -63,7 +64,7 @@ export class AdminSpatialViewerPlotComponent implements OnInit {
             maxNativeZoom: 21,
             maxZoom: 24,
         });
-        this.map = L.map('map', {
+        this.map = L.map('spatialPlotViewer', {
             layers: [satelliteMap],
             zoomControl: false,
             attributionControl: false,

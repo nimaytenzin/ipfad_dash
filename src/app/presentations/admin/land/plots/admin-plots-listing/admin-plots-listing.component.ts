@@ -13,6 +13,7 @@ import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatorModule } from 'primeng/paginator';
+import { AdminPlotUpdateComponent } from '../components/admin-plot-update/admin-plot-update.component';
 
 @Component({
     selector: 'app-admin-plots-listing',
@@ -72,7 +73,6 @@ export class AdminPlotsListingComponent implements OnInit {
             pageSize: this.rows,
         };
 
-        console.log(queryParams);
         this.plotDataService
             .GetAllPlotsByAdminPaginated(
                 this.authService.GetAuthenticatedUser().id,
@@ -81,17 +81,8 @@ export class AdminPlotsListingComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     this.paginatedPlotData = res;
-                    console.log('PAGINATED WONER WITH THRAM', res);
                 },
             });
-    }
-
-    getAllPlots() {
-        this.plotDataService.GetAllPlots().subscribe({
-            next: (res) => {
-                this.plots = res;
-            },
-        });
     }
 
     openCreatePlotModal() {
@@ -100,7 +91,18 @@ export class AdminPlotsListingComponent implements OnInit {
         });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 201) {
-                this.getAllPlots();
+                this.handlePagination();
+            }
+        });
+    }
+    openUpdatePlotModal(item: PlotDTO) {
+        this.ref = this.dialogService.open(AdminPlotUpdateComponent, {
+            header: 'Update Plot',
+            data: { ...item },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.handlePagination();
             }
         });
     }

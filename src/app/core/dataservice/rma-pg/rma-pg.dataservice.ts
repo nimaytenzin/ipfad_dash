@@ -32,7 +32,7 @@ export class RMAPGDataService {
         data: ClientArRequestDto
     ): Observable<PG_RCMessage> {
         return this.http.post<PG_RCMessage>(
-            `${this.apiUrl}/pg-transaction/ar`,
+            `${this.apiUrl}/pg-transaction/ar-request`,
             data
         );
     }

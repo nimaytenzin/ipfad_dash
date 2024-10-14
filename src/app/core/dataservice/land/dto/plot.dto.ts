@@ -41,3 +41,18 @@ export interface CreatePlotDTO {
 
     remarks?: string;
 }
+
+export interface UpdatePlotDTO {
+    plotId?: string;
+    plotCategory?: string;
+
+    netArea?: number;
+    areaUnit?: string;
+
+    lapName?: string;
+    lapCode?: string;
+    precinctName?: string;
+    precinctCode?: string;
+
+    remarks?: string;
+}

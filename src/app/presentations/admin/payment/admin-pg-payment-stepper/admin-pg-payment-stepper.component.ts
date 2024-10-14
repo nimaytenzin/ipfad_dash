@@ -53,6 +53,7 @@ import { InputTextModule } from 'primeng/inputtext';
         DialogModule,
         InputTextModule,
     ],
+    providers: [ConfirmationService],
 })
 export class AdminPgPaymentStepperComponent implements OnInit {
     active: number | undefined = 0;
@@ -96,7 +97,7 @@ export class AdminPgPaymentStepperComponent implements OnInit {
         this.rmaPgDataService
             .SendAuthorizationRequest({
                 amount: this.deductAmout,
-                paymentAdviceId: this.paymentAdvice.id,
+                paymentAdviceIds: [this.paymentAdvice.id],
             })
             .subscribe({
                 next: (res) => {

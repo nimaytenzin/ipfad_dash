@@ -1,5 +1,7 @@
+import { PAType } from 'src/app/core/constants/enums';
 import { UnitDTO } from '../../units/unit.dto';
 import { TenantDTO } from '../../users/tenant.dto';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 
 export interface CreatePaymentAdviceItemDto {
     paymentAdviseId?: number;
@@ -31,10 +33,8 @@ export interface PaymentAdviceItemDto {
 
 export interface PaymentAdviceDto {
     id: number;
-    unitId: number;
-    buildingId: number;
-    tenantId: number;
-    ownerId: number;
+    type: PAType;
+    leaseAgreementId: number;
 
     title: string;
     month: number;
@@ -44,9 +44,15 @@ export interface PaymentAdviceDto {
     amountDue: number;
 
     status: string;
+    dueDate: string;
+    ownerBankName: string;
+    ownerAccountName: string;
+    ownerAccountNumber: string;
+    allowPartialPayment: boolean;
+
     paymentAdviseItem: PaymentAdviceDto[];
-    tenant: TenantDTO;
-    unit: UnitDTO;
+
+    leaeAgreement: LeaseAgreeementDTO;
 }
 
 export interface GenerateBuildingPADto {
@@ -54,4 +60,5 @@ export interface GenerateBuildingPADto {
 
     month: number;
     year: number;
+    type: PAType;
 }

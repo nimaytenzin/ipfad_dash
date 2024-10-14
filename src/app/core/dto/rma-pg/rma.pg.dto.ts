@@ -1,6 +1,6 @@
 export interface ClientArRequestDto {
     amount: number;
-    paymentAdviceId: number;
+    paymentAdviceIds: number[];
 }
 
 export interface PG_RCMessage {

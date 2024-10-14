@@ -1,9 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
+import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
+import { LEASETYPE } from 'src/app/core/constants/enums';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { InvoiceDTO } from 'src/app/core/dto/payments/invoice/invoice.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
@@ -14,13 +18,12 @@ import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-compone
     templateUrl: './admin-payment-advice-pending-list.component.html',
     styleUrls: ['./admin-payment-advice-pending-list.component.css'],
     standalone: true,
-    imports: [TableModule, ButtonModule, PaginatorModule],
+    imports: [TableModule, ButtonModule, PaginatorModule, CommonModule],
     providers: [DialogService],
 })
 export class AdminPaymentAdvicePendingListComponent implements OnInit {
     ref: DynamicDialogRef;
 
-    pendingInvoices: InvoiceDTO[];
     paginatedPaymentAdvice: PaginatedData<PaymentAdviceDto> = {
         firstPage: 0,
         currentPage: 0,
@@ -31,30 +34,51 @@ export class AdminPaymentAdvicePendingListComponent implements OnInit {
         count: 0,
         data: [],
     };
-    rows = 10;
+
+    rowsPerPageOptions = ROWSPERPAGEOPTION;
+    firstPageNumber = 0;
+    rows = ROWSPERPAGEOPTION[0];
+    currentPage = 0;
+
+    leaseTypes = LEASETYPE;
+
     constructor(
         private paymentAdviceDataService: PaymentAdviceDataService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private authService: AuthService
     ) {}
 
     ngOnInit() {
-        // this.paymentAdviceDataService
-        //     .GetAllPendingPaymentAdvicePaginated()
-        //     .subscribe((res) => {
-        //         this.paginatedPaymentAdvice = res;
-        //     });
+        this.handlePagination();
     }
 
-    onPageChange(e) {
-        console.log(e);
-        // this.paymentAdviceDataService
-        //     .GetAllPendingPaymentAdvicePaginated({
-        //         page: e.page,
-        //         limit: e.rows,
-        //     })
-        //     .subscribe((res) => {
-        //         this.paginatedPaymentAdvice = res;
-        //     });
+    onPageChange(event: PageEvent): void {
+        console.log('PAGE CHANGE VENT', event);
+        this.firstPageNumber = event.first;
+        this.currentPage = event.page;
+        this.rows = event.rows;
+        this.handlePagination();
+    }
+
+    private handlePagination(): void {
+        const queryParams: any = {
+            pageNo: this.currentPage,
+            pageSize: this.rows,
+        };
+
+        console.log(queryParams);
+        this.paymentAdviceDataService
+            .GetAllPendingPaymentAdviceByAdminPaginated(
+                this.authService.GetAuthenticatedUser().id,
+                queryParams
+            )
+            .subscribe({
+                next: (res) => {
+                    console.log(res);
+                    this.paginatedPaymentAdvice = res;
+                    console.log('PAGINATED WONER WITH THRAM', res);
+                },
+            });
     }
 
     downloadMasterTable() {}

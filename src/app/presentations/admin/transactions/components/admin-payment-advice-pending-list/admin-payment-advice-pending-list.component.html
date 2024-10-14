@@ -10,6 +10,7 @@
             ></p-button>
         </div>
     </div>
+    dsdsd
 
     <p-table
         [value]="paginatedPaymentAdvice?.data"
@@ -21,9 +22,11 @@
                 <th>Status</th>
                 <th>Title</th>
                 <th>Total Amount</th>
-                <th>Payer</th>
+                <th>Due by</th>
+                <th>Lease Type</th>
 
-                <th>Property Details</th>
+                <th>Property</th>
+                <th>Payer</th>
 
                 <th></th>
             </tr>
@@ -45,16 +48,42 @@
                 <td>Nu. {{ item.totalAmount }}</td>
 
                 <td>
-                    <p>
-                        Name:{{ item.tenant?.firstName }}
-                        {{ item.tenant?.middleName }}
-                        {{ item.tenant?.lastName }}
-                    </p>
-                    <p>Phone: {{ item.tenant?.phoneNumber }}</p>
+                    {{ item.dueDate | date : "mediumDate" }}
                 </td>
                 <td>
-                    {{ item.building?.name }}
-                    | {{ item.unit?.floorLevel }}-{{ item.unit?.unitNumber }}
+                    <p>{{ item.leaseAgreement.type }} Lease</p>
+                </td>
+
+                <td>
+                    <!-- Show Unit information only if leaseType is UNIT -->
+
+                    <p *ngIf="item.leaseAgreement.type === leaseTypes.UNIT">
+                        Unit: {{ item.leaseAgreement.unit.floorLevel }} -
+                        {{ item.leaseAgreement.unit.unitNumber }}
+                    </p>
+
+                    <!-- Show Building information if leaseType is either UNIT or BUILDING -->
+                    <p
+                        *ngIf="
+                            item.leaseAgreement.type === leaseTypes.BUILDING ||
+                            item.leaseAgreement.type === leaseTypes.UNIT
+                        "
+                    >
+                        Building: {{ item.leaseAgreement.building?.name }}
+                    </p>
+
+                    <!-- Show Plot information if leaseType is LAND or BUILDING (exclude UNIT) -->
+                    <p *ngIf="item.leaseAgreement.type !== leaseTypes.UNIT">
+                        Plot: {{ item.leaseAgreement.plot.plotId }}
+                    </p>
+                </td>
+
+                <td>
+                    <p>
+                        Name:{{ item.leaseAgreement.tenant?.nameEnglish }}
+                        {{ item.leaseAgreement.tenant?.nameDzongkha }}
+                    </p>
+                    <p>Phone: {{ item.leaseAgreement.tenant?.phoneNumber }}</p>
                 </td>
                 <td>
                     <p-button

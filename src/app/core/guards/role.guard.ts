@@ -29,21 +29,27 @@ export class RoleGuard implements CanActivate {
         const user: AuthenticatedUser = this.authService.GetAuthenticatedUser();
 
         if (user && user.role && this.hasRole(user, next.data['roles'])) {
-            console.log('CHECKIG ROLES', next.data['roles'], user.role);
             return true;
         } else {
-            //handle unauthorised acess
-            // this.router.navigate(['/auth/login']);
             this.messageService.add({
                 severity: 'warn',
                 summary: 'Forbidden',
-                detail: 'You dont have enough permission to view the requested resource',
+                detail: 'You don’t have enough permission to view the requested resource',
             });
             return false;
         }
     }
 
-    private hasRole(user: AuthenticatedUser, roles: string[]): boolean {
-        return roles.includes(user.role);
+    private hasRole(user: AuthenticatedUser, allowedRoles: string[]): boolean {
+        const userRolesArray = this.parseRolesString(user.role);
+
+        return userRolesArray.some((role) => allowedRoles.includes(role));
+    }
+
+    private parseRolesString(roles: string): string[] {
+        return roles
+            .replace(/[\[\]']/g, '')
+            .split(',')
+            .map((role) => role.trim());
     }
 }

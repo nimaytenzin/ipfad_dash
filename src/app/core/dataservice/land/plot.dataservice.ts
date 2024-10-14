@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { API_URL } from '../../constants/constants';
 import { Observable } from 'rxjs';
 import { CreateThramDTO, SearchThramDTO, ThramDTO } from './dto/thram.dto';
-import { CreatePlotDTO, PlotDTO } from './dto/plot.dto';
+import { CreatePlotDTO, PlotDTO, UpdatePlotDTO } from './dto/plot.dto';
 import {
     PaginatedParamsOptions,
     PaginatedData,
@@ -20,6 +20,9 @@ export class PlotDataService {
 
     CreatePlot(data: CreatePlotDTO): Observable<PlotDTO> {
         return this.http.post<PlotDTO>(`${this.apiUrl}/plot`, data);
+    }
+    UpdatePlot(data: UpdatePlotDTO, plotId: number): Observable<PlotDTO> {
+        return this.http.patch<PlotDTO>(`${this.apiUrl}/plot/${plotId}`, data);
     }
 
     GetAllPlotsByAdminPaginated(

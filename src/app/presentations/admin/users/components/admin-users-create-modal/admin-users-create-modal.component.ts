@@ -71,6 +71,7 @@ export class AdminUsersCreateModalComponent implements OnInit {
             cid: [''],
             password: [''],
             email: [''],
+            permanentAddress: [],
             hasLoginAccess: [this.allowLoginAccess, [Validators.required]],
         });
     }
@@ -89,7 +90,8 @@ export class AdminUsersCreateModalComponent implements OnInit {
                 role: this.role,
                 adminId: this.adminId,
                 phoneNumber: this.createUserForm.controls['phoneNumber'].value,
-                password: this.createUserForm.controls['password'].value,
+                permanentAddress:
+                    this.createUserForm.controls['permanentAddress'].value,
             };
         } else {
             data = {
@@ -100,6 +102,8 @@ export class AdminUsersCreateModalComponent implements OnInit {
                 adminId: this.adminId,
             };
         }
+
+        console.log('CREATING USER', data);
 
         this.messageService.add({
             severity: 'info',

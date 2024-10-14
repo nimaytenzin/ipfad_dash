@@ -45,6 +45,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
     ],
 })
 export class AdminThramCreateComponent implements OnInit {
+    isSubmitting: boolean = false;
+
     createThramForm: FormGroup;
     dzongkhags: DzongkhagDTO[];
     administrativeZones: AdministrativeZoneDTO[];
@@ -82,12 +84,13 @@ export class AdminThramCreateComponent implements OnInit {
             .AdminGetAllOwners(this.authService.GetAuthenticatedUser().id)
             .subscribe((res) => {
                 this.owners = res;
-                console.log('OWNER', res);
             });
     }
 
     createThram() {
         if (this.createThramForm.valid) {
+            this.isSubmitting = true;
+
             const newThram: CreateThramDTO = {
                 dzongkhagId: this.createThramForm.value.dzongkhagId,
                 administrativeZoneId:
@@ -98,18 +101,26 @@ export class AdminThramCreateComponent implements OnInit {
                 ownershipType: this.createThramForm.value.ownershipType,
                 owners: this.createThramForm.value.owners,
             };
+
             this.thramDataService.CreateThram(newThram).subscribe({
                 next: (res) => {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Created',
+                        detail: 'New Thram Created Successfully',
+                    });
                     this.ref.close({ status: 201 });
+                    this.isSubmitting = false;
                 },
                 error: (err) => {
-                    console.log(err);
+                    // Show error message
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error',
                         detail: err.error.message,
                     });
                     this.ref.close();
+                    this.isSubmitting = false;
                 },
             });
         } else {
@@ -118,6 +129,7 @@ export class AdminThramCreateComponent implements OnInit {
                 summary: 'Form Validation Error',
                 detail: 'Please check all the Form Inputs',
             });
+            this.isSubmitting = false;
         }
     }
 

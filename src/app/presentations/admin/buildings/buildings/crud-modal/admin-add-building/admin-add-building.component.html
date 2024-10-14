@@ -1,10 +1,7 @@
 <form [formGroup]="createBuildingForm" class="p-fluid p-2">
     <div class="grid">
-        <p class="col-12 font-semibold">
-            Plot Details *A building may occupy one or more plot.
-        </p>
         <div class="mt-1 px-4">
-            <label for="zhichar">Plot ID</label>
+            <label for="zhichar">Enter Plot ID</label>
             <div class="flex mt-2 mb-2 gap-4 align-items-center">
                 <input
                     pInputText
@@ -24,17 +21,18 @@
         </div>
 
         <div *ngIf="plotMappings.length" class="grid">
-            <div class="col-12 text-xl">
+            <div class="col-12">
                 <p class="">Plot Mapping</p>
                 <div *ngFor="let plot of plotMappings" class="font-bold">
-                    <p>
-                        {{ plot.plotId }}
-                        <span
-                            class="cursor-pointer hover:underline text-red-600"
-                            (click)="removePlotMapping(plot)"
-                            >-remove</span
-                        >
-                    </p>
+                    <div class="flex gap-2 align-items-center">
+                        <p>- {{ plot.plotId }}</p>
+                        <p>
+                            <i
+                                class="pi pi-trash cursor-pointer hover:underline text-red-600"
+                                (click)="removePlotMapping(plot)"
+                            ></i>
+                        </p>
+                    </div>
                 </div>
             </div>
             <p class="col-12 font-semibold">
@@ -81,6 +79,7 @@
                 <p-dropdown
                     [options]="buildingTypes"
                     formControlName="buildingType"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 
@@ -89,6 +88,7 @@
                 <p-dropdown
                     [options]="numberedDropDownOptions"
                     formControlName="jamthogCount"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 
@@ -98,6 +98,7 @@
                 <p-dropdown
                     [options]="numberedDropDownOptions"
                     formControlName="atticCount"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 
@@ -105,6 +106,7 @@
                 <label for="regularFloors">Regular Floors*</label>
                 <p-dropdown
                     [options]="numberedDropDownOptions"
+                    appendTo="body"
                     formControlName="regularFloorCount"
                 ></p-dropdown>
             </div>
@@ -114,6 +116,7 @@
                 <p-dropdown
                     [options]="numberedDropDownOptions"
                     formControlName="stiltCount"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 
@@ -122,6 +125,7 @@
                 <p-dropdown
                     [options]="numberedDropDownOptions"
                     formControlName="basementCount"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 
@@ -211,6 +215,7 @@
                     optionValue="id"
                     (onChange)="dzongkhagSelected($event)"
                     formControlName="dzongkhagId"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 
@@ -222,6 +227,7 @@
                     optionValue="id"
                     (onChange)="administrativeZoneSelected($event)"
                     formControlName="administrativeZoneId"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 
@@ -232,6 +238,7 @@
                     optionLabel="name"
                     optionValue="id"
                     formControlName="subadminsitrativeZoneId"
+                    appendTo="body"
                 ></p-dropdown>
             </div>
 

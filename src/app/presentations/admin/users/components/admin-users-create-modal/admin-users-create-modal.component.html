@@ -54,9 +54,15 @@
                 [useGrouping]="false"
             />
         </div>
-        <div class="flex flex-column gap-2 my-2">
-            <label for="password">Password (*required) </label>
-            <input type="text" pInputText formControlName="password" />
+
+        <div class="flex flex-column gap-2">
+            <label for="permanentAddress">Permanent Address (*required)</label>
+            <input
+                pInputText
+                id="permanentAddress"
+                formControlName="permanentAddress"
+                type="text"
+            />
         </div>
     </div>
 

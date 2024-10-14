@@ -141,15 +141,20 @@ export class LoginComponent {
         this.router.navigate(['/']);
     }
 
-    determineNextRoute(role: string) {
-        if (role === 'ADMIN') {
+    determineNextRoute(roles: string) {
+        const roleArray = roles
+            .replace(/[\[\]']/g, '')
+            .split(',')
+            .map((role) => role.trim());
+
+        if (roleArray.includes('ADMIN')) {
             this.router.navigate(['/admin']);
-        }
-        if (role === 'TENANT') {
+        } else if (roleArray.includes('TENANT')) {
             this.router.navigate(['/tenant']);
-        }
-        if (role === 'LANDLORD') {
+        } else if (roleArray.includes('LANDLORD')) {
             this.router.navigate(['/owner']);
+        } else {
+            this.router.navigate(['/']);
         }
     }
 }

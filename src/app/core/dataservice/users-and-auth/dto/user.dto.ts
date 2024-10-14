@@ -12,6 +12,7 @@ export interface UserDTO {
     phoneNumber?: number;
     password?: string;
     adminId?: number;
+    permanentAddress?: string;
 
     thrams?: ThramDTO[];
 
@@ -25,6 +26,7 @@ export interface CreateUserDTO {
     nameDzongkha?: string;
     cid?: string;
     email?: string;
+    permanentAddress?: string;
     phoneNumber?: number;
     password?: string;
 

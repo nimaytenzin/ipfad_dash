@@ -13,7 +13,10 @@ export class UserDataService {
     constructor(private http: HttpClient) {}
 
     AdminCreateUser(data: CreateUserDTO): Observable<UserDTO> {
-        return this.http.post<UserDTO>(`${this.apiUrl}/auth/signup`, data);
+        return this.http.post<UserDTO>(
+            `${this.apiUrl}/auth/admin/signup`,
+            data
+        );
     }
     AdminUpdateUserDetails(
         userId: number,

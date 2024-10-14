@@ -8,6 +8,7 @@ import {
     DynamicDialogComponent,
     DynamicDialogRef,
 } from 'primeng/dynamicdialog';
+import { PAType } from 'src/app/core/constants/enums';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import {
@@ -49,8 +50,10 @@ export class AdminGenerateBuildingPaymentAdviceComponent implements OnInit {
                 buildingId: this.buildingId,
                 month: monthYear.month,
                 year: monthYear.year,
+                type: PAType.RECURRING,
             })
             .subscribe((res: any) => {
+                console.log(res);
                 this.results = res;
             });
     }

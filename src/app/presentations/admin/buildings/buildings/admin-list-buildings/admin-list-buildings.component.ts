@@ -93,78 +93,29 @@ export class AdminListBuildingsComponent {
         ]);
     }
     openAddBuildingModal() {
-        // this.ref = this.dialogService.open(AdminAddBuildingComponent, {
-        //     header: 'Add Building',
-        //     width: '600px',
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     if (res && res.status === 201) {
-        //         this.getPaginatedBuildings();
-        //     }
-        // });
-    }
-    openAddBuildingOwnershipModal(building: BuildingDTO) {
-        // this.ref = this.dialogService.open(AdminAddBuildingownershipComponent, {
-        //     header: 'Add Building Owner',
-        //     width: '600px',
-        //     data: building,
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     if (res && res.status === 201) {
-        //         this.getPaginatedBuildings();
-        //     }
-        //     console.log('ADD BUILDING DIALOG CLOSE');
-        //     this.getPaginatedBuildings();
-        // });
+        this.ref = this.dialogService.open(AdminAddBuildingComponent, {
+            header: 'Add Building',
+            width: '600px',
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.handlePagination();
+            }
+        });
     }
 
     openEditBuildingModal(data: BuildingDTO) {
-        // this.ref = this.dialogService.open(AdminEditBuildingComponent, {
-        //     header: 'Edit Building',
-        //     width: '600px',
-        //     data: {
-        //         ...data,
-        //     },
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     if (res && res.updated) {
-        //         this.getPaginatedBuildings();
-        //     }
-        // });
-    }
-
-    openCreateBuildingPlotModal(buildingId: number) {
-        // this.ref = this.dialogService.open(AdminAddBuildingplotComponent, {
-        //     header: 'Create Building Plot',
-        //     data: {
-        //         buildingId: buildingId,
-        //     },
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     if (res && res.status === 201) {
-        //         this.getPaginatedBuildings();
-        //     }
-        // });
-    }
-
-    openEditOwnershipModal(ownership: BuildingOwnershipDto) {
-        this.ref = this.dialogService.open(
-            AdminEditBuildingownershipComponent,
-            {
-                header: 'Edit Ownership',
-                data: ownership,
+        this.ref = this.dialogService.open(AdminEditBuildingComponent, {
+            header: 'Edit Building',
+            width: '600px',
+            data: {
+                ...data,
+            },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.updated) {
+                this.handlePagination();
             }
-        );
-    }
-    openConfirmDeleteBuildingPlotDialog(selectedBuildingPlot) {
-        this.selectedBuildingPlot = selectedBuildingPlot;
-        this.showConfirmDeleteBuildingPlotDialog = true;
-    }
-
-    openEditBuildingPlotModal(buildingPlot) {
-        this.ref = this.dialogService.open(AdminEditBuildingplotComponent, {
-            header: 'Edit Building Plot Mapping',
-            data: buildingPlot,
         });
     }
 

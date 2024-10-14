@@ -1,5 +1,9 @@
 <div class="w-full flex" style="max-width: 40vw">
-    <div class="flex w-6" id="map" style="height: 40vh; min-width: 20vw"></div>
+    <div
+        class="flex w-6"
+        id="spatialPlotViewer"
+        style="height: 40vh; min-width: 20vw"
+    ></div>
     <p-tabView class="w-6">
         <p-tabPanel header="Plot Details">
             <div class="">
@@ -34,11 +38,18 @@
                         plot.thram?.administrativeZone?.name
                     }},{{ plot.thram?.subAdministrativeZone?.name }}
                 </p>
+                <p>Owner/s</p>
+                <p *ngFor="let owner of plot.thram?.owners">
+                    -
+                    <strong>
+                        {{ owner.nameEnglish }} {{ owner.nameDzongkha }}
+                    </strong>
+                </p>
             </div>
         </p-tabPanel>
-        <p-tabPanel header="Buildings">
+        <p-tabPanel header="Buildings" *ngIf="plot.buildings">
             <p>Buildings</p>
-            <div *ngIf="plot.buildings.length">
+            <div *ngIf="plot.buildings && plot.buildings.length">
                 <div *ngFor="let building of plot.buildings">
                     <p-divider></p-divider>
                     <p><strong> Name: </strong>{{ building.name }}</p>
@@ -56,7 +67,9 @@
                     </p-button>
                 </div>
             </div>
-            <div *ngIf="!plot.buildings.length">No Building/s on this plot</div>
+            <div *ngIf="!plot.buildings && !plot.buildings.length">
+                No Building/s on this plot
+            </div>
         </p-tabPanel>
     </p-tabView>
 </div>

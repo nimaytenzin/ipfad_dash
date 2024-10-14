@@ -17,8 +17,11 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { AdminViewLeaseAgreementComponent } from '../../../lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
-import { LESSEETYPE } from 'src/app/core/constants/enums';
+import { LESSEETYPE, NOTIFICATIONTYPES } from 'src/app/core/constants/enums';
 import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease/lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
+import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 
 @Component({
     selector: 'app-admin-list-units',
@@ -34,7 +37,7 @@ import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease/le
         ChipModule,
         TagModule,
     ],
-    providers: [DialogService, ConfirmationService, MessageService],
+    providers: [DialogService, ConfirmationService],
     templateUrl: './admin-list-units.component.html',
     styleUrl: './admin-list-units.component.scss',
 })
@@ -46,7 +49,9 @@ export class AdminListUnitsComponent implements OnInit {
         private route: ActivatedRoute,
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
-        private leaseAgreementDataService: LeaseAgreementDataService
+        private leaseAgreementDataService: LeaseAgreementDataService,
+        private notificationService: NotificationService,
+        private authService: AuthService
     ) {}
     LESSEETYPES = LESSEETYPE;
     ref: DynamicDialogRef | undefined;
@@ -166,6 +171,40 @@ export class AdminListUnitsComponent implements OnInit {
             height: '100vh',
             data: {
                 ...leaseAgreement,
+            },
+        });
+    }
+
+    openConfirmSendLeaseSigningReminder(lease: LeaseAgreeementDTO) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: 'Send Signing reminder?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Sending',
+                    detail: 'Sending Lease signing reminder!',
+                });
+                this.notificationService
+                    .SendNotification({
+                        fromUserId: this.authService.GetAuthenticatedUser().id,
+                        toUserId: lease.tenantId,
+                        leaseAgreementId: lease.id,
+                        notificationType:
+                            NOTIFICATIONTYPES.LEASE_SIGNING_REMINDER,
+                    })
+                    .subscribe((res) => {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Sent',
+                            detail: 'Lease signing reminder sent!',
+                        });
+                    });
             },
         });
     }

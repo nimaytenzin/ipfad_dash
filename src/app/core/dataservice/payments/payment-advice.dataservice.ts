@@ -34,7 +34,10 @@ export class PaymentAdviceDataService {
     }
 
     GenerateBuildingPA(data: GenerateBuildingPADto) {
-        return this.http.post(`${this.apiUrl}/payment-advice/building`, data);
+        return this.http.post(
+            `${this.apiUrl}/payment-advice/generate/building`,
+            data
+        );
     }
 
     GetAllPendingAdviceByUnit(unitId: number): Observable<PaymentAdviceDto[]> {
@@ -85,42 +88,62 @@ export class PaymentAdviceDataService {
         );
     }
 
-    GetAllPendingPaymentAdvicePaginated(params?: PaginatedParamsOptions) {
-        // let httpParams = new HttpParams();
-        // if (params) {
-        //     if (params.page !== undefined) {
-        //         httpParams = httpParams.append('page', params.page.toString());
-        //     }
-        //     if (params.limit !== undefined) {
-        //         httpParams = httpParams.append(
-        //             'limit',
-        //             params.limit.toString()
-        //         );
-        //     }
-        // }
-        // return this.http.get<PaginatedData<PaymentAdviceDto>>(
-        //     `${this.apiUrl}/payment-advice/pending/p`,
-        //     { params: httpParams }
-        // );
+    GetAllPendingPaymentAdviceByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+
+        console.log(params);
+        // Check if params exist and append query parameters accordingly
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/pending/p/${adminId}`,
+            { params: httpParams }
+        );
     }
 
-    GetAllPaidPaymentAdvicePaginated(params?: PaginatedParamsOptions) {
-        // let httpParams = new HttpParams();
-        // if (params) {
-        //     if (params.page !== undefined) {
-        //         httpParams = httpParams.append('page', params.page.toString());
-        //     }
-        //     if (params.limit !== undefined) {
-        //         httpParams = httpParams.append(
-        //             'limit',
-        //             params.limit.toString()
-        //         );
-        //     }
-        // }
-        // return this.http.get<PaginatedData<PaymentAdviceDto>>(
-        //     `${this.apiUrl}/payment-advice/paid/p`,
-        //     { params: httpParams }
-        // );
+    GetAllPaidPaymentAdviceByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+
+        console.log(params);
+        // Check if params exist and append query parameters accordingly
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/paid/p/${adminId}`,
+            { params: httpParams }
+        );
     }
 
     GetAllPaidPaymentAdvicePaginatedByBuilding(

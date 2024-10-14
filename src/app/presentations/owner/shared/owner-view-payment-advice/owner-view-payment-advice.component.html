@@ -57,21 +57,21 @@
 <div class="flex justify-content-between">
     <div class="w-4">
         <p>From</p>
-        <p>
+        <!-- <p>
             {{ paymentAdvice.tenant?.firstName }}
             {{ paymentAdvice.tenant?.middleName }}
             {{ paymentAdvice.tenant?.lastName }}
-        </p>
-        <p>
+        </p> -->
+        <!-- <p>
             Tenant, {{ paymentAdvice.unit?.floorLevel }}-{{
                 paymentAdvice.unit?.unitNumber
             }}
         </p>
-        <p>{{ paymentAdvice.tenant?.phoneNumber }}</p>
+        <p>{{ paymentAdvice.tenant?.phoneNumber }}</p> -->
     </div>
     <div class="w-4">
         <p>To Account</p>
-        <div *ngIf="paymentAdvice.unit.bankAccount">
+        <!-- <div *ngIf="paymentAdvice.unit.bankAccount">
             <p>
                 Bank Name:
                 <strong>{{ paymentAdvice.unit.bankAccount.bankName }}</strong>
@@ -88,14 +88,14 @@
                     {{ paymentAdvice.unit.bankAccount.accountName }}</strong
                 >
             </p>
-        </div>
-        <div *ngIf="!paymentAdvice.unit.bankAccount">
+        </div> -->
+        <!-- <div *ngIf="!paymentAdvice.unit.bankAccount">
             <p class="text-red-600 font-semibold">Bank Account Not Linked!</p>
             <p>
                 Please go to the unit details tab under properites and link your
                 bank account to the unit
             </p>
-        </div>
+        </div> -->
     </div>
 </div>
 <p class="text-sm my-2">

@@ -28,6 +28,7 @@
                 <th>Unit Number</th>
                 <th>Detail</th>
 
+                <th>Lease Status</th>
                 <th>Tenant Details</th>
                 <th>Actions</th>
             </tr>
@@ -52,7 +53,24 @@
                     </p>
                 </td>
                 <td>
+                    <div
+                        *ngFor="let lease of unit.leaseAgreements"
+                        class="flex flex-column gap-2 align-items-center"
+                    >
+                        <p>{{ lease.status }}</p>
+                        <p-button
+                            *ngIf="lease.status === 'PENDING'"
+                            size="small"
+                            label="Send Reminder"
+                            icon="pi pi-bell"
+                            (click)="openConfirmSendLeaseSigningReminder(lease)"
+                        ></p-button>
+                    </div>
+                    <div *ngIf="!unit.leaseAgreements.length">NA</div>
+                </td>
+                <td>
                     <div *ngFor="let lease of unit.leaseAgreements">
+                        <p>Lessee Type: {{ lease.lesseeType }}</p>
                         <div
                             *ngIf="lease.lesseeType === LESSEETYPES.INDIVIDUAL"
                         >
@@ -78,13 +96,15 @@
                             <p>CID: {{ lease.tenant.cid }}</p>
                         </div>
                     </div>
+
+                    <div *ngIf="!unit.leaseAgreements.length">NA</div>
                 </td>
 
                 <td>
                     <div class="flex gap-2">
                         <p-button
                             size="small"
-                            *ngIf="!unit.activeLeaseAgreement"
+                            *ngIf="!unit.leaseAgreements.length"
                             label="Lease "
                             icon="pi pi-plus"
                             (click)="openCreateLeaseAgreementModal(unit)"

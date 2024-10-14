@@ -54,7 +54,6 @@ export class AdminThramListingsComponent implements OnInit {
     }
 
     onPageChange(event: PageEvent): void {
-        console.log('PAGE CHANGE VENT', event);
         this.firstPageNumber = event.first;
         this.currentPage = event.page;
         this.rows = event.rows;
@@ -82,28 +81,27 @@ export class AdminThramListingsComponent implements OnInit {
     }
 
     openCreateThramModal() {
-        // this.ref = this.dialogService.open(AdminThramCreateComponent, {
-        //     header: 'Create Thram',
-        //     width: '30vw',
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     if (res && res.status === 201) {
-        //         this.getAllThrams();
-        //     }
-        // });
+        this.ref = this.dialogService.open(AdminThramCreateComponent, {
+            header: 'Create Thram',
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.handlePagination();
+            }
+        });
     }
 
     openUpdateThramModal(item: ThramDTO) {
-        // this.ref = this.dialogService.open(AdminThramUpdateComponent, {
-        //     header: 'Update Thram',
-        //     width: '30vw',
-        //     data: { ...item },
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     if (res && res.status === 200) {
-        //         this.getAllThrams();
-        //     }
-        // });
+        this.ref = this.dialogService.open(AdminThramUpdateComponent, {
+            header: 'Update Thram',
+            width: '30vw',
+            data: { ...item },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.handlePagination();
+            }
+        });
     }
 
     downloadMasterTable() {}

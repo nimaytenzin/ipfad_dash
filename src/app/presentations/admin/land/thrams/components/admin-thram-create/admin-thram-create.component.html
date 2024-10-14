@@ -42,49 +42,48 @@
         </div>
     </div>
 
-    <div class="flex justify-content-between gap-4">
-        <div class="flex flex-column gap-2 flex-1">
-            <label for="dzongkhag">Dzongkhag</label>
-            <p-dropdown
-                id="dzongkhag"
-                [options]="dzongkhags"
-                optionValue="id"
-                optionLabel="name"
-                appendTo="body"
-                (onChange)="dzongkhagSelected($event)"
-                formControlName="dzongkhagId"
-            ></p-dropdown>
-            <div
-                *ngIf="
-                    createThramForm.get('dzongkhagId')?.invalid &&
-                    createThramForm.get('dzongkhagId')?.touched
-                "
-                class="p-error"
-            >
-                <small>Dzongkhag is required.</small>
-            </div>
+    <div class="flex flex-column gap-2 flex-1">
+        <label for="dzongkhag">Dzongkhag</label>
+        <p-dropdown
+            id="dzongkhag"
+            [options]="dzongkhags"
+            optionValue="id"
+            optionLabel="name"
+            appendTo="body"
+            (onChange)="dzongkhagSelected($event)"
+            formControlName="dzongkhagId"
+        ></p-dropdown>
+        <div
+            *ngIf="
+                createThramForm.get('dzongkhagId')?.invalid &&
+                createThramForm.get('dzongkhagId')?.touched
+            "
+            class="p-error"
+        >
+            <small>Dzongkhag is required.</small>
         </div>
-        <div class="flex flex-column gap-2 flex-1">
-            <label for="gewog">Administrative Zone</label>
-            <p-dropdown
-                id="bankName"
-                optionValue="id"
-                optionLabel="name"
-                appendTo="body"
-                (onChange)="administrativeZoneSelect($event)"
-                [options]="administrativeZones"
-                formControlName="administrativeZoneId"
-            >
-            </p-dropdown>
-            <div
-                *ngIf="
-                    createThramForm.get('administrativeZoneId')?.invalid &&
-                    createThramForm.get('administrativeZoneId')?.touched
-                "
-                class="p-error"
-            >
-                <small>Administrative Zone is required.</small>
-            </div>
+    </div>
+
+    <div class="flex flex-column gap-2 flex-1">
+        <label for="gewog">Administrative Zone</label>
+        <p-dropdown
+            id="bankName"
+            optionValue="id"
+            optionLabel="name"
+            appendTo="body"
+            (onChange)="administrativeZoneSelect($event)"
+            [options]="administrativeZones"
+            formControlName="administrativeZoneId"
+        >
+        </p-dropdown>
+        <div
+            *ngIf="
+                createThramForm.get('administrativeZoneId')?.invalid &&
+                createThramForm.get('administrativeZoneId')?.touched
+            "
+            class="p-error"
+        >
+            <small>Administrative Zone is required.</small>
         </div>
     </div>
     <div class="flex flex-column gap-2">
@@ -141,7 +140,7 @@
         <p-button
             (click)="createThram()"
             label="Create Thram"
-            [disabled]="createThramForm.invalid"
+            [disabled]="isSubmitting || createThramForm.invalid"
         ></p-button>
         <p-button
             severity="secondary"
