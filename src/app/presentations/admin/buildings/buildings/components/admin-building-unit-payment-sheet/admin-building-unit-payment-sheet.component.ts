@@ -67,14 +67,15 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
                     this.unitsWithPA = res;
                     if (res) {
                         for (const unit of res) {
-                            // if (!unit.activeLeaseAgreement) {
-                            //     this.vacantUnitCount++;
-                            // }
-                            // for (const advice of unit.paymentAdvices) {
-                            //     if (advice && advice.status === 'DUE') {
-                            //         this.totalPending += advice.totalAmount;
-                            //     }
-                            // }
+                            console.log(unit);
+                            if (!unit.activeLeaseAgreement) {
+                                this.vacantUnitCount++;
+                            }
+                            for (const advice of unit.paymentAdvices) {
+                                if (advice && advice.status === 'DUE') {
+                                    this.totalPending += advice.totalAmount;
+                                }
+                            }
                         }
                     }
                 },

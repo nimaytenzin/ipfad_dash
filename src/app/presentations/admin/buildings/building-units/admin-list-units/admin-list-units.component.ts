@@ -16,7 +16,6 @@ import { DividerModule } from 'primeng/divider';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
-import { AdminViewLeaseAgreementComponent } from '../../../lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { LESSEETYPE, NOTIFICATIONTYPES } from 'src/app/core/constants/enums';
 import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease/lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
@@ -164,15 +163,14 @@ export class AdminListUnitsComponent implements OnInit {
     }
 
     viewLease(leaseAgreement) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'View Lease',
-
-            width: '100vw',
-            height: '100vh',
-            data: {
-                ...leaseAgreement,
-            },
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'View Lease',
+        //     width: '100vw',
+        //     height: '100vh',
+        //     data: {
+        //         ...leaseAgreement,
+        //     },
+        // });
     }
 
     openConfirmSendLeaseSigningReminder(lease: LeaseAgreeementDTO) {

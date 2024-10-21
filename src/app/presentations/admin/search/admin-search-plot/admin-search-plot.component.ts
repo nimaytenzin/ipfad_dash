@@ -18,6 +18,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { AdminSpatialViewerPlotComponent } from '../../land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TabViewModule } from 'primeng/tabview';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-search-plot',
@@ -56,7 +57,8 @@ export class AdminSearchPlotComponent implements OnInit {
         private locationDataService: LocationDataService,
         private thramDataService: ThramDataService,
         private dialogService: DialogService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -124,11 +126,19 @@ export class AdminSearchPlotComponent implements OnInit {
     }
 
     searchThramByPlotId() {
-        this.thramDataService
-            .SearchForThramByPlotId(this.plotId)
-            .subscribe((res) => {
+        console.log('Searching for thram b y plot Id', this.plotId);
+        this.thramDataService.SearchForThramByPlotId(this.plotId).subscribe({
+            next: (res) => {
                 this.thram = res;
-            });
+            },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Thram not Found',
+                });
+            },
+        });
     }
 
     viewPlotsSpatially(plot: PlotDTO) {
@@ -139,5 +149,11 @@ export class AdminSearchPlotComponent implements OnInit {
                 ...plot,
             },
         });
+    }
+
+    navigateToBuilding(buildingId: string) {
+        this.router.navigate([
+            `admin/master-properties/building/${buildingId}`,
+        ]);
     }
 }

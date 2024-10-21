@@ -1,4 +1,8 @@
-<form [formGroup]="createBuildingForm" class="p-fluid p-2">
+<form
+    [formGroup]="createBuildingForm"
+    class="p-fluid p-2"
+    style="max-width: 40vw"
+>
     <div class="grid">
         <div class="mt-1 px-4">
             <label for="zhichar">Enter Plot ID</label>
@@ -167,13 +171,21 @@
             <hr class="col-12 m-0 p-0" />
 
             <div class="field col-12 md:col-4">
-                <label for="buildingName">Building Name</label>
+                <label for="buildingName">Building Name*</label>
                 <input
                     pInputText
                     id="buildingName"
                     type="text"
                     formControlName="name"
                 />
+                <div
+                    *ngIf="
+                        createBuildingForm.get('buildingName')?.invalid &&
+                        createBuildingForm.get('buildingName')?.touched
+                    "
+                >
+                    <small>Building Name is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">

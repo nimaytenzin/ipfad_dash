@@ -82,25 +82,24 @@ export interface BuildingDTO {
 
 export interface UpdateBuildingDto {
     isActive: number;
-    zhicharBuildingId: number | null;
-    zhicharQrUuid: string | null;
+    zhicharBuildingId: number;
+    zhicharQrUuid: string;
 
-    buildingType: BuildingType | null;
-    regularFloorCount: number;
+    name: string;
+    buildingNumber: string;
+    buildingType: string;
+
     basementCount: number;
     stiltCount: number;
+    regularFloorCount: number;
     atticCount: number;
     jamthogCount: number;
-    areaSqM: number | null;
 
     latitude: number;
     longitude: number;
-
-    name: string | null;
-    buildingNumber: string | null;
-    streetName: string | null;
-    quadrant: string | null;
-    landmark: string | null;
+    address: string;
+    landmark: string;
+    areaSqM: number;
 
     dzongkhagId: number;
     administrativeZoneId: number;

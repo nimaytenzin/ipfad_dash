@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
-import { AdminViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { TenantViewLeaseDetailsComponent } from '../../../dashboard/components/tenant-view-lease-details/tenant-view-lease-details.component';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
@@ -61,15 +60,13 @@ export class TenantLeaseActiveLeaseListComponent implements OnInit {
     }
 
     viewLease(leaeAgreement) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'View Lease',
-
-            width: '600px',
-
-            data: {
-                leaseAgreementId: leaeAgreement.id,
-            },
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'View Lease',
+        //     width: '600px',
+        //     data: {
+        //         leaseAgreementId: leaeAgreement.id,
+        //     },
+        // });
     }
     viewLeasePaymentBreakdown(item) {
         this.selectedLease = item;

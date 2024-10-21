@@ -81,12 +81,16 @@
                         {{ unit.floorLevel }}-{{ unit.unitNumber }}
                     </p>
                 </td>
-                <td *ngFor="let advice of unit.paymentAdvices; let i = index">
+                <td
+                    *ngFor="let advice of unit.paymentAdvices; let i = index"
+                    style="padding: 0px"
+                >
                     <ng-container *ngIf="advice && advice.id; else naTemplate">
                         <div
                             (dblclick)="openPADetails(advice)"
-                            class="cursor-pointer hover:bg-gray-100"
+                            class="cursor-pointer hover:bg-gray-100 p-2 no-select"
                         >
+                            <p>Title:{{ advice.title }}</p>
                             <p style="text-wrap: nowrap">
                                 Status:
                                 <span
@@ -98,17 +102,15 @@
                                             advice.status === 'DUE'
                                     }"
                                 >
-                                    {{ advice.status }}</span
+                                    {{ advice.status }} Nu.
+                                    {{ advice.totalAmount }}</span
                                 >
                             </p>
 
-                            <div
+                            <!-- <div
                                 *ngIf="advice.status === 'DUE'"
                                 class="text-red-600 mt-2"
                             >
-                                <p style="text-wrap: nowrap">
-                                    Amount Due: Nu. {{ advice.totalAmount }}
-                                </p>
                                 <div style="text-wrap: nowrap" class="my-2">
                                     Payaee:
                                     <p>
@@ -121,8 +123,8 @@
                                     </p>
                                     <p>CID: {{ advice.tenant?.cid }}</p>
                                 </div>
-                            </div>
-                            <div *ngIf="advice.status === 'PAID'" class="mt-2">
+                            </div> -->
+                            <!-- <div *ngIf="advice.status === 'PAID'" class="mt-2">
                                 <p style="text-wrap: nowrap">
                                     Amount Paid: Nu. {{ advice.totalAmount }}
                                 </p>
@@ -138,7 +140,7 @@
                                     </p>
                                     <p>CID: {{ advice.tenant?.cid }}</p>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </ng-container>
                     <ng-template #naTemplate>

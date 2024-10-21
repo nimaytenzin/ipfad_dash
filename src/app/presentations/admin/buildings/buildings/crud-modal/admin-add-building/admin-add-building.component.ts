@@ -12,6 +12,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import {
     DialogService,
     DynamicDialogComponent,
+    DynamicDialogConfig,
     DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -58,17 +59,6 @@ import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
     styleUrl: './admin-add-building.component.scss',
 })
 export class AdminAddBuildingComponent {
-    constructor(
-        private zhicharApiService: ZhicharApiService,
-        private fb: FormBuilder,
-        private messageService: MessageService,
-        private locationDataService: LocationDataService,
-        private buildingDataService: BuildingDataService,
-        public ref: DynamicDialogRef,
-        private dialogService: DialogService,
-        private plotDataService: PlotDataService
-    ) {}
-
     instance: DynamicDialogComponent | undefined;
 
     checkingPlot: boolean = false;
@@ -85,13 +75,29 @@ export class AdminAddBuildingComponent {
     buildingTypes = Object.values(BuildingType);
     numberedDropDownOptions = NumberDropDownOptionsAsString;
 
+    constructor(
+        private zhicharApiService: ZhicharApiService,
+        private fb: FormBuilder,
+        private messageService: MessageService,
+        private locationDataService: LocationDataService,
+        private buildingDataService: BuildingDataService,
+        public ref: DynamicDialogRef,
+        private dialogService: DialogService,
+        private plotDataService: PlotDataService,
+        private config: DynamicDialogConfig
+    ) {
+        if (this.config.data && this.config.data.plotId) {
+            this.plotMappings.push(this.config.data);
+        }
+    }
+
     ngOnInit() {
         this.createBuildingForm = this.fb.group({
             plotId: [''],
             isActive: [true, Validators.required],
             zhicharBuildingId: [''],
             zhicharQrUuid: [''],
-            name: [''],
+            name: ['', Validators.required],
             buildingNumber: ['', Validators.required],
             buildingType: [BuildingType.CONTEMPORARY, Validators.required],
 
@@ -221,7 +227,7 @@ export class AdminAddBuildingComponent {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Missing Fields',
-                detail: 'Please add all required fields makred with *',
+                detail: 'Please add all required fields marked with *',
             });
         }
     }

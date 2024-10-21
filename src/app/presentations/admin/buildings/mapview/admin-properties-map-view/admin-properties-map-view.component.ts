@@ -10,6 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
 import { MessageService } from 'primeng/api';
+import { AdminMapviewBuildingdetailsComponent } from '../components/admin-mapview-buildingdetails/admin-mapview-buildingdetails.component';
 @Component({
     selector: 'app-admin-properties-map-view',
     templateUrl: './admin-properties-map-view.component.html',
@@ -77,6 +78,19 @@ export class AdminPropertiesMapViewComponent implements OnInit {
         this.geometryDataService.GetAllPlotsGeom().subscribe((res: any) => {
             console.log(res);
             this.plotsGeojsonLayer = L.geoJSON(res, {
+                onEachFeature: (feature, layer) => {
+                    layer.on('click', () => {
+                        console.log(feature.properties, 'LAYER CLICK');
+                        this.ref = this.dialogService.open(
+                            AdminMapviewPlotdetailsComponent,
+                            {
+                                header: feature.properties.plotId,
+                                style: { 'min-width': '40vw' },
+                                data: { plotId: feature.properties.plotId },
+                            }
+                        );
+                    });
+                },
                 style: (feature) => {
                     return {
                         fillColor: 'transparent',
@@ -99,6 +113,22 @@ export class AdminPropertiesMapViewComponent implements OnInit {
     loadBuildingGeometry() {
         this.geometryDataService.GetAllBuildingsGeom().subscribe((res: any) => {
             this.buildingsGeoJsonLayer = L.geoJSON(res, {
+                onEachFeature: (feature, layer) => {
+                    layer.on('click', () => {
+                        console.log(feature.properties, 'LAYER CLICK');
+                        this.ref = this.dialogService.open(
+                            AdminMapviewBuildingdetailsComponent,
+                            {
+                                header:
+                                    'Building:' + feature.properties.buildingId,
+                                style: { 'min-width': '40vw' },
+                                data: {
+                                    buildingId: feature.properties.buildingId,
+                                },
+                            }
+                        );
+                    });
+                },
                 style: (feature) => {
                     return {
                         fillColor: 'white',

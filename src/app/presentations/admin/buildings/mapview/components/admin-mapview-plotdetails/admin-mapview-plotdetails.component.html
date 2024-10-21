@@ -1,24 +1,28 @@
 <div>
     <p>
-        PlotId:
+        <strong>PlotId:</strong>
         {{ plotId }}
     </p>
+    <p><strong>Plot Category:</strong> {{ plot?.plotCategory }}</p>
+
+    <p><strong>Area:</strong> {{ plot?.netArea }} {{ plot?.areaUnit }}</p>
 
     <p-divider type="dashed"></p-divider>
-    <p>
-        Thram : <strong>{{ plot?.thram?.thramNo }} </strong>
-    </p>
-    <p>
-        Owner:
-        <strong>
-            {{ plot?.thram?.owner?.nameEnglish }} /
-            {{ plot?.thram?.owner?.nameDzongkha }}
-        </strong>
+    <p><strong> Thram:</strong> {{ plot?.thram?.thramNo }}</p>
+    <p><strong>Ownership Type:</strong> {{ plot?.thram?.ownershipType }}</p>
+    <p-divider></p-divider>
+    <p><strong>Owner/s:</strong></p>
+    <p *ngFor="let item of plot?.thram?.owners">
+        - {{ item.nameEnglish }}/{{ item.nameDzongkha }}
     </p>
     <p-divider></p-divider>
 
     <p class="font-semibold mb-2">Location Details</p>
-    infer from thram
+    <p>Dzongkhag: {{ plot?.thram?.dzongkhag?.name }}</p>
+    <p>Administrative Zone: {{ plot?.thram?.administrativeZone?.name }}</p>
+    <p>
+        Sub Administrative Zone: {{ plot?.thram?.subAdministrativeZone?.name }}
+    </p>
     <p-divider></p-divider>
 
     <p class="font-semibold mb-2">Development Zone Details</p>

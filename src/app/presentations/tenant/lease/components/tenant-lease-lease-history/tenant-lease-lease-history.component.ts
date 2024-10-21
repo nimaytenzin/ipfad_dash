@@ -3,7 +3,6 @@ import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';
-import { AdminViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { TenantViewLeaseDetailsComponent } from '../../../dashboard/components/tenant-view-lease-details/tenant-view-lease-details.component';
 import { CommonModule } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
@@ -61,15 +60,13 @@ export class TenantLeaseLeaseHistoryComponent implements OnInit {
     }
 
     viewLease(leaeAgreement) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'View Lease',
-
-            width: '600px',
-
-            data: {
-                leaseAgreementId: leaeAgreement.id,
-            },
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'View Lease',
+        //     width: '600px',
+        //     data: {
+        //         leaseAgreementId: leaeAgreement.id,
+        //     },
+        // });
     }
     viewLeasePaymentBreakdown(item) {
         this.selectedLease = item;
@@ -77,11 +74,11 @@ export class TenantLeaseLeaseHistoryComponent implements OnInit {
     }
 
     openLeaseDetailedView(item) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'Lease Details',
-            width: '600px',
-            data: { ...item },
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'Lease Details',
+        //     width: '600px',
+        //     data: { ...item },
+        // });
     }
     openLeaseSumaryView(item) {
         this.ref = this.dialogService.open(TenantViewLeaseDetailsComponent, {

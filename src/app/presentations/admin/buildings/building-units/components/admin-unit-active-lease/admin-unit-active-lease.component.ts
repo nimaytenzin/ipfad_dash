@@ -3,7 +3,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { AdminViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
@@ -66,14 +65,13 @@ export class AdminUnitActiveLeaseComponent implements OnInit {
     }
 
     viewLease(leaeAgreement) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'View Lease',
-
-            width: '70vw',
-            data: {
-                leaseAgreementId: leaeAgreement.id,
-            },
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'View Lease',
+        //     width: '70vw',
+        //     data: {
+        //         leaseAgreementId: leaeAgreement.id,
+        //     },
+        // });
     }
 
     openPaymentGatewayPaymentModal(paymentAdvice: PaymentAdviceDto) {

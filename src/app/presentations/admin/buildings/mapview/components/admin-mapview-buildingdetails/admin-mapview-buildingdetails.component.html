@@ -1,0 +1,65 @@
+<div *ngIf="building">
+    <div class="flex">
+        <div class="flex-1">
+            <p><strong>Building ID:</strong> {{ building.id }}</p>
+            <p>
+                <strong>Zhichar Building ID:</strong>
+                {{ building.zhicharBuildingId }}
+            </p>
+
+            <p class="pb-3">
+                <strong>Zhichar QR UUID:</strong> {{ building.zhicharQrUuid }}
+            </p>
+            <p-button
+                size="small"
+                label="Detailed View"
+                severity="secondary"
+                icon="pi pi-eye"
+                (click)="navigateToBuilding()"
+            ></p-button>
+        </div>
+
+        <div>
+            <qrcode
+                [qrdata]="building.zhicharQrUuid"
+                [errorCorrectionLevel]="'M'"
+                [allowEmptyString]="true"
+                [cssClass]="'center'"
+                [errorCorrectionLevel]="'high'"
+                [colorDark]="'#111827'"
+                [colorLight]="'#FFFFFF00'"
+                [elementType]="'svg'"
+                [errorCorrectionLevel]="'H'"
+                [scale]="1"
+                [title]="'BuildingQr'"
+                [width]="110"
+            ></qrcode>
+        </div>
+    </div>
+    <p-divider></p-divider>
+    <p><strong>Name:</strong> {{ building.name }}</p>
+    <p><strong>Building Number:</strong> {{ building.buildingNumber }}</p>
+    <p><strong>Building Type:</strong> {{ building.buildingType }}</p>
+    <p><strong>Basement Count:</strong> {{ building.basementCount }}</p>
+    <p><strong>Stilt Count:</strong> {{ building.stiltCount }}</p>
+    <p>
+        <strong>Regular Floor Count:</strong> {{ building.regularFloorCount }}
+    </p>
+    <p><strong>Attic Count:</strong> {{ building.atticCount }}</p>
+    <p><strong>Jamthog Count:</strong> {{ building.jamthogCount }}</p>
+    <p-divider></p-divider>
+    <p><strong>Latitude:</strong> {{ building.latitude }}</p>
+    <p><strong>Longitude:</strong> {{ building.longitude }}</p>
+    <p><strong>Address:</strong> {{ building.address }}</p>
+    <p><strong>Landmark:</strong> {{ building.landmark }}</p>
+    <p><strong>Area (sq.m):</strong> {{ building.areaSqM || "N/A" }}</p>
+    <p><strong>Dzongkhag:</strong> {{ building.dzongkhag.name }}</p>
+    <p>
+        <strong>Administrative Zone:</strong>
+        {{ building.administrativeZone.name }}
+    </p>
+    <p>
+        <strong>Sub-administrative Zone:</strong>
+        {{ building.subadministrativeZone.name }}
+    </p>
+</div>

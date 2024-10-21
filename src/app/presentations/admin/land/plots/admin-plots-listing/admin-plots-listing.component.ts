@@ -14,6 +14,7 @@ import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatorModule } from 'primeng/paginator';
 import { AdminPlotUpdateComponent } from '../components/admin-plot-update/admin-plot-update.component';
+import { AdminAddBuildingComponent } from '../../../buildings/buildings/crud-modal/admin-add-building/admin-add-building.component';
 
 @Component({
     selector: 'app-admin-plots-listing',
@@ -102,6 +103,18 @@ export class AdminPlotsListingComponent implements OnInit {
         });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 200) {
+                this.handlePagination();
+            }
+        });
+    }
+
+    openAddBuildingInPlotModal(item: PlotDTO) {
+        this.ref = this.dialogService.open(AdminAddBuildingComponent, {
+            header: 'Add Building',
+            data: { ...item },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
                 this.handlePagination();
             }
         });

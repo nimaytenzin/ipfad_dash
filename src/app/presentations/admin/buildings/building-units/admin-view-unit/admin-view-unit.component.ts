@@ -24,7 +24,6 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import { TableModule } from 'primeng/table';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaginatorModule } from 'primeng/paginator';
-import { AdminViewLeaseAgreementComponent } from '../../../lease/admin-view-lease-agreement/admin-view-lease-agreement.component';
 import {
     CreatePaymentAdviceDto,
     PaymentAdviceDto,
@@ -111,14 +110,13 @@ export class AdminViewUnitComponent implements OnInit {
     }
 
     viewLease(leaeAgreement) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'View Lease',
-
-            width: '70vw',
-            data: {
-                leaseAgreementId: leaeAgreement.id,
-            },
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'View Lease',
+        //     width: '70vw',
+        //     data: {
+        //         leaseAgreementId: leaeAgreement.id,
+        //     },
+        // });
     }
 
     getUnit() {

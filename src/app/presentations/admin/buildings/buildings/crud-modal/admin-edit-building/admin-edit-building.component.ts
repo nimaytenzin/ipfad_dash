@@ -30,7 +30,10 @@ import { LocationDataService } from 'src/app/core/dataservice/location/location.
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
-import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import {
+    BuildingDTO,
+    UpdateBuildingDto,
+} from 'src/app/core/dto/properties/building.dto';
 
 @Component({
     selector: 'app-admin-edit-building',
@@ -62,7 +65,7 @@ export class AdminEditBuildingComponent implements OnInit {
 
     selectedDzongkhag: DzongkhagDTO;
 
-    createBuildingForm!: FormGroup;
+    updateBuildingForm!: FormGroup;
     searched = false;
 
     buildingTypes = Object.values(BuildingType);
@@ -76,17 +79,16 @@ export class AdminEditBuildingComponent implements OnInit {
         private fb: FormBuilder
     ) {
         this.instance = this.dialogService.getInstance(this.ref);
-        console.log(this.instance.data);
-
         if (this.instance && this.instance.data) {
             this.building = this.instance.data;
         }
     }
+
     ngOnInit(): void {
         this.getAdminsitrativeZones(this.building.dzongkhagId);
         this.getSubadministrativeZones(this.building.administrativeZoneId);
         this.getDzongkhags();
-        this.createBuildingForm = this.fb.group({
+        this.updateBuildingForm = this.fb.group({
             isActive: [false, Validators.required],
             zhicharBuildingId: [''],
             zhicharQrUuid: [''],
@@ -115,7 +117,7 @@ export class AdminEditBuildingComponent implements OnInit {
         this.getDzongkhags();
 
         console.log(this.building);
-        this.createBuildingForm.patchValue({
+        this.updateBuildingForm.patchValue({
             ...this.building,
             regularFloorCount: this.building.regularFloorCount.toString(),
             atticCount: this.building.atticCount.toString(),
@@ -131,11 +133,11 @@ export class AdminEditBuildingComponent implements OnInit {
             // this.searched = true;
             // this.zhicharApiService
             //     .GetBuildDetailsByBuildingId(
-            //         this.createBuildingForm.controls['zhicharBuildingId'].value
+            //         this.updateBuildingForm.controls['zhicharBuildingId'].value
             //     )
             //     .subscribe((res: any) => {
             //         if (res) {
-            //             this.createBuildingForm.patchValue({
+            //             this.updateBuildingForm.patchValue({
             //                 zhicharQrUuid: res.qrUuid ? res.qrUuid : null,
             //                 address: res.address ? res.address : null,
             //                 buildingNumber: res.buildingNumber,
@@ -150,8 +152,47 @@ export class AdminEditBuildingComponent implements OnInit {
     }
 
     updateBuilding() {
+        const newData: UpdateBuildingDto = {
+            isActive: this.updateBuildingForm.controls['isActive'].value,
+            zhicharBuildingId:
+                this.updateBuildingForm.controls['zhicharBuildingId'].value,
+            zhicharQrUuid:
+                this.updateBuildingForm.controls['zhicharQrUuid'].value,
+            buildingType: BuildingType.CONTEMPORARY,
+            regularFloorCount: Number(
+                this.updateBuildingForm.controls['regularFloorCount'].value
+            ),
+            basementCount: Number(
+                this.updateBuildingForm.controls['basementCount'].value
+            ),
+            stiltCount: Number(
+                this.updateBuildingForm.controls['stiltCount'].value
+            ),
+            atticCount: Number(
+                this.updateBuildingForm.controls['atticCount'].value
+            ),
+            jamthogCount: Number(
+                this.updateBuildingForm.controls['jamthogCount'].value
+            ),
+            areaSqM: this.updateBuildingForm.controls['areaSqM'].value,
+            latitude: this.updateBuildingForm.controls['latitude'].value,
+            longitude: this.updateBuildingForm.controls['longitude'].value,
+            name: this.updateBuildingForm.controls['name'].value,
+            buildingNumber:
+                this.updateBuildingForm.controls['buildingNumber'].value,
+            address: this.updateBuildingForm.controls['address'].value,
+            landmark: this.updateBuildingForm.controls['landmark'].value,
+            dzongkhagId: this.updateBuildingForm.controls['dzongkhagId'].value,
+            administrativeZoneId:
+                this.updateBuildingForm.controls['administrativeZoneId'].value,
+            subadministrativeZoneId:
+                this.updateBuildingForm.controls['subadminsitrativeZoneId']
+                    .value,
+        };
+
+        console.log(newData);
         this.buildingDataService
-            .UpdateBuilding(this.building.id, this.createBuildingForm.value)
+            .UpdateBuilding(this.building.id, newData)
             .subscribe({
                 next: (res) => {
                     console.log(res);

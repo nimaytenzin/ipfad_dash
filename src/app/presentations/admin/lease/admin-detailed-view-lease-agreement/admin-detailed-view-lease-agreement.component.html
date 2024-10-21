@@ -1,0 +1,653 @@
+<p-confirmDialog />
+<div *ngIf="leaseAgreement">
+    <div class="flex justify-content-between">
+        <div class="flex flex-column gap-2">
+            <p class="font-bold">Lease Status: {{ leaseAgreement?.status }}</p>
+            <p>
+                Security Deposit Payment Status:
+                {{ leaseAgreement?.securityDepositPaid ? "PAID" : "DUE" }}
+            </p>
+            <p>
+                Entry Damage Report Status:
+                {{
+                    leaseAgreement?.entryDamageReportSubmitted
+                        ? "Submitted"
+                        : "Not Submitted"
+                }}
+            </p>
+        </div>
+        <div class="flex flex-column align-items-end gap-2">
+            <p-button
+                label="Notify to sign"
+                size="small"
+                severity="secondary"
+                icon="pi pi-bell"
+                *ngIf="!leaseAgreement.leaseSigningDate"
+                (click)="notifyLeaseSigning()"
+            ></p-button>
+            <p-button
+                label="Notify Security Deposit Payment"
+                size="small"
+                severity="secondary"
+                icon="pi pi-bell"
+                *ngIf="!leaseAgreement.securityDepositPaid"
+                (click)="notifySecurityDepositPayment()"
+            ></p-button>
+            <p-button
+                label="Notify Entry Damage Report Submission"
+                size="small"
+                severity="secondary"
+                icon="pi pi-bell"
+                (click)="notifyEntryDamageReportSubmission()"
+            ></p-button>
+        </div>
+    </div>
+
+    <div class="flex gap-4 jusitfy-content-between"></div>
+
+    <div class="flex gap-4 jusitfy-content-between"></div>
+</div>
+<p-tabView
+    [(activeIndex)]="activeIndex"
+    (onChange)="handleTabChange($event)"
+    *ngIf="leaseAgreement"
+>
+    <p-tabPanel header="Summary">
+        <div>
+            <div class="mb-2">
+                <p>Lessor Type: {{ leaseAgreement?.lessorType }}</p>
+                <p *ngIf="leaseAgreement?.lessorType === lessorTypes.ADMIN">
+                    Lessor:
+                    <Strong
+                        >{{ admin.nameEnglish }}/{{ admin.nameDzongkha }}
+                    </Strong>
+                </p>
+            </div>
+            <div class="flex gap-2 my-4">
+                <p-button
+                    label="Download PDF"
+                    icon="pi pi-save"
+                    size="small"
+                    severity="secondary"
+                    (click)="downloadLeasePdf()"
+                >
+                </p-button>
+                <p-button
+                    label="Renew Lease"
+                    icon="pi pi-refresh"
+                    size="small"
+                    *ngIf="!leaseTerminated"
+                    (click)="openRenewLeaseModal()"
+                >
+                </p-button>
+                <p-button
+                    label="Terminate Lease"
+                    severity="danger"
+                    icon="pi pi-times"
+                    size="small"
+                    *ngIf="!leaseTerminated"
+                    (click)="openConfirmLeaseTerminationModal()"
+                >
+                </p-button>
+            </div>
+        </div>
+        <p-tabView>
+            <p-tabPanel header="Property Leased">
+                <p><strong>Lease Type:</strong> {{ leaseAgreement?.type }}</p>
+
+                <div class="my-3">
+                    <p class="font-bold">Property Details</p>
+                    <hr class="my-1" />
+                    <div
+                        *ngIf="leaseAgreement?.type === leaseTypeEnums.UNIT"
+                        class="my-2"
+                    >
+                        <p class="font-semibold mb-1">Unit Details</p>
+                        <p
+                            [ngClass]="{
+                                'bg-green-200':
+                                    leaseAgreement?.type === leaseTypeEnums.UNIT
+                            }"
+                        >
+                            <strong>Unit Number: </strong>
+                            {{ leaseAgreement?.unit?.floorLevel }}-{{
+                                leaseAgreement?.unit?.unitNumber
+                            }}
+                        </p>
+                        <p>
+                            <strong>Unit Config:</strong>
+                            {{
+                                getUnitConfigString(
+                                    leaseAgreement.unit.bedroomCount,
+                                    leaseAgreement.unit.toiletCount,
+                                    leaseAgreement.unit.balconyCount
+                                )
+                            }}
+                        </p>
+                    </div>
+                    <div class="my-2">
+                        <p class="font-semibold mb-1">Building Details</p>
+
+                        <p
+                            [ngClass]="{
+                                'bg-green-200':
+                                    leaseAgreement?.type ===
+                                    leaseTypeEnums.BUILDING
+                            }"
+                        >
+                            <strong>Building Name:</strong>
+                            {{ leaseAgreement?.building?.name }}
+                        </p>
+                        <p>
+                            <strong>Building Number:</strong>
+                            {{ leaseAgreement?.building?.buildingNumber }}
+                        </p>
+                        <p>
+                            <strong>Building Address:</strong
+                            >{{
+                                leaseAgreement?.building?.address
+                                    ? leaseAgreement?.building?.address
+                                    : "Not assigned."
+                            }}
+                        </p>
+                    </div>
+
+                    <div class="my-1">
+                        <p class="font-semibold mb-1">Thram Details</p>
+
+                        <p
+                            [ngClass]="{
+                                'bg-green-200':
+                                    leaseAgreement?.type === leaseTypeEnums.LAND
+                            }"
+                        >
+                            <strong>PlotId:</strong>
+                            {{ leaseAgreement?.plot?.plotId }}
+                        </p>
+                        <p>
+                            <strong>Thram No: </strong>
+                            {{ leaseAgreement?.plot?.thram?.thramNo }}
+                        </p>
+                        <p>
+                            <strong>Thram Location:</strong>
+                            {{
+                                leaseAgreement?.plot?.thram?.administrativeZone
+                                    ?.name
+                            }}
+                            {{
+                                leaseAgreement?.plot?.thram?.administrativeZone
+                                    ?.nameDzo
+                                    ? "(" +
+                                      leaseAgreement.plot?.thram
+                                          ?.administrativeZone?.nameDzo +
+                                      ")"
+                                    : ""
+                            }},{{
+                                leaseAgreement?.plot?.thram
+                                    ?.subAdministrativeZone?.name
+                            }}{{
+                                leaseAgreement?.plot?.thram
+                                    ?.subAdministrativeZone?.nameDzo
+                                    ? "(" +
+                                      leaseAgreement?.plot?.thram
+                                          ?.subAdministrativeZone?.nameDzo +
+                                      ")"
+                                    : ""
+                            }}
+                        </p>
+
+                        <p class="font-semibold mt-2 mb-1">Owner Details</p>
+
+                        <p
+                            *ngFor="
+                                let item of leaseAgreement?.plot?.thram?.owners
+                            "
+                        >
+                            -{{ item.nameEnglish }}/{{ item.nameDzongkha }}
+                        </p>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Lessee">
+                <p>
+                    <strong>Lesee Type:</strong>
+                    {{ leaseAgreement?.lesseeType }}
+                </p>
+                <div
+                    *ngIf="
+                        leaseAgreement?.lesseeType ===
+                        lesseeTypeEnums.INDIVIDUAL
+                    "
+                >
+                    <p>
+                        Name: {{ leaseAgreement?.tenant?.nameEnglish }}/{{
+                            leaseAgreement.tenant.nameDzongkha
+                        }}
+                    </p>
+                    <p>
+                        Phone Number: {{ leaseAgreement?.tenant?.phoneNumber }}
+                    </p>
+                </div>
+
+                <div
+                    *ngIf="
+                        leaseAgreement?.lesseeType !==
+                        lesseeTypeEnums.INDIVIDUAL
+                    "
+                >
+                    <p>Name: {{ leaseAgreement?.organization?.name }}</p>
+                    <p>
+                        License Number:
+                        {{ leaseAgreement?.organization?.licenseNumber }}
+                    </p>
+
+                    <p class="font-semibold mt-2 mb-1">
+                        {{ leaseAgreement?.organization?.userType }} Details
+                    </p>
+                    <p>
+                        Name:{{ leaseAgreement?.tenant?.nameEnglish }}/{{
+                            leaseAgreement.tenant?.nameDzongkha
+                        }}
+                    </p>
+                    <p>
+                        Phone Number: {{ leaseAgreement?.tenant?.phoneNumber }}
+                    </p>
+                    <p>CID: {{ leaseAgreement?.tenant?.cid }}</p>
+                </div>
+            </p-tabPanel>
+
+            <p-tabPanel header="Charges">
+                <p>
+                    <strong>Monthly Rent: </strong> Nu.{{
+                        leaseAgreement?.rent
+                    }}
+                </p>
+                <p>
+                    <strong>Security Deposit: </strong> Nu.{{
+                        leaseAgreement?.securityDepositAmount
+                    }}
+                </p>
+
+                <p class="mt-2 mb-1 font-semibold">Additional Surcharges</p>
+
+                <p *ngFor="let item of leaseAgreement?.leaseSurcharges">
+                    - {{ item.particular }}, Amount: Nu. {{ item.amount }}
+                </p>
+                <p *ngIf="!leaseAgreement?.leaseSurcharges?.length">
+                    - No additional Surcharges
+                </p>
+                <div class="my-2 flex justify-content-end gap-3">
+                    <p>Total Monthly Payable:</p>
+                    <div>
+                        <p>
+                            <strong>Nu.{{ totalMonthlyPayable }}</strong>
+                        </p>
+
+                        <p>
+                            <strong>{{ getWords(totalMonthlyPayable) }}</strong>
+                        </p>
+                    </div>
+                </div>
+                <p class="text-right">
+                    *Total Monthly charges payable on or before day
+                    {{ leaseAgreement?.paymentDueDay }} of the following month.
+                </p>
+                <p class="text-right">
+                    <strong> Apply late payment penalty:</strong>
+                    {{ leaseAgreement?.applyLatePaymentFee ? "Yes" : "No" }} .
+                </p>
+            </p-tabPanel>
+            <p-tabPanel header="Terms">
+                <p>
+                    <strong>Lease Start Date:</strong>
+                    {{ leaseAgreement?.leaseStartDate }}
+                </p>
+                <p>
+                    <strong>Lease End Date:</strong>
+                    {{ leaseAgreement?.leaseEndDate }}
+                </p>
+                <p>
+                    <strong>Duration:</strong>
+                    {{ leaseAgreement?.leaseDurationMonths }} Months
+                </p>
+
+                <p>
+                    <strong>Rent Increase Notice Period: </strong>
+                    {{ leaseAgreement?.rentIncreaseNoticePeriod }} Months
+                </p>
+                <p>
+                    <strong>Tenant Vacation Notice Period: </strong>
+                    {{ leaseAgreement?.vacationNoticePeriod }} Months
+                </p>
+
+                <p>
+                    <strong>Eviction Notice Period: </strong>
+                    {{ leaseAgreement?.evictionNoticePeriod }} Months
+                </p>
+
+                <p>
+                    <strong>Tenant Sublet Authority: </strong>
+                    {{ leaseAgreement?.tenantSubletAuthority ? "Yes" : "No" }}
+                </p>
+                <p>
+                    <strong>Tenant Premature Termination: </strong>
+                    {{
+                        leaseAgreement?.tenantPrematureTermination
+                            ? "Yes"
+                            : "No"
+                    }}
+                </p>
+                <p>
+                    <strong>Owner Premature Termination: </strong>
+                    {{
+                        leaseAgreement?.ownerPrematureTermination ? "Yes" : "No"
+                    }}
+                </p>
+            </p-tabPanel>
+        </p-tabView>
+    </p-tabPanel>
+    <p-tabPanel header="Entry Damages">
+        <div class="my-2 py-3 flex justify-content-between align-items-end">
+            <p>
+                Status:
+                {{
+                    leaseAgreement?.entryDamageReportSubmitted
+                        ? "Submitted"
+                        : "Not Submitted"
+                }}
+            </p>
+            <div class="flex gap-2">
+                <p-button
+                    size="small"
+                    label="Damage Item"
+                    icon="pi pi-plus"
+                    (click)="openCreateEntryDamageItem()"
+                ></p-button>
+            </div>
+        </div>
+        <p-divider></p-divider>
+
+        <div class="flex gap-4 w-full">
+            <div class="flex flex-column gap-4 w-8">
+                <div
+                    *ngFor="let item of entryDamageReportItems"
+                    class="p-2 cursor-pointer"
+                    [ngClass]="{
+                        'bg-gray-100': item.id === selectedDamageItem?.id
+                    }"
+                >
+                    <div class="flex justify-content-between">
+                        <p>
+                            Status:
+                            <span class="font-semibold">
+                                {{ item.status }}
+                            </span>
+                        </p>
+                        <p>
+                            Date Submitted:
+                            {{ item.submissionDate | date : "short" }}
+                        </p>
+                    </div>
+
+                    <p class="font-semibold">
+                        {{ item.title }}({{ item.location }})
+                    </p>
+
+                    <p>Description:{{ item.description }}</p>
+                    <div *ngIf="item.status === 'RESOLVED'" class="pt-2">
+                        <p class="font-semibold">Resolution</p>
+                        <p>Remarks: {{ item.resolutionRemarks }}</p>
+                        <div class="flex jusitfy-content-between">
+                            <p>
+                                Resolution Date:
+                                {{ item.resolutionDate | date : "short" }}
+                            </p>
+                            <p>
+                                Charges Incurred: Nu.{{
+                                    item.resolutionCharges
+                                }}
+                            </p>
+                        </div>
+                        <p>Resolved by: {{ item.resolvedBy }}</p>
+                    </div>
+
+                    <div
+                        class="flex gap-4 justify-content-between align-items-end"
+                    >
+                        <div class="flex gap-2" style="margin-top: 0.6rem">
+                            <div
+                                *ngFor="
+                                    let image of item.images;
+                                    let index = index
+                                "
+                            >
+                                <p-image
+                                    [src]="image.itemImageSrc"
+                                    alt="Image"
+                                    height="80"
+                                    [preview]="true"
+                                />
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex flex-column gap-2 justify-content-end align-items-end"
+                        >
+                            <p-button
+                                size="small"
+                                *ngIf="item.status !== 'RESOLVED'"
+                                label="Resolve"
+                                icon="pi pi-wrench"
+                                (click)="openResolveDamageItemModal(item)"
+                            ></p-button>
+                            <p-button
+                                label="load conversation"
+                                size="small"
+                                icon="pi pi-mail"
+                                severity="secondary"
+                                (click)="loadChat(item)"
+                            ></p-button>
+                        </div>
+                    </div>
+                    <p-divider></p-divider>
+                </div>
+            </div>
+            <div class="w-5">
+                <app-damage-item-chat-box
+                    [damageItem]="selectedDamageItem"
+                ></app-damage-item-chat-box>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Maintenance Requests">
+        <div class="my-2 py-3 flex justify-content-between align-items-end">
+            <div class="flex gap-2">
+                <p-button
+                    size="small"
+                    label="Damage Item"
+                    icon="pi pi-plus"
+                    (click)="openCreateEntryDamageItem()"
+                ></p-button>
+            </div>
+        </div>
+        <p-divider></p-divider>
+
+        <div class="flex gap-4 w-full">
+            <div class="flex flex-column gap-4 w-8">
+                <div
+                    *ngFor="let item of maintenanceRequestItems"
+                    class="p-2 cursor-pointer"
+                    [ngClass]="{
+                        'bg-gray-100': item.id === selectedDamageItem?.id
+                    }"
+                >
+                    <div class="flex justify-content-between">
+                        <p>
+                            Status:
+                            <span class="font-semibold">
+                                {{ item.status }}
+                            </span>
+                        </p>
+                        <p>
+                            Date Submitted:
+                            {{ item.submissionDate | date : "short" }}
+                        </p>
+                    </div>
+
+                    <p class="font-semibold">
+                        {{ item.title }}({{ item.location }})
+                    </p>
+
+                    <p>Description:{{ item.description }}</p>
+                    <div *ngIf="item.status === 'RESOLVED'" class="pt-2">
+                        <p class="font-semibold">Resolution</p>
+                        <p>Remarks: {{ item.resolutionRemarks }}</p>
+                        <div class="flex jusitfy-content-between">
+                            <p>
+                                Resolution Date:
+                                {{ item.resolutionDate | date : "short" }}
+                            </p>
+                            <p>
+                                Charges Incurred: Nu.{{
+                                    item.resolutionCharges
+                                }}
+                            </p>
+                        </div>
+                        <p>Resolved by: {{ item.resolvedBy }}</p>
+                    </div>
+
+                    <div
+                        class="flex gap-4 justify-content-between align-items-end"
+                    >
+                        <div class="flex gap-2" style="margin-top: 0.6rem">
+                            <div
+                                *ngFor="
+                                    let image of item.images;
+                                    let index = index
+                                "
+                            >
+                                <p-image
+                                    [src]="image.itemImageSrc"
+                                    alt="Image"
+                                    height="80"
+                                    [preview]="true"
+                                />
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex flex-column gap-2 justify-content-end align-items-end"
+                        >
+                            <p-button
+                                size="small"
+                                *ngIf="item.status !== 'RESOLVED'"
+                                label="Resolve"
+                                icon="pi pi-wrench"
+                                (click)="openResolveDamageItemModal(item)"
+                            ></p-button>
+                            <p-button
+                                label="load conversation"
+                                size="small"
+                                icon="pi pi-mail"
+                                severity="secondary"
+                                (click)="loadChat(item)"
+                            ></p-button>
+                        </div>
+                    </div>
+                    <p-divider></p-divider>
+                </div>
+            </div>
+            <div class="w-5">
+                <app-damage-item-chat-box
+                    [damageItem]="selectedDamageItem"
+                ></app-damage-item-chat-box>
+            </div>
+        </div>
+    </p-tabPanel>
+
+    <p-tabPanel header="Payment History">
+        <p>Lease Payment history</p>
+    </p-tabPanel>
+</p-tabView>
+
+<!-- MODALS -->
+<p-dialog
+    header="Terminate Lease"
+    [modal]="true"
+    [(visible)]="showTerminateLeaseModal"
+    appendTo="body"
+>
+    <div>
+        <div class="flex flex-column gap-3 mb-3 p-fluid">
+            <label for="username" class="font-semibold">Termination Date</label>
+            <p-calendar
+                [(ngModel)]="terminationDate"
+                [showIcon]="true"
+                appendTo="body"
+                [showOnFocus]="false"
+                inputId="buttondisplay"
+            />
+        </div>
+        <div class="flex flex-column gap-3 mb-3">
+            <label for="username" class="font-semibold">Remarks</label>
+            <textarea
+                rows="5"
+                cols="30"
+                pInputTextarea
+                [(ngModel)]="leaseTerminationRemarks"
+            ></textarea>
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="Cancel"
+                severity="secondary"
+                (onClick)="showTerminateLeaseModal = false"
+            />
+            <p-button
+                label="Terminate Lease"
+                severity="danger"
+                (click)="confirmLeaseTermination()"
+            />
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog
+    header="Renew Lease"
+    [modal]="true"
+    [(visible)]="showRenewLeaseModal"
+    appendTo="body"
+    [style]="{ width: '25rem' }"
+>
+    <div>
+        <p>
+            The lease will be renewed based on the existing terms and
+            conditions. If any of those have changed, please terminate the lease
+            and create a new lease.
+        </p>
+        <div class="flex flex-column gap-3 mb-3 p-fluid">
+            <label for="username" class="font-semibold"
+                >Renew Lease Up to Date</label
+            >
+            <p-calendar
+                [(ngModel)]="newLeaseEndDate"
+                [showIcon]="true"
+                appendTo="body"
+                view="month"
+                dateFormat="mm/yy"
+                [showOnFocus]="false"
+                inputId="buttondisplay"
+            />
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+            <p-button
+                label="Cancel"
+                severity="secondary"
+                (onClick)="showTerminateLeaseModal = false"
+            />
+            <p-button label="Renew Lease" (onClick)="confirmLeaseRenewal()" />
+        </div>
+    </div>
+</p-dialog>

@@ -37,51 +37,50 @@
         </div>
     </div>
 
-    <div class="flex justify-content-between gap-4">
-        <div class="flex flex-column gap-2 flex-1">
-            <label for="dzongkhagId">Dzongkhag</label>
-            <p-dropdown
-                id="dzongkhagId"
-                [options]="dzongkhags"
-                optionValue="id"
-                optionLabel="name"
-                appendTo="body"
-                (onChange)="dzongkhagSelected($event)"
-                formControlName="dzongkhagId"
-            ></p-dropdown>
-            <div
-                *ngIf="
-                    updateThramForm.get('dzongkhagId')?.invalid &&
-                    updateThramForm.get('dzongkhagId')?.touched
-                "
-                class="p-error"
-            >
-                <small>Dzongkhag is required.</small>
-            </div>
-        </div>
-        <div class="flex flex-column gap-2 flex-1">
-            <label for="administrativeZoneId">Administrative Zone</label>
-            <p-dropdown
-                id="administrativeZoneId"
-                optionValue="id"
-                optionLabel="name"
-                appendTo="body"
-                (onChange)="administrativeZoneSelect($event)"
-                [options]="administrativeZones"
-                formControlName="administrativeZoneId"
-            >
-            </p-dropdown>
-            <div
-                *ngIf="
-                    updateThramForm.get('administrativeZoneId')?.invalid &&
-                    updateThramForm.get('administrativeZoneId')?.touched
-                "
-                class="p-error"
-            >
-                <small>Administrative Zone is required.</small>
-            </div>
+    <div class="flex flex-column gap-2 flex-1">
+        <label for="dzongkhagId">Dzongkhag</label>
+        <p-dropdown
+            id="dzongkhagId"
+            [options]="dzongkhags"
+            optionValue="id"
+            optionLabel="name"
+            appendTo="body"
+            (onChange)="dzongkhagSelected($event)"
+            formControlName="dzongkhagId"
+        ></p-dropdown>
+        <div
+            *ngIf="
+                updateThramForm.get('dzongkhagId')?.invalid &&
+                updateThramForm.get('dzongkhagId')?.touched
+            "
+            class="p-error"
+        >
+            <small>Dzongkhag is required.</small>
         </div>
     </div>
+    <div class="flex flex-column gap-2 flex-1">
+        <label for="administrativeZoneId">Administrative Zone</label>
+        <p-dropdown
+            id="administrativeZoneId"
+            optionValue="id"
+            optionLabel="name"
+            appendTo="body"
+            (onChange)="administrativeZoneSelect($event)"
+            [options]="administrativeZones"
+            formControlName="administrativeZoneId"
+        >
+        </p-dropdown>
+        <div
+            *ngIf="
+                updateThramForm.get('administrativeZoneId')?.invalid &&
+                updateThramForm.get('administrativeZoneId')?.touched
+            "
+            class="p-error"
+        >
+            <small>Administrative Zone is required.</small>
+        </div>
+    </div>
+
     <div class="flex flex-column gap-2">
         <label for="subAdministrativeZoneId">Sub AdministrativeZone</label>
         <p-dropdown

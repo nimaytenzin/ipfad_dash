@@ -139,7 +139,11 @@
                 [disabled]="isSubmitting || updatePlotForm.invalid"
                 label="Create Plot"
             ></p-button>
-            <p-button severity="secondary" label="Cancel"></p-button>
+            <p-button
+                severity="secondary"
+                label="Cancel"
+                (click)="close()"
+            ></p-button>
         </div>
     </div>
 </form>

@@ -15,7 +15,6 @@ import { INVOICESTATUS } from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
-import { AdminViewLeaseAgreementComponent } from '../admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { AdminCreateUnitLeaseAgreementStepperComponent } from '../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 
 @Component({
@@ -111,11 +110,11 @@ export class AdminLandLeaseListingsComponent implements OnInit {
     }
 
     openViewLeaseAgreementModal(item: LeaseAgreeementDTO) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'Lease Agreement',
-            data: { ...item },
-            width: '50vw',
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'Lease Agreement',
+        //     data: { ...item },
+        //     width: '50vw',
+        // });
     }
 
     generateInvoice(item) {
@@ -183,14 +182,13 @@ export class AdminLandLeaseListingsComponent implements OnInit {
     }
 
     viewLease(leaeAgreement) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'View Lease',
-
-            width: '70vw',
-            data: {
-                leaseAgreementId: leaeAgreement.id,
-            },
-        });
+        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
+        //     header: 'View Lease',
+        //     width: '70vw',
+        //     data: {
+        //         leaseAgreementId: leaeAgreement.id,
+        //     },
+        // });
     }
 
     downloadMasterTable() {}

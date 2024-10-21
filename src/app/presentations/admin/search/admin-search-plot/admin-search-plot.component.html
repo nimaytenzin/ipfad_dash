@@ -50,7 +50,7 @@
     </p-tabPanel>
     <p-tabPanel header="Search by PlotId">
         <div class="flex gap-4 my-4 justify-content-start align-items-end">
-            <div class="flex flex-column gap-2 flex-1">
+            <div class="flex flex-column gap-2">
                 <label for="nameEnglish">Plot ID</label>
                 <input
                     pInputText
@@ -128,14 +128,13 @@
                             <p *ngIf="!plot.buildings.length">
                                 No Buildings Added
                             </p>
-                            <div
+                            <p
                                 *ngFor="let building of plot.buildings"
-                                class="p-fluid"
+                                class="cursor-pointer font-semibold hover:underline"
+                                (click)="navigateToBuilding(building.id)"
                             >
-                                <p (click)="navigateToBuilding(building.id)">
-                                    {{ building.name }}
-                                </p>
-                            </div>
+                                - {{ building.name }}
+                            </p>
                         </div>
                     </td>
                     <td></td>

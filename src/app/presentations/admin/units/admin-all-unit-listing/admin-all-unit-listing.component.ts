@@ -24,6 +24,7 @@ import { AdminEditBuildingplotComponent } from '../../ownership/crud-modals/admi
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { LESSEETYPE } from 'src/app/core/constants/enums';
+import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.selection.preferences';
 
 @Component({
     selector: 'app-admin-all-unit-listing',
@@ -69,7 +70,8 @@ export class AdminAllUnitListingComponent implements OnInit {
         private buildingDataService: BuildingDataService,
         private router: Router,
         private buildingPlotDataService: BuildingPlotDataService,
-        private authService: AuthService
+        private authService: AuthService,
+        private adminTabSelectionPreferenceService: AdminTabPreferenceService
     ) {}
 
     ngOnInit(): void {
@@ -81,13 +83,15 @@ export class AdminAllUnitListingComponent implements OnInit {
     }
 
     openViewUnit(unitId: number, buildingId: number) {
-        alert('Implement tab seletion to units tab');
         this.router.navigate([
             '/admin/master-properties/building/' +
                 buildingId +
                 '/unit/' +
                 unitId,
         ]);
+        this.adminTabSelectionPreferenceService.updateAdminViewBuildingSelectedTab(
+            1
+        );
     }
 
     downloadMasterTable() {}
@@ -105,7 +109,6 @@ export class AdminAllUnitListingComponent implements OnInit {
             pageSize: this.rows,
         };
 
-        console.log(queryParams);
         this.unitDataService
             .GetAllUnitsByAdminPaginated(
                 this.authService.GetAuthenticatedUser().id,

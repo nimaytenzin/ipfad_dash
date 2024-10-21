@@ -3,5 +3,6 @@ export class SendNotificationDTO {
     leaseAgreementId?: number | null = null;
     fromUserId: number;
     toUserId: number;
+    damageItemId?: number;
     notificationType: string;
 }

@@ -18,7 +18,6 @@ import {
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { CreateInvoiceDTO } from 'src/app/core/dto/payments/invoice/create-invoice.dto';
-import { AdminViewLeaseAgreementComponent } from '../admin-view-lease-agreement/admin-view-lease-agreement.component';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import {
     AuthenticatedUser,
@@ -76,6 +75,11 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         this.admin = this.authService.GetAuthenticatedUser();
     }
 
+    goToDetailedView(leaseAgreement: LeaseAgreeementDTO) {
+        this.router.navigate([`/admin/master-lease/view/${leaseAgreement.id}`]);
+        this.ref.close();
+    }
+
     ngOnInit(): void {
         this.handlePagination();
     }
@@ -123,14 +127,6 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         }
 
         return total;
-    }
-
-    openViewLeaseAgreementModal(item: LeaseAgreeementDTO) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'Lease Agreement',
-            data: { ...item },
-            width: '50vw',
-        });
     }
 
     generateInvoice(item) {
@@ -195,17 +191,6 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
             default:
                 return 'danger';
         }
-    }
-
-    viewLease(leaeAgreement) {
-        this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-            header: 'View Lease',
-
-            width: '70vw',
-            data: {
-                leaseAgreementId: leaeAgreement.id,
-            },
-        });
     }
 
     downloadMasterTable() {}

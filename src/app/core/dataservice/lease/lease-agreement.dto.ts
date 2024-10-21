@@ -35,6 +35,7 @@ export interface LeaseAgreeementDTO {
     agreementDay: number;
     agreementMonth: number;
     agreementYear: number;
+    leaseSigningDate: string;
 
     leaseDurationMonths: number;
     leaseStartDate: string;
