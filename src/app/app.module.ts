@@ -11,13 +11,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { TenantLayoutModule } from './presentations/layout/tenant/tenant-layout.module';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { OwnerLayoutModule } from './presentations/layout/owner/owner-layout.module';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { CHAT_APIURL } from './core/constants/constants';
-
-const config: SocketIoConfig = {
-    url: CHAT_APIURL,
-    options: {},
-};
 
 @NgModule({
     declarations: [AppComponent],
@@ -28,13 +22,6 @@ const config: SocketIoConfig = {
         OwnerLayoutModule,
         ToastModule,
         RecaptchaV3Module,
-        SocketIoModule.forRoot(config),
-        ServiceWorkerModule.register('ngsw-worker.js', {
-            enabled: false,
-            // Register the ServiceWorker as soon as the application is stable
-            // or after 30 seconds (whichever comes first).
-            registrationStrategy: 'registerWhenStable:30000',
-        }),
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
