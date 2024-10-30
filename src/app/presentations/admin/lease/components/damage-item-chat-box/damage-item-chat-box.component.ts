@@ -21,7 +21,6 @@ import {
     DamageItemDTO,
     DamageItemThreamDTO,
 } from 'src/app/core/dataservice/damage-item/damage.item.dto';
-import { ChatDataService } from 'src/app/core/dataservice/chat.dataservice';
 import {
     AuthenticatedUserDTO,
     AuthService,
@@ -58,7 +57,6 @@ export class DamageItemChatBoxComponent
     @ViewChild('chatContainer') chatContainer!: ElementRef;
 
     constructor(
-        private chatDataService: ChatDataService,
         private authService: AuthService,
         private damageItemDataService: DamageItemService
     ) {

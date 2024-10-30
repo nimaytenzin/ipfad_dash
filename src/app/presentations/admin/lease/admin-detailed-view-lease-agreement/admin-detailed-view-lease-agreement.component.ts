@@ -43,7 +43,6 @@ import { image } from 'html2canvas/dist/types/css/types/image';
 import { DamageItemChatBoxComponent } from '../components/damage-item-chat-box/damage-item-chat-box.component';
 import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.selection.preferences';
 import { ImageModule } from 'primeng/image';
-import { ChatDataService } from 'src/app/core/dataservice/chat.dataservice';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -109,8 +108,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         private damageItemService: DamageItemService,
         private route: ActivatedRoute,
         private adminTabSelectionPreferenceService: AdminTabPreferenceService,
-        private confirmationService: ConfirmationService,
-        private chatDataservice: ChatDataService
+        private confirmationService: ConfirmationService
     ) {
         this.admin = this.authService.GetAuthenticatedUser();
 
