@@ -7,11 +7,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { TenantLayoutModule } from './presentations/layout/tenant/tenant-layout.module';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { OwnerLayoutModule } from './presentations/layout/owner/owner-layout.module';
-import { CHAT_APIURL } from './core/constants/constants';
 
 @NgModule({
     declarations: [AppComponent],

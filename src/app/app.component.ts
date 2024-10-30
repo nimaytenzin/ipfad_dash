@@ -8,10 +8,7 @@ import { from } from 'rxjs';
     templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-    constructor(
-        private primengConfig: PrimeNGConfig,
-        private swUpdate: SwUpdate
-    ) {}
+    constructor(private primengConfig: PrimeNGConfig) {}
 
     ngOnInit() {
         this.primengConfig.ripple = true;
