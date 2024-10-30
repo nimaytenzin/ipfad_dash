@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import {
     FormBuilder,
     FormGroup,
+    FormsModule,
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { Message, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import {
@@ -19,7 +20,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import {
     BuildingType,
-    NumberDropDownOptions,
     NumberDropDownOptionsAsString,
 } from 'src/app/core/constants/enums';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
@@ -34,9 +34,9 @@ import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
 import { CreateBuildingDTO } from 'src/app/core/dto/properties/building.dto';
-import { BlockUIModule } from 'primeng/blockui';
 import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-add-building',
@@ -52,6 +52,7 @@ import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
         InputTextareaModule,
         ToastModule,
         InputGroupModule,
+        FormsModule,
         InputGroupAddonModule,
     ],
     providers: [DialogService],
@@ -63,6 +64,7 @@ export class AdminAddBuildingComponent {
 
     checkingPlot: boolean = false;
     plotMappings: PlotDTO[] = [];
+    searchPlotId: string;
 
     dzongkhags: DzongkhagDTO[];
     admninistrativeZones: AdministrativeZoneDTO[];
@@ -75,6 +77,8 @@ export class AdminAddBuildingComponent {
     buildingTypes = Object.values(BuildingType);
     numberedDropDownOptions = NumberDropDownOptionsAsString;
 
+    isSubmitting = false;
+
     constructor(
         private zhicharApiService: ZhicharApiService,
         private fb: FormBuilder,
@@ -82,9 +86,9 @@ export class AdminAddBuildingComponent {
         private locationDataService: LocationDataService,
         private buildingDataService: BuildingDataService,
         public ref: DynamicDialogRef,
-        private dialogService: DialogService,
         private plotDataService: PlotDataService,
-        private config: DynamicDialogConfig
+        private config: DynamicDialogConfig,
+        private router: Router
     ) {
         if (this.config.data && this.config.data.plotId) {
             this.plotMappings.push(this.config.data);
@@ -93,32 +97,26 @@ export class AdminAddBuildingComponent {
 
     ngOnInit() {
         this.createBuildingForm = this.fb.group({
-            plotId: [''],
             isActive: [true, Validators.required],
-            zhicharBuildingId: [''],
+            zhicharBuildingId: [null, Validators.required],
             zhicharQrUuid: [''],
             name: ['', Validators.required],
             buildingNumber: ['', Validators.required],
             buildingType: [BuildingType.CONTEMPORARY, Validators.required],
-
-            regularFloorCount: ['1', Validators.required],
-            basementCount: ['0', Validators.required],
-            stiltCount: ['0', Validators.required],
-            atticCount: ['0', Validators.required],
-            jamthogCount: ['0', Validators.required],
-
-            areaSqM: [],
+            regularFloorCount: [null, Validators.required],
+            basementCount: [null, Validators.required],
+            stiltCount: [null, Validators.required],
+            atticCount: [null, Validators.required],
+            jamthogCount: [null, Validators.required],
+            areaSqM: [null],
             latitude: ['', Validators.required],
             longitude: ['', Validators.required],
             address: [''],
             landmark: [''],
-
             dzongkhagId: ['', Validators.required],
             administrativeZoneId: ['', Validators.required],
-            subadminsitrativeZoneId: ['', Validators.required],
+            subadministrativeZoneId: ['', Validators.required],
         });
-
-        this.createBuildingForm.controls['plotId'].enable();
 
         this.getDzongkhags();
     }
@@ -144,7 +142,7 @@ export class AdminAddBuildingComponent {
                             buildingNumber: res.buildingNumber,
                             latitude: res.lat,
                             longitude: res.lng,
-                            buildngName: res.name,
+                            name: res.name,
                         });
                     } else {
                         this.messageService.add({
@@ -157,20 +155,21 @@ export class AdminAddBuildingComponent {
                 });
         }
     }
-
     createBuilding() {
         if (this.createBuildingForm.valid) {
+            this.isSubmitting = true;
+
             const data: CreateBuildingDTO = {
                 isActive: this.createBuildingForm.controls['isActive'].value,
                 zhicharBuildingId:
                     this.createBuildingForm.controls['zhicharBuildingId'].value,
                 zhicharQrUuid:
                     this.createBuildingForm.controls['zhicharQrUuid'].value,
-                buildingType: BuildingType.CONTEMPORARY,
+                buildingType:
+                    this.createBuildingForm.controls['buildingType'].value,
                 regularFloorCount: Number(
                     this.createBuildingForm.controls['regularFloorCount'].value
                 ),
-
                 basementCount: Number(
                     this.createBuildingForm.controls['basementCount'].value
                 ),
@@ -197,7 +196,7 @@ export class AdminAddBuildingComponent {
                     this.createBuildingForm.controls['administrativeZoneId']
                         .value,
                 subadministrativeZoneId:
-                    this.createBuildingForm.controls['subadminsitrativeZoneId']
+                    this.createBuildingForm.controls['subadministrativeZoneId']
                         .value,
                 plots: this.plotMappings,
             };
@@ -205,15 +204,17 @@ export class AdminAddBuildingComponent {
             this.buildingDataService.CreateNewBuilding(data).subscribe({
                 next: (res) => {
                     if (res.id) {
-                        this.ref.close({
-                            status: 201,
-                        });
+                        this.ref.close({ status: 201 });
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Success',
-                            detail: 'Building Addeed',
+                            detail: 'Building Added',
                         });
+                        this.router.navigate([
+                            'admin/master-properties/building/' + res.id,
+                        ]);
                     }
+                    this.isSubmitting = false;
                 },
                 error: (error) => {
                     this.messageService.add({
@@ -221,22 +222,30 @@ export class AdminAddBuildingComponent {
                         summary: 'Error:' + error.status + error.statusText,
                         detail: error.error.message,
                     });
+                    this.isSubmitting = false;
                 },
             });
         } else {
+            const invalidFields = Object.keys(this.createBuildingForm.controls)
+                .filter((key) => this.createBuildingForm.controls[key].invalid)
+                .map(
+                    (key) =>
+                        key.charAt(0).toUpperCase() +
+                        key.slice(1).replace(/([A-Z])/g, ' $1')
+                );
+
             this.messageService.add({
                 severity: 'error',
                 summary: 'Missing Fields',
-                detail: 'Please add all required fields marked with *',
+                detail: `Please add all required fields: ${invalidFields.join(
+                    ', '
+                )}`,
             });
         }
     }
 
     convertToUppercase(event: any) {
-        const input = event.target.value.toUpperCase();
-        this.createBuildingForm.controls['plotId'].setValue(input, {
-            emitEvent: false,
-        });
+        this.searchPlotId.toUpperCase();
     }
 
     clearFormValues() {
@@ -246,8 +255,7 @@ export class AdminAddBuildingComponent {
     }
 
     checkPlotDetailsAndAdd() {
-        let plotId = this.createBuildingForm.controls['plotId'].value;
-        this.plotDataService.SearchPlotById(plotId).subscribe({
+        this.plotDataService.SearchPlotById(this.searchPlotId).subscribe({
             next: (res) => {
                 if (res) {
                     const exists = this.plotMappings.some(
@@ -263,7 +271,6 @@ export class AdminAddBuildingComponent {
                         });
                     } else {
                         this.plotMappings.push(res);
-                        this.createBuildingForm.controls['plotId'].reset();
                         this.messageService.add({
                             severity: 'success',
                             summary: 'Plot Details Found',

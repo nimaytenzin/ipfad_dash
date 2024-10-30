@@ -1,71 +1,66 @@
+<div>
+    <p class="font-semibold">Building & Plot Mapping</p>
+    <div class="mt-1">
+        <label for="zhichar">Enter Plot ID</label>
+        <div class="flex mt-2 mb-2 gap-4 align-items-center">
+            <input
+                pInputText
+                id="zhichar"
+                type="text"
+                [(ngModel)]="searchPlotId"
+                class="flex-1"
+                (input)="convertToUppercase($event)"
+            />
+            <p-button
+                label="Search And Add"
+                size="small"
+                [loading]="checkingPlot"
+                (click)="checkPlotDetailsAndAdd()"
+            ></p-button>
+        </div>
+    </div>
+    <div class="pt-4 mt-2" *ngIf="plotMappings.length">
+        <p>Plot Mapping (Building is on the following plot/s)</p>
+        <div *ngFor="let plot of plotMappings" class="font-bold">
+            <div class="flex gap-2 align-items-center">
+                <p>- {{ plot.plotId }}</p>
+                <p>
+                    <i
+                        class="pi pi-trash cursor-pointer hover:underline text-red-600"
+                        (click)="removePlotMapping(plot)"
+                    ></i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form
     [formGroup]="createBuildingForm"
     class="p-fluid p-2"
-    style="max-width: 40vw"
+    style="min-width: 40vw"
 >
     <div class="grid">
-        <div class="mt-1 px-4">
-            <label for="zhichar">Enter Plot ID</label>
-            <div class="flex mt-2 mb-2 gap-4 align-items-center">
+        <div *ngIf="plotMappings.length" class="grid">
+            <p class="col-12 font-semibold">Building Details</p>
+            <hr class="col-12 m-0 p-0" />
+
+            <div class="field col-12 md:col-6">
+                <label for="zhichar">Zhichar Building ID</label>
+
                 <input
                     pInputText
                     id="zhichar"
-                    formControlName="plotId"
-                    type="text"
-                    class="flex-1"
-                    (input)="convertToUppercase($event)"
-                />
-                <p-button
-                    label="Check And Add"
-                    size="small"
-                    [loading]="checkingPlot"
-                    (click)="checkPlotDetailsAndAdd()"
-                ></p-button>
-            </div>
-        </div>
-
-        <div *ngIf="plotMappings.length" class="grid">
-            <div class="col-12">
-                <p class="">Plot Mapping</p>
-                <div *ngFor="let plot of plotMappings" class="font-bold">
-                    <div class="flex gap-2 align-items-center">
-                        <p>- {{ plot.plotId }}</p>
-                        <p>
-                            <i
-                                class="pi pi-trash cursor-pointer hover:underline text-red-600"
-                                (click)="removePlotMapping(plot)"
-                            ></i>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <p class="col-12 font-semibold">
-                Linkage with Building Information System(www.zhichar.bt)
-            </p>
-            <hr class="col-12 m-0 p-0" />
-
-            <div class="field col-12 md:col-4">
-                <label for="zhichar">Zhichar Building ID</label>
-
-                <p-inputNumber
-                    formControlName="zhicharBuildingId"
-                    mode="decimal"
                     (keyup)="getZhicharBuildingInformation($event)"
-                    inputId="withoutgrouping"
-                    [useGrouping]="false"
+                    formControlName="zhicharBuildingId"
+                    type="text"
                 />
-
-                <div
-                    *ngIf="
-                        createBuildingForm.get('zhicharBuildingId')?.invalid &&
-                        createBuildingForm.get('zhicharBuildingId')?.touched
-                    "
+                <label for="zhichar" class="text-sm mt-2"
+                    >*press enter to search building details in zhichar</label
                 >
-                    <small>Zhichar Building ID is required.</small>
-                </div>
             </div>
 
-            <div class="field col-12 md:col-4">
+            <div class="field col-12 md:col-6">
                 <label for="qrId">Zhichar Qr ID</label>
                 <input
                     pInputText
@@ -85,6 +80,15 @@
                     formControlName="buildingType"
                     appendTo="body"
                 ></p-dropdown>
+
+                <div
+                    *ngIf="
+                        createBuildingForm.get('buildingType')?.invalid &&
+                        createBuildingForm.get('buildingType')?.touched
+                    "
+                >
+                    <small>Building Type is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -94,6 +98,15 @@
                     formControlName="jamthogCount"
                     appendTo="body"
                 ></p-dropdown>
+
+                <div
+                    *ngIf="
+                        createBuildingForm.get('jamthogCount')?.invalid &&
+                        createBuildingForm.get('jamthogCount')?.touched
+                    "
+                >
+                    <small>Jamthog Count is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -104,6 +117,14 @@
                     formControlName="atticCount"
                     appendTo="body"
                 ></p-dropdown>
+                <div
+                    *ngIf="
+                        createBuildingForm.get('atticCount')?.invalid &&
+                        createBuildingForm.get('atticCount')?.touched
+                    "
+                >
+                    <small>Attic Count is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -113,6 +134,14 @@
                     appendTo="body"
                     formControlName="regularFloorCount"
                 ></p-dropdown>
+                <div
+                    *ngIf="
+                        createBuildingForm.get('regularFloorCount')?.invalid &&
+                        createBuildingForm.get('regularFloorCount')?.touched
+                    "
+                >
+                    <small>Regular Floor Count is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -122,6 +151,14 @@
                     formControlName="stiltCount"
                     appendTo="body"
                 ></p-dropdown>
+                <div
+                    *ngIf="
+                        createBuildingForm.get('stiltCount')?.invalid &&
+                        createBuildingForm.get('stiltCount')?.touched
+                    "
+                >
+                    <small>Stilt Floor Count is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -131,6 +168,14 @@
                     formControlName="basementCount"
                     appendTo="body"
                 ></p-dropdown>
+                <div
+                    *ngIf="
+                        createBuildingForm.get('basementCount')?.invalid &&
+                        createBuildingForm.get('basementCount')?.touched
+                    "
+                >
+                    <small>Basement Floor Count is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-6">
@@ -157,6 +202,14 @@
                     type="text"
                     formControlName="latitude"
                 />
+                <div
+                    *ngIf="
+                        createBuildingForm.get('latitude')?.invalid &&
+                        createBuildingForm.get('latitude')?.touched
+                    "
+                >
+                    <small>Latitude is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -167,21 +220,29 @@
                     type="text"
                     formControlName="longitude"
                 />
+                <div
+                    *ngIf="
+                        createBuildingForm.get('longitude')?.invalid &&
+                        createBuildingForm.get('longitude')?.touched
+                    "
+                >
+                    <small>Longitude is required.</small>
+                </div>
             </div>
             <hr class="col-12 m-0 p-0" />
 
             <div class="field col-12 md:col-4">
-                <label for="buildingName">Building Name*</label>
+                <label for="name">Building Name*</label>
                 <input
                     pInputText
-                    id="buildingName"
+                    id="name"
                     type="text"
                     formControlName="name"
                 />
                 <div
                     *ngIf="
-                        createBuildingForm.get('buildingName')?.invalid &&
-                        createBuildingForm.get('buildingName')?.touched
+                        createBuildingForm.get('name')?.invalid &&
+                        createBuildingForm.get('name')?.touched
                     "
                 >
                     <small>Building Name is required.</small>
@@ -189,13 +250,21 @@
             </div>
 
             <div class="field col-12 md:col-4">
-                <label for="buildingNumber">Building Number</label>
+                <label for="buildingNumber">Building Number*</label>
                 <input
                     pInputText
                     id="buildingNumber"
                     type="text"
                     formControlName="buildingNumber"
                 />
+                <div
+                    *ngIf="
+                        createBuildingForm.get('buildingNumber')?.invalid &&
+                        createBuildingForm.get('buildingNumber')?.touched
+                    "
+                >
+                    <small>Building Number is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -229,6 +298,14 @@
                     formControlName="dzongkhagId"
                     appendTo="body"
                 ></p-dropdown>
+                <div
+                    *ngIf="
+                        createBuildingForm.get('dzongkhagId')?.invalid &&
+                        createBuildingForm.get('dzongkhagId')?.touched
+                    "
+                >
+                    <small>Dzongkhag is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -241,6 +318,15 @@
                     formControlName="administrativeZoneId"
                     appendTo="body"
                 ></p-dropdown>
+                <div
+                    *ngIf="
+                        createBuildingForm.get('administrativeZoneId')
+                            ?.invalid &&
+                        createBuildingForm.get('administrativeZoneId')?.touched
+                    "
+                >
+                    <small>Thromde/Gewog is required.</small>
+                </div>
             </div>
 
             <div class="field col-12 md:col-4">
@@ -249,9 +335,19 @@
                     [options]="subAdministrativeZones"
                     optionLabel="name"
                     optionValue="id"
-                    formControlName="subadminsitrativeZoneId"
+                    formControlName="subadministrativeZoneId"
                     appendTo="body"
                 ></p-dropdown>
+                <div
+                    *ngIf="
+                        createBuildingForm.get('subadministrativeZoneId')
+                            ?.invalid &&
+                        createBuildingForm.get('subadministrativeZoneId')
+                            ?.touched
+                    "
+                >
+                    <small>Locality/Chiwog is required.</small>
+                </div>
             </div>
 
             <div class="col-12 md:12 flex align-items-center gap-3">
@@ -269,7 +365,7 @@
                 <p-button
                     (click)="createBuilding()"
                     type="submit"
-                    [disabled]="createBuildingForm.invalid"
+                    [disabled]="isSubmitting || createBuildingForm.invalid"
                     label="Create Building"
                 ></p-button>
                 <p-button

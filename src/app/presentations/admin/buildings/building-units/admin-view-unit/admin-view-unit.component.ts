@@ -27,7 +27,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import {
     CreatePaymentAdviceDto,
     PaymentAdviceDto,
-} from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+} from 'src/app/core/dto/payments/payment-advice.dto';
 import { INVOICESTATUS, LEASESTATUS } from 'src/app/core/constants/enums';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { AdminPgPaymentStepperComponent } from '../../../payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
@@ -83,41 +83,20 @@ export class AdminViewUnitComponent implements OnInit {
         private unitDataService: UnitDataService,
         private router: Router,
         private dialogService: DialogService,
-        private bankAccountDataService: BankAccountDataService,
-        private confirmationService: ConfirmationService,
-        private messageService: MessageService,
-        private leaseAgreementDataService: LeaseAgreementDataService,
-        private paymentAdviceDataService: PaymentAdviceDataService
+        private messageService: MessageService
     ) {
         this.unitId = Number(this.route.snapshot.paramMap.get('unitId'));
 
         this.home = { icon: 'pi pi-home', routerLink: '/' };
-        this.bankList = this.bankAccountDataService.BankListWithLogo;
 
         this.route.parent.paramMap.subscribe((params) => {
             this.buildingId = Number(params.get('buildingId'));
-            console.log(`Building ID: ${this.buildingId}`);
         });
 
         this.getUnit();
     }
 
     ngOnInit(): void {}
-
-    getBankLogo(shorthand: string) {
-        let result = this.bankList.find((item) => item.shorthand === shorthand);
-        return result ? result.logourl : '';
-    }
-
-    viewLease(leaeAgreement) {
-        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-        //     header: 'View Lease',
-        //     width: '70vw',
-        //     data: {
-        //         leaseAgreementId: leaeAgreement.id,
-        //     },
-        // });
-    }
 
     getUnit() {
         this.unitDataService.GetUnit(this.unitId).subscribe((res) => {
@@ -144,69 +123,13 @@ export class AdminViewUnitComponent implements OnInit {
         });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 200) {
-                this.getUnit();
-            }
-        });
-    }
-
-    openCreateUnitBankLinkageModal(unit: UnitDTO) {
-        this.ref = this.dialogService.open(
-            AdminCreateUnitBankLinkageComponent,
-            {
-                header: 'Link Bank Account',
-                data: { ...unit },
-            }
-        );
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 200) {
                 this.messageService.add({
                     severity: 'success',
-                    summary: 'Confirmed',
-                    detail: 'Bank Account Linked',
+                    summary: 'Updated',
+                    detail: 'Details Updated Successfully',
                 });
                 this.getUnit();
             }
-        });
-    }
-
-    unlinkBankAccount(event: Event) {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Are you sure that you want to proceed?',
-            header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
-            acceptIcon: 'none',
-            rejectIcon: 'none',
-            rejectButtonStyleClass: 'p-button-text',
-            accept: () => {
-                this.unitDataService
-                    .UpdateUnit(
-                        {
-                            bankAccountId: null,
-                        },
-                        this.unitId
-                    )
-                    .subscribe({
-                        next: (res) => {
-                            if (res) {
-                                this.getUnit();
-                                this.messageService.add({
-                                    severity: 'info',
-                                    summary: 'Confirmed',
-                                    detail: 'Bank Account Unlinked',
-                                });
-                            }
-                        },
-                        error: (err) => {
-                            this.messageService.add({
-                                severity: 'error',
-                                summary: 'Error',
-                                detail: 'Server Error',
-                                life: 3000,
-                            });
-                        },
-                    });
-            },
         });
     }
 }

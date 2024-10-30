@@ -63,6 +63,8 @@ export class AdminBuildingRulesComponent {
     })
     buildingId;
 
+    isSubmitting: boolean = false;
+
     buildingRules: BuildingRuleDTO[] = [];
     createBuildingRuleForm: FormGroup;
     updateBuildingRuleForm: FormGroup;
@@ -76,11 +78,9 @@ export class AdminBuildingRulesComponent {
     ngOnInit(): void {
         this.createBuildingRuleForm = this.fb.group({
             particular: [null, Validators.required],
-            buildingId: this.buildingId,
         });
         this.updateBuildingRuleForm = this.fb.group({
             particular: [null, Validators.required],
-            buildingId: this.buildingId,
         });
 
         this.getBuildingRules();
@@ -97,6 +97,18 @@ export class AdminBuildingRulesComponent {
     }
 
     createBuildingRule() {
+        if (this.createBuildingRuleForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill out all required fields.',
+            });
+            return;
+        }
+
+        if (this.isSubmitting) return;
+        this.isSubmitting = true;
+
         const createBuildingRuleData: CreateBuildingRuleDTO = {
             particular:
                 this.createBuildingRuleForm.controls['particular'].value,
@@ -107,37 +119,66 @@ export class AdminBuildingRulesComponent {
             .CreateBuildingRule(createBuildingRuleData)
             .subscribe({
                 next: (res) => {
-                    if (res.id) {
-                        this.getBuildingRules();
-                        this.showAddBuildingRuleModal = false;
-                    }
+                    this.isSubmitting = false;
+                    this.getBuildingRules();
+                    this.showAddBuildingRuleModal = false;
+                    this.createBuildingRuleForm.reset();
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Added',
+                        detail: 'Building Rule Added',
+                    });
                 },
                 error: (err) => {
-                    console.log(err);
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
                 },
             });
     }
     updateBuildingRule() {
-        const createBuildingRuleData: CreateBuildingRuleDTO = {
+        if (this.updateBuildingRuleForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill out all required fields.',
+            });
+            return;
+        }
+
+        if (this.isSubmitting) return;
+        this.isSubmitting = true;
+
+        const updateData = {
             particular:
                 this.updateBuildingRuleForm.controls['particular'].value,
             buildingId: this.buildingId,
         };
 
         this.buildingRulesDataService
-            .UpdateBuildingRule(
-                createBuildingRuleData,
-                this.selectedBuildingRule.id
-            )
+            .UpdateBuildingRule(updateData, this.selectedBuildingRule.id)
             .subscribe({
-                next: (res) => {
-                    if (res) {
-                        this.getBuildingRules();
-                        this.showUpdateBuildingRuleModal = false;
-                    }
+                next: () => {
+                    this.isSubmitting = false;
+                    this.getBuildingRules();
+                    this.showUpdateBuildingRuleModal = false;
+                    this.updateBuildingRuleForm.reset();
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Updated',
+                        detail: 'Building Rule Updated',
+                    });
                 },
                 error: (err) => {
-                    console.log(err);
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
                 },
             });
     }
@@ -177,13 +218,6 @@ export class AdminBuildingRulesComponent {
                             });
                         }
                     });
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Cancelled',
-                    detail: 'You have rejected',
-                });
             },
         });
     }

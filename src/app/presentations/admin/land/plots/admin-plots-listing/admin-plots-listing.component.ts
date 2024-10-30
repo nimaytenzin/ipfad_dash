@@ -76,7 +76,7 @@ export class AdminPlotsListingComponent implements OnInit {
 
         this.plotDataService
             .GetAllPlotsByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({

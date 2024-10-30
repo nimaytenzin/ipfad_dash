@@ -1,4 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -6,7 +17,17 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms'; // Add FormsModule for [(ngModel)]
 import { CommonModule } from '@angular/common';
-import { DamageItemDTO } from 'src/app/core/dataservice/damage-item/damage.item.dto';
+import {
+    DamageItemDTO,
+    DamageItemThreamDTO,
+} from 'src/app/core/dataservice/damage-item/damage.item.dto';
+import { ChatDataService } from 'src/app/core/dataservice/chat.dataservice';
+import {
+    AuthenticatedUserDTO,
+    AuthService,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { DamageItemService } from 'src/app/core/dataservice/damage-item/damage-item.dataservice';
+import { Avatar, AvatarModule } from 'primeng/avatar';
 
 @Component({
     selector: 'app-damage-item-chat-box',
@@ -20,123 +41,96 @@ import { DamageItemDTO } from 'src/app/core/dataservice/damage-item/damage.item.
         ButtonModule,
         DividerModule,
         FormsModule,
+        AvatarModule,
         CommonModule,
     ],
 })
-export class DamageItemChatBoxComponent implements OnInit {
+export class DamageItemChatBoxComponent
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() damageItem!: DamageItemDTO;
-    messages: { text: string; sender: string; timestamp: Date }[] = [];
+
+    threads: DamageItemThreamDTO[] = [];
     newMessage: string = '';
 
-    recipientName = 'Kinley Wangyel';
-    recipentPhoneNumber = '17263764';
-    constructor() {}
+    authenticatedUser: AuthenticatedUserDTO;
+    pollingInterval: any;
+    @ViewChild('chatContainer') chatContainer!: ElementRef;
+
+    constructor(
+        private chatDataService: ChatDataService,
+        private authService: AuthService,
+        private damageItemDataService: DamageItemService
+    ) {
+        this.authenticatedUser = this.authService.GetAuthenticatedUser();
+    }
+    ngOnDestroy(): void {
+        this.stopPolling();
+    }
 
     ngOnInit() {
-        this.messages = [
-            {
-                text: 'Hi! How can I help you with the damage report?',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'I noticed a water leakage in the kitchen.',
-                sender: 'user',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Thanks for reporting, we will send a technician.',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Hi! How can I help you with the damage report?',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'I noticed a water leakage in the kitchen.',
-                sender: 'user',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Thanks for reporting, we will send a technician.',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Hi! How can I help you with the damage report?',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'I noticed a water leakage in the kitchen.',
-                sender: 'user',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Thanks for reporting, we will send a technician.',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Hi! How can I help you with the damage report?',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'I noticed a water leakage in the kitchen.',
-                sender: 'user',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Thanks for reporting, we will send a technician.',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Hi! How can I help you with the damage report?',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'I noticed a water leakage in the kitchen.',
-                sender: 'user',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Thanks for reporting, we will send a technician.',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Hi! How can I help you with the damage report?',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-            {
-                text: 'I noticed a water leakage in the kitchen.',
-                sender: 'user',
-                timestamp: new Date(),
-            },
-            {
-                text: 'Thanks for reporting, we will send a technician.',
-                sender: 'admin',
-                timestamp: new Date(),
-            },
-        ];
+        if (this.damageItem) {
+            this.loadDamageItemThreads();
+            this.startPolling();
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['damageItem'] && changes['damageItem'].currentValue) {
+            this.loadDamageItemThreads();
+            this.startPolling();
+        }
+    }
+
+    private loadDamageItemThreads(): void {
+        this.damageItemDataService
+            .GetDamageItemThreadByDamageItem(this.damageItem.id)
+            .subscribe({
+                next: (res) => {
+                    this.threads = res;
+                    this.scrollToBottom();
+                },
+                error: (err) => {
+                    console.error('Error loading threads:', err);
+                },
+            });
+    }
+
+    private startPolling(): void {
+        this.pollingInterval = setInterval(() => {
+            this.loadDamageItemThreads();
+        }, 120000);
+    }
+
+    private stopPolling(): void {
+        if (this.pollingInterval) {
+            console.log('polling stopped');
+            clearInterval(this.pollingInterval);
+        }
+    }
+
+    private scrollToBottom(): void {
+        try {
+            setTimeout(() => {
+                this.chatContainer.nativeElement.scrollTop =
+                    this.chatContainer.nativeElement.scrollHeight;
+            }, 100); // Small timeout to ensure DOM updates before scrolling
+        } catch (err) {
+            console.error('Error while scrolling to bottom:', err);
+        }
     }
 
     sendMessage() {
-        if (this.newMessage.trim()) {
-            // Add the user message with the current timestamp
-            this.messages.push({
+        this.damageItemDataService
+            .CreateDamageItemThread({
+                damageItemId: this.damageItem.id,
                 text: this.newMessage,
-                sender: 'admin',
-                timestamp: new Date(),
+                userId: this.authService.GetAuthenticatedUser().id,
+            })
+            .subscribe((res) => {
+                this.threads = res;
+                this.newMessage = null;
+                this.scrollToBottom();
             });
-
-            this.newMessage = '';
-        }
     }
 }

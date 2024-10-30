@@ -8,6 +8,7 @@ import { AdminCreateBankAccountComponent } from '../admin-create-bank-account/ad
 import { BankAccountDataService } from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
 import { AdminEditBankAccoutComponent } from '../admin-edit-bank-accout/admin-edit-bank-accout.component';
 import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-admin-bank-account-list',
@@ -24,24 +25,43 @@ export class AdminBankAccountListComponent implements OnInit {
     constructor(
         private dialogService: DialogService,
         private bankAccountDataService: BankAccountDataService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private authService: AuthService
     ) {}
 
     ngOnInit() {
-        this.bankAccountDataService.GetBankAccounts().subscribe((res) => {
-            this.bankAccounts = res;
-        });
+        this.getBankAccountsByAdmin();
+    }
+
+    getBankAccountsByAdmin() {
+        this.bankAccountDataService
+            .GetAllBankAccountsByAdmin(
+                this.authService.GetCurrentRole().adminId
+            )
+            .subscribe((res) => {
+                this.bankAccounts = res;
+            });
     }
 
     openAddBankAccountModal() {
         this.ref = this.dialogService.open(AdminCreateBankAccountComponent, {
             header: 'Create Bank Account',
         });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.getBankAccountsByAdmin();
+            }
+        });
     }
     openUpdateBankAccountModal(item: BankAccountDto) {
         this.ref = this.dialogService.open(AdminEditBankAccoutComponent, {
             header: 'update',
             data: { ...item },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.getBankAccountsByAdmin();
+            }
         });
     }
     downloadMasterTable() {

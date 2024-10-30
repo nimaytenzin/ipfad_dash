@@ -13,8 +13,11 @@ import {
     CreatePaymentAdviceDto,
     GenerateBuildingPADto,
     PaymentAdviceDto,
-} from '../../dto/payments/payment-advice/payment-advice.dto';
+    PaymentAdviceSummaryDTO,
+    ReceivePaymentDTO,
+} from '../../dto/payments/payment-advice.dto';
 import { UnitDTO } from '../../dto/units/unit.dto';
+import { PaymentReceiptDTO } from '../../dto/payments/payment-receipt-dto';
 
 @Injectable({
     providedIn: 'root',
@@ -30,6 +33,14 @@ export class PaymentAdviceDataService {
         return this.http.post<PaymentAdviceDto>(
             `${this.apiUrl}/payment-advice`,
             data
+        );
+    }
+
+    GetPaymentAdviceSummaryByAdmin(
+        adminId: number
+    ): Observable<PaymentAdviceSummaryDTO> {
+        return this.http.get<PaymentAdviceSummaryDTO>(
+            `${this.apiUrl}/payment-advice/summary/stats/${adminId}`
         );
     }
 
@@ -93,9 +104,6 @@ export class PaymentAdviceDataService {
         params?: PaginatedParamsOptions
     ): Observable<PaginatedData<PaymentAdviceDto>> {
         let httpParams = new HttpParams();
-
-        console.log(params);
-        // Check if params exist and append query parameters accordingly
         if (params) {
             if (params.pageNo !== undefined) {
                 httpParams = httpParams.append(
@@ -167,5 +175,38 @@ export class PaymentAdviceDataService {
         //     `${this.apiUrl}/payment-advice/paid/building/${buildingId}`,
         //     { params: httpParams }
         // );
+    }
+
+    ReceivePayment(data: ReceivePaymentDTO): Observable<PaymentReceiptDTO> {
+        return this.http.post<PaymentReceiptDTO>(
+            `${this.apiUrl}/payment-receipt`,
+            data
+        );
+    }
+
+    GetAllPaidPaymentAdvicesByUnitPaginated(
+        unitId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/unit/paid/p/${unitId}`,
+            { params: httpParams }
+        );
     }
 }

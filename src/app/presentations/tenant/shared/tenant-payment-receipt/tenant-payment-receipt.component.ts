@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import html2canvas from 'html2canvas';
 import { ButtonModule } from 'primeng/button';
 

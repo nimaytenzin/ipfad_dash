@@ -33,13 +33,31 @@ export class UserDataService {
     }
     AdminGetAllTenants(adminId: number): Observable<UserDTO[]> {
         return this.http.get<UserDTO[]>(
-            `${this.apiUrl}/auth/tenant/${adminId}`
+            `${this.apiUrl}/auth/tenants/admin/${adminId}`
+        );
+    }
+
+    AdminGetAllManagersByAdmin(adminId: number): Observable<UserDTO[]> {
+        return this.http.get<UserDTO[]>(
+            `${this.apiUrl}/auth/managers/admin/${adminId}`
+        );
+    }
+
+    GetAllManagersByAdmin(adminId: number): Observable<UserDTO[]> {
+        return this.http.get<UserDTO[]>(
+            `${this.apiUrl}/auth/managers/admin/${adminId}`
         );
     }
 
     AdminSearchTenantByPhoneNumber(phoneNumber: number): Observable<UserDTO> {
         return this.http.get<UserDTO>(
             `${this.apiUrl}/auth/tenant/phone/${phoneNumber}`
+        );
+    }
+
+    FindOneAuthenticated(id: number): Observable<UserDTO> {
+        return this.http.get<UserDTO>(
+            `${this.apiUrl}/auth/authenticated/${id}`
         );
     }
 }

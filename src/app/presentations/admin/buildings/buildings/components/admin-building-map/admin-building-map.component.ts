@@ -9,12 +9,14 @@ import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.
 import { MessageService } from 'primeng/api';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { AdminSpatialViewerPlotComponent } from 'src/app/presentations/admin/land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
+import { CommonModule } from '@angular/common';
 @Component({
     selector: 'app-admin-building-map',
     templateUrl: './admin-building-map.component.html',
     styleUrls: ['./admin-building-map.component.scss'],
     standalone: true,
     providers: [DialogService],
+    imports: [CommonModule],
 })
 export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
     @Input({
@@ -23,6 +25,7 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
     buildingId: number;
 
     ref: DynamicDialogRef;
+    errorMessage: string[] = [];
     building: BuildingDTO;
     googleSatUrl = 'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}';
     map!: L.Map;
@@ -51,6 +54,7 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {}
 
     renderMap() {
+        this.errorMessage = [];
         var satelliteMap = L.tileLayer(this.googleSatUrl, {
             maxNativeZoom: 21,
             maxZoom: 24,
@@ -64,17 +68,14 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
         }).setView([27.43503, 89.651983], 17);
 
         this.loadPlotGeometry();
-        this.loadBuildingGeometry();
     }
 
     loadPlotGeometry() {
         const plotIdCsv = this.building.plots
             .map((plot) => plot.plotId)
             .join(',');
-        this.geometryDataService
-            .GetPlotsGeomByPlotIdCsv(plotIdCsv)
-            .subscribe((res: any) => {
-                console.log(res);
+        this.geometryDataService.GetPlotsGeomByPlotIdCsv(plotIdCsv).subscribe({
+            next: (res: any) => {
                 this.plotsGeojsonLayer = L.geoJSON(res, {
                     style: (feature) => {
                         return {
@@ -102,9 +103,17 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
                     },
                 }).addTo(this.map);
                 this.map.fitBounds(this.plotsGeojsonLayer.getBounds());
-
                 this.loadBuildingGeometry();
-            });
+            },
+            error: (err) => {
+                this.errorMessage.push('Missing Plot Geometry');
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Missing Geometry',
+                    detail: err.error.message,
+                });
+            },
+        });
     }
 
     loadBuildingGeometry() {
@@ -112,18 +121,27 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
             .GetBuildingsGeomByBuildingIdCsv(
                 this.building.zhicharBuildingId.toString()
             )
-            .subscribe((res: any) => {
-                console.log(res);
-                this.plotsGeojsonLayer = L.geoJSON(res, {
-                    style: (feature) => {
-                        return {
-                            fillColor: 'transparent',
-                            weight: 2,
-                            opacity: 1,
-                            color: 'white',
-                        };
-                    },
-                }).addTo(this.map);
+            .subscribe({
+                next: (res: any) => {
+                    this.plotsGeojsonLayer = L.geoJSON(res, {
+                        style: (feature) => {
+                            return {
+                                fillColor: 'transparent',
+                                weight: 2,
+                                opacity: 1,
+                                color: 'white',
+                            };
+                        },
+                    }).addTo(this.map);
+                },
+                error: (err) => {
+                    this.errorMessage.push('Missing Building Geometry');
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Missing Geometry',
+                        detail: err.error.message,
+                    });
+                },
             });
     }
 }

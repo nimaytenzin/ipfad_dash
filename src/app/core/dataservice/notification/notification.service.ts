@@ -3,8 +3,11 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { API_URL } from '../../constants/constants';
 import { Observable } from 'rxjs';
-import { PaymentAdviceDto } from '../../dto/payments/payment-advice/payment-advice.dto';
-import { SendNotificationDTO } from './notification.dto';
+import { PaymentAdviceDto } from '../../dto/payments/payment-advice.dto';
+import {
+    BroadcastNotificationToAllUnderAdminDTO,
+    SendNotificationDTO,
+} from './notification.dto';
 
 export interface SendSMSOTP {
     contact: number;
@@ -47,6 +50,15 @@ export class NotificationService {
     MarkNotificationAsRead(notificationId: number) {
         return this.http.get(
             `${this.apiUrl}/notification/mark/read/${notificationId}`
+        );
+    }
+
+    BroadCastNotificationToAllunderAdmin(
+        data: BroadcastNotificationToAllUnderAdminDTO
+    ) {
+        return this.http.post(
+            `${this.apiUrl}/notification/broadcast/all/admin`,
+            data
         );
     }
 }

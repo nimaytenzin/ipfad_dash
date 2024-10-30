@@ -10,8 +10,10 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { InvoiceDTO } from 'src/app/core/dto/payments/invoice/invoice.dto';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-components/view-payment-advice/view-payment-advice.component';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { AdminViewPaymentReceiptModalComponent } from '../../admin-master-transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
+import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
 
 @Component({
     selector: 'app-admin-payment-advice-paid-list',
@@ -83,10 +85,13 @@ export class AdminPaymentAdvicePaidListComponent implements OnInit {
 
     downloadMasterTable() {}
 
-    openViewPaymentReceipt(item: PaymentAdviceDto) {
-        this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
-            header: 'Payment Advice',
-            data: { ...item },
-        });
+    openViewPaymentReceipt(item: PaymentReceiptDTO) {
+        this.ref = this.dialogService.open(
+            AdminViewPaymentReceiptModalComponent,
+            {
+                header: 'Payment Receipt',
+                data: { paymentReceiptId: item.id },
+            }
+        );
     }
 }

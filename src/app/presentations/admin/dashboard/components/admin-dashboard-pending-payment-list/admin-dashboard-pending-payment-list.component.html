@@ -1,0 +1,95 @@
+<div class="flex justify-content-between align-items-end">
+    <p class="text-xl font-semibold">Payments</p>
+    <p-button
+        label="Go to payments"
+        (click)="goToPayments()"
+        size="small"
+        text="true"
+    ></p-button>
+</div>
+<p-divider type="dashed"></p-divider>
+<div class="text-lg">
+    <p>
+        Total Monthly Income:
+        <strong> Nu.{{ summary.totalMonthlyIncome }}</strong>
+    </p>
+    <p>
+        Total Pending Amount:
+        <strong>Nu.{{ summary.totalPendingAmount }}</strong>
+    </p>
+</div>
+
+<div class="flex align-items-center mb-2 justify-content-between">
+    <div class="text-sm">
+        <p>
+            Showing {{ paginatedPayemntAdvice.data.length }} of
+            {{ paginatedPayemntAdvice.count }} Entries
+        </p>
+    </div>
+    <div class="">
+        <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [first]="firstPageNumber"
+            [rows]="rows"
+            [totalRecords]="paginatedPayemntAdvice.count"
+            [rowsPerPageOptions]="rowsPerPageOptions"
+            [showFirstLastIcon]="true"
+            #paginator
+        ></p-paginator>
+    </div>
+</div>
+
+<p-table
+    *ngIf="paginatedPayemntAdvice.data?.length"
+    [value]="paginatedPayemntAdvice.data"
+    styleClass="p-datatable-striped"
+>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Tenant Name</th>
+            <th>Total Amount</th>
+            <th>Plot</th>
+            <th>Building</th>
+            <th>Flat</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+        <tr>
+            <td colspan="6">
+                <p
+                    class="text-blue-700 hover:underline cursor-pointer"
+                    (click)="openViewPaymentAdviceModal([item])"
+                >
+                    #{{ item.id }} {{ item.title }}
+                </p>
+            </td>
+        </tr>
+        <tr class="text-sm">
+            <td>
+                <p>{{ item.leaseAgreement.tenant.nameEnglish }}</p>
+            </td>
+
+            <td>Nu. {{ item.totalAmount }}</td>
+            <td>{{ item.leaseAgreement.plot.plotId }}</td>
+            <td>
+                {{
+                    item.leaseAgreement.building
+                        ? item.leaseAgreement.building.name
+                        : "-"
+                }}
+            </td>
+            <td>
+                {{
+                    item.leaseAgreement.unit
+                        ? item.leaseAgreement.unit.floorLevel +
+                          "-" +
+                          item.leaseAgreement.unit.unitNumber
+                        : "-"
+                }}
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p *ngIf="!paginatedPayemntAdvice.data?.length">No Pending Payment Advices</p>

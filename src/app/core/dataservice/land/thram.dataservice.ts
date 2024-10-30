@@ -13,7 +13,7 @@ import {
     PaginatedParamsOptions,
     PaginatedData,
 } from '../../dto/paginated-data.dto';
-import { PaymentAdviceDto } from '../../dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from '../../dto/payments/payment-advice.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -40,8 +40,6 @@ export class ThramDataService {
     ): Observable<PaginatedData<ThramDTO>> {
         let httpParams = new HttpParams();
 
-        console.log(params);
-        // Check if params exist and append query parameters accordingly
         if (params) {
             if (params.pageNo !== undefined) {
                 httpParams = httpParams.append(
@@ -57,8 +55,6 @@ export class ThramDataService {
             }
         }
 
-        console.log(httpParams);
-        // Return the HTTP GET request with the params
         return this.http.get<PaginatedData<ThramDTO>>(
             `${this.apiUrl}/thram/admin/p/${adminId}`,
             { params: httpParams }

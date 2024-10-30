@@ -5,7 +5,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 import { TagModule } from 'primeng/tag';
 import { PARSEFLOORLEVELS } from 'src/app/core/utility/helper.function';

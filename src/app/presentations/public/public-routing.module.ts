@@ -1,6 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { PublicHomeComponent } from './public-home/public-home.component';
+import { PublicLaunchSequenceComponent } from './public-launch-sequence/public-launch-sequence.component';
 
 @NgModule({
     imports: [
@@ -8,6 +9,10 @@ import { PublicHomeComponent } from './public-home/public-home.component';
             {
                 path: '',
                 component: PublicHomeComponent,
+            },
+            {
+                path: 'launch',
+                component: PublicLaunchSequenceComponent,
             },
         ]),
     ],

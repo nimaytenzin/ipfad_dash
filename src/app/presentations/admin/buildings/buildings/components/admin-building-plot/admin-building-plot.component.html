@@ -14,14 +14,15 @@
 
 <div>
     <div *ngFor="let plot of plots" class="mt-4">
-        <div class="flex gap-2 align-items-end justify-content-between pb-2">
+        <div
+            class="flex gap-2 align-items-end justify-content-between pb-2 pt-2"
+        >
             <p>
                 PlotID: <strong> {{ plot.plotId }} </strong>
             </p>
             <p-button
-                icon="pi pi-trash"
                 size="small"
-                [label]="plot.plotId"
+                label="UnMap"
                 severity="danger "
                 (click)="openConfirmDeleteBuildingPlotDialog(plot)"
             />
@@ -48,8 +49,7 @@
         </p>
     </div>
 </div>
-<div *ngIf="!plots?.length" class="text-red-500">
-    ! Building Plot not mapped
-
-    <p-button label="Map plot" (click)="openMapPlotBuilding()"></p-button>
+<div *ngIf="!plots?.length" class="text-red-500 pt-2 pb-2">
+    ! Building Plot not mapped.Building Plot Mapping is required for enabling
+    lease function in the building and units.
 </div>

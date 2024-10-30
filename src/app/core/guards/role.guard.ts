@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import {
     AuthService,
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
 } from '../dataservice/users-and-auth/auth.service';
 import { MessageService } from 'primeng/api';
 
@@ -26,7 +26,8 @@ export class RoleGuard implements CanActivate {
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): boolean {
-        const user: AuthenticatedUser = this.authService.GetAuthenticatedUser();
+        const user: AuthenticatedUserDTO =
+            this.authService.GetAuthenticatedUser();
 
         if (user && user.role && this.hasRole(user, next.data['roles'])) {
             return true;
@@ -40,7 +41,10 @@ export class RoleGuard implements CanActivate {
         }
     }
 
-    private hasRole(user: AuthenticatedUser, allowedRoles: string[]): boolean {
+    private hasRole(
+        user: AuthenticatedUserDTO,
+        allowedRoles: string[]
+    ): boolean {
         const userRolesArray = this.parseRolesString(user.role);
 
         return userRolesArray.some((role) => allowedRoles.includes(role));

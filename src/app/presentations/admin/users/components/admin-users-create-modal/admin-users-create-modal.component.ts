@@ -47,7 +47,7 @@ export class AdminUsersCreateModalComponent implements OnInit {
     role: USERROLESENUM;
     adminId: number;
     allowLoginAccess: boolean = false;
-    isSubmitting: boolean = false; // Add this flag
+    isSubmitting: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -57,21 +57,22 @@ export class AdminUsersCreateModalComponent implements OnInit {
         private config: DynamicDialogConfig,
         private messageService: MessageService
     ) {
-        console.log('PASSED DATA', this.config.data);
         this.role = this.config.data.role;
         this.adminId = this.config.data.adminId;
-        this.allowLoginAccess = false;
+        this.allowLoginAccess = this.config.data.allowLoginAccess
+            ? this.config.data.allowLoginAccess
+            : false;
     }
 
     ngOnInit() {
         this.createUserForm = this.fb.group({
             nameEnglish: ['', [Validators.required]],
-            nameDzongkha: [''],
-            phoneNumber: [''],
-            cid: [''],
-            password: [''],
-            email: [''],
-            permanentAddress: [],
+            nameDzongkha: [null],
+            phoneNumber: [null],
+            cid: [null],
+
+            email: [null],
+            permanentAddress: [null],
             hasLoginAccess: [this.allowLoginAccess, [Validators.required]],
         });
     }
@@ -82,28 +83,20 @@ export class AdminUsersCreateModalComponent implements OnInit {
         let data: CreateUserDTO;
         this.isSubmitting = true;
 
-        if (this.createUserForm.get('hasLoginAccess')?.value) {
-            data = {
-                hasLoginAccess:
-                    this.createUserForm.controls['hasLoginAccess'].value,
-                nameEnglish: this.createUserForm.controls['nameEnglish'].value,
-                role: this.role,
-                adminId: this.adminId,
-                phoneNumber: this.createUserForm.controls['phoneNumber'].value,
-                permanentAddress:
-                    this.createUserForm.controls['permanentAddress'].value,
-            };
-        } else {
-            data = {
-                hasLoginAccess:
-                    this.createUserForm.controls['hasLoginAccess'].value,
-                nameEnglish: this.createUserForm.controls['nameEnglish'].value,
-                role: this.role,
-                adminId: this.adminId,
-            };
-        }
+        data = {
+            hasLoginAccess: this.allowLoginAccess,
+            role: this.role,
+            adminId: this.adminId,
+            nameEnglish: this.createUserForm.controls['nameEnglish'].value,
+            nameDzongkha: this.createUserForm.controls['nameDzongkha'].value,
+            cid: this.createUserForm.controls['cid'].value,
+            email: this.createUserForm.controls['email'].value,
+            phoneNumber: this.createUserForm.controls['phoneNumber'].value,
+            permanentAddress:
+                this.createUserForm.controls['permanentAddress'].value,
+        };
 
-        console.log('CREATING USER', data);
+        console.log(data);
 
         this.messageService.add({
             severity: 'info',

@@ -15,6 +15,8 @@ import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.da
 import { AdminUserAddOrganizationModalComponent } from '../components/admin-user-add-organization-modal/admin-user-add-organization-modal.component';
 import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organization.dto';
 import { AdminEditOrganizationModalComponent } from '../components/admin-edit-organization-modal/admin-edit-organization-modal.component';
+import { AdminUsersCreateModalComponent } from '../components/admin-users-create-modal/admin-users-create-modal.component';
+import { USERROLESENUM } from 'src/app/core/constants/enums';
 
 @Component({
     selector: 'app-admin-tenant-listing',
@@ -46,18 +48,23 @@ export class AdminTenantListingComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.getAllTenants();
+        this.getAllTenantsByAdmin();
     }
 
     openCreateOwnerModal() {
-        // this.ref = this.dialogService.open(AdminOwnerCreateComponent, {
-        //     header: 'Create Owner',
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     if (res && res.status === 201) {
-        //         this.getAllTenants();
-        //     }
-        // });
+        this.ref = this.dialogService.open(AdminUsersCreateModalComponent, {
+            header: 'Create User',
+            data: {
+                role: USERROLESENUM.TENANT,
+                allowLoginAccess: true,
+                adminId: this.authService.GetCurrentRole().adminId,
+            },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.getAllTenantsByAdmin();
+            }
+        });
     }
 
     openUpdateOwnerModal(owner: OwnerDTO) {
@@ -90,7 +97,7 @@ export class AdminTenantListingComponent implements OnInit {
                 this.ownerDataService.DeleteOwner(owner.id).subscribe({
                     next: (res) => {
                         if (res) {
-                            this.getAllTenants();
+                            this.getAllTenantsByAdmin();
                             this.messageService.add({
                                 severity: 'info',
                                 summary: 'Confirmed',
@@ -104,9 +111,9 @@ export class AdminTenantListingComponent implements OnInit {
         });
     }
 
-    getAllTenants() {
+    getAllTenantsByAdmin() {
         this.userDataService
-            .AdminGetAllTenants(this.authService.GetAuthenticatedUser().id)
+            .AdminGetAllTenants(this.authService.GetCurrentRole().adminId)
             .subscribe({
                 next: (res) => {
                     this.owners = res;
@@ -126,7 +133,7 @@ export class AdminTenantListingComponent implements OnInit {
         );
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 201) {
-                this.getAllTenants();
+                this.getAllTenantsByAdmin();
             }
         });
     }
@@ -142,7 +149,7 @@ export class AdminTenantListingComponent implements OnInit {
         );
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 200) {
-                this.getAllTenants();
+                this.getAllTenantsByAdmin();
             }
         });
     }

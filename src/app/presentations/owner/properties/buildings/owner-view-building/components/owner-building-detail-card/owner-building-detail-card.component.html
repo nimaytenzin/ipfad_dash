@@ -4,17 +4,7 @@
     </p>
     <p>
         Floor Config:
-        <strong>
-            {{
-                getBuildingFloorConfiguration(
-                    building.regularFloorCount,
-                    building.basementCount,
-                    building.stiltCount,
-                    building.atticCount,
-                    building.jamthogCount
-                )
-            }}</strong
-        >
+        <strong> {{ getBuildingFloorConfiguration(building) }}</strong>
     </p>
     <p>
         Type: <strong>{{ building.buildingType }}</strong>

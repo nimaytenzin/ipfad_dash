@@ -1,0 +1,78 @@
+<div>
+    <p>Search for property by plotId and building Id</p>
+
+    <div class="flex gap-4 my-4 justify-content-start align-items-end">
+        <div class="flex flex-column gap-2">
+            <label for="plotId">Plot ID</label>
+            <input pInputText id="plotId" [(ngModel)]="plotId" type="text" />
+        </div>
+
+        <p-button
+            label="Load Buildings"
+            (click)="searchBuildingByPlotId()"
+        ></p-button>
+    </div>
+
+    <div
+        *ngIf="searchedPlot"
+        class="flex gap-4 my-4 justify-content-start align-items-end"
+    >
+        <div class="flex flex-column gap-2">
+            <label for="chiwog">Buildings</label>
+            <p-dropdown
+                [options]="buildings"
+                optionLabel="name"
+                class="p-fluid"
+                appendTo="body"
+                placeholder="Select a building"
+                [(ngModel)]="dropdownBuildingSelection"
+            ></p-dropdown>
+        </div>
+        <div class="flex flex-column gap-2">
+            <label for="chiwog">Unit</label>
+            <p-dropdown
+                [options]="units"
+                placeholder="Select a Unit"
+                [(ngModel)]="dropdownUnitSelection"
+                appendTo="body"
+            >
+                <ng-template pTemplate="selectedItem">
+                    <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="dropdownUnitSelection"
+                    >
+                        {{ dropdownUnitSelection.floorLevel }}-{{
+                            dropdownUnitSelection.unitNumber
+                        }}
+                    </div>
+                </ng-template>
+                <ng-template let-unit pTemplate="item">
+                    {{ unit.floorLevel }}-{{ unit.unitNumber }}
+                </ng-template>
+            </p-dropdown>
+        </div>
+
+        <p-button label="Select Unit" (click)="selectUnit()"></p-button>
+    </div>
+</div>
+
+<div
+    *ngIf="selectedUnit"
+    class="flex justify-content-between align-items-center"
+>
+    <div>
+        <p>
+            <strong>Unit Number:</strong>{{ selectedUnit.floorLevel }}-{{
+                selectedUnit.unitNumber
+            }}
+        </p>
+        <p class="text-sm">*Unit Available for lease</p>
+    </div>
+    <p-button
+        label="clear selection"
+        icon="pi pi-times"
+        size="small"
+        (click)="clearUnitSelection()"
+        severity="danger"
+    ></p-button>
+</div>

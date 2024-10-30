@@ -1,15 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
+import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { INVOICESTATUS } from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import {
     CreatePaymentAdviceDto,
     PaymentAdviceDto,
-} from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+} from 'src/app/core/dto/payments/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 
 @Component({
@@ -17,7 +21,7 @@ import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/paym
     templateUrl: './admin-unit-lease-history.component.html',
     styleUrls: ['./admin-unit-lease-history.component.scss'],
     standalone: true,
-    imports: [TableModule, PaginatorModule, CommonModule],
+    imports: [TableModule, PaginatorModule, CommonModule, ButtonModule],
 })
 export class AdminUnitLeaseHistoryComponent implements OnInit {
     @Input({
@@ -26,9 +30,7 @@ export class AdminUnitLeaseHistoryComponent implements OnInit {
     unitId: number;
     ref: DynamicDialogRef | undefined;
 
-    rows = 10;
-
-    paginatedLeaseAgreements = {
+    paginatedLeaseAgreeements: PaginatedData<LeaseAgreeementDTO> = {
         firstPage: 0,
         currentPage: 0,
         previousPage: 0,
@@ -38,21 +40,42 @@ export class AdminUnitLeaseHistoryComponent implements OnInit {
         count: 0,
         data: [],
     };
+
+    rowsPerPageOptions = ROWSPERPAGEOPTION;
+    firstPageNumber = 0;
+    rows = ROWSPERPAGEOPTION[0];
+    currentPage = 0;
+
     constructor(
         private leaseAgreementDataService: LeaseAgreementDataService,
-        private dialogService: DialogService
+        private router: Router
     ) {}
 
     ngOnInit() {
-        // this.leaseAgreementDataService
-        //     .GetLeaseAgreementsPaginatedByUnit(this.unitId, {
-        //         page: 0,
-        //         limit: this.rows,
-        //     })
-        //     .subscribe((res) => {
-        //         this.paginatedLeaseAgreements = res;
-        //         console.log('PAGINATAED LEASE', res);
-        //     });
+        this.handlePagination();
+    }
+
+    onPageChange(event: PageEvent): void {
+        this.firstPageNumber = event.first;
+        this.currentPage = event.page;
+        this.rows = event.rows;
+        this.handlePagination();
+    }
+
+    private handlePagination(): void {
+        const queryParams: any = {
+            pageNo: this.currentPage,
+            pageSize: this.rows,
+        };
+
+        this.leaseAgreementDataService
+            .GetAllLeaseAgreementsByUnitPaginated(this.unitId, queryParams)
+            .subscribe({
+                next: (res) => {
+                    console.log('PAGINATED LEASE', res);
+                    this.paginatedLeaseAgreeements = res;
+                },
+            });
     }
 
     computeMonthlyPayable(item) {
@@ -64,56 +87,7 @@ export class AdminUnitLeaseHistoryComponent implements OnInit {
         return total;
     }
 
-    onPageChange(e) {
-        // this.leaseAgreementDataService
-        //     .GetLeaseAgreementsPaginated({
-        //         page: e.page,
-        //         limit: e.rows,
-        //     })
-        //     .subscribe((res) => {
-        //         this.paginatedLeaseAgreements = res;
-        //     });
-    }
-
-    generatePaymentAdvice(lease) {
-        const totalPayable = this.computeMonthlyPayable(lease);
-        // const paymentAdvice: CreatePaymentAdviceDto = {
-        //     unitId: lease.unitId,
-        //     buildingId: lease.buildingId,
-        //     tenantId: lease.tenantId,
-        //     leaseAgreementId: lease.id,
-        //     ownerId: lease.ownerId,
-        //     title: 'Rent payemnt for the month of June',
-        //     month: 6,
-        //     year: 2024,
-        //     totalAmount: totalPayable,
-        //     amountDue: totalPayable,
-        //     status: INVOICESTATUS.Due,
-        //     paymentAdviseItem: [
-        //         {
-        //             particular: 'Rent',
-        //             amount: lease.rent,
-        //         },
-        //     ],
-        // };
-        // this.paymentAdviceDataService
-        //     .CreatePaymentAdvice(paymentAdvice)
-        //     .subscribe((res) => {
-        //         console.log(res);
-        //     });
-    }
-
-    openPaymentGatewayPaymentModal(paymentAdvice: PaymentAdviceDto) {
-        this.ref = this.dialogService.open(AdminPgPaymentStepperComponent, {
-            header: 'Process Payment',
-            width: '600px',
-            data: { ...paymentAdvice },
-        });
-
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 200) {
-                // this.getUnit();
-            }
-        });
+    viewLease(lease: LeaseAgreeementDTO) {
+        this.router.navigate(['admin/master-lease/view/' + lease.id]);
     }
 }

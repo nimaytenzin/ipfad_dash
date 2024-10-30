@@ -69,7 +69,7 @@ export class AdminThramListingsComponent implements OnInit {
         console.log(queryParams);
         this.thramDataService
             .GetAllThramsByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({
@@ -120,11 +120,13 @@ export class AdminThramListingsComponent implements OnInit {
         });
     }
 
-    openViewPlotModal(plot: PlotDTO) {
+    openViewPlotModal(plot: PlotDTO, thram: ThramDTO) {
+        console.log('PLOT', plot);
         this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
             header: plot.plotId,
             data: {
                 ...plot,
+                thram: thram,
             },
         });
     }

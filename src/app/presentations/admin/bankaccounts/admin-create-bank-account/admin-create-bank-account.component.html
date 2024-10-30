@@ -31,5 +31,9 @@
 </div>
 <div class="flex justify-content-end gap-2">
     <p-button label="Cancel" (click)="close()" severity="secondary" />
-    <p-button label="Add" (click)="createBankAccount()" />
+    <p-button
+        label="Add"
+        (click)="createBankAccount()"
+        [disabled]="isSubmitting"
+    />
 </div>

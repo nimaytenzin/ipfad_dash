@@ -16,7 +16,7 @@
             *ngFor="let item of buildingAmenties; let i = index"
             class="flex justify-content-between"
         >
-            <p>{{ i + 1 }}) {{ item.name }}</p>
+            <p>{{ i + 1 }} {{ item.name }}</p>
             <div>
                 <p-button
                     icon="pi pi-pencil"
@@ -45,7 +45,12 @@
         [style]="{ width: '500px' }"
         [modal]="true"
     >
-        <form [formGroup]="createBuildingAmenityForm" class="p-fluid p-2">
+        <form
+            [formGroup]="createBuildingAmenityForm"
+            class="p-fluid p-2"
+            (ngSubmit)="createBuildingAmenity()"
+            novalidate
+        >
             <div class="grid">
                 <div class="field col-12">
                     <label for="particular">Particulars</label>
@@ -55,6 +60,16 @@
                         pInputTextarea
                         formControlName="name"
                     ></textarea>
+                    <div
+                        *ngIf="
+                            createBuildingAmenityForm.get('name').invalid &&
+                            (createBuildingAmenityForm.get('name').dirty ||
+                                createBuildingAmenityForm.get('name').touched)
+                        "
+                        class="error"
+                    >
+                        <small class="p-error">Name is required.</small>
+                    </div>
                 </div>
             </div>
 
@@ -65,8 +80,11 @@
                     (click)="showAddBuildingAmenityModal = false"
                 ></p-button>
                 <p-button
-                    (click)="createBuildingAmenity()"
+                    type="submit"
                     label="Create Amenity"
+                    [disabled]="
+                        createBuildingAmenityForm.invalid || isSubmitting
+                    "
                 ></p-button>
             </div>
         </form>

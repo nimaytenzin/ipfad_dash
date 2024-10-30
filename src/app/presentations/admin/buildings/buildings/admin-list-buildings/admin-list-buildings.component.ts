@@ -121,11 +121,12 @@ export class AdminListBuildingsComponent {
 
     downloadMasterTable() {}
 
-    openViewPlotModal(plot: PlotDTO) {
+    openViewPlotModal(plot: PlotDTO, building: BuildingDTO) {
         this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
             header: plot.plotId,
             data: {
                 ...plot,
+                buildings: [building],
             },
         });
     }
@@ -143,24 +144,13 @@ export class AdminListBuildingsComponent {
             pageSize: this.rows,
         };
 
-        console.log(queryParams);
         this.buildingDataService
             .GetAllBuildingsByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe((res) => {
                 this.paginatedBuildings = res;
             });
-        // this.plotDataService
-        //     .GetAllPlotsByAdminPaginated(
-        //
-        //     )
-        //     .subscribe({
-        //         next: (res) => {
-        //             this.paginatedPlotData = res;
-        //             console.log('PAGINATED WONER WITH THRAM', res);
-        //         },
-        //     });
     }
 }

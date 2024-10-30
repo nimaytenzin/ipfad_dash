@@ -3,6 +3,10 @@
     <div class="flex justify-content-between">
         <div class="flex flex-column gap-2">
             <p class="font-bold">Lease Status: {{ leaseAgreement?.status }}</p>
+            <p class="font-bold">
+                Active From:
+                {{ leaseAgreement?.leaseSigningDate | date : "longDate" }}
+            </p>
             <p>
                 Security Deposit Payment Status:
                 {{ leaseAgreement?.securityDepositPaid ? "PAID" : "DUE" }}
@@ -368,7 +372,7 @@
         <p-divider></p-divider>
 
         <div class="flex gap-4 w-full">
-            <div class="flex flex-column gap-4 w-8">
+            <div style="height: 60vh; overflow-y: scroll" class="w-7">
                 <div
                     *ngFor="let item of entryDamageReportItems"
                     class="p-2 cursor-pointer"

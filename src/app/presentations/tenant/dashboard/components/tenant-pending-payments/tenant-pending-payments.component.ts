@@ -5,10 +5,10 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 import { AccordionModule } from 'primeng/accordion';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
 
 @Component({
     selector: 'app-tenant-pending-payments',

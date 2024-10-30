@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import {
     BuildingAmenityDTO,
     CreateBuildingAmenityDto,
+    UpdateBuildingAmenityDTO,
 } from '../../dto/properties/building-amenity.dto';
 
 @Injectable({
@@ -27,10 +28,10 @@ export class BuildingAmenityDataService {
     }
 
     UpdateBuildingAmenity(
-        data: CreateBuildingAmenityDto,
+        data: UpdateBuildingAmenityDTO,
         id: number
     ): Observable<BuildingAmenityDTO> {
-        return this.http.patch<BuildingAmenityDTO>(
+        return this.http.put<BuildingAmenityDTO>(
             `${this.apiUrl}/building-amenity/${id}`,
             data
         );

@@ -10,8 +10,8 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { InvoiceDTO } from 'src/app/core/dto/payments/invoice/invoice.dto';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-components/view-payment-advice/view-payment-advice.component';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
 
 @Component({
     selector: 'app-admin-payment-advice-pending-list',
@@ -34,6 +34,7 @@ export class AdminPaymentAdvicePendingListComponent implements OnInit {
         count: 0,
         data: [],
     };
+    selectedPaymentAdivces: PaymentAdviceDto[] = [];
 
     rowsPerPageOptions = ROWSPERPAGEOPTION;
     firstPageNumber = 0;
@@ -83,10 +84,10 @@ export class AdminPaymentAdvicePendingListComponent implements OnInit {
 
     downloadMasterTable() {}
 
-    openViewPaymentReceipt(item: PaymentAdviceDto) {
+    openViewPaymentReceipt(item: PaymentAdviceDto[]) {
         this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
             header: 'Payment Advice',
-            data: { ...item },
+            data: item,
         });
     }
 }

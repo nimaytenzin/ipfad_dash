@@ -1,0 +1,27 @@
+<div class="flex gap-4 my-4 justify-content-start align-items-end">
+    <div class="flex flex-column gap-2 flex-1">
+        <label for="plotId">Plot ID</label>
+        <input pInputText id="plotId" [(ngModel)]="plotId" type="text" />
+    </div>
+
+    <p-button
+        label="Verify and Select Plot"
+        (click)="verfiyandSelectPlot()"
+    ></p-button>
+</div>
+<div
+    *ngIf="selectedPlot"
+    class="flex border-gray-400 justify-content-between align-items-center my-3"
+>
+    <div>
+        <p>Selected Plot: {{ selectedPlot.plotId }}</p>
+        <p class="text-sm">*Plot Available for lease</p>
+    </div>
+    <p-button
+        label="clear selection"
+        icon="pi pi-times"
+        size="small"
+        (click)="clearPlotSelection()"
+        severity="danger"
+    ></p-button>
+</div>

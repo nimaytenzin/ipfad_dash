@@ -43,6 +43,8 @@ export class AdminBuildingAmenitiesComponent implements OnInit {
         required: true,
     })
     buildingId: number;
+    isSubmitting: boolean = false;
+
     selectedBuildingAmenity: BuildingAmenityDTO;
 
     buildingAmenties: BuildingAmenityDTO[] = [];
@@ -63,13 +65,10 @@ export class AdminBuildingAmenitiesComponent implements OnInit {
         this.getBuildingAmenities();
 
         this.createBuildingAmenityForm = this.fb.group({
-            name: [, Validators.required],
-
-            buildingId: [this.buildingId],
+            name: ['', Validators.required],
         });
         this.updateBuildingAmenityForm = this.fb.group({
-            name: [, Validators.required],
-            buildingId: [this.buildingId],
+            name: ['', Validators.required],
         });
     }
 
@@ -86,7 +85,13 @@ export class AdminBuildingAmenitiesComponent implements OnInit {
     openAddBuildingAmenityModal() {
         this.showAddBuildingAmenityModal = true;
     }
-    openEditBuildingAmenityModal() {}
+    openEditBuildingAmenityModal(item: BuildingAmenityDTO) {
+        this.updateBuildingAmenityForm.patchValue({
+            name: item.name,
+        });
+        this.showEditBuildingAmenityModal = true;
+        this.selectedBuildingAmenity = item;
+    }
 
     openDeleteBuildingAmenityDialog(
         buildingAmenity: BuildingAmenityDTO,
@@ -105,28 +110,40 @@ export class AdminBuildingAmenitiesComponent implements OnInit {
             accept: () => {
                 this.buildingAmenityService
                     .DeleteBuildingAmenity(this.selectedBuildingAmenity.id)
-                    .subscribe((res) => {
-                        if (res) {
-                            this.getBuildingAmenities();
+                    .subscribe({
+                        next: (res) => {
+                            if (res) {
+                                this.getBuildingAmenities();
+                                this.messageService.add({
+                                    severity: 'info',
+                                    summary: 'Confirmed',
+                                    detail: 'Record deleted',
+                                });
+                            }
+                        },
+                        error: (err) => {
                             this.messageService.add({
-                                severity: 'info',
-                                summary: 'Confirmed',
-                                detail: 'Record deleted',
+                                severity: 'error',
+                                summary: 'Error',
+                                detail: err.error.message,
                             });
-                        }
+                        },
                     });
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Cancelled',
-                    detail: 'You have rejected',
-                });
             },
         });
     }
 
     createBuildingAmenity() {
+        if (this.createBuildingAmenityForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill out all required fields.',
+            });
+            return;
+        }
+
+        this.isSubmitting = true; // Start submitting
         const createBuildingAmentyData: CreateBuildingAmenityDto = {
             name: this.createBuildingAmenityForm.controls['name'].value,
             buildingId: this.buildingId,
@@ -136,15 +153,64 @@ export class AdminBuildingAmenitiesComponent implements OnInit {
             .CreateBuildingAmenity(createBuildingAmentyData)
             .subscribe({
                 next: (res) => {
-                    if (res.id) {
-                        this.getBuildingAmenities();
-                        this.showAddBuildingAmenityModal = false;
-                    }
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Added',
+                        detail: 'Building Ameneity Added',
+                    });
+                    this.getBuildingAmenities();
+                    this.showAddBuildingAmenityModal = false;
+                    this.createBuildingAmenityForm.reset();
                 },
                 error: (err) => {
-                    console.log(err);
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
                 },
             });
     }
-    updateBuildingAmenity() {}
+    updateBuildingAmenity() {
+        if (this.updateBuildingAmenityForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill out all required fields.',
+            });
+            return;
+        }
+        this.isSubmitting = true;
+        const updateData = {
+            name: this.updateBuildingAmenityForm.controls['name'].value,
+            id: this.selectedBuildingAmenity.id,
+        };
+
+        this.buildingAmenityService
+            .UpdateBuildingAmenity(updateData, this.selectedBuildingAmenity.id)
+            .subscribe({
+                next: () => {
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Added',
+                        detail: 'Building Ameneity Updated',
+                    });
+                    this.getBuildingAmenities();
+                    this.showEditBuildingAmenityModal = false;
+                    this.updateBuildingAmenityForm.reset();
+                },
+                error: (err) => {
+                    this.isSubmitting = false;
+
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
+                },
+            });
+    }
 }

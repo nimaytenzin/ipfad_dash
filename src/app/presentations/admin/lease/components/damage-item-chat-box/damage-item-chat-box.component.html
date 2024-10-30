@@ -1,60 +1,48 @@
 <div class="" *ngIf="damageItem">
-    <div
-        class="flex justify-content-between align-items-center p-3 bg-light"
-        style="background-color: aliceblue"
-    >
-        <div class="flex align-items-center">
-            <div>
-                <h5 class="mb-0">{{ recipientName }}</h5>
-                <small class="text-muted">{{ recipentPhoneNumber }}</small>
-            </div>
-        </div>
-        <button
-            pButton
-            icon="pi pi-info-circle"
-            label="Details"
-            class="p-button-text"
-        ></button>
-    </div>
     <div style="background-color: aliceblue" class="p-3">
         <p>Issue# {{ damageItem.id }}</p>
         <p>{{ damageItem.title }} at {{ damageItem.location }}</p>
     </div>
 
-    <div
-        class="p-4 flex flex-column justify-content-end"
-        style="height: 60vh; overflow-y: auto"
-    >
+    <div class="p-2" style="height: 50vh; overflow: scroll" #chatContainer>
         <div
-            *ngFor="let message of messages"
+            *ngFor="let thread of threads"
+            class="pt-2 pb-2 flex gap-1"
             [ngClass]="{
-                'justify-content-start ': message.sender === 'user',
-                'justify-content-end ': message.sender === 'admin'
+                'justify-content-end': thread.user.id === authenticatedUser.id,
+                'justify-content-start': thread.user.id !== authenticatedUser.id
             }"
-            class="mb-2 flex"
         >
             <div
-                class="flex flex-column"
                 [ngClass]="{
-                    'align-items-start ': message.sender === 'user',
-                    'align-items-end ': message.sender === 'admin'
+                    'flex-order-2': thread.user.id === authenticatedUser.id,
+                    'flex-order-1': thread.user.id !== authenticatedUser.id
                 }"
             >
-                <p
-                    style="max-width: 80%; border-radius: 5px"
-                    class="p-2"
-                    [ngClass]="{
-                        ' bg-gray-100': message.sender === 'user',
-                        ' bg-blue-100': message.sender === 'admin'
-                    }"
-                >
-                    {{ message.text }}
+                <p-avatar
+                    [label]="thread.user.nameEnglish[0]"
+                    styleClass="mr-2"
+                    size="large"
+                    shape="circle"
+                />
+            </div>
+            <div
+                class="flex flex-column flex-1 flex-grow-1"
+                [ngClass]="{
+                    'flex-order-1 align-items-start align-items-end':
+                        thread.user.id === authenticatedUser.id,
+                    'flex-order-2': thread.user.id !== authenticatedUser.id
+                }"
+            >
+                <p>
+                    {{ thread.text }}
                 </p>
-                <small class="text-muted">{{
-                    message.timestamp | date : "short"
-                }}</small>
+                <p class="text-muted text-xs">
+                    {{ thread.createdAt | date : "short" }}
+                </p>
             </div>
         </div>
+        <div *ngIf="!threads.length">- Empty Threads</div>
     </div>
     <div>
         <p-divider></p-divider>
@@ -64,6 +52,7 @@
                 pInputText
                 [(ngModel)]="newMessage"
                 placeholder="Message"
+                (keyup.enter)="sendMessage()"
             />
             <button
                 type="button"

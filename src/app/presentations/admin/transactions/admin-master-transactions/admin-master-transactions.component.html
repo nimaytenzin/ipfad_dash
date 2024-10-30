@@ -3,11 +3,15 @@
     <p-divider></p-divider>
     <div class="flex justify-content-start gap-4 align-items-end">
         <div>
-            <p class="text-2xl font-semibold">Nu. 50,000</p>
+            <p class="text-2xl font-semibold">
+                Nu.{{ summaryStats.totalMonthlyIncome | number : "1.0-0" }}
+            </p>
             <p class="text-sm text-gray-600">Monthly Rental Income</p>
         </div>
         <div>
-            <p class="text-2xl font-semibold">Nu. 50,000</p>
+            <p class="text-2xl font-semibold">
+                Nu.{{ summaryStats.totalPendingAmount | number : "1.0-0" }}
+            </p>
             <p class="text-sm text-red-600">Pending Payments</p>
         </div>
     </div>

@@ -10,7 +10,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 
 @Component({

@@ -16,7 +16,7 @@
             *ngFor="let item of buildingCharges; let i = index"
             class="flex justify-content-between"
         >
-            <p>{{ i + 1 }}) {{ item.particular }} - Nu. {{ item.amount }}</p>
+            <p>{{ i + 1 }} {{ item.particular }} - Nu. {{ item.amount }}</p>
             <div>
                 <p-button
                     icon="pi pi-pencil"
@@ -73,6 +73,9 @@
                 ></p-button>
                 <p-button
                     (click)="createBuildingSurcharge()"
+                    [disabled]="
+                        createBuildingSurchargeForm.invalid || isSubmitting
+                    "
                     label="Create Surcharge"
                 ></p-button>
             </div>
@@ -114,6 +117,9 @@
                 </p-button>
                 <p-button
                     (click)="updateBuildingSurcharge()"
+                    [disabled]="
+                        isSubmitting || updateBuildingSurchargeForm.invalid
+                    "
                     label="Update Surcharge"
                 ></p-button>
             </div>

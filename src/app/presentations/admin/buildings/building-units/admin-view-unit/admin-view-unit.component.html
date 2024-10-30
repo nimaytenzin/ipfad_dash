@@ -85,76 +85,15 @@
                         <p>{{ unit.floorArea }} SqM</p>
                     </div>
                 </div>
-
-                <p-divider type="dashed"></p-divider>
-                <div>
-                    <div *ngIf="!unit.bankAccountId">
-                        ....Not Linked to any bank account
-                        <div
-                            id="BANKACCOUNT"
-                            class="flex gap-2 mt-4 justify-content-between"
-                        >
-                            <p class="font-semibold">Linked Bank Account</p>
-                            <p-button
-                                icon="pi pi-plus"
-                                size="small"
-                                label="Bank Account"
-                                class="p-0"
-                                severity="secondary"
-                                (click)="openCreateUnitBankLinkageModal(unit)"
-                            ></p-button>
-                        </div>
-                    </div>
-                    <div *ngIf="unit.bankAccountId">
-                        <p class="font-semibold my-2">Linked Account</p>
-                        <div class="">
-                            <p>
-                                Bank Name:
-                                <strong>{{ unit.bankAccount.bankName }}</strong>
-                            </p>
-                            <p>
-                                Account Number:
-                                <strong>{{
-                                    unit.bankAccount.accountNumber
-                                }}</strong>
-                            </p>
-                            <p>
-                                Account Name:
-                                <strong>
-                                    {{ unit.bankAccount.accountName }}</strong
-                                >
-                            </p>
-
-                            <div class="flex gap-2 mt-2">
-                                <p-button
-                                    severity="secondary"
-                                    size="small"
-                                    [text]="true"
-                                    icon="pi pi-link"
-                                    (click)="unlinkBankAccount($event)"
-                                    label="Unlink Account"
-                                ></p-button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="w-9">
-            <!-- <p-tabView>
-                <p-tabPanel header="Details">
-                    <app-admin-unit-surcharges-card
-                        [unitId]="unitId"
-                    ></app-admin-unit-surcharges-card>
-                    <hr />
-                    <app-admin-unit-rules-card
-                        [unitId]="unitId"
-                    ></app-admin-unit-rules-card>
-                </p-tabPanel>
-                <p-tabPanel header="Tenancy">
+            <p-tabView>
+                <p-tabPanel header="Active Lease">
                     <app-admin-unit-active-lease [unitId]="unitId">
                     </app-admin-unit-active-lease>
-
+                </p-tabPanel>
+                <p-tabPanel header="Lease history">
                     <app-admin-unit-lease-history [unitId]="unitId">
                     </app-admin-unit-lease-history>
                 </p-tabPanel>
@@ -164,7 +103,7 @@
                         [unitId]="unitId"
                     ></app-admin-unit-payments>
                 </p-tabPanel>
-            </p-tabView> -->
+            </p-tabView>
         </div>
     </div>
 </div>

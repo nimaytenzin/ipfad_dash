@@ -3,7 +3,7 @@ import { TenantActiveLeasecomponent } from '../dashboard/components/tenant-activ
 import { TenantLeaseActiveLeaseListComponent } from './components/tenant-lease-active-lease-list/tenant-lease-active-lease-list.component';
 import { TenantLeaseLeaseHistoryComponent } from './components/tenant-lease-lease-history/tenant-lease-lease-history.component';
 import {
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
     AuthService,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
@@ -18,7 +18,7 @@ import {
     ],
 })
 export class TenantLeaseComponent implements OnInit {
-    currentUser: AuthenticatedUser;
+    currentUser: AuthenticatedUserDTO;
     constructor(private authService: AuthService) {
         this.currentUser = this.authService.GetAuthenticatedUser();
     }

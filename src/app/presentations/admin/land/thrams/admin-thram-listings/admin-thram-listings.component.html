@@ -71,7 +71,7 @@
                                 <span
                                     *ngFor="let plot of item.plots"
                                     class="cursor-pointer hover:underline text-blue-700"
-                                    (click)="openViewPlotModal(plot)"
+                                    (click)="openViewPlotModal(plot, item)"
                                 >
                                     {{ plot.plotId + "," }}
                                 </span>
@@ -101,5 +101,7 @@
                 </ng-template>
             </p-table>
         </div>
+
+        <p *ngIf="!paginatedOwnerWithThram.count" class="mt-4">- No Thrams</p>
     </div>
 </div>

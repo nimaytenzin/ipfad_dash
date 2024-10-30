@@ -87,7 +87,7 @@
                 >
                     <ng-container *ngIf="advice && advice.id; else naTemplate">
                         <div
-                            (dblclick)="openPADetails(advice)"
+                            (dblclick)="openPADetails([advice])"
                             class="cursor-pointer hover:bg-gray-100 p-2 no-select"
                         >
                             <p>Title:{{ advice.title }}</p>

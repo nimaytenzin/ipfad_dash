@@ -68,21 +68,23 @@ export class AdminBuildingPlotComponent implements OnInit {
             accept: () => {
                 this.buildingPlotDataService
                     .DeleteBuildingPlot(plot.id, this.buildingId)
-                    .subscribe((res) => {
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Unmapped',
-                            detail: plot.plotId + ' Un Mapped',
-                        });
-                        this.buildingInfoChanged.emit('changed');
+                    .subscribe({
+                        next: (res) => {
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Unmapped',
+                                detail: plot.plotId + ' Un Mapped',
+                            });
+                            this.buildingInfoChanged.emit('changed');
+                        },
+                        error: (err) => {
+                            this.messageService.add({
+                                severity: 'error',
+                                summary: 'Error',
+                                detail: err.error.message,
+                            });
+                        },
                     });
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Cancelled',
-                    detail: 'You have rejected',
-                });
             },
         });
     }

@@ -1,7 +1,8 @@
 <form [formGroup]="updateBuildingForm" class="p-fluid p-3">
     <div class="grid">
-        <div class="field col-12 md:col-4">
+        <div class="field col-12 md:col-6">
             <label for="zhichar">Zhichar Building ID</label>
+
             <input
                 pInputText
                 id="zhichar"
@@ -9,9 +10,12 @@
                 formControlName="zhicharBuildingId"
                 type="text"
             />
+            <label for="zhichar" class="text-sm mt-2"
+                >*press enter to search building details in zhichar</label
+            >
         </div>
 
-        <div class="field col-12 md:col-4">
+        <div class="field col-12 md:col-6">
             <label for="qrId">Zhichar Qr ID</label>
             <input
                 pInputText
@@ -175,7 +179,7 @@
                 [options]="subAdministrativeZones"
                 optionLabel="name"
                 optionValue="id"
-                formControlName="subadministrativeZoneId"
+                formControlName="subadminsitrativeZoneId"
             ></p-dropdown>
         </div>
 
@@ -191,5 +195,17 @@
         </div>
     </div>
 
-    <p-button (click)="updateBuilding()" label="Update Building"></p-button>
+    <div class="flex justify-content-end gap-2">
+        <p-button
+            (click)="updateBuilding()"
+            type="submit"
+            [disabled]="isSubmitting || updateBuildingForm.invalid"
+            label="Update Building"
+        ></p-button>
+        <p-button
+            severity="secondary"
+            label="Cancel"
+            (click)="close()"
+        ></p-button>
+    </div>
 </form>

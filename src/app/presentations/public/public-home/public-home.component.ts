@@ -31,7 +31,6 @@ import {
     RecaptchaV3Module,
 } from 'ng-recaptcha';
 import { RecaptchaService } from 'src/app/core/dataservice/recaptcha.dataservice';
-import { NotificationService } from 'src/app/core/dataservice/notification.service';
 import { SidebarModule } from 'primeng/sidebar';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -87,7 +86,7 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
         private fb: FormBuilder,
         private recaptchaV3Service: ReCaptchaV3Service,
         private recaptchaVerificationService: RecaptchaService,
-        private notificationService: NotificationService,
+
         private messageService: MessageService,
         private unitDataService: UnitDataService
     ) {
@@ -223,22 +222,22 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
                     .subscribe((res) => {
                         console.log('token verificaiotn results', res);
                         if (res.success === true) {
-                            this.notificationService
-                                .SendSMS({
-                                    contact: 17263764,
-                                    message: message,
-                                })
-                                .subscribe((message: any) => {
-                                    if (message.status === 'Success') {
-                                        this.showRequestDemoModal = false;
-                                        this.messageService.add({
-                                            severity: 'success',
-                                            summary:
-                                                'Demo request has been sent.',
-                                            detail: 'Our Team will contact you shortly with the details.',
-                                        });
-                                    }
-                                });
+                            // this.notificationService
+                            // .SendSMS({
+                            //     contact: 17263764,
+                            //     message: message,
+                            // })
+                            // .subscribe((message: any) => {
+                            //     if (message.status === 'Success') {
+                            //         this.showRequestDemoModal = false;
+                            //         this.messageService.add({
+                            //             severity: 'success',
+                            //             summary:
+                            //                 'Demo request has been sent.',
+                            //             detail: 'Our Team will contact you shortly with the details.',
+                            //         });
+                            //     }
+                            // });
                         }
                     });
             });

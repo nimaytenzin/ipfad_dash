@@ -103,7 +103,6 @@ export class AdminSpatialViewerPlotComponent implements OnInit {
             const buildingIdCSV = this.plot.buildings
                 .map((building) => building.zhicharBuildingId)
                 .join(',');
-
             this.geometryDataService
                 .GetBuildingsGeomByBuildingIdCsv(buildingIdCSV)
                 .subscribe((res: any) => {

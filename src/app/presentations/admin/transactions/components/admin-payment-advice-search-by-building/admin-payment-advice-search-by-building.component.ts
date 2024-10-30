@@ -11,7 +11,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { AdminPaymentAdviceBuildingPendingListComponent } from '../admin-payment-advice-building-pending-list/admin-payment-advice-building-pending-list.component';
 import { AdminPaymentAdviceBuildingPaidListComponent } from '../admin-payment-advice-building-paid-list/admin-payment-advice-building-paid-list.component';

@@ -9,7 +9,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 
 @Component({
@@ -24,7 +24,7 @@ export class AdminPaymentAdviceBuildingPendingListComponent
 {
     @Input({ required: true }) building: BuildingDTO;
 
-    pendingPaymentAdvices: PaymentAdviceDto[];
+    pendingPaymentAdvices: PaymentAdviceDto[] = [];
 
     constructor(private paymentAdviceDataService: PaymentAdviceDataService) {}
 

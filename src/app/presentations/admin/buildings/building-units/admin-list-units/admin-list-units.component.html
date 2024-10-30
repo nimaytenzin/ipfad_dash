@@ -66,7 +66,7 @@
                             (click)="openConfirmSendLeaseSigningReminder(lease)"
                         ></p-button>
                     </div>
-                    <div *ngIf="!unit.leaseAgreements.length">NA</div>
+                    <div *ngIf="!unit.leaseAgreements.length">Not Leased</div>
                 </td>
                 <td>
                     <div *ngFor="let lease of unit.leaseAgreements">
@@ -97,7 +97,7 @@
                         </div>
                     </div>
 
-                    <div *ngIf="!unit.leaseAgreements.length">NA</div>
+                    <div *ngIf="!unit.leaseAgreements.length">Not Leased</div>
                 </td>
 
                 <td>

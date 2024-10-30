@@ -47,6 +47,58 @@ export class LeaseAgreementDataService {
         );
     }
 
+    GetAllLandLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/land/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllBuildingLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/building/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
     GetLeaseAgreementDetailed(
         leaseAgreementId: number
     ): Observable<LeaseAgreeementDTO> {
@@ -85,6 +137,19 @@ export class LeaseAgreementDataService {
         );
     }
 
+    CheckPlotEligibilityForLease(plotDatabaseId: number) {
+        //not the plotID(SM1-12) but the database plotID
+        return this.http.get(
+            `${this.apiUrl}/lease-agreement/validate/plot/${plotDatabaseId}`
+        );
+    }
+
+    CheckBuildingligibilityForLease(buildingId: number) {
+        return this.http.get(
+            `${this.apiUrl}/lease-agreement/validate/building/${buildingId}`
+        );
+    }
+
     CreateLeaseAgreement(
         data: CreateLeaseAgreementDTO
     ): Observable<LeaseAgreeementDTO> {
@@ -113,26 +178,30 @@ export class LeaseAgreementDataService {
         // );
     }
 
-    GetLeaseAgreementsPaginatedByUnit(
+    GetAllLeaseAgreementsByUnitPaginated(
         unitId: number,
         params?: PaginatedParamsOptions
-    ) {
-        // let httpParams = new HttpParams();
-        // if (params) {
-        //     if (params.page !== undefined) {
-        //         httpParams = httpParams.append('page', params.page.toString());
-        //     }
-        //     if (params.limit !== undefined) {
-        //         httpParams = httpParams.append(
-        //             'limit',
-        //             params.limit.toString()
-        //         );
-        //     }
-        // }
-        // return this.http.get<PaginatedData<LeaseAgreementDTO>>(
-        //     `${this.apiUrl}/lease-agreement/unit/q/${unitId}`,
-        //     { params: httpParams }
-        // );
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/unit/p/${unitId}`,
+            { params: httpParams }
+        );
     }
 
     GetActiveLeaseAgreementByUnit(

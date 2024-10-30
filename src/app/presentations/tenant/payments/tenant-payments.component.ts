@@ -3,7 +3,7 @@ import { TenantPendingPaymentComponent } from '../dashboard/components/tenant-pe
 import { TenantPaymentPaidPaymentsComponent } from './components/tenant-payment-paid-payments/tenant-payment-paid-payments.component';
 import { TenantPaymentPendingPaymentListComponent } from './components/tenant-payment-pending-payment-list/tenant-payment-pending-payment-list.component';
 import {
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
     AuthService,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
@@ -19,7 +19,7 @@ import {
     ],
 })
 export class TenantPaymentsComponent implements OnInit {
-    currentUser: AuthenticatedUser;
+    currentUser: AuthenticatedUserDTO;
 
     constructor(private authService: AuthService) {
         this.currentUser = this.authService.GetAuthenticatedUser();

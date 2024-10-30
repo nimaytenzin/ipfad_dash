@@ -11,5 +11,5 @@ export interface BuildingPlotDTO {
 export interface CreateBuildingPlotDTO {
     buildingId: number;
 
-    plotId: number;
+    plotDatabaseId: number;
 }

@@ -83,11 +83,8 @@ export class AdminUsersUpdateModalComponent implements OnInit {
         if (this.isSubmitting) return; // Prevent multiple submissions
 
         const data: UpdateUserDetailsDTO = {
-            hasLoginAccess:
-                this.updateUserForm.controls['hasLoginAccess'].value,
             nameEnglish: this.updateUserForm.controls['nameEnglish'].value,
             phoneNumber: this.updateUserForm.controls['phoneNumber'].value,
-            password: this.updateUserForm.controls['password'].value || null, // Password is optional, only update if provided
             email: this.updateUserForm.controls['email'].value || null,
             cid: this.updateUserForm.controls['cid'].value || null,
             nameDzongkha:

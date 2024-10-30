@@ -81,7 +81,7 @@ export class AdminThramCreateComponent implements OnInit {
             },
         });
         this.userDataService
-            .AdminGetAllOwners(this.authService.GetAuthenticatedUser().id)
+            .AdminGetAllOwners(this.authService.GetCurrentRole().adminId)
             .subscribe((res) => {
                 this.owners = res;
             });

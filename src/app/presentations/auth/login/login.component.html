@@ -81,3 +81,19 @@
         />
     </div>
 </p-dialog>
+
+<p-dialog
+    header="Role Selection"
+    [modal]="true"
+    [(visible)]="showRoleSelection"
+    [style]="{ width: '25rem' }"
+>
+    <span class="p-text-secondary block mb-5"
+        >You have multiple roles.Please select a role to use</span
+    >
+    <div *ngFor="let role of authenticatedUser?.roles">
+        <p>Role: {{ role.role }}</p>
+        <p>Admin:{{ role.adminId }}</p>
+        <button (click)="onSelectRole(role)">Select</button>
+    </div>
+</p-dialog>

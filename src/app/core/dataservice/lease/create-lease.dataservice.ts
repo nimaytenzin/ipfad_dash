@@ -1,83 +1,57 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import {
-    CreateLeaseAgreementDTO,
-    GroupedLeaseAgreementDTO,
-    LeaseAgreementChargesDTO,
-    LeaseAgreementDurationDTO,
-    LeaseAgreementPartiesDTO,
-    LeaseAgreementPropertiesDTO,
-    LeaseAgreementTermsDTO,
-} from './lease-agreement.dto';
+import { BehaviorSubject, Subject } from 'rxjs';
+
 import { Router } from '@angular/router';
+import { BuildingDTO } from '../../dto/properties/building.dto';
+import { PlotDTO } from '../land/dto/plot.dto';
+import { UnitDTO } from '../../dto/units/unit.dto';
+import { LESSORTYPE } from '../../constants/enums';
 
 @Injectable({
     providedIn: 'root',
 })
-export class CreateLeaseService {
-    constructor(private router: Router) {}
-    leaseInformation: GroupedLeaseAgreementDTO = {
-        parties: undefined,
-        properties: undefined,
-        terms: undefined,
-        charges: undefined,
-        duration: undefined,
-    };
+export class LeaseCreatorStateService {
+    private plotSource = new BehaviorSubject<PlotDTO | null>(null);
+    private buildingSource = new BehaviorSubject<BuildingDTO | null>(null);
+    private buildingsSource = new BehaviorSubject<BuildingDTO[]>([]);
+    private unitSource = new BehaviorSubject<UnitDTO | null>(null);
+    private unitsSource = new BehaviorSubject<UnitDTO[]>([]);
 
-    private leaseCreationComplete = new Subject<any>();
+    private lessorTypeSource = new BehaviorSubject<LESSORTYPE | null>(null);
 
-    leaseCreationComplete$ = this.leaseCreationComplete.asObservable();
+    plot$ = this.plotSource.asObservable();
+    building$ = this.buildingSource.asObservable();
+    buildings$ = this.buildingsSource.asObservable();
 
-    getLeaseInformation() {
-        return this.leaseInformation;
-    }
+    unit$ = this.unitSource.asObservable();
+    units$ = this.unitsSource.asObservable();
 
-    saveLeaseParties(data: LeaseAgreementPartiesDTO) {
-        this.leaseInformation.parties = data;
-    }
-    saveLeaseProperties(data: LeaseAgreementPropertiesDTO) {
-        this.leaseInformation.properties = data;
-    }
-    saveLeaseDuration(data: LeaseAgreementDurationDTO) {
-        this.leaseInformation.duration = data;
+    lessorType$ = this.lessorTypeSource.asObservable();
+
+    setPlot(plot: PlotDTO | null) {
+        this.plotSource.next(plot);
     }
 
-    saveLeaseCharges(data: LeaseAgreementChargesDTO) {
-        this.leaseInformation.charges = data;
+    setBuilding(building: BuildingDTO | null) {
+        this.buildingSource.next(building);
     }
 
-    setLeaseInformation(leaseInformation) {
-        this.leaseInformation = leaseInformation;
-    }
-    saveLeaseTerms(data: LeaseAgreementTermsDTO) {
-        this.leaseInformation.terms = data;
+    setBuildings(buildings: BuildingDTO[]) {
+        this.buildingsSource.next(buildings);
     }
 
-    complete() {
-        this.leaseCreationComplete.next(
-            this.leaseCreationComplete.next(this.leaseInformation)
-        );
+    setUnit(unit: UnitDTO) {
+        this.unitSource.next(unit);
+    }
+    setUnits(units: UnitDTO[]) {
+        this.unitsSource.next(units);
     }
 
-    navigateToParties() {
-        this.router.navigate(['admin/master-lease/create/parties']);
-    }
-
-    navigateToProperties() {
-        this.router.navigate(['admin/master-lease/create/properties']);
-    }
-
-    navigateToDuration() {
-        this.router.navigate(['admin/master-lease/create/duration']);
-    }
-    navigateToCharges() {
-        this.router.navigate(['admin/master-lease/create/charges']);
-    }
-    navigateToFinalize() {
-        this.router.navigate(['admin/master-lease/create/finalize']);
-    }
-
-    navigateToTerms() {
-        this.router.navigate(['admin/master-lease/create/terms']);
+    clearState() {
+        this.plotSource.next(null);
+        this.buildingSource.next(null);
+        this.buildingsSource.next([]);
+        this.unitSource.next(null);
+        this.unitsSource.next([]);
     }
 }

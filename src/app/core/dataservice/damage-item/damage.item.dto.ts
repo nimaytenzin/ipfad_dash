@@ -1,5 +1,6 @@
 import { DamageStatus, DamageType } from '../../constants/enums';
 import { LeaseAgreeementDTO } from '../lease/lease-agreement.dto';
+import { UserDTO } from '../users-and-auth/dto/user.dto';
 
 export interface DamageItemDTO {
     id: number;
@@ -26,6 +27,25 @@ export interface DamageItemImageDTO {
     damageId: number;
 
     uri: string;
+}
+
+export interface DamageItemThreamDTO {
+    id: number;
+    damageItemId: number;
+
+    text: string;
+    userId: number;
+
+    createdAt: string;
+
+    user?: UserDTO;
+    damageItem?: DamageItemDTO;
+}
+
+export interface CreateDamageItemThreadDTO {
+    damageItemId: number;
+    text: string;
+    userId: number;
 }
 
 export interface CreateDamageItemDTO {

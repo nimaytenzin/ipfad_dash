@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
     FormBuilder,
@@ -27,13 +28,14 @@ import { CreateUnitDTO } from 'src/app/core/dto/units/unit.dto';
     imports: [
         ReactiveFormsModule,
         ButtonModule,
+        CommonModule,
         DropdownModule,
         InputTextModule,
         InputNumberModule,
         InputTextareaModule,
         MessagesModule,
     ],
-    providers: [MessageService],
+    providers: [],
     templateUrl: './admin-add-unit.component.html',
     styleUrl: './admin-add-unit.component.scss',
 })
@@ -47,6 +49,7 @@ export class AdminAddUnitComponent implements OnInit {
     ) {
         this.instance = this.dialogService.getInstance(this.ref);
     }
+    isSubmitting: boolean = false;
     instance: DynamicDialogComponent | undefined;
     buildingId: number;
 
@@ -76,16 +79,28 @@ export class AdminAddUnitComponent implements OnInit {
             bedroomCount: [null, [Validators.required]],
             toiletCount: [null, [Validators.required]],
             balconyCount: [null, [Validators.required]],
-            floorArea: [null, [Validators.required]],
+            floorArea: [null],
             powerConsumerId: [null],
-            zhicharUnitId: [null, Validators.required],
-            zhicharQrUuid: [null, Validators.required],
+            zhicharUnitId: [null],
+            zhicharQrUuid: [null],
         });
         this.buildingId = this.instance.data.buildingId;
     }
 
     createUnit() {
+        if (this.createUnitForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Missing Fields',
+                detail: 'Please add all required fields',
+            });
+            return;
+        }
+        if (this.isSubmitting) {
+            return;
+        }
         if (this.createUnitForm.valid) {
+            this.isSubmitting = true;
             const newUnit: CreateUnitDTO = {
                 buildingId: this.buildingId,
                 zhicharUnitId: Number(
@@ -108,28 +123,26 @@ export class AdminAddUnitComponent implements OnInit {
             };
             this.unitDataService.CreateUnit(newUnit).subscribe({
                 next: (res) => {
+                    this.isSubmitting = false;
+
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Added',
                         detail: 'Unit added',
                     });
                     this.ref.close({
-                        added: true,
+                        status: 201,
                     });
                 },
                 error: (err) => {
+                    console.log(err);
+                    this.isSubmitting = false;
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Error',
                         detail: err.error.message,
                     });
                 },
-            });
-        } else {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Form Validation Error',
-                detail: 'Please add all required fields',
             });
         }
     }

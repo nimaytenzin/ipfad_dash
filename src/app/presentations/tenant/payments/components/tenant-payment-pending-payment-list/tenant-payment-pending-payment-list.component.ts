@@ -6,7 +6,7 @@ import { Dialog } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 
 @Component({

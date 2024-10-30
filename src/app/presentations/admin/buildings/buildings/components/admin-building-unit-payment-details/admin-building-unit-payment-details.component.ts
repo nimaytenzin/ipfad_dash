@@ -7,8 +7,8 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-components/view-payment-advice/view-payment-advice.component';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
 
 @Component({
     selector: 'app-admin-building-unit-payment-details',

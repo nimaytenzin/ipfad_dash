@@ -27,6 +27,7 @@ import {
     LEASEUSES,
     LESSEETYPE,
     LESSORTYPE,
+    NOTIFICATIONTYPES,
 } from 'src/app/core/constants/enums';
 import { BankAccountDto } from 'src/app/core/dataservice/bankaccounts/bankaccount.dto';
 import { BankAccountDataService } from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
@@ -42,7 +43,7 @@ import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organizati
 import { UnitSurchargeDataService } from 'src/app/core/dataservice/units/unit-surcharge.data.service';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
 import {
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
     AuthService,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
@@ -58,6 +59,11 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { AdminLeaseCreatorSelectPlotComponent } from '../components/admin-lease-creator-select-plot/admin-lease-creator-select-plot.component';
+import { AdminLeaseCreatorSelectBuildingComponent } from '../components/admin-lease-creator-select-building/admin-lease-creator-select-building.component';
+import { AdminLeaseCreatorSelectUnitComponent } from '../components/admin-lease-creator-select-unit/admin-lease-creator-select-unit.component';
+import { LeaseCreatorStateService } from 'src/app/core/dataservice/lease/create-lease.dataservice';
+import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
 
 @Component({
     selector: 'app-admin-create-unit-lease-agreement-stepper',
@@ -82,29 +88,31 @@ import { RadioButtonModule } from 'primeng/radiobutton';
         ReactiveFormsModule,
         InputTextareaModule,
         RadioButtonModule,
+        AdminLeaseCreatorSelectPlotComponent,
+        AdminLeaseCreatorSelectBuildingComponent,
+        AdminLeaseCreatorSelectUnitComponent,
     ],
     providers: [ConfirmationService, DialogService],
 })
 export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
-    ref: DynamicDialogRef;
     plotId: string = 'LT1-366';
 
-    //Properties
-    plot: PlotDTO | null = null;
-    unit: UnitDTO | null = null;
-    building: BuildingDTO | null = null;
-    buildings: BuildingDTO[] = [];
-    selectedBuilding: BuildingDTO | null = null;
+    leaseTypes = Object.values(LEASETYPE);
+    selectedLeaseType: LEASETYPE;
+    leaseTypeEnum = LEASETYPE;
 
-    units: UnitDTO[] = [];
+    //Properties
+
+    selectedPlot: PlotDTO | null = null;
+    selectedBuilding: BuildingDTO | null = null;
     selectedUnit: UnitDTO | null = null;
-    owners: UserDTO[] | null = null;
 
     //Tenant PArty
+    owners: UserDTO[] | null = null;
     selectedOrganization: OrganiztionDTO | null = null;
     searchPhoneNumber: number = 17317237;
     searchedUser: UserDTO;
-    tenantPartySelected: boolean = false;
+    selectedTenant: UserDTO | null = null;
 
     lesseeTypeEnum = LESSEETYPE;
 
@@ -120,9 +128,9 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
 
     lessorTypes = Object.values(LESSORTYPE);
     selectedLessorType = LESSORTYPE.OWNER;
-    admin: AuthenticatedUser;
+    admin: UserDTO;
 
-    selectedUse: LEASEUSES = this.uses[0];
+    selectedUse: LEASEUSES | null = null;
 
     //charges
     ownerBankAccounts: BankAccountDto[] = [];
@@ -152,33 +160,50 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
     vacationNoticePeriod: number = 2;
 
     steps: string[] = [
-        'Property',
-        'Tenant',
-        'General',
+        'Property Selection',
+        'Lessee Selection',
+        'General Terms',
         'Charges',
-        'Terms',
+        'Additional Terms',
         'Finalize',
     ];
     currentStep: number = 0;
     extractDMY = GETDMYFROMDATE;
     constructor(
-        private config: DynamicDialogConfig,
-        private unitDataService: UnitDataService,
         private dialogService: DialogService,
         private authService: AuthService,
         private userDataService: UserDataService,
-        private plotDataServie: PlotDataService,
-        private buildingDataService: BuildingDataService,
+        private config: DynamicDialogConfig,
         private messageService: MessageService,
         private buildingSurchargeDataService: BuildingSurchargeDataService,
         private unitSurchargeDataService: UnitSurchargeDataService,
         private confirmationService: ConfirmationService,
         private fb: FormBuilder,
+        private ref: DynamicDialogRef,
         private leaseAgreementDataService: LeaseAgreementDataService,
-        private bankAccountDataService: BankAccountDataService
+        private bankAccountDataService: BankAccountDataService,
+        private leaseCreatorStateService: LeaseCreatorStateService,
+        private notificationService: NotificationService
     ) {
-        this.admin = this.authService.GetAuthenticatedUser();
-        console.log('AUTHENTICAED USRE', this.admin);
+        this.userDataService
+            .FindOneAuthenticated(this.authService.GetCurrentRole().adminId)
+            .subscribe((res) => {
+                this.admin = res;
+            });
+        this.selectedLeaseType = this.config.data.type;
+        this.leaseCreatorStateService.plot$.subscribe((plot) => {
+            this.selectedPlot = plot;
+            if (this.selectedPlot) {
+                this.plotId = this.selectedPlot.plotId;
+            }
+        });
+        this.leaseCreatorStateService.building$.subscribe((building) => {
+            this.selectedBuilding = building;
+        });
+        this.leaseCreatorStateService.unit$.subscribe((unit) => {
+            this.selectedUnit = unit;
+        });
+
         this.createLeaseChargeForm = this.fb.group({
             particular: [null],
             amount: [null],
@@ -189,93 +214,39 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.bankAccountDataService.GetBankAccounts().subscribe({
-            next: (res) => {
-                this.ownerBankAccounts = res;
-                console.log(res);
-            },
-        });
-    }
-
-    //PROPERTY STEPPER
-    searchBuildingByPlotId() {
-        this.getPlotDetails();
-        this.buildingDataService.GetBuildingsByPlot(this.plotId).subscribe({
-            next: (res) => {
-                if (res.length) {
-                    this.buildings = res;
-                    this.selectedBuilding = this.buildings[0];
-                    this.loadUnitsByBuilding(this.selectedBuilding.id);
-                } else {
-                    this.messageService.add({
-                        severity: 'info',
-                        summary: 'No Buildings',
-                        detail: 'No Buildings on the plot ' + this.plotId,
-                    });
-                }
-            },
-            error: (err) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error Fetching Buildings',
-                    detail: 'An error occurred while loading buildings.',
-                });
-            },
-        });
-    }
-    getPlotDetails() {
-        this.plotDataServie.SearchPlotById(this.plotId).subscribe({
-            next: (res) => {
-                this.plot = res;
-                this.owners = res.thram.owners;
-            },
-        });
-    }
-    selectUnit() {
-        console.log(
-            'VALIDATING selected unit',
-            this.selectedUnit.floorArea,
-            this.selectedUnit.unitNumber
-        );
-        this.leaseAgreementDataService
-            .CheckUnitEligibilityForLease(this.selectedUnit.id)
+        this.bankAccountDataService
+            .GetAllBankAccountsByAdmin(
+                this.authService.GetCurrentRole().adminId
+            )
             .subscribe({
                 next: (res) => {
-                    console.log('VALIDATING UNIT ');
+                    this.ownerBankAccounts = res;
                     console.log(res);
-                    this.unit = this.selectedUnit;
-                    this.building = this.selectedBuilding;
-
-                    this.getUnitSurcharges(this.selectedUnit.id);
-                    this.getbuildingSurcharges(this.selectedBuilding.id);
-                },
-                error: (err) => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Unit Not Eligible for Lease',
-                        detail: err.error.message,
-                    });
                 },
             });
     }
 
-    loadUnitsByBuilding(buildingId: number) {
-        this.unitDataService.GetAllUnitsByBuilding(buildingId).subscribe({
-            next: (res) => {
-                if (res.length) {
-                    this.units = res;
-                    this.selectedUnit = this.units[0];
-                } else {
-                    this.messageService.add({
-                        severity: 'info',
-                        summary: 'No Units',
-                        detail:
-                            'No Units on the building ' +
-                            this.selectedBuilding.name,
-                    });
-                }
-            },
-        });
+    //PROPERTY STEPPER
+
+    onPlotSelected(plot: PlotDTO) {
+        this.selectedPlot = plot;
+    }
+    onPlotCleared() {
+        this.selectedPlot = null;
+    }
+
+    onBuildingSelected(building: BuildingDTO) {
+        this.selectedBuilding = building;
+    }
+    onBuildingCleared() {
+        this.selectedBuilding = null;
+    }
+
+    onUnitSelected(unit: UnitDTO) {
+        this.selectedUnit = unit;
+    }
+    onUnitCleared() {
+        this.selectedUnit = null;
     }
 
     //TENANT STEPPER
@@ -427,18 +398,15 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
     createLeaseAgreement() {
         const dmyObject = this.extractDMY(this.currentDate);
         let data: CreateLeaseAgreementDTO = {
-            type: LEASETYPE.UNIT,
+            type: this.selectedLeaseType,
             status: LEASESTATUS.PENDING,
-
+            adminId: this.authService.GetCurrentRole().adminId,
             bankAccountId: this.selectedOwnerBankAccount.id,
             lesseeType: LESSEETYPE[this.selectedLesseeType],
             lessorType: LESSORTYPE[this.selectedLessorType],
             entryDamageReportSubmitted: false,
             securityDepositPaid: false,
 
-            agreementDay: dmyObject.day,
-            agreementMonth: dmyObject.month,
-            agreementYear: dmyObject.year,
             leaseDurationMonths: this.calculateMonthsDifference(
                 this.leaseStartDate,
                 this.leaseEndDate
@@ -456,14 +424,20 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
             rentIncreaseNoticePeriod: this.rentIncreaseNoticePeriod,
             vacationNoticePeriod: this.vacationNoticePeriod,
             evictionNoticePeriod: this.evictionNoticePeriod,
-            plotId: this.plot.id,
-            buildingId: this.building.id,
+            plotId: this.selectedPlot.id,
+            buildingId:
+                this.selectedLeaseType === this.leaseTypeEnum.BUILDING ||
+                this.selectedLeaseType === this.leaseTypeEnum.UNIT
+                    ? this.selectedBuilding.id
+                    : null,
             tenantId: this.searchedUser.id,
-            unitId: this.unit.id,
+            unitId:
+                this.selectedLeaseType === this.leaseTypeEnum.UNIT
+                    ? this.selectedUnit.id
+                    : null,
             leaseSurcharges: this.leaseCharges,
             leaseRules: this.leaseRules,
         };
-        console.log(data.lesseeType);
 
         if (data.lesseeType !== LESSEETYPE.INDIVIDUAL) {
             data.organizationId = this.selectedOrganization.id;
@@ -477,7 +451,43 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
                         summary: 'Created',
                         detail: 'Lease Agreement Created! Tenant Must accept the agreement to activate the agreement.',
                     });
+                    this.notificationService
+                        .SendNotification({
+                            fromUserId: this.admin.id,
+                            toUserId: res.tenantId,
+                            notificationType: NOTIFICATIONTYPES.LEASE_CREATION,
+                            leaseAgreementId: res.id,
+                        })
+                        .subscribe((res) => {
+                            if (res) {
+                                this.messageService.add({
+                                    severity: 'info',
+                                    summary: 'Notified',
+                                    detail: 'Lease Agreement Creation Notification Sent',
+                                });
+                            }
+                        });
+
+                    this.notificationService
+                        .SendNotification({
+                            fromUserId: this.admin.id,
+                            toUserId: res.tenantId,
+                            notificationType:
+                                NOTIFICATIONTYPES.LEASE_SIGNING_REMINDER,
+                            leaseAgreementId: res.id,
+                        })
+                        .subscribe((res) => {
+                            if (res) {
+                                this.messageService.add({
+                                    severity: 'info',
+                                    summary: 'Notified',
+                                    detail: 'Lease Agreement Signing Notification Sent',
+                                });
+                            }
+                        });
                 }
+
+                this.ref.close({ status: 201 });
             },
             error: (err) => {
                 this.messageService.add({
@@ -507,7 +517,7 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
     stepValidtor(): boolean {
         switch (this.currentStep) {
             case 0:
-                return this.checkUnitDetails();
+                return this.checkPropertySelection();
             case 1:
                 return this.checkTenantDetails();
             case 2:
@@ -521,8 +531,20 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
         }
     }
 
+    checkPropertySelection() {
+        switch (this.selectedLeaseType as unknown as LEASETYPE) {
+            case LEASETYPE.UNIT:
+                return this.checkUnitDetails();
+            case LEASETYPE.BUILDING:
+                return this.checkBuildingDetails();
+            case LEASETYPE.LAND:
+                return this.checkPlotDetails();
+            default:
+                return false;
+        }
+    }
     checkUnitDetails(): boolean {
-        if (!this.unit) {
+        if (!this.selectedUnit) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Input Error',
@@ -531,7 +553,11 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
             });
             return false;
         }
-        if (!this.building) {
+
+        return true;
+    }
+    checkBuildingDetails(): boolean {
+        if (!this.selectedBuilding) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Input Error',
@@ -540,7 +566,12 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
             });
             return false;
         }
-        if (!this.plot) {
+
+        return true;
+    }
+
+    checkPlotDetails(): boolean {
+        if (!this.selectedPlot) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Input Error',
@@ -549,15 +580,11 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
             });
             return false;
         }
-
         return true;
     }
 
     clearUnitSelection() {
-        this.unit = null;
-        this.building = null;
-        this.plot = null;
-        this.owners = null;
+        this.selectedUnit = null;
     }
 
     confirmTenantPartySelection() {
@@ -581,7 +608,7 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
                 return false;
             }
         }
-        this.tenantPartySelected = true;
+        this.selectedTenant = this.searchedUser;
         this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -594,11 +621,11 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
     clearTenantPartySelection() {
         this.searchedUser = null;
         this.selectedOrganization = null;
-        this.tenantPartySelected = false;
+        this.selectedTenant = null;
     }
 
     checkTenantDetails(): boolean {
-        if (!this.tenantPartySelected) {
+        if (!this.selectedTenant) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Input Error',

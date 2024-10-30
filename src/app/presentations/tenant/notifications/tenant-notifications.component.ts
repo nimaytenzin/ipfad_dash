@@ -9,7 +9,7 @@ import {
 } from 'src/app/core/dataservice/notification/notification.service';
 
 import {
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
     AuthService,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { GETELAPSEDTIME } from 'src/app/core/utility/date.helper';
@@ -22,7 +22,7 @@ import { GETELAPSEDTIME } from 'src/app/core/utility/date.helper';
     imports: [DividerModule, ButtonModule, CommonModule],
 })
 export class TenantNotificationsComponent implements OnInit {
-    authenticatedUser: AuthenticatedUser;
+    authenticatedUser: AuthenticatedUserDTO;
     notifications: NotificationDTO[] = [];
     unReadNotifications: NotificationDTO[] = [];
     zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;

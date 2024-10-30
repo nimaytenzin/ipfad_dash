@@ -1,32 +1,25 @@
 <div
     id="leaseActivesummary"
     class="border-1 p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="activeLeaseAgreement.id"
+    *ngIf="activeLeaseAgreement"
 >
     <div class="flex justify-content-between mb-5">
-        <p-chip label="Active Lease" icon="pi pi-bookmark-fill" />
+        <p-chip
+            [label]="activeLeaseAgreement.status"
+            icon="pi pi-bookmark-fill"
+        />
         <div class="flex gap-2">
-            <p-button label="Detailed View" severity="secondary" size="small" />
             <p-button
-                label="Renew Lease"
-                icon="pi pi-refresh"
-                severity="secondary"
-                size="small"
-            />
-            <p-button
-                label="Terminate Lease"
-                icon="pi pi-times"
+                label="Detailed View"
+                (click)="viewLease()"
                 severity="secondary"
                 size="small"
             />
         </div>
     </div>
 
-    <div
-        class="flex justify-content-between gap-4 mt-3"
-        *ngIf="activeLeaseAgreement"
-    >
-        <div id="leaseSummary" class="w-4">
+    <div class="flex justify-content-between gap-4 mt-3">
+        <div id="leaseSummary" class="w-6">
             <p class="font-semibold text-lg">Lease Summary</p>
             <p-divider type="dashed" />
 
@@ -60,108 +53,77 @@
             </p>
         </div>
 
-        <div class="w-4">
-            <p class="font-semibold text-lg">Tenant Details</p>
+        <div class="w-6">
+            <p class="font-semibold text-lg">Lessee</p>
             <p-divider type="dashed" />
-
             <p>
-                Name:
-                <strong>
-                    {{ activeLeaseAgreement?.tenant?.firstName }}
-                    {{ activeLeaseAgreement?.tenant?.middleName }}
-                    {{ activeLeaseAgreement?.tenant?.lastName }}
-                </strong>
+                Lessee Type:
+                <strong> {{ activeLeaseAgreement.lesseeType }}</strong>
             </p>
-            <p>
-                CID:
-                <strong>
-                    {{ activeLeaseAgreement?.tenant?.cid }}
-                </strong>
-            </p>
-            <p>
-                Phone Number:
-                <strong>
-                    {{ activeLeaseAgreement?.tenant?.phoneNumber }}
-                </strong>
-            </p>
-
-            <p class="mt-2">
-                Dzongkhag:
-                {{ activeLeaseAgreement.tenant?.dzongkhag?.name }}
-                Dzongkhag
-            </p>
-            <p>
-                Administrative zone:
-                {{ activeLeaseAgreement.tenant?.administrativeZone?.name }}
-                {{
-                    activeLeaseAgreement.tenant?.administrativeZone
-                        ?.location === "R"
-                        ? "Gewog"
-                        : ""
-                }}
-            </p>
-            <p>
-                Sub Administrative zone:
-                {{ activeLeaseAgreement.tenant?.subadministrativeZone?.name }}
-                {{
-                    activeLeaseAgreement.tenant?.subadministrativeZone
-                        ?.location === "R"
-                        ? "Chiwog"
-                        : ""
-                }}
-            </p>
-        </div>
-
-        <div id="pendingPayments" class="w-4">
-            <div class="flex justify-content-between">
-                <p class="font-semibold text-lg">Pending Payment</p>
-                <p-button
-                    label="Generate PA"
-                    severity="secondary"
-                    (click)="openGeneratePAModal()"
-                ></p-button>
+            <div
+                *ngIf="
+                    activeLeaseAgreement.lesseeType === LESSEETYPES.INDIVIDUAL
+                "
+            >
+                <p>
+                    Name:
+                    <strong
+                        >{{ activeLeaseAgreement.tenant?.nameEnglish }}
+                        {{ activeLeaseAgreement.tenant?.nameDzongkha }}</strong
+                    >
+                </p>
+                <p>
+                    Phone Number:
+                    <strong>{{
+                        activeLeaseAgreement.tenant?.phoneNumber
+                    }}</strong>
+                </p>
+                <p>
+                    CID: <strong>{{ activeLeaseAgreement.tenant?.cid }}</strong>
+                </p>
+                <p>
+                    Permanent Address:
+                    <strong>{{
+                        activeLeaseAgreement.tenant?.permanentAddress
+                    }}</strong>
+                </p>
             </div>
-            <p-divider type="dashed" />
-
-            <p *ngIf="!activeLeaseAgreement?.paymentAdvise?.length">
-                No pending payments
-            </p>
-            <div *ngIf="activeLeaseAgreement?.paymentAdvise?.length">
-                <div
-                    *ngFor="let advice of activeLeaseAgreement.paymentAdvise"
-                    class="border-1 p-4 mb-2 border-dashed surface-border border-round surface-ground"
-                >
-                    <div>
-                        <p-tag
-                            *ngIf="advice.status == 'DUE'"
-                            severity="danger"
-                            icon="pi pi-times"
-                            value="Due"
-                        />
-                        <p class="text-3xl font-semibold">
-                            Nu. {{ advice.totalAmount }}
-                        </p>
-
-                        <p class="text-base">
-                            {{ advice.title }}
-                        </p>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <p-button
-                            label="Pay"
-                            size="small"
-                            severity="secondary"
-                            (click)="openPaymentGatewayPaymentModal(advice)"
-                        ></p-button>
-                        <p-button
-                            label="Details"
-                            size="small"
-                            severity="secondary"
-                            (click)="openPaymentGatewayPaymentModal(advice)"
-                        ></p-button>
-                    </div>
-                </div>
+            <div
+                *ngIf="
+                    activeLeaseAgreement.lesseeType !== LESSEETYPES.INDIVIDUAL
+                "
+            >
+                <p>
+                    Name:
+                    <strong>
+                        {{ activeLeaseAgreement.organization.name }}</strong
+                    >
+                </p>
+                <p class="font-semibold mt-1 mb-2">
+                    {{ activeLeaseAgreement.organization.userType }} Details
+                </p>
+                <p>
+                    Name:
+                    <strong
+                        >{{ activeLeaseAgreement.tenant?.nameEnglish }}
+                        {{ activeLeaseAgreement.tenant?.nameDzongkha }}</strong
+                    >
+                </p>
+                <p>
+                    Phone Number:
+                    <strong>{{
+                        activeLeaseAgreement.tenant?.phoneNumber
+                    }}</strong>
+                </p>
+                <p>
+                    CID: <strong>{{ activeLeaseAgreement.tenant?.cid }}</strong>
+                </p>
+                <p>
+                    Permanent Address:
+                    <strong>{{
+                        activeLeaseAgreement.tenant?.permanentAddress
+                    }}</strong>
+                </p>
             </div>
         </div>
     </div>
@@ -169,10 +131,10 @@
 
 <div
     class="border-1 mb-4 p-4 border-dashed surface-border border-round surface-ground"
-    *ngIf="!activeLeaseAgreement.id"
+    *ngIf="!activeLeaseAgreement"
 >
     <p>
         This unit has not been currently leased. Please go to the lease
-        agreements tab and create a new lease
+        agreements page and create a new lease
     </p>
 </div>

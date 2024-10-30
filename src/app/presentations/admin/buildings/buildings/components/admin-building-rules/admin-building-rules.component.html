@@ -7,7 +7,7 @@
             icon="pi pi-plus"
             (click)="openCreateBuildingRuleModal()"
             size="small"
-            label="Surcharge"
+            label="Rule"
             class="p-0"
         ></p-button>
     </div>
@@ -65,6 +65,7 @@
                 </p-button>
                 <p-button
                     (click)="createBuildingRule()"
+                    [disabled]="isSubmitting || createBuildingRuleForm.invalid"
                     label="Create Rule"
                 ></p-button>
             </div>
@@ -90,10 +91,19 @@
                 </div>
             </div>
 
-            <p-button
-                (click)="updateBuildingRule()"
-                label="Update Rule"
-            ></p-button>
+            <div class="flex gap-2 justify-content-end">
+                <p-button
+                    label="Cancel"
+                    (click)="showUpdateBuildingRuleModal = false"
+                    severity="secondary"
+                >
+                </p-button>
+                <p-button
+                    (click)="updateBuildingRule()"
+                    [disabled]="isSubmitting || updateBuildingRuleForm.invalid"
+                    label="Update Rule"
+                ></p-button>
+            </div>
         </form>
     </p-dialog>
 </div>

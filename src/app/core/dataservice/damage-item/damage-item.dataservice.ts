@@ -6,7 +6,9 @@ import { Observable } from 'rxjs';
 
 import {
     CreateDamageItemDTO,
+    CreateDamageItemThreadDTO,
     DamageItemDTO,
+    DamageItemThreamDTO,
     ResolveDamageItemDTO,
 } from './damage.item.dto';
 import { LeaseAgreeementDTO } from '../lease/lease-agreement.dto';
@@ -62,6 +64,29 @@ export class DamageItemService {
         return this.http.patch<DamageItemDTO>(
             `${this.apiUrl}/damage-item/resolve/${data.damageItemId}`,
             data
+        );
+    }
+
+    CreateDamageItemThread(
+        data: CreateDamageItemThreadDTO
+    ): Observable<DamageItemThreamDTO[]> {
+        return this.http.post<DamageItemThreamDTO[]>(
+            `${this.apiUrl}/damage-item-thread`,
+            data
+        );
+    }
+
+    GetDamageItemThreadByDamageItem(
+        damageItemId: number
+    ): Observable<DamageItemThreamDTO[]> {
+        return this.http.get<DamageItemThreamDTO[]>(
+            `${this.apiUrl}/damage-item-thread/damage-item/${damageItemId}`
+        );
+    }
+
+    GetAllDamageItemByAdmin(adminId: number): Observable<DamageItemDTO[]> {
+        return this.http.get<DamageItemDTO[]>(
+            `${this.apiUrl}/damage-item/admin/${adminId}`
         );
     }
 }

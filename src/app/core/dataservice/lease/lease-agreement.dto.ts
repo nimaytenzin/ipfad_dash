@@ -5,7 +5,7 @@ import {
     LESSEETYPE,
     LESSORTYPE,
 } from '../../constants/enums';
-import { PaymentAdviceDto } from '../../dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from '../../dto/payments/payment-advice.dto';
 import { BuildingDTO } from '../../dto/properties/building.dto';
 import { UnitDTO } from '../../dto/units/unit.dto';
 import { AdminDTO } from '../../dto/users/admin.dto';
@@ -22,6 +22,8 @@ import { LeaseSurchargeDTO } from './lease-surcharge.dto';
 export interface LeaseAgreeementDTO {
     id: number;
     type: LEASETYPE;
+    adminId: number;
+
     bankAccountId: number;
     bankAccount: BankAccountDto;
 
@@ -32,9 +34,6 @@ export interface LeaseAgreeementDTO {
     entryDamageReportSubmitted: boolean;
     securityDepositPaid: boolean;
 
-    agreementDay: number;
-    agreementMonth: number;
-    agreementYear: number;
     leaseSigningDate: string;
 
     leaseDurationMonths: number;
@@ -85,16 +84,14 @@ export interface CreateLeaseAgreementDTO {
     type: LEASETYPE;
     bankAccountId: number;
 
+    adminId: number;
+
     status: LEASESTATUS;
     lesseeType: LESSEETYPE;
     lessorType: LESSORTYPE;
 
     entryDamageReportSubmitted: boolean;
     securityDepositPaid: boolean;
-
-    agreementDay: number;
-    agreementMonth: number;
-    agreementYear: number;
 
     leaseDurationMonths: number;
     leaseStartDate: string;
@@ -140,10 +137,6 @@ export interface CreateBuildingLeaseAgreementDTO {
     entryDamageReportSubmitted: boolean;
     securityDepositPaid: boolean;
 
-    agreementDay: number;
-    agreementMonth: number;
-    agreementYear: number;
-
     leaseDurationMonths: number;
     leaseStartDate: string;
     leaseEndDate: string;
@@ -181,10 +174,6 @@ export interface CreatePlotLeaseAgreementDTO {
 
     entryDamageReportSubmitted: boolean;
     securityDepositPaid: boolean;
-
-    agreementDay: number;
-    agreementMonth: number;
-    agreementYear: number;
 
     leaseDurationMonths: number;
     leaseStartDate: string;

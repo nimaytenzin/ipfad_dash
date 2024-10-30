@@ -2,9 +2,13 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import {
+    AuthenticatedUserDTO,
+    AuthService,
+} from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { ToastModule } from 'primeng/toast';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
+import { USERROLESENUM } from 'src/app/core/constants/enums';
 
 @Component({
     selector: 'app-login',
@@ -23,9 +27,11 @@ import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 export class LoginComponent {
     valCheck: string[] = ['remember'];
     loginForm!: FormGroup;
+    showRoleSelection: boolean = false;
 
     showLoading: boolean = false;
     companyDetails = ZHIDHAYCONTACTDETAILS;
+    authenticatedUser: AuthenticatedUserDTO;
 
     pin: string[] = [];
     pinPlaceholder: string[] = ['_', '_', '_', '_'];
@@ -70,7 +76,7 @@ export class LoginComponent {
                 '17263764',
                 [Validators.required, Validators.pattern(/^[0-9]{8}$/)],
             ],
-            password: ['5731', [Validators.required]],
+            password: ['1307', [Validators.required]],
         });
 
         let user = this.authService.GetAuthenticatedUser();
@@ -109,18 +115,15 @@ export class LoginComponent {
         this.authService.Login(loginData).subscribe({
             next: (res: any) => {
                 this.authService.SetAuthToken(res.token);
+
                 setTimeout(() => {
                     this.showLoading = false;
-                    this.determineNextRoute(
-                        this.authService.GetAuthenticatedUser().role
-                    );
+                    this.determineNextRoute();
                 }, 2000);
             },
             error: (err) => {
-                console.log(err);
                 this.showLoading = false;
                 if (err.error.statusCode >= 500) {
-                    // Backend is down or internal server error
                     this.messageService.add({
                         severity: 'error',
                         summary: 'Server Down',
@@ -141,20 +144,48 @@ export class LoginComponent {
         this.router.navigate(['/']);
     }
 
-    determineNextRoute(roles: string) {
-        const roleArray = roles
-            .replace(/[\[\]']/g, '')
-            .split(',')
-            .map((role) => role.trim());
+    determineNextRoute() {
+        const authenticatedUser = this.authService.GetAuthenticatedUser();
+        // Check if user has multiple roles
+        if (authenticatedUser.roles.length > 1) {
+            this.showRoleSelection = true; // Show role selection dialog
+        } else {
+            this.navigateToRole(authenticatedUser.roles[0]);
+        }
+    }
 
-        if (roleArray.includes('ADMIN')) {
+    navigateToRole(role) {
+        const authenticatedUser = this.authService.GetAuthenticatedUser();
+
+        if (role.role === USERROLESENUM.ADMIN) {
+            this.authService.SetCurrentRole({
+                role: role.role,
+                adminId: authenticatedUser.id,
+            });
+        } else {
+            this.authService.SetCurrentRole(role);
+        }
+
+        if (role.role === USERROLESENUM.ADMIN) {
             this.router.navigate(['/admin']);
-        } else if (roleArray.includes('TENANT')) {
-            this.router.navigate(['/tenant']);
-        } else if (roleArray.includes('LANDLORD')) {
+        } else if (role.role === USERROLESENUM.MANAGER) {
+            this.router.navigate(['/admin']);
+        } else if (role.role === USERROLESENUM.OWNER) {
             this.router.navigate(['/owner']);
         } else {
-            this.router.navigate(['/']);
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error ',
+                detail: 'Forbidden',
+            });
         }
+    }
+
+    getAdminDetails(adminId: number) {
+        this.authService.GetAdminDetails(adminId).subscribe({
+            next: (res) => {
+                console.log(res);
+            },
+        });
     }
 }

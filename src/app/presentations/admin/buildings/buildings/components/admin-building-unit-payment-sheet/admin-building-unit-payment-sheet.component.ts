@@ -12,10 +12,11 @@ import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { AdminBuildingUnitPaymentDetailsComponent } from '../admin-building-unit-payment-details/admin-building-unit-payment-details.component';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'src/app/core/constants/constants';
 import { AdminGenerateBuildingPaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-building-payment-advice/admin-generate-building-payment-advice.component';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
 
 @Component({
     selector: 'app-admin-building-unit-payment-sheet',
@@ -92,14 +93,11 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         }, 2000);
     }
 
-    openPADetails(advice: PaymentAdviceDto) {
-        this.ref = this.daialogService.open(
-            AdminBuildingUnitPaymentDetailsComponent,
-            {
-                header: 'Details',
-                data: { ...advice },
-            }
-        );
+    openPADetails(advices: PaymentAdviceDto[]) {
+        this.ref = this.daialogService.open(ViewPaymentAdviceComponent, {
+            header: 'Details',
+            data: advices,
+        });
     }
 
     generateBuildingPA() {

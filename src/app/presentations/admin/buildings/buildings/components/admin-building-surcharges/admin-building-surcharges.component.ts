@@ -59,6 +59,7 @@ export class AdminBuildingSurchargesComponent implements OnInit {
         required: true,
     })
     buildingId;
+    isSubmitting: boolean = false;
 
     buildingCharges: BuildingSurchargeDTO[] = [];
     createBuildingSurchargeForm!: FormGroup;
@@ -72,14 +73,12 @@ export class AdminBuildingSurchargesComponent implements OnInit {
 
     ngOnInit(): void {
         this.createBuildingSurchargeForm = this.fb.group({
-            particular: [, Validators.required],
-            amount: [, Validators.required],
-            buildingId: [this.buildingId],
+            particular: [null, Validators.required],
+            amount: [null, Validators.required],
         });
         this.updateBuildingSurchargeForm = this.fb.group({
-            particular: [, Validators.required],
-            amount: [, Validators.required],
-            buildingId: [this.buildingId],
+            particular: [null, Validators.required],
+            amount: [null, Validators.required],
         });
         this.getBuildingSurcharge();
     }
@@ -107,6 +106,17 @@ export class AdminBuildingSurchargesComponent implements OnInit {
     }
 
     createBuildingSurcharge() {
+        if (this.createBuildingSurchargeForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill out all required fields.',
+            });
+            return;
+        }
+        if (this.isSubmitting) {
+            return;
+        }
         const data: CreateBuildingSurchargeDTO = {
             particular:
                 this.createBuildingSurchargeForm.controls['particular'].value,
@@ -117,12 +127,39 @@ export class AdminBuildingSurchargesComponent implements OnInit {
         };
         this.buildingSurchargeDataService
             .CreateBuildingSurcharge(this.createBuildingSurchargeForm.value)
-            .subscribe((res) => {
-                this.showAddSurchargeModal = false;
-                this.getBuildingSurcharge();
+            .subscribe({
+                next: (res) => {
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Added',
+                        detail: 'Building Surcharge Added',
+                    });
+                    this.showAddSurchargeModal = false;
+                    this.getBuildingSurcharge();
+                },
+                error: (err) => {
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
+                },
             });
     }
     updateBuildingSurcharge() {
+        if (this.updateBuildingSurchargeForm.invalid) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Please fill out all required fields.',
+            });
+            return;
+        }
+        if (this.isSubmitting) {
+            return;
+        }
         const data: CreateBuildingSurchargeDTO = {
             particular:
                 this.updateBuildingSurchargeForm.controls['particular'].value,
@@ -135,11 +172,22 @@ export class AdminBuildingSurchargesComponent implements OnInit {
             .UpdateBuildingSurcharge(data, this.selectedSurcharge.id)
             .subscribe({
                 next: (res) => {
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Added',
+                        detail: 'Building Surcharge Added',
+                    });
                     this.getBuildingSurcharge();
                     this.showEditBuildingSurchargeModal = false;
                 },
                 error: (err) => {
-                    console.log(err);
+                    this.isSubmitting = false;
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: err.error.message,
+                    });
                 },
             });
     }
@@ -171,13 +219,6 @@ export class AdminBuildingSurchargesComponent implements OnInit {
                             });
                         }
                     });
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Cancelled',
-                    detail: 'You have rejected',
-                });
             },
         });
     }

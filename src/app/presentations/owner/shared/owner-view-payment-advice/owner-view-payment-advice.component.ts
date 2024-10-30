@@ -10,7 +10,7 @@ import {
 import { TableModule } from 'primeng/table';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
 import { BankAccountDataService } from 'src/app/core/dataservice/bankaccounts/bankaccounts.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 
 @Component({
     selector: 'app-view-payment-advice',

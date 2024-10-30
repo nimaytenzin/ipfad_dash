@@ -6,6 +6,7 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
@@ -26,6 +27,7 @@ import {
     NumberDropDownOptionsAsString,
 } from 'src/app/core/constants/enums';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
+import { ZhicharApiService } from 'src/app/core/dataservice/externalApi/zhichar.api.service';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
@@ -58,6 +60,7 @@ import {
 export class AdminEditBuildingComponent implements OnInit {
     instance: DynamicDialogComponent | undefined;
     building: BuildingDTO;
+    isSubmitting: boolean = false;
 
     dzongkhags: DzongkhagDTO[];
     admninistrativeZones: AdministrativeZoneDTO[];
@@ -76,11 +79,16 @@ export class AdminEditBuildingComponent implements OnInit {
         private dialogService: DialogService,
         private locationDataService: LocationDataService,
         private buildingDataService: BuildingDataService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private messageService: MessageService,
+        private zhicharApiService: ZhicharApiService
     ) {
         this.instance = this.dialogService.getInstance(this.ref);
         if (this.instance && this.instance.data) {
             this.building = this.instance.data;
+            this.getDzongkhags();
+            this.getAdminsitrativeZones(this.building.dzongkhagId);
+            this.getSubadministrativeZones(this.building.administrativeZoneId);
         }
     }
 
@@ -90,35 +98,31 @@ export class AdminEditBuildingComponent implements OnInit {
         this.getDzongkhags();
         this.updateBuildingForm = this.fb.group({
             isActive: [false, Validators.required],
-            zhicharBuildingId: [''],
+            zhicharBuildingId: ['', Validators.required],
             zhicharQrUuid: [''],
-            name: [''],
-            buildingType: [BuildingType.CONTEMPORARY, Validators.required],
-            regularFloorCount: [],
-            basementCount: [],
-            stiltCount: [],
-            atticCount: [],
-            jamthogCount: [],
+            name: ['', Validators.required],
+            buildingType: [null, Validators.required],
+            regularFloorCount: [null, Validators.required],
+            basementCount: [null, Validators.required],
+            stiltCount: [null, Validators.required],
+            atticCount: [null, Validators.required],
+            jamthogCount: [null, Validators.required],
 
             areaSqM: [],
             latitude: ['', Validators.required],
             longitude: ['', Validators.required],
-            buildingNumber: [''],
+            buildingNumber: [null, Validators.required],
             address: [''],
             landmark: [''],
 
             dzongkhagId: ['', Validators.required],
             administrativeZoneId: ['', Validators.required],
-            subadministrativeZoneId: ['', Validators.required],
+            subadminsitrativeZoneId: ['', Validators.required],
         });
 
-        this.getAdminsitrativeZones(this.building.dzongkhagId);
-        this.getSubadministrativeZones(this.building.administrativeZoneId);
-        this.getDzongkhags();
-
-        console.log(this.building);
         this.updateBuildingForm.patchValue({
             ...this.building,
+            subadminsitrativeZoneId: this.building.subadministrativeZoneId,
             regularFloorCount: this.building.regularFloorCount.toString(),
             atticCount: this.building.atticCount.toString(),
             jamthogCount: this.building.jamthogCount.toString(),
@@ -130,82 +134,107 @@ export class AdminEditBuildingComponent implements OnInit {
 
     getZhicharBuildingInformation(event: KeyboardEvent) {
         if (event.key === 'Enter') {
-            // this.searched = true;
-            // this.zhicharApiService
-            //     .GetBuildDetailsByBuildingId(
-            //         this.updateBuildingForm.controls['zhicharBuildingId'].value
-            //     )
-            //     .subscribe((res: any) => {
-            //         if (res) {
-            //             this.updateBuildingForm.patchValue({
-            //                 zhicharQrUuid: res.qrUuid ? res.qrUuid : null,
-            //                 address: res.address ? res.address : null,
-            //                 buildingNumber: res.buildingNumber,
-            //                 latitude: res.lat,
-            //                 longitude: res.lng,
-            //                 buildngName: res.name,
-            //             });
-            //         } else {
-            //         }
-            //     });
+            this.searched = true;
+            this.zhicharApiService
+                .GetBuildDetailsByBuildingId(
+                    this.updateBuildingForm.controls['zhicharBuildingId'].value
+                )
+                .subscribe((res: any) => {
+                    if (res) {
+                        this.messageService.add({
+                            severity: 'success',
+                            summary: 'Data Fetched from Zhichar',
+                            detail: 'Building Information Populated from Zhichar.bt',
+                        });
+                        this.updateBuildingForm.patchValue({
+                            zhicharQrUuid: res.qrUuid ? res.qrUuid : null,
+                            address: res.address ? res.address : null,
+                            buildingNumber: res.buildingNumber,
+                            latitude: res.lat,
+                            longitude: res.lng,
+                            buildngName: res.name,
+                        });
+                    } else {
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Couldnot Fetch Data',
+                            detail: 'Data not avilable in zhichar',
+                        });
+                    }
+                });
         }
     }
 
     updateBuilding() {
-        const newData: UpdateBuildingDto = {
-            isActive: this.updateBuildingForm.controls['isActive'].value,
-            zhicharBuildingId:
-                this.updateBuildingForm.controls['zhicharBuildingId'].value,
-            zhicharQrUuid:
-                this.updateBuildingForm.controls['zhicharQrUuid'].value,
-            buildingType: BuildingType.CONTEMPORARY,
-            regularFloorCount: Number(
-                this.updateBuildingForm.controls['regularFloorCount'].value
-            ),
-            basementCount: Number(
-                this.updateBuildingForm.controls['basementCount'].value
-            ),
-            stiltCount: Number(
-                this.updateBuildingForm.controls['stiltCount'].value
-            ),
-            atticCount: Number(
-                this.updateBuildingForm.controls['atticCount'].value
-            ),
-            jamthogCount: Number(
-                this.updateBuildingForm.controls['jamthogCount'].value
-            ),
-            areaSqM: this.updateBuildingForm.controls['areaSqM'].value,
-            latitude: this.updateBuildingForm.controls['latitude'].value,
-            longitude: this.updateBuildingForm.controls['longitude'].value,
-            name: this.updateBuildingForm.controls['name'].value,
-            buildingNumber:
-                this.updateBuildingForm.controls['buildingNumber'].value,
-            address: this.updateBuildingForm.controls['address'].value,
-            landmark: this.updateBuildingForm.controls['landmark'].value,
-            dzongkhagId: this.updateBuildingForm.controls['dzongkhagId'].value,
-            administrativeZoneId:
-                this.updateBuildingForm.controls['administrativeZoneId'].value,
-            subadministrativeZoneId:
-                this.updateBuildingForm.controls['subadminsitrativeZoneId']
-                    .value,
-        };
+        if (this.updateBuildingForm.valid) {
+            this.isSubmitting = true;
 
-        console.log(newData);
-        this.buildingDataService
-            .UpdateBuilding(this.building.id, newData)
-            .subscribe({
-                next: (res) => {
-                    console.log(res);
-                    if (res) {
-                        this.ref.close({
-                            updated: true,
+            const newData: UpdateBuildingDto = {
+                isActive: this.updateBuildingForm.controls['isActive'].value,
+                zhicharBuildingId:
+                    this.updateBuildingForm.controls['zhicharBuildingId'].value,
+                zhicharQrUuid:
+                    this.updateBuildingForm.controls['zhicharQrUuid'].value,
+                buildingType: BuildingType.CONTEMPORARY,
+                regularFloorCount: Number(
+                    this.updateBuildingForm.controls['regularFloorCount'].value
+                ),
+                basementCount: Number(
+                    this.updateBuildingForm.controls['basementCount'].value
+                ),
+                stiltCount: Number(
+                    this.updateBuildingForm.controls['stiltCount'].value
+                ),
+                atticCount: Number(
+                    this.updateBuildingForm.controls['atticCount'].value
+                ),
+                jamthogCount: Number(
+                    this.updateBuildingForm.controls['jamthogCount'].value
+                ),
+                areaSqM: this.updateBuildingForm.controls['areaSqM'].value,
+                latitude: this.updateBuildingForm.controls['latitude'].value,
+                longitude: this.updateBuildingForm.controls['longitude'].value,
+                name: this.updateBuildingForm.controls['name'].value,
+                buildingNumber:
+                    this.updateBuildingForm.controls['buildingNumber'].value,
+                address: this.updateBuildingForm.controls['address'].value,
+                landmark: this.updateBuildingForm.controls['landmark'].value,
+                dzongkhagId:
+                    this.updateBuildingForm.controls['dzongkhagId'].value,
+                administrativeZoneId:
+                    this.updateBuildingForm.controls['administrativeZoneId']
+                        .value,
+                subadministrativeZoneId:
+                    this.updateBuildingForm.controls['subadminsitrativeZoneId']
+                        .value,
+            };
+
+            this.buildingDataService
+                .UpdateBuilding(this.building.id, newData)
+                .subscribe({
+                    next: (res) => {
+                        this.isSubmitting = false;
+                        if (res) {
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Success',
+                                detail: 'Building Details Updated',
+                            });
+                            this.ref.close({
+                                updated: true,
+                            });
+                        }
+                    },
+                    error: (err) => {
+                        this.isSubmitting = false;
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: err.error.message,
                         });
-                    }
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
+                    },
+                });
+        }
     }
 
     getDzongkhags() {
@@ -240,5 +269,9 @@ export class AdminEditBuildingComponent implements OnInit {
             .subscribe((res: any) => {
                 this.subAdministrativeZones = res;
             });
+    }
+
+    close() {
+        this.ref.close();
     }
 }

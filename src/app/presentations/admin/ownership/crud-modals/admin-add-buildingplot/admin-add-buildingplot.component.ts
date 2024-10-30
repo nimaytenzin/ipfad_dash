@@ -61,7 +61,8 @@ export class AdminAddBuildingplotComponent implements OnInit {
     createBuildingPlot() {
         const data: CreateBuildingPlotDTO = {
             buildingId: this.buildingId,
-            plotId: this.createBuildingPlotForm.controls['plotId'].value,
+            plotDatabaseId:
+                this.createBuildingPlotForm.controls['plotId'].value,
         };
 
         this.buildingPlotDataService.CreateBuildingPlot(data).subscribe({

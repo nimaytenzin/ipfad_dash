@@ -6,6 +6,10 @@ import { AdminPaymentAdvicePendingListComponent } from '../components/admin-paym
 import { AdminPaymentAdvicePaidListComponent } from '../components/admin-payment-advice-paid-list/admin-payment-advice-paid-list.component';
 import { AdminPaymentAdviceSearchByBuildingComponent } from '../components/admin-payment-advice-search-by-building/admin-payment-advice-search-by-building.component';
 import { AdminPaymentAdviceSearchByTenantComponent } from '../components/admin-payment-advice-search-by-tenant/admin-payment-advice-search-by-tenant.component';
+import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { PaymentAdviceSummaryDTO } from 'src/app/core/dto/payments/payment-advice.dto';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-admin-master-transactions',
@@ -19,11 +23,27 @@ import { AdminPaymentAdviceSearchByTenantComponent } from '../components/admin-p
         AdminPaymentAdviceSearchByBuildingComponent,
         AdminPaymentAdviceSearchByTenantComponent,
         TabViewModule,
+        CommonModule,
     ],
     standalone: true,
 })
 export class AdminMasterTransactionsComponent implements OnInit {
-    constructor() {}
+    summaryStats: PaymentAdviceSummaryDTO;
 
-    ngOnInit() {}
+    constructor(
+        private paymentDataService: PaymentAdviceDataService,
+        private authService: AuthService
+    ) {}
+
+    ngOnInit() {
+        this.paymentDataService
+            .GetPaymentAdviceSummaryByAdmin(
+                this.authService.GetAuthenticatedUser().id
+            )
+            .subscribe({
+                next: (res) => {
+                    this.summaryStats = res;
+                },
+            });
+    }
 }

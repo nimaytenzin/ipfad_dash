@@ -27,7 +27,7 @@
                     <th>Roles</th>
                     <th>CID</th>
                     <th>Phone Number</th>
-                    <th>Email</th>
+
                     <th></th>
                 </tr>
             </ng-template>
@@ -86,11 +86,6 @@
                             {{ item.phoneNumber ? item.phoneNumber : "NA" }}
                         </p>
                     </td>
-                    <td>
-                        <p>
-                            {{ item.email ? item.email : "NA" }}
-                        </p>
-                    </td>
 
                     <td>
                         <div class="flex gap-2">
@@ -134,4 +129,5 @@
             </ng-template>
         </p-table>
     </div>
+    <p *ngIf="!owners" class="mt-4">- No Owners</p>
 </div>

@@ -17,6 +17,7 @@ import { AdminMenuitemComponent } from './admin-menuitem/admin-menuitem.componen
 import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
 import { AdminTopbarComponent } from './admin-topbar/admin-topbar.component';
 import { AdminMenuComponent } from './admin-menu/admin-menu.component';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
     imports: [
@@ -31,6 +32,8 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
         InputSwitchModule,
         RippleModule,
         RouterModule,
+        OverlayPanelModule,
+        AdminTopbarComponent,
     ],
     declarations: [
         AdminLayoutComponent,
@@ -38,7 +41,6 @@ import { AdminMenuComponent } from './admin-menu/admin-menu.component';
         AdminMenuComponent,
         AdminMenuitemComponent,
         AdminSidebarComponent,
-        AdminTopbarComponent,
     ],
     exports: [AdminLayoutComponent],
 })

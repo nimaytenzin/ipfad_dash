@@ -14,7 +14,7 @@ import {
 import {
     CreatePaymentAdviceDto,
     PaymentAdviceItemDto,
-} from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+} from 'src/app/core/dto/payments/payment-advice.dto';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 
 @Component({

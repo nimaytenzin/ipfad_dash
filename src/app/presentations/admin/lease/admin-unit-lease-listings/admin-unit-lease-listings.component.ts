@@ -13,6 +13,7 @@ import { ToastModule } from 'primeng/toast';
 import {
     INVOICESTATUS,
     LEASESTATUS,
+    LEASETYPE,
     LESSORTYPE,
 } from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
@@ -20,7 +21,7 @@ import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { CreateInvoiceDTO } from 'src/app/core/dto/payments/invoice/create-invoice.dto';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import {
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
     AuthService,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
@@ -48,7 +49,7 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
     LessorTypes = LESSORTYPE;
 
     leaseStatus = LEASESTATUS;
-    admin: AuthenticatedUser;
+    admin: AuthenticatedUserDTO;
     paginatedUnitLease = {
         firstPage: 0,
         currentPage: 0,
@@ -84,13 +85,22 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         this.handlePagination();
     }
 
-    openCreateUnitLeaseAgreementModal() {
+    openCreateLeaseAgreementModal() {
         this.ref = this.dialogService.open(
             AdminCreateUnitLeaseAgreementStepperComponent,
             {
-                header: 'Unit Lease',
+                header: 'Lease Creator',
+
+                data: {
+                    type: LEASETYPE.UNIT,
+                },
             }
         );
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.handlePagination();
+            }
+        });
     }
 
     onPageChange(event: PageEvent): void {
@@ -106,7 +116,6 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
             pageSize: this.rows,
         };
 
-        console.log(queryParams);
         this.leaseAgreementDataService
             .GetAllUnitLeaseByAdminPaginated(
                 this.authService.GetAuthenticatedUser().id,
@@ -127,70 +136,6 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         }
 
         return total;
-    }
-
-    generateInvoice(item) {
-        console.log(item);
-        // const data: CreateInvoiceDTO = {
-        //     unitId: item.unitId,
-        //     buildingId: item.buildingId,
-        //     title: 'Payment for the month of May 2024',
-        //     tenantId: item.tenantId,
-        //     landlordId: item.ownerId,
-        //     leaseAgreementId: item.id,
-        //     month: 5,
-        //     year: 2024,
-        //     totalAmount: this.computeMonthlyPayable(item),
-        //     status: INVOICESTATUS.Due,
-        //     invoiceItems: [
-        //         {
-        //             particular: 'House Rent for May 2024',
-        //             amount: item.rent,
-        //         },
-        //     ],
-        // };
-
-        // item.leaseSurcharges.forEach((r) => {
-        //     data.invoiceItems.push({
-        //         particular: r.particular + ' for May 2024',
-        //         amount: r.amount,
-        //     });
-        // });
-        // console.log(data);
-
-        // this.invoiceDataService.CreateInvoice(data).subscribe({
-        //     next: (res) => {
-        //         this.messageService.add({
-        //             severity: 'success',
-        //             summary: 'Success',
-        //             detail:
-        //                 'Invoice generated for unit ID:' +
-        //                 item.unitId +
-        //                 ' for the month of ' +
-        //                 '5/2024',
-        //         });
-        //     },
-        //     error: (err) => {
-        //         this.messageService.add({
-        //             severity: 'error',
-        //             summary: err.error.statusCode,
-        //             detail: err.error.message,
-        //         });
-        //     },
-        // });
-    }
-
-    getSeverity(status: string) {
-        switch (status) {
-            case INVOICESTATUS.Remitted:
-                return 'success';
-            case INVOICESTATUS.Due:
-                return 'warning';
-            case INVOICESTATUS.Paid:
-                return 'danger';
-            default:
-                return 'danger';
-        }
     }
 
     downloadMasterTable() {}

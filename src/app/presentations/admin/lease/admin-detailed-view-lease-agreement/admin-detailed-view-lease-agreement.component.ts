@@ -20,7 +20,7 @@ import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharg
 import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 import {
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
     AuthService,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { GETMONTHNAME, GETMONTHDIFF } from 'src/app/core/utility/date.helper';
@@ -43,6 +43,7 @@ import { image } from 'html2canvas/dist/types/css/types/image';
 import { DamageItemChatBoxComponent } from '../components/damage-item-chat-box/damage-item-chat-box.component';
 import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.selection.preferences';
 import { ImageModule } from 'primeng/image';
+import { ChatDataService } from 'src/app/core/dataservice/chat.dataservice';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -88,7 +89,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
     getMonthName = GETMONTHNAME;
     calculateMonthsDifference = GETMONTHDIFF;
     tenantSignatureUri: string;
-    admin: AuthenticatedUser;
+    admin: AuthenticatedUserDTO;
 
     entryDamageReportItems: DamageItemDTO[] = [];
     maintenanceRequestItems: DamageItemDTO[] = [];
@@ -108,7 +109,8 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         private damageItemService: DamageItemService,
         private route: ActivatedRoute,
         private adminTabSelectionPreferenceService: AdminTabPreferenceService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private chatDataservice: ChatDataService
     ) {
         this.admin = this.authService.GetAuthenticatedUser();
 
@@ -132,21 +134,6 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                     this.newLeaseEndDate = new Date(
                         this.leaseAgreement.leaseEndDate
                     );
-
-                    this.notificationService
-                        .SendNotification({
-                            fromUserId:
-                                this.authService.GetAuthenticatedUser().id,
-                            toUserId: this.leaseAgreement.tenantId,
-                            damageItemId: 10,
-                            notificationType:
-                                NOTIFICATIONTYPES.DAMAGEITEM_RESOLUTION,
-                        })
-                        .subscribe({
-                            next: (res) => {
-                                console.log(res);
-                            },
-                        });
 
                     this.totalMonthlyPayable = Number(this.leaseAgreement.rent);
                     this.leaseCharges.forEach((item) => {

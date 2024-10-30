@@ -11,15 +11,15 @@ import { USERROLESENUM } from './core/constants/enums';
     imports: [
         RouterModule.forRoot(
             [
-                // {
-                //     path: '',
-                //     loadChildren: () =>
-                //         import(
-                //             './presentations/public/public-routing.module'
-                //         ).then((m) => m.PublicRoutingModule),
-                // },
                 {
                     path: '',
+                    loadChildren: () =>
+                        import(
+                            './presentations/public/public-routing.module'
+                        ).then((m) => m.PublicRoutingModule),
+                },
+                {
+                    path: 'auth',
                     loadChildren: () =>
                         import('./presentations/auth/auth.module').then(
                             (m) => m.AuthModule
@@ -29,8 +29,10 @@ import { USERROLESENUM } from './core/constants/enums';
                 {
                     path: 'admin',
                     component: AdminLayoutComponent,
-                    canActivate: [RoleGuard],
-                    data: { roles: [USERROLESENUM.ADMIN] },
+                    // canActivate: [RoleGuard],
+                    // data: {
+                    //     roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+                    // },
                     children: [
                         {
                             path: '',
@@ -47,6 +49,13 @@ import { USERROLESENUM } from './core/constants/enums';
                                 ).then(
                                     (m) => m.AdminMasterPropertiesRoutingModule
                                 ),
+                        },
+                        {
+                            path: 'master-roles',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/admin/roles/admin-roles.routing.modules'
+                                ).then((m) => m.AdminMasterRolesRoutingModule),
                         },
                         {
                             path: 'master-bank-accounts',

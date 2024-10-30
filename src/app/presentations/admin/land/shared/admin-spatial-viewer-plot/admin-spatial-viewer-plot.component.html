@@ -10,7 +10,7 @@
                 <p class="text-lg">
                     <strong>Plot ID: </strong>{{ plot.plotId }}
                 </p>
-                <hr class="my-4" />
+
                 <p><strong>Plot Category:</strong>{{ plot.plotCategory }}</p>
                 <p>
                     <strong>Area:</strong> {{ plot.netArea }}
@@ -48,23 +48,23 @@
             </div>
         </p-tabPanel>
         <p-tabPanel header="Buildings" *ngIf="plot.buildings">
-            <p>Buildings</p>
             <div *ngIf="plot.buildings && plot.buildings.length">
                 <div *ngFor="let building of plot.buildings">
                     <p-divider></p-divider>
-                    <p><strong> Name: </strong>{{ building.name }}</p>
-                    <p class="mb-2">
-                        <strong> Number: </strong>{{ building.buildingNumber }}
+                    <p
+                        (click)="navigateToBuilding(building.id)"
+                        class="text-blue-600 font-semibold cursor-pointer hover:underline"
+                    >
+                        <strong></strong>{{ building.name }}
                     </p>
 
-                    <p-button
-                        label="Building"
-                        size="small"
-                        icon="pi pi-eye"
-                        severity="secondary"
-                        (click)="navigateToBuilding(building.id)"
-                    >
-                    </p-button>
+                    <p class="mb-2">
+                        <strong> Config: </strong
+                        >{{ getBuildingFloorConfiguration(building) }}
+                    </p>
+                    <p class="mb-2">
+                        <strong> Address: </strong>{{ building.address }}
+                    </p>
                 </div>
             </div>
             <div *ngIf="!plot.buildings && !plot.buildings.length">

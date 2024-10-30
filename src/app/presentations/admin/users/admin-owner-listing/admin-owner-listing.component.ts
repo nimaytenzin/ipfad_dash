@@ -35,7 +35,7 @@ import { AdminUsersUpdateModalComponent } from '../components/admin-users-update
 export class AdminOwnerListingComponent implements OnInit {
     ref: DynamicDialogRef;
 
-    owners: UserDTO[];
+    owners: UserDTO[] = [];
 
     constructor(
         private dialogService: DialogService,
@@ -57,8 +57,9 @@ export class AdminOwnerListingComponent implements OnInit {
         this.ref = this.dialogService.open(AdminUsersCreateModalComponent, {
             header: 'Create Owner',
             data: {
-                adminId: this.authService.GetAuthenticatedUser().id,
+                adminId: this.authService.GetCurrentRole().adminId,
                 role: USERROLESENUM.OWNER,
+                allowLoginAccess: false,
             },
         });
         this.ref.onClose.subscribe((res) => {
@@ -114,7 +115,7 @@ export class AdminOwnerListingComponent implements OnInit {
 
     getAllOwners() {
         this.userDataService
-            .AdminGetAllOwners(this.authService.GetAuthenticatedUser().id)
+            .AdminGetAllOwners(this.authService.GetCurrentRole().adminId)
             .subscribe({
                 next: (res) => {
                     this.owners = res;

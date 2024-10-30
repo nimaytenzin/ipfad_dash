@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
     ReactiveFormsModule,
@@ -32,6 +33,7 @@ import { CreateUnitDTO, UnitDTO } from 'src/app/core/dto/units/unit.dto';
         InputNumberModule,
         InputTextareaModule,
         MessagesModule,
+        CommonModule,
     ],
     providers: [MessageService],
     templateUrl: './admin-edit-unit.component.html',

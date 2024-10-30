@@ -70,7 +70,7 @@
                 <p>
                     <span
                         *ngFor="let item of building.plots"
-                        (click)="openViewPlotModal(item)"
+                        (click)="openViewPlotModal(item, building)"
                         class="text-blue-700 hover:underline cursor-pointer hover:font-semibold"
                     >
                         {{ item.plotId + "," }}

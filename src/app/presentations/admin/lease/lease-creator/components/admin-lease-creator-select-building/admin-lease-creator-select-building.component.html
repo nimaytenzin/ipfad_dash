@@ -1,0 +1,49 @@
+<div>
+    <div class="flex gap-4 justify-content-start align-items-end">
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="plotId">Plot ID</label>
+            <input pInputText id="plotId" [(ngModel)]="plotId" type="text" />
+        </div>
+
+        <p-button
+            label="Load Buildings"
+            (click)="searchBuildingByPlotId()"
+        ></p-button>
+    </div>
+
+    <div
+        *ngIf="searchedPlot"
+        class="flex gap-4 my-4 justify-content-start align-items-end"
+    >
+        <div class="flex flex-1 flex-column gap-2">
+            <label for="chiwog">Buildings</label>
+            <p-dropdown
+                [options]="buildings"
+                optionLabel="name"
+                class="p-fluid"
+                appendTo="body"
+                placeholder="Select a building"
+                [(ngModel)]="dropdownBuildingSelection"
+            ></p-dropdown>
+        </div>
+
+        <p-button label="Select Building" (click)="selectBuilding()"></p-button>
+    </div>
+</div>
+
+<div
+    *ngIf="selectedBuilding"
+    class="flex border-gray-400 pt-2 justify-content-between align-items-center my-3"
+>
+    <div class="">
+        <p>Selected Building: {{ selectedBuilding.name }}</p>
+        <p class="text-sm">*Building Available for lease</p>
+    </div>
+    <p-button
+        label="clear selection"
+        icon="pi pi-times"
+        size="small"
+        (click)="clearBuildingSelection()"
+        severity="danger"
+    ></p-button>
+</div>

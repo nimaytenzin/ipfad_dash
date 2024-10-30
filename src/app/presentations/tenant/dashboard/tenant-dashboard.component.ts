@@ -9,7 +9,7 @@ import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
 import {
     AuthService,
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { DialogModule } from 'primeng/dialog';
 import {
@@ -64,7 +64,7 @@ import {
 export class TenantDashboardComponent implements OnInit {
     ref: DynamicDialogRef;
     tenantDetails: TenantDTO;
-    authenticatedUser: AuthenticatedUser;
+    authenticatedUser: AuthenticatedUserDTO;
     profileUri: string;
     apiUrl = API_URL;
 

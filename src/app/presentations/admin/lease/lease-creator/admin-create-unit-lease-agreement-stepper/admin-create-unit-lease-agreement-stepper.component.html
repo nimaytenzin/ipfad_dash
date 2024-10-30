@@ -1,811 +1,768 @@
-<p-confirmPopup></p-confirmPopup>
-<div class="stepper" style="max-width: 40vw">
-    <div class="flex mb-4">
-        <div *ngFor="let step of steps; let i = index">
-            <div class="flex">
-                <div
-                    class="px-3 py-2 text-white"
-                    [ngClass]="
-                        currentStep === i ? 'bg-blue-500' : 'bg-blue-300'
-                    "
-                    [label]="step"
-                >
-                    {{ i + 1 }}.{{ step }}
+<div style="height: 80vh">
+    <p-confirmPopup></p-confirmPopup>
+
+    <div class="flex gap-2">
+        <div *ngIf="selectedPlot || selectedBuilding || selectedUnit">
+            <p class="font-semibodl">Property</p>
+            <div *ngIf="selectedLeaseType === leaseTypeEnum.LAND">
+                <p *ngIf="selectedPlot">
+                    Selected Plot: {{ selectedPlot.plotId }}
+                </p>
+            </div>
+            <div *ngIf="selectedLeaseType === leaseTypeEnum.BUILDING">
+                <p *ngIf="selectedPlot">
+                    Selected Plot: {{ selectedPlot.plotId }}
+                </p>
+                <p *ngIf="selectedBuilding">
+                    Selected Building:{{ selectedBuilding.name }}
+                </p>
+            </div>
+            <div *ngIf="selectedLeaseType === leaseTypeEnum.UNIT">
+                <p *ngIf="selectedPlot">Plot: {{ selectedPlot.plotId }}</p>
+                <p *ngIf="selectedBuilding">
+                    Building:{{ selectedBuilding.name }}
+                </p>
+                <p *ngIf="selectedUnit">
+                    Unit:{{ selectedUnit.floorLevel }}-{{
+                        selectedUnit.unitNumber
+                    }}
+                </p>
+            </div>
+        </div>
+        <div *ngIf="selectedTenant" class="mt-2">
+            <p class="font-semibodl">Lessee</p>
+            <p>Tenant Type: {{ selectedLesseeType }}</p>
+
+            <p *ngIf="selectedOrganization">
+                Organization Name: {{ selectedOrganization.name }}
+            </p>
+
+            <p class="mt-1">
+                <strong>Name: </strong>{{ searchedUser?.nameEnglish }}
+            </p>
+
+            <p><strong>CID:</strong> {{ searchedUser?.cid }}</p>
+            <p>
+                <strong>Phone Number: </strong>{{ searchedUser?.phoneNumber }}
+            </p>
+            <p>
+                <strong>Permanent Address:</strong>
+                {{ searchedUser.permanentAddress }}
+            </p>
+        </div>
+        <div *ngIf="leaseStartDate || leaseEndDate">
+            <p class="font-semibodl">General Terms</p>
+            <p *ngIf="leaseStartDate">
+                Lease Start Date: {{ leaseStartDate | date : "shortDate" }}
+            </p>
+            <p *ngIf="leaseEndDate">
+                Lease End Date: {{ leaseEndDate | date : "shortDate" }}
+            </p>
+
+            <p *ngIf="leaseStartDate && leaseEndDate">
+                Lease Duration:
+                {{ calculateMonthsDifference(leaseStartDate, leaseEndDate) }}
+            </p>
+            <p *ngIf="selectedUse">Lease Purpose: {{ selectedUse }}</p>
+        </div>
+        <div *ngIf="rent">
+            <p class="font-semibodl">Rent</p>
+            <p>Rent:Nu.{{ rent }}</p>
+            <p>Security Deposit: Nu.{{ securityDepositAmount }}</p>
+        </div>
+    </div>
+    <div class="stepper">
+        <div class="flex mb-4 mt-4 gap-0">
+            <div *ngFor="let step of steps; let i = index">
+                <div class="flex align-items-center">
+                    <div class="flex flex-column gap-3" [label]="step">
+                        <div
+                            [ngClass]="
+                                currentStep === i
+                                    ? 'bg-blue-500'
+                                    : 'bg-gray-300'
+                            "
+                            style="height: 0.6rem; min-width: 10rem"
+                        ></div>
+                        <p
+                            [ngClass]="currentStep === i ? 'font-semibold' : ''"
+                            class="pr-4"
+                        >
+                            {{ i + 1 }}.{{ step }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="stepper-content">
-        <div [ngSwitch]="currentStep">
-            <div *ngSwitchCase="0" #properties>
-                <div *ngIf="unit">
-                    <p>
-                        <strong>Unit Number:</strong>{{ unit.floorLevel }}-{{
-                            unit.unitNumber
-                        }}
-                    </p>
-                    <p>
-                        <strong> Unit Config:</strong>
-                        {{ unit.bedroomCount }} Bed{{
-                            unit.bedroomCount > 1 ? "s" : ""
-                        }},{{ unit.toiletCount }} Bath{{
-                            unit.toiletCount > 1 ? "s" : ""
-                        }},{{ unit.balconyCount }} Balcon{{
-                            unit.toiletCount > 1 ? "ies" : "y"
-                        }}
-                    </p>
-                    <hr />
+        <div class="flex justify-content-end gap-4">
+            <p-button
+                label="Back"
+                (click)="previousStep()"
+                [disabled]="currentStep === 0"
+            ></p-button>
+            <p-button
+                label="Next"
+                (click)="nextStep()"
+                [disabled]="currentStep === steps.length - 1"
+            ></p-button>
+        </div>
 
-                    <div>
-                        <div *ngIf="building">
-                            <p>
-                                <strong> Building Name:</strong>
-                                {{ building?.name }}
-                            </p>
-                            <p>
-                                <strong>Building Number:</strong>
-                                {{ building?.buildingNumber }}
-                            </p>
-                        </div>
+        <div class="stepper-content">
+            <div [ngSwitch]="currentStep">
+                <div *ngSwitchCase="0" #properties>
+                    <p>Property Selection</p>
+                    <p-divider></p-divider>
+                    <p class="font-semibold my-2">
+                        Lease Type: {{ selectedLeaseType }}
+                    </p>
+                    <div *ngIf="selectedLeaseType === leaseTypeEnum.LAND">
+                        <app-admin-lease-creator-select-plot></app-admin-lease-creator-select-plot>
                     </div>
-                    <hr />
 
-                    <div>
-                        <p><strong>PlotID:</strong> {{ plot.plotId }}</p>
+                    <div *ngIf="selectedLeaseType === leaseTypeEnum.BUILDING">
+                        <app-admin-lease-creator-select-building></app-admin-lease-creator-select-building>
+                    </div>
+
+                    <div *ngIf="selectedLeaseType === leaseTypeEnum.UNIT">
+                        <app-admin-lease-creator-select-unit></app-admin-lease-creator-select-unit>
+                    </div>
+                </div>
+                <div *ngSwitchCase="1" #tenant>
+                    <p>Lessee Selection</p>
+                    <p-divider></p-divider>
+                    <div class="p-fluid">
                         <p>
-                            <strong>Thram No: </strong>{{ plot.thram.thramNo }}
+                            Current Administrator:
+                            <strong
+                                >{{ admin.nameEnglish }}/{{
+                                    admin.nameDzongkha
+                                }}</strong
+                            >
                         </p>
-                    </div>
-
-                    <div>
-                        <hr />
-                        <div *ngFor="let owner of plot.thram.owners">
-                            <strong>Owner Name: </strong
-                            >{{ owner.nameEnglish }}/{{ owner.nameDzongkha }}
-                        </div>
-                        <div *ngIf="!owners">Click to load owner data</div>
-                    </div>
-                </div>
-
-                <div *ngIf="!unit">
-                    <p>Search for property by plotId and building Id</p>
-
-                    <div
-                        class="flex gap-4 my-4 justify-content-start align-items-end"
-                    >
-                        <div class="flex flex-column gap-2 flex-1">
-                            <label for="plotId">Plot ID</label>
-                            <input
-                                pInputText
-                                id="plotId"
-                                [(ngModel)]="plotId"
-                                type="text"
-                            />
-                        </div>
-
-                        <p-button
-                            label="Load Buildings"
-                            (click)="searchBuildingByPlotId()"
-                        ></p-button>
-                    </div>
-
-                    <p-divider *ngIf="plot"></p-divider>
-
-                    <div
-                        *ngIf="plot"
-                        class="flex gap-4 my-4 justify-content-start align-items-end"
-                    >
-                        <div class="flex flex-1 flex-column gap-2">
-                            <label for="chiwog">Buildings</label>
-                            <p-dropdown
-                                [options]="buildings"
-                                optionLabel="name"
-                                class="p-fluid"
-                                placeholder="Select a building"
-                                [(ngModel)]="selectedBuilding"
-                            ></p-dropdown>
-                        </div>
-                        <div class="flex flex-1 flex-column gap-2">
-                            <label for="chiwog">Unit</label>
-                            <p-dropdown
-                                [options]="units"
-                                placeholder="Select a Unit"
-                                [(ngModel)]="selectedUnit"
-                                appendTo="body"
-                            >
-                                <ng-template pTemplate="selectedItem">
-                                    <div
-                                        class="flex align-items-center gap-2"
-                                        *ngIf="selectedUnit"
-                                    >
-                                        {{ selectedUnit.floorLevel }}-{{
-                                            selectedUnit.unitNumber
-                                        }}
-                                    </div>
-                                </ng-template>
-                                <ng-template let-unit pTemplate="item">
-                                    {{ unit.floorLevel }}-{{ unit.unitNumber }}
-                                </ng-template>
-                            </p-dropdown>
-                        </div>
-
-                        <p-button
-                            label="Select Unit"
-                            (click)="selectUnit()"
-                        ></p-button>
-                    </div>
-                </div>
-
-                <div
-                    *ngIf="unit"
-                    class="flex border-top-1 border-gray-400 justify-content-between align-items-center my-3"
-                >
-                    <div class="flex gap-2 my-3 text-green-500 font-semibold">
-                        <i class="pi pi-check" style="font-weight: bold"></i>
-                        <p>Unit Selected</p>
-                    </div>
-                    <p-button
-                        label="clear selection"
-                        icon="pi pi-times"
-                        size="small"
-                        (click)="clearUnitSelection()"
-                        severity="danger"
-                    ></p-button>
-                </div>
-            </div>
-            <div *ngSwitchCase="1" #tenant>
-                <div class="p-fluid">
-                    <p>
-                        Current Administrator:
-                        <strong
-                            >{{ admin.nameEnglish }}/{{
-                                admin.nameDzongkha
-                            }}</strong
-                        >
-                    </p>
-                    <div class="p-fluid flex gap-3 align-items-center mt-4">
-                        <p>Select Lessor Type</p>
-                        <p-dropdown
-                            [options]="lessorTypes"
-                            [(ngModel)]="selectedLessorType"
-                            [showClear]="true"
-                            placeholder="Select Lessor Type"
-                        >
-                        </p-dropdown>
-                    </div>
-                </div>
-                <div class="p-fluid">
-                    <div class="p-fluid flex gap-3 align-items-center mt-4">
-                        <p>Select Lessee Type</p>
-                        <p-dropdown
-                            [options]="lesseeTypes"
-                            [(ngModel)]="selectedLesseeType"
-                            [showClear]="true"
-                            placeholder="Select Lessee Type"
-                        >
-                        </p-dropdown>
-                    </div>
-                </div>
-                <p-divider> </p-divider>
-                <div class="my-3 p-fluid">
-                    <p>Search for tenants by phone number.</p>
-                    <p-inputGroup>
-                        <p-inputGroupAddon>+975</p-inputGroupAddon>
-                        <p-inputNumber
-                            [(ngModel)]="searchPhoneNumber"
-                            mode="decimal"
-                            inputId="withoutgrouping"
-                            [useGrouping]="false"
-                        />
-                    </p-inputGroup>
-                    <div class="flex justify-content-end gap-2 my-3">
-                        <p-button
-                            label="Search Tenant "
-                            (click)="SearchTenantByPhoneNumber()"
-                            icon="pi pi-search"
-                        ></p-button>
-                        <p-button
-                            label="Tenant"
-                            icon="pi pi-plus"
-                            (click)="openCreateUserModal()"
-                        ></p-button>
-                    </div>
-                </div>
-
-                <div *ngIf="searchedUser">
-                    <p>Tenant Details</p>
-
-                    <p>
-                        <strong>Name: </strong>{{ searchedUser?.nameEnglish }}
-                    </p>
-
-                    <p><strong>CID:</strong> {{ searchedUser?.cid }}</p>
-                    <p>
-                        <strong>Phone Number: </strong
-                        >{{ searchedUser?.phoneNumber }}
-                    </p>
-                    <p>
-                        <strong>Permanent Address:</strong>
-                        {{ searchedUser.permanentAddress }}
-                    </p>
-
-                    <div
-                        *ngIf="selectedLesseeType !== lesseeTypeEnum.INDIVIDUAL"
-                    >
                         <div class="p-fluid flex gap-3 align-items-center mt-4">
-                            <p>Select Organization</p>
+                            <p>Select Lessor Type</p>
                             <p-dropdown
-                                [options]="searchedUser?.organizations"
-                                [(ngModel)]="selectedOrganization"
-                                [showClear]="false"
-                                placeholder="Select Organization"
+                                [options]="lessorTypes"
+                                [(ngModel)]="selectedLessorType"
+                                [showClear]="true"
+                                placeholder="Select Lessor Type"
                             >
-                                <ng-template pTemplate="selectedItem">
-                                    <div *ngIf="selectedOrganization">
-                                        <p>
-                                            {{ selectedOrganization.name }}({{
-                                                selectedOrganization.type
-                                            }})
-                                        </p>
-                                    </div>
-                                </ng-template>
-
-                                <ng-template let-item pTemplate="item">
-                                    <div>
-                                        <p>{{ item.name }}({{ item.type }})</p>
-                                    </div>
-                                </ng-template>
                             </p-dropdown>
                         </div>
                     </div>
-
-                    <div
-                        *ngIf="tenantPartySelected"
-                        class="flex justify-content-between align-items-center my-3"
-                    >
-                        <div
-                            class="flex gap-2 my-3 text-green-500 font-semibold"
-                        >
-                            <i
-                                class="pi pi-check"
-                                style="font-weight: bold"
-                            ></i>
-                            <p>Tenant Party Selected</p>
+                    <div class="p-fluid">
+                        <div class="p-fluid flex gap-3 align-items-center mt-4">
+                            <p>Select Lessee Type</p>
+                            <p-dropdown
+                                [options]="lesseeTypes"
+                                [(ngModel)]="selectedLesseeType"
+                                [showClear]="true"
+                                placeholder="Select Lessee Type"
+                            >
+                            </p-dropdown>
                         </div>
-                        <p-button
-                            label="clear selection"
-                            icon="pi pi-times"
-                            size="small"
-                            (click)="clearTenantPartySelection()"
-                            severity="danger"
-                        ></p-button>
+                    </div>
+                    <p-divider> </p-divider>
+                    <div class="my-3 p-fluid">
+                        <p>Search for tenants by phone number.</p>
+                        <p-inputGroup>
+                            <p-inputGroupAddon>+975</p-inputGroupAddon>
+                            <p-inputNumber
+                                [(ngModel)]="searchPhoneNumber"
+                                mode="decimal"
+                                inputId="withoutgrouping"
+                                [useGrouping]="false"
+                            />
+                        </p-inputGroup>
+                        <div class="flex justify-content-end gap-2 my-3">
+                            <p-button
+                                label="Search Tenant "
+                                (click)="SearchTenantByPhoneNumber()"
+                                icon="pi pi-search"
+                            ></p-button>
+                            <p-button
+                                label="Tenant"
+                                icon="pi pi-plus"
+                                (click)="openCreateUserModal()"
+                            ></p-button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="searchedUser">
+                        <p>Tenant Details</p>
+
+                        <p>
+                            <strong>Name: </strong
+                            >{{ searchedUser?.nameEnglish }}
+                        </p>
+
+                        <p><strong>CID:</strong> {{ searchedUser?.cid }}</p>
+                        <p>
+                            <strong>Phone Number: </strong
+                            >{{ searchedUser?.phoneNumber }}
+                        </p>
+                        <p>
+                            <strong>Permanent Address:</strong>
+                            {{ searchedUser.permanentAddress }}
+                        </p>
+
+                        <div
+                            *ngIf="
+                                selectedLesseeType !== lesseeTypeEnum.INDIVIDUAL
+                            "
+                        >
+                            <div
+                                class="p-fluid flex gap-3 align-items-center mt-4"
+                            >
+                                <p>Select Organization</p>
+                                <p-dropdown
+                                    [options]="searchedUser?.organizations"
+                                    [(ngModel)]="selectedOrganization"
+                                    [showClear]="false"
+                                    placeholder="Select Organization"
+                                >
+                                    <ng-template pTemplate="selectedItem">
+                                        <div *ngIf="selectedOrganization">
+                                            <p>
+                                                {{
+                                                    selectedOrganization.name
+                                                }}({{
+                                                    selectedOrganization.type
+                                                }})
+                                            </p>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template let-item pTemplate="item">
+                                        <div>
+                                            <p>
+                                                {{ item.name }}({{ item.type }})
+                                            </p>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                        </div>
+
+                        <div
+                            *ngIf="selectedTenant"
+                            class="flex justify-content-between align-items-center my-3"
+                        >
+                            <div
+                                class="flex gap-2 my-3 text-green-500 font-semibold"
+                            >
+                                <i
+                                    class="pi pi-check"
+                                    style="font-weight: bold"
+                                ></i>
+                                <p>Tenant Party Selected</p>
+                            </div>
+                            <p-button
+                                label="clear selection"
+                                icon="pi pi-times"
+                                size="small"
+                                (click)="clearTenantPartySelection()"
+                                severity="danger"
+                            ></p-button>
+                        </div>
+                        <div
+                            class="flex justify-content-end mt-4"
+                            *ngIf="!selectedTenant"
+                        >
+                            <p-button
+                                (click)="confirmTenantPartySelection()"
+                                label="Select Tenant Party"
+                                class="mt-3"
+                            ></p-button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngSwitchCase="2" #durations>
+                    <p>General Terms & Conditions</p>
+                    <p-divider></p-divider>
+                    <div
+                        class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"
+                    >
+                        <p>Lease Start Date</p>
+                        <p-calendar
+                            view="month"
+                            [(ngModel)]="leaseStartDate"
+                            dateFormat="mm/yy"
+                            appendTo="body"
+                        ></p-calendar>
                     </div>
                     <div
-                        class="flex justify-content-end mt-4"
-                        *ngIf="!tenantPartySelected"
+                        class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"
                     >
-                        <p-button
-                            (click)="confirmTenantPartySelection()"
-                            label="Select Tenant Party"
-                            class="mt-3"
-                        ></p-button>
+                        <p>Lease End Date</p>
+                        <p-calendar
+                            view="month"
+                            [(ngModel)]="leaseEndDate"
+                            dateFormat="mm/yy"
+                            appendTo="body"
+                        >
+                        </p-calendar>
                     </div>
-                </div>
-            </div>
-            <div *ngSwitchCase="2" #durations>
-                <div
-                    class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"
-                >
-                    <p>Lease Start Date</p>
-                    <p-calendar
-                        view="month"
-                        [(ngModel)]="leaseStartDate"
-                        dateFormat="mm/yy"
-                        appendTo="body"
-                    ></p-calendar>
-                </div>
-                <div
-                    class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"
-                >
-                    <p>Lease End Date</p>
-                    <p-calendar
-                        view="month"
-                        [(ngModel)]="leaseEndDate"
-                        dateFormat="mm/yy"
-                        appendTo="body"
+                    <p
+                        *ngIf="leaseEndDate && leaseStartDate"
+                        class="text-center mt-4"
                     >
-                    </p-calendar>
-                </div>
-                <p
-                    *ngIf="leaseEndDate && leaseStartDate"
-                    class="text-center mt-4"
-                >
-                    Duration in Months:
-                    {{
-                        calculateMonthsDifference(leaseStartDate, leaseEndDate)
-                    }}
-                    MONTHS
-                </p>
-
-                <div
-                    class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"
-                >
-                    <p>Lease Purpose</p>
-                    <p-dropdown
-                        [options]="uses"
-                        [(ngModel)]="selectedUse"
-                        [showClear]="true"
-                        placeholder="Select Use"
-                        appendTo="body"
-                    >
-                    </p-dropdown>
-                </div>
-            </div>
-            <div *ngSwitchCase="3" #charges>
-                <div class="flex w-full flex-column text-center gap-4">
-                    <p>
-                        The aforementioned unit is leased to the
-                        <strong>TENANT</strong>
+                        Duration in Months:
+                        {{
+                            calculateMonthsDifference(
+                                leaseStartDate,
+                                leaseEndDate
+                            )
+                        }}
+                        MONTHS
                     </p>
-
-                    monthly rent of
-                    <p-inputGroup class="w-full">
-                        <p-inputGroupAddon>Nu.</p-inputGroupAddon>
-                        <input
-                            type="text"
-                            pInputText
-                            placeholder="Monthly Rent"
-                            [(ngModel)]="rent"
-                        />
-                    </p-inputGroup>
-
-                    and a security deposit amount of
-                    <p-inputGroup class="w-full">
-                        <p-inputGroupAddon>Nu.</p-inputGroupAddon>
-                        <input
-                            type="text"
-                            pInputText
-                            placeholder="Security Deposit Amount"
-                            [(ngModel)]="securityDepositAmount"
-                        />
-                    </p-inputGroup>
 
                     <div
                         class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"
                     >
-                        <p>Deposit Account</p>
+                        <p>Lease Purpose</p>
                         <p-dropdown
-                            [options]="ownerBankAccounts"
-                            [(ngModel)]="selectedOwnerBankAccount"
+                            [options]="uses"
+                            [(ngModel)]="selectedUse"
                             [showClear]="true"
-                            placeholder="Select the Account to deposit to"
+                            placeholder="Select Use"
+                            appendTo="body"
                         >
-                            <ng-template pTemplate="selectedItem">
-                                <div
-                                    class="flex align-items-center gap-2"
-                                    *ngIf="selectedOwnerBankAccount"
-                                >
-                                    {{
-                                        selectedOwnerBankAccount.accountNumber
-                                    }}/{{ selectedOwnerBankAccount.bankName }}
-                                </div>
-                            </ng-template>
-                            <ng-template let-item pTemplate="item">
-                                <p>
-                                    {{ item.accountNumber }}/{{ item.bankName }}
-                                </p>
-                            </ng-template>
                         </p-dropdown>
                     </div>
+                </div>
+                <div *ngSwitchCase="3" #charges>
+                    <p>Lease Charges</p>
+                    <p-divider></p-divider>
+                    <div class="flex w-full flex-column text-center gap-4">
+                        <p>
+                            The aforementioned unit is leased to the
+                            <strong>TENANT</strong>
+                        </p>
 
-                    <div>
-                        <div class="flex gap-2 my-4 justify-content-between">
-                            <p>Charges</p>
+                        monthly rent of
+                        <p-inputGroup class="w-full">
+                            <p-inputGroupAddon>Nu.</p-inputGroupAddon>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Monthly Rent"
+                                [(ngModel)]="rent"
+                            />
+                        </p-inputGroup>
 
-                            <p-button
-                                label="Create Lease Charge"
-                                (click)="openCreateLeaseSurchargeModal()"
-                            ></p-button>
+                        and a security deposit amount of
+                        <p-inputGroup class="w-full">
+                            <p-inputGroupAddon>Nu.</p-inputGroupAddon>
+                            <input
+                                type="text"
+                                pInputText
+                                placeholder="Security Deposit Amount"
+                                [(ngModel)]="securityDepositAmount"
+                            />
+                        </p-inputGroup>
+
+                        <div
+                            class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"
+                        >
+                            <p>Deposit Account</p>
+                            <p-dropdown
+                                [options]="ownerBankAccounts"
+                                [(ngModel)]="selectedOwnerBankAccount"
+                                [showClear]="true"
+                                placeholder="Select the Account to deposit to"
+                            >
+                                <ng-template pTemplate="selectedItem">
+                                    <div
+                                        class="flex align-items-center gap-2"
+                                        *ngIf="selectedOwnerBankAccount"
+                                    >
+                                        {{
+                                            selectedOwnerBankAccount.accountNumber
+                                        }}/{{
+                                            selectedOwnerBankAccount.bankName
+                                        }}
+                                    </div>
+                                </ng-template>
+                                <ng-template let-item pTemplate="item">
+                                    <p>
+                                        {{ item.accountNumber }}/{{
+                                            item.bankName
+                                        }}
+                                    </p>
+                                </ng-template>
+                            </p-dropdown>
                         </div>
 
-                        <p-table [value]="leaseCharges" class="p-datatable-sm">
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th>Particular</th>
-                                    <th>Amount(NU)</th>
-                                    <th>Source</th>
-                                    <th></th>
-                                </tr>
-                            </ng-template>
-                            <ng-template
-                                pTemplate="body"
-                                let-item
-                                let-editing="editing"
+                        <div>
+                            <div
+                                class="flex gap-2 my-4 justify-content-between"
                             >
-                                <tr>
-                                    <td
-                                        [pEditableColumn]="item.particular"
-                                        pEditableColumnField="particular"
-                                    >
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <input
-                                                    pInputText
-                                                    type="text"
-                                                    [(ngModel)]="
-                                                        item.particular
-                                                    "
-                                                />
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{ item.particular }}
-                                            </ng-template>
-                                        </p-cellEditor>
-                                    </td>
-                                    <td
-                                        [pEditableColumn]="item.amount"
-                                        pEditableColumnField="amount"
-                                    >
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <input
-                                                    pInputText
-                                                    type="text"
-                                                    [(ngModel)]="item.amount"
-                                                />
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{ item.amount }}
-                                            </ng-template>
-                                        </p-cellEditor>
-                                    </td>
-                                    <td>
-                                        {{ item.origin }}
-                                    </td>
-                                    <td>
-                                        <p-button
-                                            (click)="deleteCharge($event, item)"
-                                            icon="pi pi-times"
-                                            label="Delete"
-                                            severity="danger"
-                                        ></p-button>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                        </p-table>
+                                <p>Charges</p>
 
-                        <p class="text-right font-bold">
-                            Total Montly Payable :
-                            <strong>
-                                {{ getTotalMonthlyPayabe() }}
-                            </strong>
-                        </p>
-                    </div>
-                    <p-dialog
-                        header="Add Charges"
-                        [(visible)]="showAddLeaseChargeForm"
-                        [modal]="true"
-                        [style]="{ width: '50vw' }"
-                        [draggable]="false"
-                        [resizable]="false"
-                    >
-                        <form
-                            [formGroup]="createLeaseChargeForm"
-                            class="p-fluid p-2"
-                        >
-                            <div class="grid">
-                                <div class="field col-12">
-                                    <label for="particular">Particular</label>
-                                    <textarea
-                                        rows="5"
-                                        cols="30"
-                                        pInputTextarea
-                                        formControlName="particular"
-                                    ></textarea>
-                                </div>
-                                <div class="field col-12">
-                                    <label for="particular">Amount</label>
-                                    <p-inputNumber
-                                        inputId="integeronly"
-                                        formControlName="amount"
-                                    >
-                                    </p-inputNumber>
-                                </div>
+                                <p-button
+                                    label="Create Lease Charge"
+                                    (click)="openCreateLeaseSurchargeModal()"
+                                ></p-button>
                             </div>
 
-                            <p-button
-                                (click)="createLeaseCharge()"
-                                label="Add Surcharge"
-                            ></p-button>
-                        </form>
-                    </p-dialog>
-                </div>
-            </div>
-            <div *ngSwitchCase="4" #terms>
-                <p>Terms and Condition</p>
-                <div class="flex w-full flex-column gap-4">
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            1. The Tenant Can Sublet the Unt?
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                name="Yes"
-                                [value]="true"
-                                [(ngModel)]="tenantSubletAuthority"
-                                inputId="tenantSubletAuthorityYes"
-                            ></p-radioButton>
-                            <label for="tenantSubletAuthorityYes" class="ml-2"
-                                >Yes</label
+                            <p-table
+                                [value]="leaseCharges"
+                                class="p-datatable-sm"
                             >
-                        </div>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Particular</th>
+                                        <th>Amount(NU)</th>
+                                        <th>Source</th>
+                                        <th></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template
+                                    pTemplate="body"
+                                    let-item
+                                    let-editing="editing"
+                                >
+                                    <tr>
+                                        <td
+                                            [pEditableColumn]="item.particular"
+                                            pEditableColumnField="particular"
+                                        >
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input
+                                                        pInputText
+                                                        type="text"
+                                                        [(ngModel)]="
+                                                            item.particular
+                                                        "
+                                                    />
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{ item.particular }}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td
+                                            [pEditableColumn]="item.amount"
+                                            pEditableColumnField="amount"
+                                        >
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input
+                                                        pInputText
+                                                        type="text"
+                                                        [(ngModel)]="
+                                                            item.amount
+                                                        "
+                                                    />
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{ item.amount }}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            {{ item.origin }}
+                                        </td>
+                                        <td>
+                                            <p-button
+                                                (click)="
+                                                    deleteCharge($event, item)
+                                                "
+                                                icon="pi pi-times"
+                                                label="Delete"
+                                                severity="danger"
+                                            ></p-button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
 
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                name="No"
-                                [value]="false"
-                                [(ngModel)]="tenantSubletAuthority"
-                                inputId="tenantSubletAuthorityNo"
-                            ></p-radioButton>
-                            <label for="tenantSubletAuthorityNo" class="ml-2"
-                                >No, Sub-let only with a written consent of the
-                                owner</label
-                            >
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            2. The owner may terminate the rental agreement and
-                            reacquire the rental unit for his own occupation
-                            during the subsistence of tenancy in accordance with
-                            the Tenancy Act.
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                [value]="true"
-                                [(ngModel)]="ownerPrematureTermination"
-                            ></p-radioButton>
-                            <label class="ml-2">Yes</label>
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                [value]="false"
-                                [(ngModel)]="ownerPrematureTermination"
-                            ></p-radioButton>
-                            <label class="ml-2">No</label>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            3. The tenant may terminate the rental agreement
-                            during the subsistence of the tenancy in accordance
-                            with the Tenancy Act.
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                [value]="true"
-                                [(ngModel)]="tenantPrematureTermination"
-                            ></p-radioButton>
-                            <label class="ml-2">Yes</label>
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                [value]="false"
-                                [(ngModel)]="tenantPrematureTermination"
-                            ></p-radioButton>
-                            <label class="ml-2">No</label>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            4. The tenant Shall Pay the total monthly payable on
-                            or before
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p>Day</p>
-                            <p-inputNumber
-                                inputId="integeronly"
-                                [(ngModel)]="paymentDueDay"
-                            >
-                            </p-inputNumber>
-                            <p>of the next month</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            4. That the rent as payable every month shall be
-                            tendered by the tenant to the owner on or before day
-                            {{ paymentDueDay }} of the following month , failing
-                            which the owner shall charge and the tenant shall
-                            pay an interest at 24% per annum on the amount of
-                            rent payable for every day of default.
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                [value]="true"
-                                [(ngModel)]="applyLatePaymentFee"
-                            ></p-radioButton>
-                            <label class="ml-2">Yes</label>
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-radioButton
-                                [value]="false"
-                                [(ngModel)]="applyLatePaymentFee"
-                            ></p-radioButton>
-                            <label class="ml-2">No</label>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            5. The owner shall serve a notice of
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-inputNumber
-                                inputId="integeronly"
-                                [(ngModel)]="rentIncreaseNoticePeriod"
-                            >
-                            </p-inputNumber>
-                            <p>Months prior to increasing the rent</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            6. The tenant shall serve a notice of
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-inputNumber
-                                inputId="integeronly"
-                                [(ngModel)]="vacationNoticePeriod"
-                            >
-                            </p-inputNumber>
-                            <p>
-                                Months prior to vacating the property or
-                                terminating the contract
+                            <p class="text-right font-bold">
+                                Total Montly Payable :
+                                <strong>
+                                    {{ getTotalMonthlyPayabe() }}
+                                </strong>
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            7. The landlord shall serve a notice of
-                        </div>
-
-                        <div class="flex align-items-center">
-                            <p-inputNumber
-                                inputId="integeronly"
-                                [(ngModel)]="evictionNoticePeriod"
-                            >
-                            </p-inputNumber>
-                            <p>Months prior to evicting a tenant.</p>
-                        </div>
-                    </div>
                 </div>
+                <div *ngSwitchCase="4" #terms>
+                    <p>Additional Terms and Condition</p>
+                    <p-divider></p-divider>
+                    <div>
+                        <p>Terms and Condition</p>
+                        <div class="flex w-full flex-column gap-4">
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    1. Tenant Sublet Authority?
+                                </div>
 
-                <div>
-                    <p class="mt-4">Additional Rules</p>
-                    <div class="flex gap-2 my-4 justify-content-between">
-                        <p>Lease Rules</p>
+                                <div class="flex align-items-center">
+                                    <p-radioButton
+                                        name="Yes"
+                                        [value]="true"
+                                        [(ngModel)]="tenantSubletAuthority"
+                                        inputId="tenantSubletAuthorityYes"
+                                    ></p-radioButton>
+                                    <label
+                                        for="tenantSubletAuthorityYes"
+                                        class="ml-2"
+                                        >Yes</label
+                                    >
+                                </div>
 
-                        <p-button
-                            label="Create Lease Rules"
-                            (click)="openCreateLeaseRuleModal()"
-                        ></p-button>
-                    </div>
-                    <p-dialog
-                        header="Add Lease Rules"
-                        [(visible)]="showAddLeaseRuleForm"
-                        [modal]="true"
-                        [style]="{ width: '50vw' }"
-                        [draggable]="false"
-                        [resizable]="false"
-                    >
-                        <form
-                            [formGroup]="createLeaseRuleForm"
-                            class="p-fluid p-2"
-                        >
-                            <div class="grid">
-                                <div class="field col-12">
-                                    <label for="particular">Particular</label>
-                                    <textarea
-                                        rows="5"
-                                        cols="30"
-                                        pInputTextarea
-                                        formControlName="particular"
-                                    ></textarea>
+                                <div class="flex align-items-center">
+                                    <p-radioButton
+                                        name="No"
+                                        [value]="false"
+                                        [(ngModel)]="tenantSubletAuthority"
+                                        inputId="tenantSubletAuthorityNo"
+                                    ></p-radioButton>
                                 </div>
                             </div>
 
-                            <p-button
-                                (click)="createLeaseRule()"
-                                label="Add Lease Rule"
-                            ></p-button>
-                        </form>
-                    </p-dialog>
-                    <p-table [value]="leaseRules" class="p-datatable-sm mt-2">
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th>Particular</th>
-                                <th>Origin</th>
-                                <th></th>
-                            </tr>
-                        </ng-template>
-                        <ng-template
-                            pTemplate="body"
-                            let-item
-                            let-editing="editing"
-                        >
-                            <tr>
-                                <td
-                                    [pEditableColumn]="item.particular"
-                                    pEditableColumnField="particular"
-                                >
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <input
-                                                pInputText
-                                                type="text"
-                                                [(ngModel)]="item.particular"
-                                            />
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{ item.particular }}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td>
-                                    {{ item.origin }}
-                                </td>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    2. Owner Premature Termination?
+                                </div>
 
-                                <td>
-                                    <p-button
-                                        icon="pi pi-times"
-                                        severity="danger"
-                                        size="small"
-                                    ></p-button>
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
+                                <div class="flex align-items-center">
+                                    <p-radioButton
+                                        [value]="true"
+                                        [(ngModel)]="ownerPrematureTermination"
+                                    ></p-radioButton>
+                                    <label class="ml-2">Yes</label>
+                                </div>
+
+                                <div class="flex align-items-center">
+                                    <p-radioButton
+                                        [value]="false"
+                                        [(ngModel)]="ownerPrematureTermination"
+                                    ></p-radioButton>
+                                    <label class="ml-2">No</label>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    3.Tenant Premature Termination?
+                                </div>
+
+                                <div class="flex align-items-center">
+                                    <p-radioButton
+                                        [value]="true"
+                                        [(ngModel)]="tenantPrematureTermination"
+                                    ></p-radioButton>
+                                    <label class="ml-2">Yes</label>
+                                </div>
+
+                                <div class="flex align-items-center">
+                                    <p-radioButton
+                                        [value]="false"
+                                        [(ngModel)]="tenantPrematureTermination"
+                                    ></p-radioButton>
+                                    <label class="ml-2">No</label>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    4. Rent Due on or before
+                                </div>
+
+                                <div class="flex align-items-center">
+                                    <p>Day</p>
+                                    <p-inputNumber
+                                        inputId="integeronly"
+                                        [(ngModel)]="paymentDueDay"
+                                    >
+                                    </p-inputNumber>
+                                    <p>of the next month</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    5. Rent Increase Notice Period
+                                </div>
+
+                                <div class="flex align-items-center">
+                                    <p-inputNumber
+                                        inputId="integeronly"
+                                        [(ngModel)]="rentIncreaseNoticePeriod"
+                                    >
+                                    </p-inputNumber>
+                                    <p>Month/s</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    6. Tenant Vacation Notice Period:
+                                </div>
+
+                                <div class="flex align-items-center">
+                                    <p-inputNumber
+                                        inputId="integeronly"
+                                        [(ngModel)]="vacationNoticePeriod"
+                                    >
+                                    </p-inputNumber>
+                                    <p>Month/s</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    7. Eviction notice period:
+                                </div>
+
+                                <div class="flex align-items-center">
+                                    <p-inputNumber
+                                        inputId="integeronly"
+                                        [(ngModel)]="evictionNoticePeriod"
+                                    >
+                                    </p-inputNumber>
+                                    <p>Month/s</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="mt-4">Additional Rules</p>
+                            <div
+                                class="flex gap-2 my-4 justify-content-between"
+                            >
+                                <p-button
+                                    label="Create Lease Rules"
+                                    (click)="openCreateLeaseRuleModal()"
+                                ></p-button>
+                            </div>
+
+                            <p-table
+                                *ngIf="leaseRules.length"
+                                [value]="leaseRules"
+                                class="p-datatable-sm mt-2"
+                            >
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Particular</th>
+                                        <th>Origin</th>
+                                        <th></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template
+                                    pTemplate="body"
+                                    let-item
+                                    let-editing="editing"
+                                >
+                                    <tr>
+                                        <td
+                                            [pEditableColumn]="item.particular"
+                                            pEditableColumnField="particular"
+                                        >
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input
+                                                        pInputText
+                                                        type="text"
+                                                        [(ngModel)]="
+                                                            item.particular
+                                                        "
+                                                    />
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{ item.particular }}
+                                                </ng-template>
+                                            </p-cellEditor>
+                                        </td>
+                                        <td>
+                                            {{ item.origin }}
+                                        </td>
+
+                                        <td>
+                                            <p-button
+                                                icon="pi pi-times"
+                                                severity="danger"
+                                                size="small"
+                                            ></p-button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div *ngSwitchCase="5" #finalize>
-                - show lease summary not like agreement
-                <hr />
-                <div>
-                    <p-button
-                        label="Create Lease"
-                        (click)="createLeaseAgreement()"
-                    ></p-button>
+                <div *ngSwitchCase="5" #finalize>
+                    <div class="flex my-4 justify-content-between">
+                        <p-button
+                            label="Create Lease"
+                            (click)="createLeaseAgreement()"
+                        ></p-button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <p-divider class="mt-6"></p-divider>
-    <div class="flex justify-content-end gap-4">
-        <p-button
-            label="Back"
-            (click)="previousStep()"
-            [disabled]="currentStep === 0"
-        ></p-button>
-        <p-button
-            label="Next"
-            (click)="nextStep()"
-            [disabled]="currentStep === steps.length - 1"
-        ></p-button>
-    </div>
+    <p-dialog
+        header="Add Lease Rules"
+        [(visible)]="showAddLeaseRuleForm"
+        [modal]="true"
+        [draggable]="false"
+        [resizable]="false"
+    >
+        <form [formGroup]="createLeaseRuleForm" class="p-fluid p-2">
+            <div class="grid">
+                <div class="field col-12">
+                    <label for="particular">Particular</label>
+                    <textarea
+                        rows="5"
+                        cols="30"
+                        pInputTextarea
+                        formControlName="particular"
+                    ></textarea>
+                </div>
+            </div>
+
+            <p-button
+                (click)="createLeaseRule()"
+                label="Add Lease Rule"
+            ></p-button>
+        </form>
+    </p-dialog>
+
+    <p-dialog
+        header="Add Charges"
+        [(visible)]="showAddLeaseChargeForm"
+        [modal]="true"
+        [draggable]="false"
+        [resizable]="false"
+    >
+        <form [formGroup]="createLeaseChargeForm" class="p-fluid p-2">
+            <div class="grid">
+                <div class="field col-12">
+                    <label for="particular">Particular</label>
+                    <textarea
+                        rows="5"
+                        cols="30"
+                        pInputTextarea
+                        formControlName="particular"
+                    ></textarea>
+                </div>
+                <div class="field col-12">
+                    <label for="particular">Amount</label>
+                    <p-inputNumber
+                        inputId="integeronly"
+                        formControlName="amount"
+                    >
+                    </p-inputNumber>
+                </div>
+            </div>
+
+            <p-button
+                (click)="createLeaseCharge()"
+                label="Add Surcharge"
+            ></p-button>
+        </form>
+    </p-dialog>
 </div>

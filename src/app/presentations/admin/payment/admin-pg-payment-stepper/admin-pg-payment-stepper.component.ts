@@ -19,7 +19,7 @@ import {
     DynamicDialogComponent,
     DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { InputOtpModule } from 'primeng/inputotp';
 import { TableModule } from 'primeng/table';
 import { MessagesModule } from 'primeng/messages';

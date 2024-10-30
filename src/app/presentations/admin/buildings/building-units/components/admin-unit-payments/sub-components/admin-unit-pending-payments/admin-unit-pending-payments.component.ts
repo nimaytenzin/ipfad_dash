@@ -3,16 +3,23 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TableModule } from 'primeng/table';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/shared-components/view-payment-advice/view-payment-advice.component';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
 
 @Component({
     selector: 'app-admin-unit-pending-payments',
     templateUrl: './admin-unit-pending-payments.component.html',
     styleUrls: ['./admin-unit-pending-payments.component.scss'],
     standalone: true,
-    imports: [CommonModule, DividerModule, ButtonModule],
+    imports: [
+        CommonModule,
+        DividerModule,
+        ButtonModule,
+        TableModule,
+        ButtonModule,
+    ],
     providers: [DialogService],
 })
 export class AdminUnitPendingPaymentsComponent implements OnInit {
@@ -22,10 +29,10 @@ export class AdminUnitPendingPaymentsComponent implements OnInit {
 
     pendingPaymentAdvice: PaymentAdviceDto[] = [];
     totalAmountDue: number = 0;
-
+    selectedPaymentAdivces: PaymentAdviceDto[] = [];
     constructor(
         private paymentAdviceDataService: PaymentAdviceDataService,
-        private DialogService: DialogService
+        private dialogService: DialogService
     ) {}
 
     ngOnInit() {
@@ -37,8 +44,6 @@ export class AdminUnitPendingPaymentsComponent implements OnInit {
             .GetAllPendingAdviceByUnit(this.unitId)
             .subscribe({
                 next: (res) => {
-                    console.log('PENDING AdVICE');
-                    console.log(res);
                     this.pendingPaymentAdvice = res;
                     this.pendingPaymentAdvice.forEach((item) => {
                         this.totalAmountDue += item.amountDue;
@@ -50,10 +55,10 @@ export class AdminUnitPendingPaymentsComponent implements OnInit {
             });
     }
 
-    openViewAdvice(item: PaymentAdviceDto) {
-        this.ref = this.DialogService.open(ViewPaymentAdviceComponent, {
+    openViewAdvice(item: PaymentAdviceDto[]) {
+        this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
             header: 'Payment Advice',
-            data: { ...item },
+            data: item,
         });
     }
 }

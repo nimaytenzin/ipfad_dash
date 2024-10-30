@@ -9,8 +9,9 @@ import {
 } from 'primeng/dynamicdialog';
 import { TableModule } from 'primeng/table';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
-import { AdminPgPaymentStepperComponent } from '../../admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
+import { AdminPgPaymentStepperComponent } from '../../../../payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
+import { AdminReceivePaymentPaymentAdviceModalComponent } from '../admin-receive-payment-payment-advice-modal/admin-receive-payment-payment-advice-modal.component';
 
 @Component({
     selector: 'app-view-payment-advice',
@@ -21,20 +22,29 @@ import { AdminPgPaymentStepperComponent } from '../../admin/payment/admin-pg-pay
 })
 export class ViewPaymentAdviceComponent implements OnInit {
     @Input()
-    paymentAdvice: PaymentAdviceDto;
+    paymentAdvices: PaymentAdviceDto[];
     companyDetails = ZHIDHAYCONTACTDETAILS;
     ref: DynamicDialogRef;
+
+    totalAmmount: number = 0;
+    totalAmountDue: number = 0;
 
     constructor(
         private config: DynamicDialogConfig,
         private dialogService: DialogService
     ) {
-        this.paymentAdvice = this.config.data;
+        this.paymentAdvices = this.config.data; // Assuming the data is an array
+        console.log(this.paymentAdvices);
+        for (let item of this.paymentAdvices) {
+            this.totalAmmount += item.totalAmount;
+            this.totalAmountDue += item.amountDue;
+        }
     }
 
     ngOnInit() {
-        console.log('PASSED PA', this.paymentAdvice);
+        console.log('PASSED PA', this.paymentAdvices);
     }
+
     openPaymentGatewayPaymentModal(paymentAdvice: PaymentAdviceDto) {
         this.ref = this.dialogService.open(AdminPgPaymentStepperComponent, {
             header: 'Process Payment',
@@ -47,5 +57,16 @@ export class ViewPaymentAdviceComponent implements OnInit {
                 this.ref.close();
             }
         });
+    }
+
+    receivePayment() {
+        this.ref = this.dialogService.open(
+            AdminReceivePaymentPaymentAdviceModalComponent,
+            {
+                header: 'Receive Payment',
+                width: '600px',
+                data: this.paymentAdvices,
+            }
+        );
     }
 }

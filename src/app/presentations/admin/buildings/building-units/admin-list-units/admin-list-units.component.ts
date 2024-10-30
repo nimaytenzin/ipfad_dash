@@ -72,17 +72,17 @@ export class AdminListUnitsComponent implements OnInit {
             .GetAllUnitsByBuilding(this.buildingId)
             .subscribe(async (res: UnitDTO[]) => {
                 console.log(res);
+                console.log('UNITS', res);
                 this.units = res;
 
-                // await this.units.forEach((unit) => {
-                //     this.leaseAgreementDataService
-                //         .GetActiveLeaseAgreementByUnit(unit.id)
-                //         .subscribe((res) => {
-                //             console.log(unit, 'ACTIVE LEASE AGREEMNT', res);
-                //             unit.activeLeaseAgreement = res;
-                //         });
-                // });
-                console.log(this.units);
+                await this.units.forEach((unit) => {
+                    this.leaseAgreementDataService
+                        .GetActiveLeaseAgreementByUnit(unit.id)
+                        .subscribe((res) => {
+                            console.log(unit, 'ACTIVE LEASE AGREEMNT', res);
+                            unit.activeLeaseAgreement = res;
+                        });
+                });
             });
     }
 
@@ -110,7 +110,7 @@ export class AdminListUnitsComponent implements OnInit {
             width: '500px',
         });
         this.ref.onClose.subscribe((res) => {
-            if (res && res.added) {
+            if (res && res.status === 201) {
                 this.getUnitsByBuilding();
             }
         });
@@ -122,7 +122,7 @@ export class AdminListUnitsComponent implements OnInit {
             data: unit,
         });
         this.ref.onClose.subscribe((res) => {
-            if (res && res.updated) {
+            if (res && res.status === 200) {
                 this.getUnitsByBuilding();
             }
         });

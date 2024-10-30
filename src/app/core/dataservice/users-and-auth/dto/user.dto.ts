@@ -14,6 +14,9 @@ export interface UserDTO {
     adminId?: number;
     permanentAddress?: string;
 
+    profileUri?: string;
+    signatureUri?: string;
+
     thrams?: ThramDTO[];
 
     organizations?: OrganiztionDTO[];
@@ -36,14 +39,11 @@ export interface CreateUserDTO {
 }
 
 export interface UpdateUserDetailsDTO {
-    hasLoginAccess: boolean;
-
-    nameEnglish: string;
+    nameEnglish?: string;
     nameDzongkha?: string;
     cid?: string;
     email?: string;
     phoneNumber?: number;
-    password?: string;
 
-    adminId?: number;
+    permanentAddress?: string;
 }

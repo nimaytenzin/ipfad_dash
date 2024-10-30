@@ -68,6 +68,12 @@ export class BuildingDataService {
         );
     }
 
+    GetAllBuildingsByAdmin(adminId: number): Observable<BuildingDTO[]> {
+        return this.http.get<BuildingDTO[]>(
+            `${this.apiUrl}/building/admin/${adminId}`
+        );
+    }
+
     // GetBuildingsPaginated(): Observable<BuildingDTO[]> {
     //     return this.http.get<BuildingDTO[]>(
     //         `${this.apiUrl}/building/latest/buildings`

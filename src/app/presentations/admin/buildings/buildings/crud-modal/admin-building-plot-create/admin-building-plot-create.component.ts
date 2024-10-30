@@ -46,6 +46,13 @@ export class AdminBuildingPlotCreateComponent implements OnInit {
                     this.plotDetailsFound = true;
                 }
             },
+            error: (err) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: err.error.message,
+                });
+            },
         });
     }
 
@@ -53,7 +60,7 @@ export class AdminBuildingPlotCreateComponent implements OnInit {
         this.buildingPlotDataService
             .CreateBuildingPlot({
                 buildingId: this.config.data.buildingId,
-                plotId: this.plot.id,
+                plotDatabaseId: this.plot.id,
             })
             .subscribe({
                 next: (res) => {

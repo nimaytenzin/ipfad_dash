@@ -1,7 +1,8 @@
 import { PAType } from 'src/app/core/constants/enums';
-import { UnitDTO } from '../../units/unit.dto';
-import { TenantDTO } from '../../users/tenant.dto';
+import { UnitDTO } from '../units/unit.dto';
+import { TenantDTO } from '../users/tenant.dto';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { PaymentReceiptDTO } from './payment-receipt-dto';
 
 export interface CreatePaymentAdviceItemDto {
     paymentAdviseId?: number;
@@ -52,7 +53,8 @@ export interface PaymentAdviceDto {
 
     paymentAdviseItem: PaymentAdviceDto[];
 
-    leaeAgreement: LeaseAgreeementDTO;
+    leaseAgreement: LeaseAgreeementDTO;
+    paymentReceipts?: PaymentReceiptDTO[];
 }
 
 export interface GenerateBuildingPADto {
@@ -61,4 +63,20 @@ export interface GenerateBuildingPADto {
     month: number;
     year: number;
     type: PAType;
+}
+
+export interface ReceivePaymentDTO {
+    paymentAdviceIds: number[];
+    amount: number;
+    paymentMode: string;
+    remarks: string;
+    refNo: string;
+    receivedBy: number;
+    isVerified: boolean;
+}
+
+export interface PaymentAdviceSummaryDTO {
+    totalMonthlyIncome: number;
+    totalPendingAmount: number;
+    totalPendingAdvices: number;
 }

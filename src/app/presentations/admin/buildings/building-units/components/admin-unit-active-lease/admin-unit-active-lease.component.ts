@@ -5,10 +5,14 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
 import { TagModule } from 'primeng/tag';
 import { AdminGenerateUnitPaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-unit-payment-advice/admin-generate-unit-payment-advice.component';
+import { AdminDetailedViewLeaseAgreementComponent } from 'src/app/presentations/admin/lease/admin-detailed-view-lease-agreement/admin-detailed-view-lease-agreement.component';
+import { Router } from '@angular/router';
+import { LESSEETYPE } from 'src/app/core/constants/enums';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 
 @Component({
     selector: 'app-admin-unit-active-lease',
@@ -23,77 +27,43 @@ export class AdminUnitActiveLeaseComponent implements OnInit {
     })
     unitId: number;
 
+    LESSEETYPES = LESSEETYPE;
+
     ref: DynamicDialogRef | undefined;
-    activeLeaseAgreement;
+    activeLeaseAgreement: LeaseAgreeementDTO | null = null;
 
     constructor(
         private leaseAgreementDataService: LeaseAgreementDataService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private router: Router
     ) {}
 
     ngOnInit() {
-        this.getActiveLeaseByUnit();
-
-        console.log('PASSED UNIT ID', this.unitId);
-
         this.leaseAgreementDataService
             .GetActiveLeaseAgreementByUnit(this.unitId)
-            .subscribe((res) => {
-                console.log('ACTIVE LEASE AGREEMNT', res);
-                this.activeLeaseAgreement = res;
+            .subscribe({
+                next: (res) => {
+                    console.log(res, 'ACTIV ELEASE');
+                    this.activeLeaseAgreement = res;
+                },
             });
     }
 
-    getActiveLeaseByUnit() {
-        // this.leaseAgreementDataService
-        //     .GetActiveLeaseAgreementByUnit(18)
-        //     .subscribe((res) => {
-        //         console.log('ACTIVE LEASE AGREEMNT', res);
-        //         this.activeLeaseAgreement = res;
-        //     });
-    }
     computeMonthlyPayable(item) {
-        // let total = item.rent;
-        // for (let i = 0; i < item.leaseSurcharges.length; i++) {
-        //     total += item.leaseSurcharges[i].amount;
-        // }
-        // return total;
+        let total = item.rent;
+        for (let i = 0; i < item.leaseSurcharges.length; i++) {
+            total += item.leaseSurcharges[i].amount;
+        }
+        return total;
     }
 
     getReadableDate(date: string) {
         return new Date(date).toDateString();
     }
 
-    viewLease(leaeAgreement) {
-        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-        //     header: 'View Lease',
-        //     width: '70vw',
-        //     data: {
-        //         leaseAgreementId: leaeAgreement.id,
-        //     },
-        // });
-    }
-
-    openPaymentGatewayPaymentModal(paymentAdvice: PaymentAdviceDto) {
-        this.ref = this.dialogService.open(AdminPgPaymentStepperComponent, {
-            header: 'Process Payment',
-            width: '600px',
-            data: { ...paymentAdvice },
-        });
-
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 200) {
-                this.getActiveLeaseByUnit();
-            }
-        });
-    }
-    openGeneratePAModal() {
-        this.ref = this.dialogService.open(
-            AdminGenerateUnitPaymentAdviceComponent,
-            {
-                header: 'Generate Payment advice',
-                data: { ...this.activeLeaseAgreement },
-            }
-        );
+    viewLease() {
+        this.router.navigate([
+            'admin/master-lease/view/' + this.activeLeaseAgreement.id,
+        ]);
     }
 }

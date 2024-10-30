@@ -11,7 +11,7 @@ import { TenantEntryDamageItemCreateModalComponent } from './subcomponents/tenan
 import {
     CreateEntryDamageReportItemDTO,
     EntryDamageReportItemDTO,
-} from 'src/app/core/dataservice/lease/entryDamageReport/entry-damage-report-item.dto';
+} from 'src/app/core/dataservice/damage/entry-damage-report-item.dto';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -20,8 +20,8 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import {
     CreateEntryDamageReportDTO,
     EntryDamageReportDTO,
-} from 'src/app/core/dataservice/lease/entryDamageReport/entry-damage-report.dto';
-import { EntryDamageReportDataservice } from 'src/app/core/dataservice/lease/entryDamageReport/entry-damage-report.dataservice';
+} from 'src/app/core/dataservice/damage/entry-damage-report.dto';
+import { EntryDamageReportDataservice } from 'src/app/core/dataservice/damage/entry-damage-report.dataservice';
 import { API_URL } from 'src/app/core/constants/constants';
 
 @Component({

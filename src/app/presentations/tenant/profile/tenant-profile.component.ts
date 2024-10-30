@@ -11,7 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
 import {
     AuthService,
-    AuthenticatedUser,
+    AuthenticatedUserDTO,
 } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
@@ -61,7 +61,7 @@ export class TenantProfileComponent implements OnInit {
     administrativeZones: AdministrativeZoneDTO[];
     subAdministrativeZones: SubAdministrativeZoneDTO[];
 
-    authenticatedUser: AuthenticatedUser;
+    authenticatedUser: AuthenticatedUserDTO;
     selectedProfilePicture: any;
     selectedSignature: any;
 

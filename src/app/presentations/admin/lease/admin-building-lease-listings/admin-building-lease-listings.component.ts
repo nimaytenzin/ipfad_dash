@@ -11,7 +11,7 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ROWSPERPAGEOPTION, PageEvent } from 'src/app/core/constants/constants';
-import { INVOICESTATUS } from 'src/app/core/constants/enums';
+import { INVOICESTATUS, LEASETYPE } from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AdminCreateUnitLeaseAgreementStepperComponent } from '../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
@@ -36,7 +36,7 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 })
 export class AdminBuildingLeaseListingsComponent implements OnInit {
     ref: DynamicDialogRef | undefined;
-    paginatedUnitLease = {
+    paginatedBuilingLease = {
         firstPage: 0,
         currentPage: 0,
         previousPage: 0,
@@ -64,13 +64,22 @@ export class AdminBuildingLeaseListingsComponent implements OnInit {
         this.handlePagination();
     }
 
-    openCreateUnitLeaseAgreementModal() {
+    openCreateLeaseAgreementModal() {
         this.ref = this.dialogService.open(
             AdminCreateUnitLeaseAgreementStepperComponent,
             {
-                header: 'Unit Lease',
+                header: 'Lease Creator',
+                width: 'max-content',
+                data: {
+                    type: LEASETYPE.BUILDING,
+                },
             }
         );
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 201) {
+                this.handlePagination();
+            }
+        });
     }
 
     onPageChange(event: PageEvent): void {
@@ -88,14 +97,13 @@ export class AdminBuildingLeaseListingsComponent implements OnInit {
 
         console.log(queryParams);
         this.leaseAgreementDataService
-            .GetAllUnitLeaseByAdminPaginated(
+            .GetAllBuildingLeaseByAdminPaginated(
                 this.authService.GetAuthenticatedUser().id,
                 queryParams
             )
             .subscribe({
                 next: (res) => {
-                    this.paginatedUnitLease = res;
-                    console.log('PAGINATED UNIT LEASE', res);
+                    this.paginatedBuilingLease = res;
                 },
             });
     }

@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice/payment-advice.dto';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { TenantPaymentReceiptComponent } from '../../../shared/tenant-payment-receipt/tenant-payment-receipt.component';
 
 @Component({
