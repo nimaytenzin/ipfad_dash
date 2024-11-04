@@ -46,10 +46,6 @@
             ></p-button>
         </div>
     </div>
-
-    <div class="flex gap-4 jusitfy-content-between"></div>
-
-    <div class="flex gap-4 jusitfy-content-between"></div>
 </div>
 <p-tabView
     [(activeIndex)]="activeIndex"
@@ -63,7 +59,7 @@
                 <p *ngIf="leaseAgreement?.lessorType === lessorTypes.ADMIN">
                     Lessor:
                     <Strong
-                        >{{ admin.nameEnglish }}/{{ admin.nameDzongkha }}
+                        >{{ admin?.nameEnglish }}/{{ admin?.nameDzongkha }}
                     </Strong>
                 </p>
             </div>

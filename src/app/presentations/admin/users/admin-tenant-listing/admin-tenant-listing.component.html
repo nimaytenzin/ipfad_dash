@@ -2,12 +2,32 @@
     <p-confirmDialog />
     <div class="flex justify-content-between my-4">
         <p class="text-2xl">Tenants Master Table</p>
+
         <div class="flex gap-2">
+            <div>
+                <p-inputGroup>
+                    <p-inputGroupAddon> +975 </p-inputGroupAddon>
+                    <p-inputNumber
+                        [(ngModel)]="searchTenantPhoneNumber"
+                        mode="decimal"
+                        inputId="withoutgrouping"
+                        [useGrouping]="false"
+                        (keydown.enter)="searchTenant()"
+                    />
+                    <button
+                        type="button"
+                        severity="seconadry"
+                        pButton
+                        label="Search"
+                        (click)="searchTenant()"
+                    ></button>
+                </p-inputGroup>
+            </div>
             <p-button
                 label="Tenant"
                 icon="pi pi-plus"
                 size="small"
-                (click)="openCreateOwnerModal()"
+                (click)="openCreateUserModal()"
             ></p-button>
             <p-button
                 label="Download Excel"
@@ -17,6 +37,7 @@
             ></p-button>
         </div>
     </div>
+
     <div>
         <p-table [value]="owners" styleClass="p-datatable-striped">
             <ng-template pTemplate="header">

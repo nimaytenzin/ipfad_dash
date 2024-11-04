@@ -10,7 +10,7 @@ import {
 import { AdminCreateTenantDTO } from '../../dto/users/tenant.dto';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { UpdateUserDetailsDTO } from './dto/user.dto';
+import { UpdateUserDetailsDTO, UserDTO } from './dto/user.dto';
 import { USERROLESENUM } from '../../constants/enums';
 
 export interface AuthenticatedUserDTO {
@@ -73,8 +73,16 @@ export class AuthService {
         );
     }
 
-    GetAdminDetails(id: number) {
-        return this.http.get(`${this.apiUrl}/auth/admin-details/${id}`);
+    GetAdminDetails(id: number): Observable<UserDTO> {
+        return this.http.get<UserDTO>(
+            `${this.apiUrl}/auth/admin-details/${id}`
+        );
+    }
+
+    GetTenantDetails(phoneNumber: number): Observable<UserDTO> {
+        return this.http.get<UserDTO>(
+            `${this.apiUrl}/auth/tenant/phone/${phoneNumber}`
+        );
     }
 
     LogOut() {

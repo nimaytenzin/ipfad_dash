@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'src/app/core/constants/constants';
 import { AdminGenerateBuildingPaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-building-payment-advice/admin-generate-building-payment-advice.component';
 import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 
 @Component({
     selector: 'app-admin-building-unit-payment-sheet',
@@ -64,8 +65,8 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
             )
             .subscribe({
                 next: (res) => {
-                    console.log('PA STSTUS', res);
                     this.unitsWithPA = res;
+                    console.log(res, 'UNITS WITH PA');
                     if (res) {
                         for (const unit of res) {
                             console.log(unit);
@@ -93,7 +94,13 @@ export class AdminBuildingUnitPaymentSheetComponent implements OnInit {
         }, 2000);
     }
 
-    openPADetails(advices: PaymentAdviceDto[]) {
+    openPADetails(
+        advices: PaymentAdviceDto[],
+        leaseAgreement: LeaseAgreeementDTO
+    ) {
+        advices.forEach((item) => {
+            item.leaseAgreement = leaseAgreement;
+        });
         this.ref = this.daialogService.open(ViewPaymentAdviceComponent, {
             header: 'Details',
             data: advices,

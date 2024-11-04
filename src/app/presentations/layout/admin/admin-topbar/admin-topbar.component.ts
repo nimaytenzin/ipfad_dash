@@ -121,36 +121,4 @@ export class AdminTopbarComponent {
             },
         });
     }
-
-    resetPassword() {
-        if (this.newPassword !== this.newPasswordReentry) {
-            alert('Password mismatch');
-        }
-
-        if (!this.newPassword && !this.newPasswordReentry) {
-            alert('Missing password fields');
-        }
-
-        this.authService
-            .UpdatePassword({
-                userId: this.authenticatedUser.id,
-                newPassword: this.newPassword,
-                newPasswordRentry: this.newPasswordReentry,
-                role: this.currentRole.role,
-                adminId: this.currentRole.adminId,
-            })
-            .subscribe((res) => {
-                if (res) {
-                    this.messageService.add({
-                        severity: 'success',
-                        summary: 'Your password has been Reset',
-                        detail: 'Please login with the new password',
-                        life: 3000,
-                    });
-                    setTimeout(() => {
-                        this.authService.LogOut();
-                    }, 3000);
-                }
-            });
-    }
 }

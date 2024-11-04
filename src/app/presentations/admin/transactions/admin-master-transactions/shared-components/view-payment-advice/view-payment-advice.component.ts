@@ -60,6 +60,7 @@ export class ViewPaymentAdviceComponent implements OnInit {
     }
 
     receivePayment() {
+        console.log(this.paymentAdvices, 'Payment Advices');
         this.ref = this.dialogService.open(
             AdminReceivePaymentPaymentAdviceModalComponent,
             {

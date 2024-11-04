@@ -17,6 +17,11 @@ import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organizati
 import { AdminEditOrganizationModalComponent } from '../components/admin-edit-organization-modal/admin-edit-organization-modal.component';
 import { AdminUsersCreateModalComponent } from '../components/admin-users-create-modal/admin-users-create-modal.component';
 import { USERROLESENUM } from 'src/app/core/constants/enums';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { FormsModule } from '@angular/forms';
+import { AdminSearchTenantModalComponent } from '../components/admin-search-tenant-modal/admin-search-tenant-modal.component';
 
 @Component({
     selector: 'app-admin-tenant-listing',
@@ -30,6 +35,10 @@ import { USERROLESENUM } from 'src/app/core/constants/enums';
         ConfirmDialogModule,
         ChipModule,
         DividerModule,
+        InputGroupModule,
+        InputNumberModule,
+        InputGroupAddonModule,
+        FormsModule,
     ],
     providers: [DialogService, ConfirmationService],
 })
@@ -37,6 +46,8 @@ export class AdminTenantListingComponent implements OnInit {
     ref: DynamicDialogRef;
 
     owners: UserDTO[];
+
+    searchTenantPhoneNumber: number;
 
     constructor(
         private dialogService: DialogService,
@@ -51,7 +62,7 @@ export class AdminTenantListingComponent implements OnInit {
         this.getAllTenantsByAdmin();
     }
 
-    openCreateOwnerModal() {
+    openCreateUserModal() {
         this.ref = this.dialogService.open(AdminUsersCreateModalComponent, {
             header: 'Create User',
             data: {
@@ -64,6 +75,24 @@ export class AdminTenantListingComponent implements OnInit {
             if (res && res.status === 201) {
                 this.getAllTenantsByAdmin();
             }
+        });
+    }
+
+    searchTenant() {
+        if (!this.searchTenantPhoneNumber) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Missing Input',
+                detail: 'Please Enter a phone number to search',
+            });
+            return;
+        }
+        this.ref = this.dialogService.open(AdminSearchTenantModalComponent, {
+            header: 'Search Tenant',
+            data: {
+                phoneNumber: this.searchTenantPhoneNumber,
+            },
+            closable: false,
         });
     }
 
@@ -116,6 +145,7 @@ export class AdminTenantListingComponent implements OnInit {
             .AdminGetAllTenants(this.authService.GetCurrentRole().adminId)
             .subscribe({
                 next: (res) => {
+                    console.log(res);
                     this.owners = res;
                 },
             });

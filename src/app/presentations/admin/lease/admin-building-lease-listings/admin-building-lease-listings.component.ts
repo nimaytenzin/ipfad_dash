@@ -98,7 +98,7 @@ export class AdminBuildingLeaseListingsComponent implements OnInit {
         console.log(queryParams);
         this.leaseAgreementDataService
             .GetAllBuildingLeaseByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({

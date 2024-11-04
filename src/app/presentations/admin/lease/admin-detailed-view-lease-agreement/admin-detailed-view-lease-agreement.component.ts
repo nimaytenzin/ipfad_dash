@@ -43,6 +43,7 @@ import { image } from 'html2canvas/dist/types/css/types/image';
 import { DamageItemChatBoxComponent } from '../components/damage-item-chat-box/damage-item-chat-box.component';
 import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.selection.preferences';
 import { ImageModule } from 'primeng/image';
+import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -88,7 +89,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
     getMonthName = GETMONTHNAME;
     calculateMonthsDifference = GETMONTHDIFF;
     tenantSignatureUri: string;
-    admin: AuthenticatedUserDTO;
+    admin: UserDTO;
 
     entryDamageReportItems: DamageItemDTO[] = [];
     maintenanceRequestItems: DamageItemDTO[] = [];
@@ -110,8 +111,6 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         private adminTabSelectionPreferenceService: AdminTabPreferenceService,
         private confirmationService: ConfirmationService
     ) {
-        this.admin = this.authService.GetAuthenticatedUser();
-
         this.leaseAgreementId = Number(
             this.route.snapshot.paramMap.get('leaseAgreementId')
         );
@@ -120,6 +119,11 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                 this.activeIndex = tabIndex;
             }
         );
+        this.authService
+            .GetAdminDetails(this.authService.GetCurrentRole().adminId)
+            .subscribe((res) => {
+                this.admin = res;
+            });
     }
 
     ngOnInit() {

@@ -118,7 +118,7 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
 
         this.leaseAgreementDataService
             .GetAllUnitLeaseByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({

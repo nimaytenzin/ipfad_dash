@@ -97,7 +97,7 @@ export class AdminLandLeaseListingsComponent implements OnInit {
 
         this.leaseAgreementDataService
             .GetAllLandLeaseByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({
