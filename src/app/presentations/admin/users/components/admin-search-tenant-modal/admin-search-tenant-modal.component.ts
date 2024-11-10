@@ -13,6 +13,7 @@ import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { AdminUserAddOrganizationModalComponent } from '../admin-user-add-organization-modal/admin-user-add-organization-modal.component';
 import { AdminEditOrganizationModalComponent } from '../admin-edit-organization-modal/admin-edit-organization-modal.component';
 import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organization.dto';
+import { AdminUsersUpdateModalComponent } from '../admin-users-update-modal/admin-users-update-modal.component';
 
 @Component({
     selector: 'app-admin-search-tenant-modal',
@@ -69,9 +70,24 @@ export class AdminSearchTenantModalComponent implements OnInit {
         });
     }
 
+    openUpdateUserModal() {
+        this.ref = this.dialogService.open(AdminUsersUpdateModalComponent, {
+            header: 'Update',
+            data: {
+                ...this.tenant,
+            },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.getUpdatedTenantDetails();
+            }
+        });
+    }
+
     ngOnInit() {}
 
     close() {
+        console.log('CLISE');
         this.ref.close();
     }
 

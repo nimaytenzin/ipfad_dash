@@ -70,7 +70,8 @@ export class AdminUsersUpdateModalComponent implements OnInit {
             nameDzongkha: [''],
             phoneNumber: [''],
             cid: [''],
-            password: [''],
+
+            permanentAddress: [''],
             email: [''],
             hasLoginAccess: ['', [Validators.required]],
         });
@@ -87,6 +88,8 @@ export class AdminUsersUpdateModalComponent implements OnInit {
             phoneNumber: this.updateUserForm.controls['phoneNumber'].value,
             email: this.updateUserForm.controls['email'].value || null,
             cid: this.updateUserForm.controls['cid'].value || null,
+            permanentAddress:
+                this.updateUserForm.controls['permanentAddress'].value,
             nameDzongkha:
                 this.updateUserForm.controls['nameDzongkha'].value || null,
         };

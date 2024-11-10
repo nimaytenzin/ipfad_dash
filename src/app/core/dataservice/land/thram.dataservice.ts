@@ -75,4 +75,30 @@ export class ThramDataService {
             `${this.apiUrl}/thram/search/plot/${plotId}`
         );
     }
+
+    GetAlllThramsByDzongkhagAndAdmin(
+        adminId: number,
+        dzongkhagId: number
+    ): Observable<ThramDTO[]> {
+        return this.http.get<ThramDTO[]>(
+            `${this.apiUrl}/thram/admin/dzongkhag/${adminId}/${dzongkhagId}`
+        );
+    }
+
+    GetAlllThramsByAdminZoneAndAdmin(
+        adminId: number,
+        administrativeZoneId: number
+    ): Observable<ThramDTO[]> {
+        return this.http.get<ThramDTO[]>(
+            `${this.apiUrl}/thram/admin/administrative-zone/${adminId}/${administrativeZoneId}`
+        );
+    }
+    GetAlllThramsBySubAdminZoneAndAdmin(
+        adminId: number,
+        subAdministrativeZOneId: number
+    ): Observable<ThramDTO[]> {
+        return this.http.get<ThramDTO[]>(
+            `${this.apiUrl}/thram/admin/sub-administrative-zone/${adminId}/${subAdministrativeZOneId}`
+        );
+    }
 }

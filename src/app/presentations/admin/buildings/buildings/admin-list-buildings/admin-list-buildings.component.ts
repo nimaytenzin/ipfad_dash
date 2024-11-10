@@ -26,6 +26,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { MessageService } from 'primeng/api';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 @Component({
     selector: 'app-admin-list-buildings',
@@ -75,7 +77,9 @@ export class AdminListBuildingsComponent {
         private buildingDataService: BuildingDataService,
         private router: Router,
         private buildingPlotDataService: BuildingPlotDataService,
-        private authService: AuthService
+        private authService: AuthService,
+        private messageService: MessageService,
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {}
 
     ngOnInit(): void {
@@ -119,7 +123,33 @@ export class AdminListBuildingsComponent {
         });
     }
 
-    downloadMasterTable() {}
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadBuildingsByAdminId(
+                this.authService.GetCurrentRole().adminId
+            )
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'buildings.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
+    }
 
     openViewPlotModal(plot: PlotDTO, building: BuildingDTO) {
         this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {

@@ -305,7 +305,7 @@ export class AdminAddBuildingComponent {
     getAdminsitrativeZones(dzongkhagId: number) {
         this.locationDataService
             .GetAllAdministrativeZones({
-                dzongkhagId: dzongkhagId.toString(),
+                dzongkhagId: dzongkhagId,
             })
             .subscribe((res: any) => {
                 this.admninistrativeZones = res;

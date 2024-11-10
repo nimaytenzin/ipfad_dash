@@ -88,15 +88,21 @@
                     </td>
 
                     <td>
-                        <div *ngFor="let organization of item.organizations">
+                        <div
+                            *ngFor="
+                                let organization of item.organizations;
+                                let i = index
+                            "
+                        >
                             <div
-                                class="flex gap-2 border-bottom-1 border-gray-400 align-items-center"
+                                class="flex gap-2 justify-content-between align-items-center"
                             >
-                                <p>Name: {{ organization.name }}</p>
+                                <p>{{ i + 1 }}) {{ organization.name }}</p>
                                 <p-button
                                     size="small"
                                     severity="secondary"
                                     icon="pi pi-pencil"
+                                    text="true"
                                     (click)="
                                         openEditOrganizationModal(organization)
                                     "
@@ -115,6 +121,12 @@
                     <td>
                         <div class="flex gap-2 mb-3">
                             <p-button
+                                label="Detailed View"
+                                size="small"
+                                (click)="goToDetailedTenantView(item)"
+                                severity="secondary"
+                            ></p-button>
+                            <p-button
                                 *ngIf="item.hasLoginAccess"
                                 label="Change Password"
                                 size="small"
@@ -130,7 +142,7 @@
                             <p-button
                                 size="small"
                                 icon="pi pi-pencil"
-                                (click)="openUpdateOwnerModal(item)"
+                                (click)="openUpdateUserModal(item)"
                             ></p-button>
                         </div>
                     </td>

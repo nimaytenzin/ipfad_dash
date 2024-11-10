@@ -10,6 +10,7 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaymentAdviceSummaryDTO } from 'src/app/core/dto/payments/payment-advice.dto';
 import { CommonModule } from '@angular/common';
+import { AdminPaymentAdviceSearchByPlotComponent } from '../components/admin-payment-advice-search-by-plot/admin-payment-advice-search-by-plot.component';
 
 @Component({
     selector: 'app-admin-master-transactions',
@@ -22,13 +23,18 @@ import { CommonModule } from '@angular/common';
         AdminPaymentAdvicePaidListComponent,
         AdminPaymentAdviceSearchByBuildingComponent,
         AdminPaymentAdviceSearchByTenantComponent,
+        AdminPaymentAdviceSearchByPlotComponent,
         TabViewModule,
         CommonModule,
     ],
     standalone: true,
 })
 export class AdminMasterTransactionsComponent implements OnInit {
-    summaryStats: PaymentAdviceSummaryDTO;
+    summaryStats: PaymentAdviceSummaryDTO = {
+        totalMonthlyIncome: 0,
+        totalPendingAmount: 0,
+        totalPendingAdvices: 0,
+    };
 
     constructor(
         private paymentDataService: PaymentAdviceDataService,

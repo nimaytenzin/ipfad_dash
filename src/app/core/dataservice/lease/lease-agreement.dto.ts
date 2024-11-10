@@ -78,6 +78,7 @@ export interface LeaseAgreeementDTO {
 
     terminationRemarks?: string;
     terminationDate?: string;
+    modificationDate?: string;
 }
 
 export interface CreateLeaseAgreementDTO {
@@ -212,4 +213,19 @@ export interface TerminateLeaseAgreementDTO {
     leaseAgreementId: number;
 }
 
-//OLD MODELS
+//payment status
+
+interface MonthlyPaymentStatusI {
+    month: number;
+    leaseAgreements: LeaseAgreeementDTO[];
+    paymentAdvice: PaymentAdviceDto;
+}
+export interface LandLeasePaymentStatusDTO {
+    plotId: string;
+    monthlyStatus: MonthlyPaymentStatusI[];
+}
+
+export interface UnitLeasePaymentStatusDTO {
+    unit: UnitDTO;
+    monthlyStatus: MonthlyPaymentStatusI[];
+}

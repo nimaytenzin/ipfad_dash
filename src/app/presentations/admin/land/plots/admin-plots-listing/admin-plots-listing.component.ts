@@ -15,6 +15,8 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { PaginatorModule } from 'primeng/paginator';
 import { AdminPlotUpdateComponent } from '../components/admin-plot-update/admin-plot-update.component';
 import { AdminAddBuildingComponent } from '../../../buildings/buildings/crud-modal/admin-add-building/admin-add-building.component';
+import { MessageService } from 'primeng/api';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 @Component({
     selector: 'app-admin-plots-listing',
@@ -54,7 +56,9 @@ export class AdminPlotsListingComponent implements OnInit {
         private dialogService: DialogService,
         private plotDataService: PlotDataService,
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        private messageService: MessageService,
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {}
 
     ngOnInit() {
@@ -135,5 +139,29 @@ export class AdminPlotsListingComponent implements OnInit {
             },
         });
     }
-    downloadMasterTable() {}
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadPlotsByAdminId(this.authService.GetCurrentRole().adminId)
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'plots.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
+    }
 }

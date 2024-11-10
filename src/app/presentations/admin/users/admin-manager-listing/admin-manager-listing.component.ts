@@ -17,6 +17,7 @@ import { AdminEditOrganizationModalComponent } from '../components/admin-edit-or
 import { AdminUserAddOrganizationModalComponent } from '../components/admin-user-add-organization-modal/admin-user-add-organization-modal.component';
 import { AdminUsersCreateModalComponent } from '../components/admin-users-create-modal/admin-users-create-modal.component';
 import { USERROLESENUM } from 'src/app/core/constants/enums';
+import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
 
 @Component({
     selector: 'app-admin-manager-listing',
@@ -67,19 +68,18 @@ export class AdminManagerListingComponent implements OnInit {
         });
     }
 
-    openUpdateOwnerModal(owner: OwnerDTO) {
-        // this.ref = this.dialogService.open(AdminOwnerUpdateComponent, {
-        //     header: 'Update',
-        //     data: {
-        //         ...owner,
-        //     },
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     console.log(res, 'DIALOG CLOSe', res.status);
-        //     if (res && res.status === 200) {
-        //         this.getAllTenants();
-        //     }
-        // });
+    openUpdateOwnerModal(user: UserDTO) {
+        this.ref = this.dialogService.open(AdminUsersUpdateModalComponent, {
+            header: 'Update',
+            data: {
+                ...user,
+            },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.getAllManagersByAdmin();
+            }
+        });
     }
 
     getAllManagersByAdmin() {
@@ -94,24 +94,5 @@ export class AdminManagerListingComponent implements OnInit {
             });
     }
 
-    downloadMasterTable() {
-        this.ownerDataService.DownloadAllOwnersAsExcel().subscribe((res) => {
-            const blob = new Blob([res], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'owners.xlsx'; // Specify the file name
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Downloaded',
-                detail: 'Owner List Downloaded',
-            });
-        });
-    }
+    downloadMasterTable() {}
 }

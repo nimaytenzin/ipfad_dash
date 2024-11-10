@@ -140,6 +140,8 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
     unitSurcharges: UnitSurchargeDTO[];
     leaseCharges: LeaseSurchargeDTO[] = [];
     rent: number = 0;
+    ratePerArea: number;
+
     securityDepositAmount: number = 0;
 
     createLeaseChargeForm: FormGroup;
@@ -415,6 +417,7 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
             leaseEndDate: this.leaseEndDate.toDateString(),
             rent: Number(this.rent),
             securityDepositAmount: Number(this.securityDepositAmount),
+            ratePerArea: this.ratePerArea,
             paymentDueDay: this.paymentDueDay,
             applyLatePaymentFee: false,
             use: this.selectedUse,
@@ -453,36 +456,36 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
                     });
                     this.notificationService
                         .SendNotification({
-                            fromUserId: this.admin.id,
+                            fromUserId:
+                                this.authService.GetCurrentRole().adminId,
                             toUserId: res.tenantId,
                             notificationType: NOTIFICATIONTYPES.LEASE_CREATION,
                             leaseAgreementId: res.id,
                         })
-                        .subscribe((res) => {
-                            if (res) {
+                        .subscribe((resp) => {
+                            if (resp) {
                                 this.messageService.add({
                                     severity: 'info',
                                     summary: 'Notified',
                                     detail: 'Lease Agreement Creation Notification Sent',
                                 });
-                            }
-                        });
-
-                    this.notificationService
-                        .SendNotification({
-                            fromUserId: this.admin.id,
-                            toUserId: res.tenantId,
-                            notificationType:
-                                NOTIFICATIONTYPES.LEASE_SIGNING_REMINDER,
-                            leaseAgreementId: res.id,
-                        })
-                        .subscribe((res) => {
-                            if (res) {
-                                this.messageService.add({
-                                    severity: 'info',
-                                    summary: 'Notified',
-                                    detail: 'Lease Agreement Signing Notification Sent',
-                                });
+                                this.notificationService
+                                    .SendNotification({
+                                        fromUserId: this.admin.id,
+                                        toUserId: res.tenantId,
+                                        notificationType:
+                                            NOTIFICATIONTYPES.LEASE_SIGNING_REMINDER,
+                                        leaseAgreementId: res.id,
+                                    })
+                                    .subscribe((respp) => {
+                                        if (respp) {
+                                            this.messageService.add({
+                                                severity: 'info',
+                                                summary: 'Notified',
+                                                detail: 'Lease Agreement Signing Notification Sent',
+                                            });
+                                        }
+                                    });
                             }
                         });
                 }

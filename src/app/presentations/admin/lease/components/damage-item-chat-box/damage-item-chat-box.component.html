@@ -1,4 +1,4 @@
-<div class="" *ngIf="damageItem">
+<div class="" *ngIf="damageItem" class="bg-gray-50">
     <div style="background-color: aliceblue" class="p-3">
         <p>Issue# {{ damageItem.id }}</p>
         <p>{{ damageItem.title }} at {{ damageItem.location }}</p>
@@ -42,7 +42,7 @@
                 </p>
             </div>
         </div>
-        <div *ngIf="!threads.length">- Empty Threads</div>
+        <div *ngIf="!threads.length">- No conversation</div>
     </div>
     <div>
         <p-divider></p-divider>
@@ -64,6 +64,8 @@
     </div>
 </div>
 
-<div *ngIf="!damageItem">
+<div *ngIf="!damageItem" class="border-left-1 h-full border-gray-300">
+    <p class="font-semibold">Conversation</p>
+    <p-divider></p-divider>
     <p>Please select a damage item and load conversation</p>
 </div>

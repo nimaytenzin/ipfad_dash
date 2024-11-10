@@ -15,6 +15,8 @@ import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaginatorModule } from 'primeng/paginator';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
+import { MessageService } from 'primeng/api';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 @Component({
     selector: 'app-admin-thram-listings',
@@ -46,7 +48,9 @@ export class AdminThramListingsComponent implements OnInit {
     constructor(
         private dialogService: DialogService,
         private thramDataService: ThramDataService,
-        private authService: AuthService
+        private authService: AuthService,
+        private messageService: MessageService,
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {}
 
     ngOnInit() {
@@ -104,7 +108,31 @@ export class AdminThramListingsComponent implements OnInit {
         });
     }
 
-    downloadMasterTable() {}
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadThramsByAdminId(this.authService.GetCurrentRole().adminId)
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'thrams.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
+    }
 
     openCreatePlotModal(item: ThramDTO) {
         this.ref = this.dialogService.open(AdminPlotCreateComponent, {

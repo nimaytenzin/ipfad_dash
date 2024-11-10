@@ -1,0 +1,136 @@
+<div>
+    <div class="flex justify-content-between my-4">
+        <p>Unit Lease Master Table</p>
+        <div class="flex gap-2">
+            <p-button
+                label=" Lease"
+                icon="pi pi-plus"
+                size="small"
+                (click)="openCreateLeaseAgreementModal()"
+            ></p-button>
+            <p-button
+                label="Download Excel"
+                icon="pi pi-file-excel"
+                size="small"
+                (click)="downloadMasterTable()"
+            ></p-button>
+        </div>
+    </div>
+    <div>
+        <div class="flex align-items-center mb-2 justify-content-between">
+            <div>
+                <p>
+                    Showing {{ paginatedUnitLease.data.length }} of
+                    {{ paginatedUnitLease.count }} Entries
+                </p>
+            </div>
+            <div class="">
+                <p-paginator
+                    (onPageChange)="onPageChange($event)"
+                    [first]="firstPageNumber"
+                    [rows]="rows"
+                    [totalRecords]="paginatedUnitLease.count"
+                    [rowsPerPageOptions]="rowsPerPageOptions"
+                    [showFirstLastIcon]="true"
+                    #paginator
+                ></p-paginator>
+            </div>
+        </div>
+        <div>
+            <p-table
+                [value]="paginatedUnitLease.data"
+                styleClass="p-datatable-striped mb-2"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Status</th>
+                        <th>Unit</th>
+                        <th>Plot</th>
+                        <th>Tenant</th>
+                        <th>Use</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Duration</th>
+                        <th>Rent</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>
+                            <p [ngClass]="getStatusClass(item.status)">
+                                {{ item.status }}
+                            </p>
+                        </td>
+
+                        <td class="text-center">
+                            <p class="text-wrap:nowrap">
+                                {{ item.unit?.floorLevel }}-{{
+                                    item.unit?.unitNumber
+                                }}
+                            </p>
+                            <p class="text-xs">
+                                {{ item.building.name }},
+                                {{ item.building.buildingNumber }}
+                            </p>
+                        </td>
+
+                        <td>{{ item.plot.plotId }}</td>
+
+                        <td style="text-wrap: nowrap">
+                            <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
+                                <p
+                                    pTooltip="double click to view Tenant details"
+                                    class="cursor-pointer hover:underline hover:font-semibold"
+                                    (dblclick)="
+                                        goToTenantDetailedView(item.tenant.id)
+                                    "
+                                >
+                                    Name: {{ item.tenant?.nameEnglish }}
+                                </p>
+                                <p>
+                                    Phone Number: {{ item.tenant.phoneNumber }}
+                                </p>
+                            </div>
+                            <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
+                                <p>Name: {{ item.organization.name }}</p>
+                                <p
+                                    pTooltip="double click to view Tenant details"
+                                    tooltipPosition="left"
+                                    class="cursor-pointer hover:underline hover:font-semibold"
+                                    (dblclick)="
+                                        goToTenantDetailedView(item.tenant.id)
+                                    "
+                                >
+                                    {{ item.organization.userType }} :
+                                    {{ item.tenant?.nameEnglish }}
+                                </p>
+                                <p>
+                                    Phone Number: {{ item.tenant.phoneNumber }}
+                                </p>
+                            </div>
+                        </td>
+                        <td>{{ item.use }}</td>
+                        <td>{{ item.leaseStartDate }}</td>
+                        <td>{{ item.leaseEndDate }}</td>
+                        <td>{{ item.leaseDurationMonths }} Months</td>
+                        <td>Nu.{{ computeMonthlyPayable(item) }}</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <p-button
+                                    size="small"
+                                    label="View"
+                                    (click)="goToDetailedView(item)"
+                                    severity="secondary"
+                                    icon="pi pi-eye"
+                                ></p-button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p *ngIf="!paginatedUnitLease.count">- No Unit/Flat leased</p>
+        </div>
+    </div>
+</div>

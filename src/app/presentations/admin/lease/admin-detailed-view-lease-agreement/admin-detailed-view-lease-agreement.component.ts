@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {
     DynamicDialogRef,
@@ -17,7 +17,10 @@ import { DamageItemDTO } from 'src/app/core/dataservice/damage-item/damage.item.
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
-import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import {
+    NotificationDTO,
+    NotificationService,
+} from 'src/app/core/dataservice/notification/notification.service';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 import {
     AuthenticatedUserDTO,
@@ -37,13 +40,22 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TabViewChangeEvent, TabViewModule } from 'primeng/tabview';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GalleriaModule } from 'primeng/galleria';
 import { image } from 'html2canvas/dist/types/css/types/image';
 import { DamageItemChatBoxComponent } from '../components/damage-item-chat-box/damage-item-chat-box.component';
 import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.selection.preferences';
 import { ImageModule } from 'primeng/image';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
+import * as L from 'leaflet';
+import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
+import { ChipModule } from 'primeng/chip';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { AdminLeasePaymentsComponent } from '../components/admin-lease-payments/admin-lease-payments.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { AdminLeaseNotificationsComponent } from '../components/admin-lease-notifications/admin-lease-notifications.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -63,16 +75,27 @@ import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
         DamageItemChatBoxComponent,
         CalendarModule,
         ImageModule,
+        ChipModule,
+        PdfViewerModule,
+        AdminLeasePaymentsComponent,
+        ProgressSpinnerModule,
+        AdminLeaseNotificationsComponent,
+        TooltipModule,
     ],
     providers: [ConfirmationService, DialogService],
 })
 export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
     ref: DynamicDialogRef | undefined;
 
+    showPdfLoading: boolean = true;
+
+    pageTitle: string;
+
     leaseTypeEnums = LEASETYPE;
     lesseeTypeEnums = LESSEETYPE;
-
     lessorTypes = LESSORTYPE;
+    leaseStatus = LEASESTATUS;
+
     leaseAgreement: LeaseAgreeementDTO;
     leaseAgreementId: number;
     leaseCharges: LeaseSurchargeDTO[] = [];
@@ -99,6 +122,16 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
     selectedDamageItem: DamageItemDTO | null = null;
     leaseTerminated: boolean = false;
 
+    //MAP
+    cartoLightUrl =
+        'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    googleSatUrl = 'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}';
+    map!: L.Map;
+    plotsGeojsonLayer: L.GeoJSON;
+    buildingsGeoJsonLayer: L.GeoJSON;
+
+    pdfSrc: string;
+
     constructor(
         private pdfGeneratorDataService: PDFGeneratorDataService,
         private messageService: MessageService,
@@ -109,10 +142,15 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         private damageItemService: DamageItemService,
         private route: ActivatedRoute,
         private adminTabSelectionPreferenceService: AdminTabPreferenceService,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private geometryDataService: GeometryDataService,
+        private router: Router
     ) {
         this.leaseAgreementId = Number(
             this.route.snapshot.paramMap.get('leaseAgreementId')
+        );
+        this.pdfSrc = this.pdfGeneratorDataService.GetPdfUrl(
+            this.leaseAgreementId
         );
         this.adminTabSelectionPreferenceService.adminViewLeaseDetailedSelectedTabIndex$.subscribe(
             (tabIndex) => {
@@ -125,8 +163,15 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                 this.admin = res;
             });
     }
+    ngAfterViewInit(): void {}
 
     ngOnInit() {
+        this.getLeaseAgreementDetails();
+        this.getEntryDamageItems();
+        this.getMaintenanceRequestItems();
+    }
+
+    getLeaseAgreementDetails() {
         this.leaseAgreemenetDataService
             .GetLeaseAgreementDetailed(this.leaseAgreementId)
             .subscribe({
@@ -144,16 +189,35 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                     if (
                         this.leaseAgreement.status ===
                             LEASESTATUS.TERMINATED_BY_OWNER ||
-                        LEASESTATUS.TERMINATED_BY_TENANT ||
-                        LEASESTATUS.SUSPENDED ||
-                        LEASESTATUS.CANCELLED
+                        this.leaseAgreement.status ===
+                            LEASESTATUS.TERMINATED_BY_TENANT ||
+                        this.leaseAgreement.status === LEASESTATUS.SUSPENDED ||
+                        this.leaseAgreement.status === LEASESTATUS.CANCELLED
                     ) {
                         this.leaseTerminated = true;
                     }
+
+                    switch (this.leaseAgreement.type) {
+                        case LEASETYPE.UNIT:
+                            this.pageTitle = `Lease Agreement for Unit ${this.leaseAgreement.unit.floorLevel}-${this.leaseAgreement.unit.unitNumber}`;
+                            break;
+                        case LEASETYPE.BUILDING:
+                            this.pageTitle = `Lease Agreement for Building ${this.leaseAgreement.building.name}(${this.leaseAgreement.building.buildingNumber})`;
+                            break;
+                        case LEASETYPE.LAND:
+                            this.pageTitle = `Lease Agreement for Plot ${this.leaseAgreement.plot.plotId}`;
+                            break;
+                        default:
+                            this.pageTitle = 'Lease Agreement';
+                    }
+
+                    this.renderMap();
                 },
             });
-        this.getEntryDamageItems();
-        this.getMaintenanceRequestItems();
+    }
+
+    goToTenantDetailedView(tenantId: number) {
+        this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
     }
 
     getEntryDamageItems() {
@@ -172,6 +236,8 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                 },
             });
     }
+
+    onProgress(event) {}
 
     loadChat(item: DamageItemDTO) {
         this.selectedDamageItem = item;
@@ -235,121 +301,6 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         return toWords.convert(number);
     }
 
-    notifyEntryDamageReportSubmission() {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Notify Tenant?',
-            header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
-            acceptIcon: 'none',
-            rejectIcon: 'none',
-            rejectButtonStyleClass: 'p-button-text',
-            accept: () => {
-                this.notificationService
-                    .SendNotification({
-                        fromUserId: this.authService.GetAuthenticatedUser().id,
-                        toUserId: this.leaseAgreement.tenantId,
-                        notificationType:
-                            NOTIFICATIONTYPES.ENTRYDAMAGEREPORT_SUBMISSION_REMINDER,
-                        leaseAgreementId: this.leaseAgreement.id,
-                    })
-                    .subscribe({
-                        next: (res) => {
-                            this.messageService.add({
-                                severity: 'info',
-                                summary: 'Success',
-                                detail: 'Notification Reminder Sent',
-                            });
-                        },
-                    });
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Rejected',
-                    detail: 'You have rejected',
-                    life: 3000,
-                });
-            },
-        });
-    }
-    notifyLeaseSigning() {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Notify Tenant?',
-            header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
-            acceptIcon: 'none',
-            rejectIcon: 'none',
-            rejectButtonStyleClass: 'p-button-text',
-            accept: () => {
-                this.notificationService
-                    .SendNotification({
-                        fromUserId: this.authService.GetAuthenticatedUser().id,
-                        toUserId: this.leaseAgreement.tenantId,
-                        notificationType:
-                            NOTIFICATIONTYPES.LEASE_SIGNING_REMINDER,
-                        leaseAgreementId: this.leaseAgreement.id,
-                    })
-                    .subscribe({
-                        next: (res) => {
-                            this.messageService.add({
-                                severity: 'info',
-                                summary: 'Success',
-                                detail: 'Notification Reminder Sent',
-                            });
-                        },
-                    });
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Rejected',
-                    detail: 'You have rejected',
-                    life: 3000,
-                });
-            },
-        });
-    }
-    notifySecurityDepositPayment() {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Notify Tenant?',
-            header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
-            acceptIcon: 'none',
-            rejectIcon: 'none',
-            rejectButtonStyleClass: 'p-button-text',
-            accept: () => {
-                this.notificationService
-                    .SendNotification({
-                        fromUserId: this.authService.GetAuthenticatedUser().id,
-                        toUserId: this.leaseAgreement.tenantId,
-                        notificationType:
-                            NOTIFICATIONTYPES.SECUTIRYDEPOSIT_PAYMENT_REMINDER,
-                        leaseAgreementId: this.leaseAgreement.id,
-                    })
-                    .subscribe({
-                        next: (res) => {
-                            this.messageService.add({
-                                severity: 'info',
-                                summary: 'Success',
-                                detail: 'Notification Reminder Sent',
-                            });
-                        },
-                    });
-            },
-            reject: () => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Rejected',
-                    detail: 'You have rejected',
-                    life: 3000,
-                });
-            },
-        });
-    }
-
     openConfirmLeaseTerminationModal() {
         this.showTerminateLeaseModal = true;
     }
@@ -380,19 +331,20 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                         detail: 'Sending Lease Termination Notification....',
                         life: 3000,
                     });
+                    this.getLeaseAgreementDetails();
 
                     this.notificationService
                         .SendNotification({
                             fromUserId:
-                                this.authService.GetAuthenticatedUser().id,
+                                this.authService.GetCurrentRole().adminId,
                             toUserId: this.leaseAgreement.tenantId,
                             notificationType:
                                 NOTIFICATIONTYPES.LEASE_TERMINATION,
                             leaseAgreementId: this.leaseAgreement.id,
                         })
                         .subscribe({
-                            next: (res) => {
-                                if (res) {
+                            next: (resp) => {
+                                if (resp) {
                                     this.messageService.add({
                                         severity: 'success',
                                         summary: 'Sent',
@@ -401,11 +353,11 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                                     });
                                 }
                             },
-                            error: (err) => {
+                            error: (error) => {
                                 this.messageService.add({
                                     severity: 'error',
                                     summary: 'Error',
-                                    detail: err.error.message,
+                                    detail: error.error.message,
                                     life: 3000,
                                 });
                             },
@@ -424,6 +376,15 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         this.showTerminateLeaseModal = false;
     }
     openRenewLeaseModal() {
+        if (!this.leaseAgreement.leaseSigningDate) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Not Active',
+                detail: 'Lease is Not yet Active',
+                life: 3000,
+            });
+            return;
+        }
         this.showRenewLeaseModal = true;
     }
     confirmLeaseRenewal() {
@@ -579,5 +540,86 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         this.adminTabSelectionPreferenceService.updateAdminDetailedLeaseSelectedTab(
             event.index
         );
+    }
+
+    pdfLoaded() {
+        this.showPdfLoading = false;
+    }
+
+    renderMap() {
+        var satelliteMap = L.tileLayer(this.googleSatUrl, {
+            maxNativeZoom: 21,
+            maxZoom: 24,
+        });
+
+        this.map = L.map('propertyMap', {
+            layers: [satelliteMap],
+            zoomControl: false,
+            attributionControl: false,
+            maxZoom: 22,
+            renderer: L.canvas({ tolerance: 3 }),
+        }).setView([27.43503, 89.651983], 15);
+
+        this.loadPlotGeometry();
+    }
+
+    loadPlotGeometry() {
+        this.geometryDataService
+            .GetPlotsGeomByPlotIdCsv(this.leaseAgreement.plot.plotId)
+            .subscribe((res: any) => {
+                console.log(res);
+                this.plotsGeojsonLayer = L.geoJSON(res, {
+                    style: (feature) => {
+                        return {
+                            fillColor: 'transparent',
+                            weight: 2,
+                            opacity: 1,
+                            color: 'red',
+                        };
+                    },
+                }).addTo(this.map);
+                this.map.fitBounds(this.plotsGeojsonLayer.getBounds());
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Plot Details Found',
+                    detail: 'Plot added to the map',
+                });
+                // this.loadBuildingGeometry();
+            });
+    }
+
+    loadBuildingGeometry() {
+        this.geometryDataService.GetAllBuildingsGeom().subscribe((res: any) => {
+            this.buildingsGeoJsonLayer = L.geoJSON(res, {
+                style: (feature) => {
+                    return {
+                        fillColor: 'white',
+                        weight: 2,
+                        opacity: 1,
+                        color: 'yellow',
+                    };
+                },
+            }).addTo(this.map);
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Building Details Found',
+                detail: 'Buildings added to the map',
+            });
+        });
+    }
+
+    getStatusClass(status: string): string {
+        switch (status) {
+            case LEASESTATUS.PENDING:
+                return 'bg-red-600 text-gray-100';
+            case LEASESTATUS.ACTIVE:
+                return 'bg-green-600 text-gray-100';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'bg-yellow-600 text-gray-100';
+            case LEASESTATUS.EXPIRED:
+                return 'bg-red-600 text-gray-100';
+            default:
+                return 'bg-gray-600 text-gray-100';
+        }
     }
 }

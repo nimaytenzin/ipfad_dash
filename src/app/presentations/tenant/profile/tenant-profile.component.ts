@@ -126,7 +126,7 @@ export class TenantProfileComponent implements OnInit {
                 }
                 this.locationDataService
                     .GetAllAdministrativeZones({
-                        dzongkhagId: res.dzongkhagId.toString(),
+                        dzongkhagId: res.dzongkhagId,
                     })
                     .subscribe((zones) => {
                         this.administrativeZones = zones;

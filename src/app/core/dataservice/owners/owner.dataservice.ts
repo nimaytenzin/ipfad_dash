@@ -32,10 +32,4 @@ export class OwnerDataService {
     DeleteOwner(id: number) {
         return this.http.delete(`${this.apiUrl}/owner/${id}`);
     }
-
-    DownloadAllOwnersAsExcel() {
-        return this.http.get(`${this.apiUrl}/owner/export/excel`, {
-            responseType: 'blob',
-        });
-    }
 }

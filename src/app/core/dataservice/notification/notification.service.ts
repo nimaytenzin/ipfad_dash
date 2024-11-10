@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { API_URL } from '../../constants/constants';
@@ -8,6 +8,11 @@ import {
     BroadcastNotificationToAllUnderAdminDTO,
     SendNotificationDTO,
 } from './notification.dto';
+import {
+    PaginatedData,
+    PaginatedParamsOptions,
+} from '../../dto/paginated-data.dto';
+import { UserDTO } from '../users-and-auth/dto/user.dto';
 
 export interface SendSMSOTP {
     contact: number;
@@ -27,6 +32,10 @@ export interface NotificationDTO {
 
     // leaseAgreement?: LeaseAgreementDTO;
     paymentAdivise?: PaymentAdviceDto;
+    sender: UserDTO;
+    recipient: UserDTO;
+
+    status: string;
 }
 
 @Injectable({
@@ -59,6 +68,58 @@ export class NotificationService {
         return this.http.post(
             `${this.apiUrl}/notification/broadcast/all/admin`,
             data
+        );
+    }
+
+    GetAllNotificationsByLeaseAgreementPaginated(
+        leaseAgreementId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<NotificationDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<NotificationDTO>>(
+            `${this.apiUrl}/notification/admin/lease-agreement/p/${leaseAgreementId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllNotificationsByTenantPaginated(
+        tenantId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<NotificationDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<NotificationDTO>>(
+            `${this.apiUrl}/notification/admin/tenant/p/${tenantId}`,
+            { params: httpParams }
         );
     }
 }

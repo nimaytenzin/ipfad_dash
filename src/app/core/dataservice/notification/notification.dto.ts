@@ -17,3 +17,39 @@ export class BroadcastNotificationToAPlotUnderAdminDTO {
     plotId: number;
     message: string;
 }
+
+export interface NotificationTypeDTO {
+    id: number;
+    name: string;
+    description: string;
+}
+export interface NotificationDTO {
+    id: number;
+    notificationTypeId: number;
+    fromUserId: number;
+    toUserId: number;
+    message: string;
+
+    paymentAdviseId: number;
+    paymentReceiptId: number;
+    leaseAgreementId: number;
+    damageItemId: number;
+
+    notificationType: NotificationTypeDTO;
+}
+
+export enum NotificationChannelStatusEnum {
+    SUCCESS = 'SUCCESS',
+    FAILED = 'FAILED',
+}
+
+export interface NotificationChannelStatusDTO {
+    status: NotificationChannelStatusEnum;
+    message: string;
+}
+
+export interface NotificationResponseDTO {
+    SMS: NotificationChannelStatusDTO | null;
+    PUSH: NotificationChannelStatusDTO | null;
+    EMAIL: NotificationChannelStatusDTO | null;
+}

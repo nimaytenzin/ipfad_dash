@@ -19,4 +19,8 @@ export class PDFGeneratorDataService {
             }
         );
     }
+
+    GetPdfUrl(leaseAgreementId: number): string {
+        return `${this.apiUrl}/pdf-generator/lease-agreement/${leaseAgreementId}`;
+    }
 }

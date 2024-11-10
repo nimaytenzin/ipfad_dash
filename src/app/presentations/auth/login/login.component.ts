@@ -72,27 +72,27 @@ export class LoginComponent {
         private messageService: MessageService
     ) {
         this.loginForm = this.fb.group({
-            phoneNumber: [
-                '17263764',
+            cid: [
+                '10302000402',
                 [Validators.required, Validators.pattern(/^[0-9]{8}$/)],
             ],
             password: ['1307', [Validators.required]],
         });
 
-        let user = this.authService.GetAuthenticatedUser();
-        if (user) {
-            this.loginForm.patchValue({
-                phoneNumber: user.phoneNumber,
-            });
-        }
+        // let user = this.authService.GetAuthenticatedUser();
+        // if (user) {
+        //     this.loginForm.patchValue({
+        //         phoneNumber: user.phoneNumber,
+        //     });
+        // }
     }
 
     login() {
-        if (!this.loginForm.value.phoneNumber) {
+        if (!this.loginForm.value.cid) {
             this.messageService.add({
                 severity: 'error',
                 summary: 'Missing Field',
-                detail: 'Please enter your Phone Number la.',
+                detail: 'Please enter your CID la.',
             });
             return;
         }
@@ -106,7 +106,7 @@ export class LoginComponent {
             return;
         }
         const loginData = {
-            phoneNumber: this.loginForm.value.phoneNumber,
+            cid: this.loginForm.value.cid,
             password: this.loginForm.value.password,
         };
 

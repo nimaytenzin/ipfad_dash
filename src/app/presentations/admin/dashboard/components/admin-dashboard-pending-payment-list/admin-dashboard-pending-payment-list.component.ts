@@ -19,7 +19,7 @@ import {
     PaymentAdviceSummaryDTO,
 } from 'src/app/core/dto/payments/payment-advice.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
-import { ViewPaymentAdviceComponent } from '../../../transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
 import { DividerModule } from 'primeng/divider';
 import { Router } from '@angular/router';
 

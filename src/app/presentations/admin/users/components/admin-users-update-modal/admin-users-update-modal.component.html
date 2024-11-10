@@ -40,6 +40,16 @@
         <input pInputText id="email" formControlName="email" type="text" />
     </div>
 
+    <div class="flex flex-column gap-2">
+        <label for="permanentAddress">Permanent Address</label>
+        <input
+            pInputText
+            id="permanentAddress"
+            formControlName="permanentAddress"
+            type="text"
+        />
+    </div>
+
     <div *ngIf="updateUserForm.get('hasLoginAccess')?.value">
         <div class="flex flex-column gap-2 mb-2">
             <label for="phoneNumber">Phone Number (*required) </label>
@@ -49,10 +59,6 @@
                 inputId="withoutgrouping"
                 [useGrouping]="false"
             />
-        </div>
-        <div class="flex flex-column gap-2 my-2">
-            <label for="password">Password (*required) </label>
-            <input type="text" pInputText formControlName="password" />
         </div>
     </div>
 

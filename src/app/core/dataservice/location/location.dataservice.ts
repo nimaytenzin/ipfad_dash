@@ -29,7 +29,7 @@ export class LocationDataService {
     }
     GetAllAdministrativeZones(params?: {
         type?: string;
-        dzongkhagId?: string;
+        dzongkhagId?: number;
     }): Observable<AdministrativeZoneDTO[]> {
         let httpParams = new HttpParams();
 

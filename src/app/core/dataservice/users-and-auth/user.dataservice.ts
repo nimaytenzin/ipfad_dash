@@ -60,4 +60,18 @@ export class UserDataService {
             `${this.apiUrl}/auth/authenticated/${id}`
         );
     }
+
+    AdminFindTenantByPhoneNumber(phoneNumber: number): Observable<UserDTO> {
+        return this.http.get<UserDTO>(
+            `${this.apiUrl}/auth/tenant/phone/${phoneNumber}`
+        );
+    }
+
+    AdminFindTenantByUserId(userId: number): Observable<UserDTO> {
+        return this.http.get<UserDTO>(`${this.apiUrl}/auth/tenant/${userId}`);
+    }
+
+    AdminFindTenantByCID(cid: string): Observable<UserDTO> {
+        return this.http.get<UserDTO>(`${this.apiUrl}/auth/tenant/cid/${cid}`);
+    }
 }

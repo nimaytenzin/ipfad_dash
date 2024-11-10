@@ -67,6 +67,16 @@ export const ADMINSIDEBARITEMS = [
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/list-buildings'],
             },
+            {
+                label: 'Search',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/search'],
+            },
+            {
+                label: 'Map View',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/map-view'],
+            },
         ],
     },
 
@@ -78,31 +88,47 @@ export const ADMINSIDEBARITEMS = [
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-lease/lands'],
             },
-            {
-                label: 'Building Lease',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-lease/buildings'],
-            },
+            // {
+            //     label: 'Building Lease',
+            //     icon: 'pi pi-fw pi-th-large',
+            //     routerLink: ['/admin/master-lease/buildings'],
+            // },
             {
                 label: 'Unit Lease',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-lease/units'],
             },
-        ],
-    },
-    {
-        label: 'Search Module',
-        items: [
             {
                 label: 'Search',
                 icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-properties/search/plots'],
+                routerLink: ['/admin/master-lease/search'],
+            },
+        ],
+    },
+
+    {
+        label: 'Transactions',
+        items: [
+            {
+                label: 'Advice',
+                icon: 'pi pi-fw pi-building',
+                routerLink: ['/admin/master-transactions'],
             },
             {
-                label: 'Map View',
+                label: 'Search',
                 icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-properties/map-view'],
+                routerLink: ['/admin/master-transactions/search'],
             },
+            // {
+            //     label: 'Receipts',
+            //     icon: 'pi pi-fw pi-th-large',
+            //     routerLink: ['/admin/master-transactions/invoices'],
+            // },
+            // {
+            //     label: 'Remittance',
+            //     icon: 'pi pi-fw pi-th-large',
+            //     routerLink: ['/admin/master-transactions/invoices'],
+            // },
         ],
     },
 
@@ -125,26 +151,6 @@ export const ADMINSIDEBARITEMS = [
             //     icon: 'pi pi-fw pi-th-large',
             //     routerLink: ['/admin/master-users/admins'],
             // },
-        ],
-    },
-    {
-        label: 'Transactions',
-        items: [
-            {
-                label: 'Advice',
-                icon: 'pi pi-fw pi-building',
-                routerLink: ['/admin/master-transactions'],
-            },
-            {
-                label: 'Receipts',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-transactions/invoices'],
-            },
-            {
-                label: 'Remittance',
-                icon: 'pi pi-fw pi-th-large',
-                routerLink: ['/admin/master-transactions/invoices'],
-            },
         ],
     },
 

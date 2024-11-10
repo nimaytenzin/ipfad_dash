@@ -17,7 +17,12 @@ export class GeometryDataService {
         return this.http.get(`${this.apiUrl}/geom/plots`);
     }
 
+    /**
+     * Retrieves geometry data for specific buildings by their IDs.
+     * @param buildingIdCsv - A comma-separated string of Zhichar building IDs (zhichar building IDs).
+     */
     GetBuildingsGeomByBuildingIdCsv(buildingIdCsv: string) {
+        //BuildingID = zhichar building Id
         return this.http.get(`${this.apiUrl}/geom/buildings/${buildingIdCsv}`);
     }
 

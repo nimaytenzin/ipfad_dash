@@ -16,6 +16,7 @@ import { AdminUsersCreateModalComponent } from '../components/admin-users-create
 import { USERROLESENUM } from 'src/app/core/constants/enums';
 import { AdminViewPropertiesModalComponent } from '../components/admin-view-properties-modal/admin-view-properties-modal.component';
 import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 @Component({
     selector: 'app-admin-owner-listing',
@@ -43,7 +44,8 @@ export class AdminOwnerListingComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
         private userDataService: UserDataService,
-        private authService: AuthService
+        private authService: AuthService,
+        private excelGeneratorDataService: ExcelGeneratorDataService
     ) {}
 
     ngOnInit() {
@@ -71,13 +73,12 @@ export class AdminOwnerListingComponent implements OnInit {
 
     openUpdateOwnerModal(owner: OwnerDTO) {
         this.ref = this.dialogService.open(AdminUsersUpdateModalComponent, {
-            header: 'Update Owner',
+            header: 'Update',
             data: {
                 ...owner,
             },
         });
         this.ref.onClose.subscribe((res) => {
-            console.log(res, 'DIALOG CLOSe', res.status);
             if (res && res.status === 200) {
                 this.getAllOwners();
             }
@@ -124,24 +125,29 @@ export class AdminOwnerListingComponent implements OnInit {
     }
 
     downloadMasterTable() {
-        this.ownerDataService.DownloadAllOwnersAsExcel().subscribe((res) => {
-            const blob = new Blob([res], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'owners.xlsx'; // Specify the file name
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Downloaded',
-                detail: 'Owner List Downloaded',
-            });
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
         });
+        this.excelGeneratorDataService
+            .DownloadOwnersByAdmin(this.authService.GetCurrentRole().adminId)
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'owners.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
     }
     openViewPropertiesModal(item: OwnerDTO) {
         this.ref = this.dialogService.open(AdminViewPropertiesModalComponent, {

@@ -21,6 +21,7 @@ import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease/le
 import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 @Component({
     selector: 'app-admin-list-units',
@@ -50,7 +51,8 @@ export class AdminListUnitsComponent implements OnInit {
         private messageService: MessageService,
         private leaseAgreementDataService: LeaseAgreementDataService,
         private notificationService: NotificationService,
-        private authService: AuthService
+        private authService: AuthService,
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {}
     LESSEETYPES = LESSEETYPE;
     ref: DynamicDialogRef | undefined;
@@ -205,5 +207,31 @@ export class AdminListUnitsComponent implements OnInit {
                     });
             },
         });
+    }
+
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadUnitsByAdmin(this.authService.GetCurrentRole().adminId)
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'units.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
     }
 }

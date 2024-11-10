@@ -13,7 +13,11 @@
     <p>Email: {{ tenant.email }}</p>
 
     <div class="flex gap-2 mt-4">
-        <p-button label="Edit Details" size="small" />
+        <p-button
+            label="Edit Details"
+            (click)="openUpdateUserModal()"
+            size="small"
+        />
         <p-button label="Reset Password" size="small" />
     </div>
 

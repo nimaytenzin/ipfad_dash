@@ -67,7 +67,7 @@ export class AdminUserAddOrganizationModalComponent implements OnInit {
     createOrganization() {
         if (this.createOrganizationForm.valid) {
             const newData: CreateOrganizationDTO = {
-                userId: this.userId,
+                userId: Number(this.userId),
                 type: this.createOrganizationForm.controls['type'].value,
                 userType:
                     this.createOrganizationForm.controls['userType'].value,

@@ -11,8 +11,8 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { InvoiceDTO } from 'src/app/core/dto/payments/invoice/invoice.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/admin-master-transactions/shared-components/view-payment-advice/view-payment-advice.component';
-import { AdminViewPaymentReceiptModalComponent } from '../../admin-master-transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { AdminViewPaymentReceiptModalComponent } from '../../shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
 
 @Component({
@@ -71,7 +71,7 @@ export class AdminPaymentAdvicePaidListComponent implements OnInit {
         console.log(queryParams);
         this.paymentAdviceDataService
             .GetAllPaidPaymentAdviceByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({

@@ -4,10 +4,8 @@ import * as L from 'leaflet';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
-import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
 import { MessageService } from 'primeng/api';
-import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { AdminSpatialViewerPlotComponent } from 'src/app/presentations/admin/land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 import { CommonModule } from '@angular/common';
 @Component({

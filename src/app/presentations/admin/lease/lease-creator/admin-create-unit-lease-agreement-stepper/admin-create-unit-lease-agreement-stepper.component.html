@@ -337,31 +337,46 @@
                     <p-divider></p-divider>
                     <div class="flex w-full flex-column text-center gap-4">
                         <p>
-                            The aforementioned unit is leased to the
+                            The aforementioned {{ selectedLeaseType }} is leased
+                            to the
                             <strong>TENANT</strong>
                         </p>
 
                         monthly rent of
                         <p-inputGroup class="w-full">
                             <p-inputGroupAddon>Nu.</p-inputGroupAddon>
-                            <input
-                                type="text"
-                                pInputText
-                                placeholder="Monthly Rent"
+                            <p-inputNumber
                                 [(ngModel)]="rent"
+                                inputId="minmaxfraction"
+                                minFractionDigits="0"
+                                maxFractionDigits="10"
                             />
                         </p-inputGroup>
 
                         and a security deposit amount of
                         <p-inputGroup class="w-full">
                             <p-inputGroupAddon>Nu.</p-inputGroupAddon>
-                            <input
-                                type="text"
-                                pInputText
-                                placeholder="Security Deposit Amount"
+
+                            <p-inputNumber
                                 [(ngModel)]="securityDepositAmount"
+                                inputId="minmaxfraction"
+                                minFractionDigits="0"
+                                maxFractionDigits="10"
                             />
                         </p-inputGroup>
+
+                        <div *ngIf="selectedLeaseType === leaseTypeEnum.LAND">
+                            <p>Rate Per Square Feet</p>
+                            <p-inputGroup class="w-full">
+                                <p-inputGroupAddon>Nu.</p-inputGroupAddon>
+                                <p-inputNumber
+                                    [(ngModel)]="ratePerArea"
+                                    inputId="minmaxfraction"
+                                    minFractionDigits="0"
+                                    maxFractionDigits="10"
+                                />
+                            </p-inputGroup>
+                        </div>
 
                         <div
                             class="p-fluid flex justify-content-center gap-3 align-items-center mt-4"

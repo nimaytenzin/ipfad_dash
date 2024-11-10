@@ -22,6 +22,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { FormsModule } from '@angular/forms';
 import { AdminSearchTenantModalComponent } from '../components/admin-search-tenant-modal/admin-search-tenant-modal.component';
+import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-tenant-listing',
@@ -55,7 +57,8 @@ export class AdminTenantListingComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
         private userDataService: UserDataService,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -73,7 +76,15 @@ export class AdminTenantListingComponent implements OnInit {
         });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 201) {
-                this.getAllTenantsByAdmin();
+                this.ref = this.dialogService.open(
+                    AdminSearchTenantModalComponent,
+                    {
+                        header: 'Tenant Details',
+                        data: {
+                            phoneNumber: res.phoneNumber,
+                        },
+                    }
+                );
             }
         });
     }
@@ -96,19 +107,18 @@ export class AdminTenantListingComponent implements OnInit {
         });
     }
 
-    openUpdateOwnerModal(owner: OwnerDTO) {
-        // this.ref = this.dialogService.open(AdminOwnerUpdateComponent, {
-        //     header: 'Update',
-        //     data: {
-        //         ...owner,
-        //     },
-        // });
-        // this.ref.onClose.subscribe((res) => {
-        //     console.log(res, 'DIALOG CLOSe', res.status);
-        //     if (res && res.status === 200) {
-        //         this.getAllTenants();
-        //     }
-        // });
+    openUpdateUserModal(user: UserDTO) {
+        this.ref = this.dialogService.open(AdminUsersUpdateModalComponent, {
+            header: 'Update',
+            data: {
+                ...user,
+            },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.getAllTenantsByAdmin();
+            }
+        });
     }
     openDeleteOwnerModal(owner: OwnerDTO) {
         this.confirmationService.confirm({
@@ -184,24 +194,9 @@ export class AdminTenantListingComponent implements OnInit {
         });
     }
 
-    downloadMasterTable() {
-        this.ownerDataService.DownloadAllOwnersAsExcel().subscribe((res) => {
-            const blob = new Blob([res], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'owners.xlsx'; // Specify the file name
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-            this.messageService.add({
-                severity: 'success',
-                summary: 'Downloaded',
-                detail: 'Owner List Downloaded',
-            });
-        });
+    downloadMasterTable() {}
+
+    goToDetailedTenantView(item: UserDTO) {
+        this.router.navigate(['/admin/master-users/tenant/' + item.id]);
     }
 }

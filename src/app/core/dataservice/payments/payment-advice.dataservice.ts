@@ -51,6 +51,26 @@ export class PaymentAdviceDataService {
         );
     }
 
+    GeneratePAForLandLeaseByAdminYearAndMonth(
+        adminId: number,
+        month: number,
+        year: number
+    ) {
+        return this.http.get(
+            `${this.apiUrl}/payment-advice/generate/admin/land/${adminId}/${year}/${month}`
+        );
+    }
+
+    GeneratePAForUnitLeaseByAdminYearAndMonth(
+        adminId: number,
+        month: number,
+        year: number
+    ) {
+        return this.http.get(
+            `${this.apiUrl}/payment-advice/generate/admin/unit/${adminId}/${year}/${month}`
+        );
+    }
+
     GetAllPendingAdviceByUnit(unitId: number): Observable<PaymentAdviceDto[]> {
         return this.http.get<PaymentAdviceDto[]>(
             `${this.apiUrl}/payment-advice/pending/unit/${unitId}`
@@ -121,6 +141,60 @@ export class PaymentAdviceDataService {
 
         return this.http.get<PaginatedData<PaymentAdviceDto>>(
             `${this.apiUrl}/payment-advice/admin/pending/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetPendingPaymentAdivceByLeasePaginated(
+        leaseAgreementId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        console.log('GET PA BY LEASE');
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/lease/pending/p/${leaseAgreementId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetPaidPaymentAdivceByLeasePaginated(
+        leaseAgreementId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        console.log('GET PA BY LEASE');
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/lease/paid/p/${leaseAgreementId}`,
             { params: httpParams }
         );
     }
@@ -206,6 +280,72 @@ export class PaymentAdviceDataService {
 
         return this.http.get<PaginatedData<PaymentAdviceDto>>(
             `${this.apiUrl}/payment-advice/unit/paid/p/${unitId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllPendingByTenant(tenantId: number): Observable<PaymentAdviceDto[]> {
+        return this.http.get<PaymentAdviceDto[]>(
+            `${this.apiUrl}/payment-advice/admin/tenant/pending/${tenantId}`
+        );
+    }
+
+    GetAllPaidPaymentAdvicesByTenantPaginated(
+        tenantId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/tenant/paid/p/${tenantId}`,
+            { params: httpParams }
+        );
+    }
+
+    AdminGetAllPendingByPlot(
+        plotDatabaseId: number
+    ): Observable<PaymentAdviceDto[]> {
+        return this.http.get<PaymentAdviceDto[]>(
+            `${this.apiUrl}/payment-advice/admin/plot/pending/${plotDatabaseId}`
+        );
+    }
+
+    AdminGetAllPaidPaymentAdvicesByPlotPaginated(
+        plotDatabaseId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/plot/paid/p/${plotDatabaseId}`,
             { params: httpParams }
         );
     }

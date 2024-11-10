@@ -113,7 +113,12 @@ export class AdminUsersCreateModalComponent implements OnInit {
                     life: 3000,
                 });
                 this.isSubmitting = false;
-                this.ref.close({ status: 201, newUser: res });
+                this.ref.close({
+                    status: 201,
+                    newUser: res,
+                    phoneNumber:
+                        this.createUserForm.controls['phoneNumber'].value,
+                });
             },
             error: (err) => {
                 this.messageService.add({

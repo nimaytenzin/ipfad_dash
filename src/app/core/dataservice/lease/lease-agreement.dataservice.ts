@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { API_URL } from '../../constants/constants';
 import {
     CreateLeaseAgreementDTO,
+    LandLeasePaymentStatusDTO,
     LeaseAgreeementDTO,
     TerminateLeaseAgreementDTO,
+    UnitLeasePaymentStatusDTO,
 } from './lease-agreement.dto';
 import {
     PaginatedData,
@@ -211,19 +213,122 @@ export class LeaseAgreementDataService {
             `${this.apiUrl}/lease-agreement/active/unit/${unitId}`
         );
     }
-    // GetActiveLeaseAgreementsByTenant(
-    //     tenantId: number
-    // ): Observable<LeaseAgreementDTO[]> {
-    //     return this.http.get<LeaseAgreementDTO[]>(
-    //         `${this.apiUrl}/lease-agreement/active/tenant/${tenantId}`
-    //     );
-    // }
 
-    // GetExpiringLeaseByBuilding(buildingId: number) {
-    //     return this.http.get<LeaseAgreementDTO[]>(
-    //         `${this.apiUrl}/lease-agreement/expiring/building/${buildingId}`
-    //     );
-    // }
+    findLandLeasePaymentStatusByAdminAndYear(
+        adminId: number,
+        year: number
+    ): Observable<LandLeasePaymentStatusDTO[]> {
+        return this.http.get<LandLeasePaymentStatusDTO[]>(
+            `${this.apiUrl}/lease-agreement/payment-status/land/admin/${adminId}/${year}`
+        );
+    }
 
-    ///NEW ROUTES //
+    findUnitLeasePaymentStatusByAdminAndYear(
+        adminId: number,
+        year: number
+    ): Observable<UnitLeasePaymentStatusDTO[]> {
+        return this.http.get<UnitLeasePaymentStatusDTO[]>(
+            `${this.apiUrl}/lease-agreement/payment-status/unit/admin/${adminId}/${year}`
+        );
+    }
+
+    GetActiveLeaseAgreementsByTenant(
+        tenantId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/active/tenant/${tenantId}`
+        );
+    }
+
+    GetUpcomingExpirationLeaseAgreementsByTenant(
+        tenantId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/upcoming-expiry/tenant/${tenantId}`
+        );
+    }
+
+    GetPendingLeaseAgreementsByTenant(
+        tenantId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/pending/tenant/${tenantId}`
+        );
+    }
+
+    GetAllNonActiveLeaseByTenantPaginated(
+        tenantId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/lease-hisotry/non-active/tenant/p/${tenantId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllActiveLeaseAgreementsByPlot(
+        plotDatabaseId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/active/plot/${plotDatabaseId}`
+        );
+    }
+
+    GetAllUpcomingExpirationLeaseAgreementsByPlot(
+        plotDatabaseId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/upcoming-expiry/plot/${plotDatabaseId}`
+        );
+    }
+
+    GetAllPendingLeaseAgreementsByPlot(
+        plotDatabaseId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/pending/plot/${plotDatabaseId}`
+        );
+    }
+
+    GetAllNonActiveLeaseByPlotPaginated(
+        plotDatabaseId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/lease-hisotry/non-active/plot/p/${plotDatabaseId}`,
+            { params: httpParams }
+        );
+    }
 }
