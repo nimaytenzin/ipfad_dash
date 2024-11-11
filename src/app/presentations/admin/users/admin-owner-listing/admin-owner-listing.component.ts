@@ -124,6 +124,10 @@ export class AdminOwnerListingComponent implements OnInit {
             });
     }
 
+    enableLogin() {
+        alert('will be availble soon in v1.1');
+    }
+
     downloadMasterTable() {
         this.messageService.add({
             severity: 'info',
@@ -151,7 +155,11 @@ export class AdminOwnerListingComponent implements OnInit {
     }
     openViewPropertiesModal(item: OwnerDTO) {
         this.ref = this.dialogService.open(AdminViewPropertiesModalComponent, {
-            header: 'View Properties',
+            header:
+                'Properties under ' +
+                item.nameEnglish +
+                '/' +
+                item.nameDzongkha,
             data: {
                 ...item,
             },

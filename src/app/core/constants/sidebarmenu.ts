@@ -1,3 +1,5 @@
+import { USERROLESENUM } from './enums';
+
 export const TENANTSIDEBARITEMS = [
     {
         label: 'Home',
@@ -40,6 +42,7 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Dashboard',
                 icon: 'pi pi-fw pi-home',
                 routerLink: ['/admin'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
         ],
     },
@@ -51,31 +54,43 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Owners',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-users/owners'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Thrams',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/thrams'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Plots',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/plots'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Buildings',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/list-buildings'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
+            {
+                label: 'Units',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-properties/units'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Search',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/search'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Map View',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-properties/map-view'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
         ],
     },
@@ -87,6 +102,7 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Land Lease',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-lease/lands'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             // {
             //     label: 'Building Lease',
@@ -97,11 +113,13 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Unit Lease',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-lease/units'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Search',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-lease/search'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
         ],
     },
@@ -113,11 +131,13 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Advice',
                 icon: 'pi pi-fw pi-building',
                 routerLink: ['/admin/master-transactions'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Search',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-transactions/search'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             // {
             //     label: 'Receipts',
@@ -139,6 +159,7 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Managers',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-users/managers'],
+                roles: [USERROLESENUM.ADMIN],
             },
 
             {
@@ -161,16 +182,19 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Dzongkhags',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-locations/dzongkhags'],
+                roles: [USERROLESENUM.ADMIN],
             },
             {
                 label: 'Administrative Zones',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-locations/adm-zones'],
+                roles: [USERROLESENUM.ADMIN],
             },
             {
                 label: 'SubAdministrative Zones',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-locations/subadm-zones'],
+                roles: [USERROLESENUM.ADMIN],
             },
         ],
     },
@@ -182,11 +206,13 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Roles',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-roles'],
+                roles: [USERROLESENUM.ADMIN],
             },
             {
                 label: 'Bank Accounts',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-bank-accounts'],
+                roles: [USERROLESENUM.ADMIN],
             },
         ],
     },

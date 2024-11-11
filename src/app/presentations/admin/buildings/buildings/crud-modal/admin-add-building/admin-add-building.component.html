@@ -350,6 +350,38 @@
                 </div>
             </div>
 
+            <div class="field col-12 md:col-4">
+                <label for="dzongkhag">Year of Construction</label>
+                <p-inputNumber
+                    formControlName="yearOfConstruction"
+                    mode="decimal"
+                    inputId="withoutgrouping"
+                    [useGrouping]="false"
+                />
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="dzongkhag">Year of Capitalization</label>
+                <p-inputNumber
+                    formControlName="yearOfCapitalization"
+                    mode="decimal"
+                    inputId="withoutgrouping"
+                    [useGrouping]="false"
+                />
+            </div>
+            <div class="field col-12 md:col-4">
+                <label for="dzongkhag">Building Value</label>
+                <p-inputGroup>
+                    <p-inputGroupAddon>Nu</p-inputGroupAddon>
+                    <p-inputNumber
+                        formControlName="buildingValue"
+                        inputId="minmaxfraction"
+                        mode="decimal"
+                        [minFractionDigits]="0"
+                        [maxFractionDigits]="5"
+                    />
+                </p-inputGroup>
+            </div>
+
             <div class="col-12 md:12 flex align-items-center gap-3">
                 <p-checkbox
                     formControlName="isActive"

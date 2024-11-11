@@ -20,6 +20,8 @@ import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice/view-payment-advice.component';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
+import { AdminPlotPaymentAdviceListingsComponent } from '../admin-plot-payment-advice-listings/admin-plot-payment-advice-listings.component';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
     selector: 'app-admin-payment-advice-search-by-plot',
@@ -36,7 +38,9 @@ import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice'
         ButtonModule,
         CommonModule,
         PaginatorModule,
+        DividerModule,
         TableModule,
+        AdminPlotPaymentAdviceListingsComponent,
     ],
     providers: [DialogService],
 })
@@ -44,27 +48,6 @@ export class AdminPaymentAdviceSearchByPlotComponent implements OnInit {
     plotId: string;
 
     plot: PlotDTO;
-
-    leaseTypes = LEASETYPE;
-
-    paginatedPaidPaymentAdvice: PaginatedData<PaymentAdviceDto> = {
-        firstPage: 0,
-        currentPage: 0,
-        previousPage: 0,
-        nextPage: 0,
-        lastPage: 0,
-        limit: 0,
-        count: 0,
-        data: [],
-    };
-    pendingPaymentAdvices: PaymentAdviceDto[] = [];
-
-    ref: DynamicDialogRef;
-
-    rowsPerPageOptions = ROWSPERPAGEOPTION;
-    firstPageNumber = 0;
-    rows = ROWSPERPAGEOPTION[0];
-    currentPage = 0;
 
     constructor(
         private userDataService: UserDataService,
@@ -93,8 +76,6 @@ export class AdminPaymentAdviceSearchByPlotComponent implements OnInit {
                     detail: 'Plot Details Found.',
                 });
                 this.plot = res;
-                this.getPendingPaymentsByPlot(this.plot.id);
-                this.handlePagination();
             },
             error: (err) => {
                 this.messageService.add({
@@ -104,57 +85,5 @@ export class AdminPaymentAdviceSearchByPlotComponent implements OnInit {
                 });
             },
         });
-    }
-
-    getPendingPaymentsByPlot(plotDatabaseId: number) {
-        this.paymentAdviceDataService
-            .AdminGetAllPendingByPlot(plotDatabaseId)
-            .subscribe({
-                next: (res) => {
-                    this.pendingPaymentAdvices = res;
-                },
-                error: (err) => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: err.error.message,
-                    });
-                },
-            });
-    }
-
-    openViewPaymentReceipt(item: PaymentAdviceDto[]) {
-        this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
-            header: 'Payment Advice',
-            data: item,
-        });
-    }
-
-    onPageChange(event: PageEvent): void {
-        this.firstPageNumber = event.first;
-        this.currentPage = event.page;
-        this.rows = event.rows;
-        this.handlePagination();
-    }
-
-    private handlePagination(): void {
-        const queryParams: any = {
-            pageNo: this.currentPage,
-            pageSize: this.rows,
-        };
-
-        this.paymentAdviceDataService
-            .AdminGetAllPaidPaymentAdvicesByPlotPaginated(
-                this.plot.id,
-                queryParams
-            )
-            .subscribe({
-                next: (res) => {
-                    this.paginatedPaidPaymentAdvice = res;
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
     }
 }

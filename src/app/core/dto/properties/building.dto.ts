@@ -39,6 +39,10 @@ export interface CreateBuildingDTO {
     administrativeZoneId: number;
     subadministrativeZoneId: number;
 
+    yearOfConstruction?: number;
+    yearOfCapitalization?: number;
+    buildingValue?: number;
+
     plots: PlotDTO[];
 }
 
@@ -63,6 +67,10 @@ export interface BuildingDTO {
     address: string;
     landmark: string;
     areaSqM: number;
+
+    yearOfConstruction?: number;
+    yearOfCapitalization?: number;
+    buildingValue?: number;
 
     dzongkhagId: number;
     administrativeZoneId: number;
@@ -100,6 +108,10 @@ export interface UpdateBuildingDto {
     address: string;
     landmark: string;
     areaSqM: number;
+
+    yearOfConstruction?: number;
+    yearOfCapitalization?: number;
+    buildingValue?: number;
 
     dzongkhagId: number;
     administrativeZoneId: number;

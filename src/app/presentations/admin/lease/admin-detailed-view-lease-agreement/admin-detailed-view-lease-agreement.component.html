@@ -10,10 +10,19 @@
                         <i class="pi pi-bookmark-fill"></i>
                         {{ leaseAgreement?.status }}
                     </p>
+
                     <p class="text-xl font-semibold">
                         {{ pageTitle }}
                     </p>
                 </div>
+                <p *ngIf="leaseAgreement?.leaseModificationRemarks">
+                    Modified on
+                    {{
+                        leaseAgreement.leaseModificationDate
+                            | date : "mediumDate"
+                    }}, remarks:
+                    {{ leaseAgreement.leaseModificationRemarks }}
+                </p>
                 <div #tenantDetails class="mt-4">
                     <div
                         *ngIf="
@@ -112,7 +121,10 @@
     </div>
     <div class="grid">
         <div class="col-4">
-            <div id="propertyMap" style="height: 30vh; border-radius: 2%"></div>
+            <div
+                id="leaseDetailedMap"
+                style="height: 30vh; border-radius: 2%"
+            ></div>
 
             <div #propertyLeased class="mt-4">
                 <p class="font-bold">Property Details</p>
@@ -958,7 +970,7 @@
                     >Termination Date</label
                 >
                 <p-calendar
-                    [(ngModel)]="terminationDate"
+                    [(ngModel)]="leaseModificationDate"
                     [showIcon]="true"
                     appendTo="body"
                     [showOnFocus]="false"
@@ -971,7 +983,7 @@
                     rows="5"
                     cols="30"
                     pInputTextarea
-                    [(ngModel)]="leaseTerminationRemarks"
+                    [(ngModel)]="leaseModificationRemarks"
                 ></textarea>
             </div>
 

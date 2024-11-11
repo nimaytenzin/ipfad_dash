@@ -1,13 +1,28 @@
 <div>
     <div class="flex justify-content-between my-4">
         <p class="font-semibold">Pending Advices</p>
-        <p-button
-            *ngIf="selectedPaymentAdivces.length > 1"
-            label="Pay Multiple Payment Advices"
-            icon="pi pi-wallet"
-            size="small"
-            (click)="openViewPaymentReceipt(selectedPaymentAdivces)"
-        ></p-button>
+        <div class="flex gap-2 justify-content-end">
+            <p-button
+                *ngIf="selectedPaymentAdivces.length > 1"
+                label="Pay Multiple Payment Advices"
+                icon="pi pi-wallet"
+                size="small"
+                (click)="openViewPaymentReceipt(selectedPaymentAdivces)"
+            ></p-button>
+            <p-button
+                icon="pi pi-file-o"
+                label="Generate PA"
+                size="small"
+                severity="secondary"
+                (click)="openGeneratePA()"
+            ></p-button>
+            <p-button
+                size="small"
+                icon="pi pi-envelope"
+                severity="danger"
+                label="Send Payment Reminder"
+            ></p-button>
+        </div>
     </div>
 
     <div class="flex align-items-center mb-2 justify-content-between">

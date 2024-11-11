@@ -6,10 +6,7 @@ import {
     COMPANY_NAME,
     ZHIDHAYCONTACTDETAILS,
 } from 'src/app/core/constants/constants';
-import {
-    AuthenticatedUserDTO,
-    AuthService,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CommonModule } from '@angular/common';
 import { DividerModule } from 'primeng/divider';
@@ -25,6 +22,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { AdminUpdateUserComponent } from 'src/app/presentations/admin/users/admin-update-user/admin-update-user.component';
+import {
+    AuthenticatedUserDTO,
+    CurrentRoleDTO,
+} from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 
 @Component({
     selector: 'app-admin-topbar',
@@ -57,7 +58,7 @@ export class AdminTopbarComponent {
     @ViewChild('topbarmenu') menu!: ElementRef;
 
     authenticatedUser: AuthenticatedUserDTO;
-    currentRole: any;
+    currentRole: CurrentRoleDTO;
 
     profileSideBarVisible: boolean = false;
 
@@ -77,16 +78,14 @@ export class AdminTopbarComponent {
     ) {
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
         this.currentRole = this.authService.GetCurrentRole();
+        this.isNotVerified = !Boolean(this.authenticatedUser.isVerified);
 
-        console.log('AUTHENTICATED USER', this.authenticatedUser);
-
-        console.log('CURRENT ROLE', this.currentRole);
+        console.log(this.isNotVerified);
         if (this.currentRole.role === USERROLESENUM.ADMIN) {
             this.userService
                 .FindOneAuthenticated(this.authenticatedUser.id)
                 .subscribe((res) => {
                     this.admin = res;
-                    console.log(res, 'ADMIN');
                     this.adminProfileUri =
                         API_URL + '/' + this.admin.profileUri;
                 });
@@ -94,7 +93,6 @@ export class AdminTopbarComponent {
             this.currentRole.role === USERROLESENUM.MANAGER ||
             USERROLESENUM.OWNER
         ) {
-            this.isNotVerified = !this.authenticatedUser.isVerified;
             this.userService
                 .FindOneAuthenticated(this.currentRole.adminId)
                 .subscribe((res) => {
@@ -120,5 +118,25 @@ export class AdminTopbarComponent {
                 this.authService.LogOut();
             },
         });
+    }
+
+    resetPassword() {
+        this.authService
+            .UpdatePassword({
+                userId: this.authenticatedUser.id,
+                newPassword: this.newPassword,
+                newPasswordRentry: this.newPasswordReentry,
+                role: this.currentRole.role,
+                adminId: this.currentRole.adminId,
+            })
+            .subscribe((res) => {
+                this.messageService.add({
+                    severity: 'info',
+                    summary: 'Password Updated',
+                    detail: 'Please Login again',
+                    life: 3000,
+                });
+                this.authService.LogOut();
+            });
     }
 }

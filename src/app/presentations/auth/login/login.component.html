@@ -4,19 +4,19 @@
 >
     <p-toast appendTo="body" />
     <div
-        class="flex login-card flex-column gap-4 align-items-center justify-content-center"
+        class="flex bg-white border-round-md flex-column gap-2 p-4 align-items-center justify-content-center"
     >
         <div>
-            <div class="flex align-items-center gap-2">
+            <a
+                routerLink="/"
+                class="flex align-items-center gap-2 hover:underline"
+            >
                 <img style="height: 25px" src="assets/zhidhaylogo.png" />
                 <p class="text-4xl">{{ companyDetails.webAppName }}</p>
-            </div>
+            </a>
             <p-divider type="dashed"></p-divider>
-            <p class="text-sm text-center">
-                Fixed Asset Management powered by Zhidhay
-            </p>
         </div>
-        <form [formGroup]="loginForm" class="mt-4 p-fluid">
+        <form [formGroup]="loginForm" class="w-full p-4 p-fluid">
             <label for="email1" class="block font-semibold text-900 mb-2"
                 >CID</label
             >
@@ -32,22 +32,27 @@
             <label for="email1" class="block font-semibold text-900 mt-4 mb-2"
                 >Password</label
             >
-            <p-password formControlName="password" [feedback]="false" />
+            <p-password
+                formControlName="password"
+                placeholder="your password"
+                [feedback]="false"
+            />
             <div
                 class="flex my-6 align-items-center justify-content-between mb-5 gap-5"
             >
                 <div class="flex align-items-center">
                     <p-checkbox
-                        id="rememberme1"
+                        id="rememberMe"
                         [binary]="true"
                         styleClass="mr-2"
+                        formControlName="rememberMe"
                     ></p-checkbox>
-                    <label for="rememberme1">Remember me</label>
+                    <label for="rememberMe">Remember me</label>
                 </div>
-                <a
+                <!-- <a
                     class="font-medium no-underline ml-2 text-right cursor-pointer"
                     >Forgot password?</a
-                >
+                > -->
             </div>
             <div class="flex gap-2">
                 <button

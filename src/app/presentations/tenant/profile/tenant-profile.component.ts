@@ -9,10 +9,7 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { LocationDataService } from 'src/app/core/dataservice/location/location.dataservice';
-import {
-    AuthService,
-    AuthenticatedUserDTO,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
@@ -23,6 +20,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { CommonModule } from '@angular/common';
 import { FileUploadService } from 'src/app/core/dataservice/fileupload.dataservice';
 import { API_URL } from 'src/app/core/constants/constants';
+import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 
 interface UploadEvent {
     originalEvent: Event;

@@ -95,4 +95,119 @@ export class AdminManagerListingComponent implements OnInit {
     }
 
     downloadMasterTable() {}
+
+    disableLoginAccess(item: UserDTO) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+                'Are you sure that you want to Disable Login for ' +
+                item.nameEnglish +
+                '?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.authService
+                    .AdminDisableUserLogin({
+                        userId: item.id,
+                    })
+                    .subscribe((res) => {
+                        if (res) {
+                            this.messageService.add({
+                                severity: 'info',
+                                summary: 'Login Disabled',
+                                detail:
+                                    'Login disabled for ' + item.nameEnglish,
+                            });
+                            this.getAllManagersByAdmin();
+                        }
+                    });
+            },
+        });
+    }
+
+    enableLoginAccess(item: UserDTO) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+                'Are you sure that you want to Enable Login for ' +
+                item.nameEnglish +
+                '?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.authService
+                    .AdminEnableUserLogin({
+                        userId: item.id,
+                    })
+                    .subscribe({
+                        next: (res) => {
+                            if (res) {
+                                this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Login Disabled',
+                                    detail:
+                                        'Login enabled for ' + item.nameEnglish,
+                                });
+                                this.getAllManagersByAdmin();
+                            }
+                        },
+                        error: (err) => {
+                            this.messageService.add({
+                                severity: 'info',
+                                summary: 'Error',
+                                detail: err.error.message,
+                            });
+                        },
+                    });
+            },
+        });
+    }
+
+    requestPasswordReset(item: UserDTO) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+                'Are you sure that you want to Reset Password for ' +
+                item.nameEnglish +
+                '?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.authService
+                    .AdminRequestPasswordReset({
+                        phoneNumber: item.phoneNumber,
+                    })
+                    .subscribe({
+                        next: (res) => {
+                            if (res) {
+                                this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Password Reset',
+                                    detail:
+                                        'Password reset for ' +
+                                        item.nameEnglish,
+                                });
+                                this.getAllManagersByAdmin();
+                            }
+                        },
+                        error: (err) => {
+                            this.messageService.add({
+                                severity: 'info',
+                                summary: 'Error',
+                                detail: err.error.message,
+                            });
+                        },
+                    });
+            },
+        });
+    }
 }

@@ -7,7 +7,7 @@ import { DividerModule } from 'primeng/divider';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
-import { NOTIFICATIONTYPES } from 'src/app/core/constants/enums';
+import { LEASESTATUS, NOTIFICATIONTYPES } from 'src/app/core/constants/enums';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import {
     NotificationChannelStatusEnum,
@@ -55,6 +55,8 @@ export class AdminLeaseNotificationsComponent implements OnInit {
 
     NOTIFICATIONCHANNELSTATUS = NotificationChannelStatusEnum;
 
+    showNotificationButtons: boolean = true;
+
     constructor(
         private notificationService: NotificationService,
         private messageService: MessageService,
@@ -64,6 +66,15 @@ export class AdminLeaseNotificationsComponent implements OnInit {
 
     ngOnInit() {
         this.handlePagination();
+        if (
+            this.leaseAgreement.status === LEASESTATUS.ACTIVE ||
+            this.leaseAgreement.status === LEASESTATUS.UPCOMING_EXPIRATION ||
+            this.leaseAgreement.status === LEASESTATUS.PENDING
+        ) {
+            this.showNotificationButtons = true;
+        } else {
+            this.showNotificationButtons = false;
+        }
     }
 
     notifyEntryDamageReportSubmission() {

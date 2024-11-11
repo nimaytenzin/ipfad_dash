@@ -21,6 +21,9 @@ export class AdminMapviewPlotdetailsComponent implements OnInit {
         private plotDataService: PlotDataService,
         private messageService: MessageService
     ) {
+        if (!this.config.data.plotId) {
+            alert('Supplot PLot ID');
+        }
         this.plotId = this.config.data.plotId;
         this.plotDataService.SearchPlotById(this.plotId).subscribe({
             next: (res) => {

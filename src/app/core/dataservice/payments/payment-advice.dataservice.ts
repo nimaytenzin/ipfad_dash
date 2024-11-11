@@ -60,6 +60,15 @@ export class PaymentAdviceDataService {
             `${this.apiUrl}/payment-advice/generate/admin/land/${adminId}/${year}/${month}`
         );
     }
+    GeneratePAForSingleLeaseByYearAndMonth(
+        leaseAgreementId: number,
+        month: number,
+        year: number
+    ) {
+        return this.http.get(
+            `${this.apiUrl}/payment-advice/generate/admin/single-lease/${leaseAgreementId}/${year}/${month}`
+        );
+    }
 
     GeneratePAForUnitLeaseByAdminYearAndMonth(
         adminId: number,

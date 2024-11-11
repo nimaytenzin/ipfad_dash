@@ -5,9 +5,9 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { GeometryDataService } from 'src/app/core/dataservice/geometry/geometry.dataservice';
-import { MessageService } from 'primeng/api';
-import { AdminSpatialViewerPlotComponent } from 'src/app/presentations/admin/land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 import { CommonModule } from '@angular/common';
+import { AdminMapviewPlotdetailsComponent } from 'src/app/presentations/admin/mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
+import { MessageService } from 'primeng/api';
 @Component({
     selector: 'app-admin-building-map',
     templateUrl: './admin-building-map.component.html',
@@ -86,14 +86,11 @@ export class AdminBuildingMapComponent implements OnInit, AfterViewInit {
                     onEachFeature: (feature, layer) => {
                         layer.on('click', () => {
                             this.ref = this.dialogService.open(
-                                AdminSpatialViewerPlotComponent,
+                                AdminMapviewPlotdetailsComponent,
                                 {
                                     header: this.building.plots[0].plotId,
-                                    style: { 'min-width': '40vw' },
                                     data: {
-                                        ...this.building.plots[0],
-                                        buildings: [this.building],
-                                        showBuilding: false,
+                                        plotId: this.building.plots[0].plotId,
                                     },
                                 }
                             );

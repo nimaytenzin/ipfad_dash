@@ -19,11 +19,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { API_URL } from 'src/app/core/constants/constants';
 import { USERROLESENUM } from 'src/app/core/constants/enums';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import {
     AuthenticatedUserDTO,
-    AuthService,
     CurrentRoleDTO,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+} from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 

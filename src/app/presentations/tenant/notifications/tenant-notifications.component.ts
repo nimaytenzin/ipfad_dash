@@ -8,10 +8,8 @@ import {
     NotificationService,
 } from 'src/app/core/dataservice/notification/notification.service';
 
-import {
-    AuthenticatedUserDTO,
-    AuthService,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 import { GETELAPSEDTIME } from 'src/app/core/utility/date.helper';
 
 @Component({

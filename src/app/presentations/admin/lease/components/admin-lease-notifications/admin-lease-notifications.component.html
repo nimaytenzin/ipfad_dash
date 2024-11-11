@@ -1,10 +1,7 @@
 <p-confirmDialog />
 
-<div class="">
-    <div
-        *ngIf="!leaseAgreement.leaseSigningDate"
-        class="flex align-items-end mb-2"
-    >
+<div class="" *ngIf="showNotificationButtons">
+    <div class="flex align-items-end mb-2">
         <p-button
             label="Notify to sign"
             size="small"

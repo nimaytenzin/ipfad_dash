@@ -5,12 +5,9 @@ import {
     RouterStateSnapshot,
     Router,
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import {
-    AuthService,
-    AuthenticatedUserDTO,
-} from '../dataservice/users-and-auth/auth.service';
+import { AuthService } from '../dataservice/users-and-auth/auth.service';
 import { MessageService } from 'primeng/api';
+import { AuthenticatedUserDTO } from '../dataservice/users-and-auth/dto/auth.dto';
 
 @Injectable({
     providedIn: 'root',

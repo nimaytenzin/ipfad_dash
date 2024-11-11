@@ -56,3 +56,9 @@ export interface UpdatePlotDTO {
 
     remarks?: string;
 }
+
+export interface PlotImageDTO {
+    id: number;
+    plotId: number;
+    uri: string;
+}

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { VerifyAccountStatusComponent } from './verify-account-status.component';
+import { AdminPlotDetailedViewComponent } from './admin-plot-detailed-view.component';
 
-describe('VerifyAccountStatusComponent', () => {
-  let component: VerifyAccountStatusComponent;
-  let fixture: ComponentFixture<VerifyAccountStatusComponent>;
+describe('AdminPlotDetailedViewComponent', () => {
+  let component: AdminPlotDetailedViewComponent;
+  let fixture: ComponentFixture<AdminPlotDetailedViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VerifyAccountStatusComponent ]
+      declarations: [ AdminPlotDetailedViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VerifyAccountStatusComponent);
+    fixture = TestBed.createComponent(AdminPlotDetailedViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

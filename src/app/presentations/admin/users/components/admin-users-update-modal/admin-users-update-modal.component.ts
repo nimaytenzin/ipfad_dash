@@ -68,7 +68,7 @@ export class AdminUsersUpdateModalComponent implements OnInit {
         this.updateUserForm = this.fb.group({
             nameEnglish: ['', [Validators.required]],
             nameDzongkha: [''],
-            phoneNumber: [''],
+
             cid: [''],
 
             permanentAddress: [''],
@@ -85,7 +85,6 @@ export class AdminUsersUpdateModalComponent implements OnInit {
 
         const data: UpdateUserDetailsDTO = {
             nameEnglish: this.updateUserForm.controls['nameEnglish'].value,
-            phoneNumber: this.updateUserForm.controls['phoneNumber'].value,
             email: this.updateUserForm.controls['email'].value || null,
             cid: this.updateUserForm.controls['cid'].value || null,
             permanentAddress:

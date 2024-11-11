@@ -8,11 +8,11 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { StatsDataService } from 'src/app/core/dataservice/statistics/statistics.dataservice';
 import { AdminSummaryStatisticsDTO } from 'src/app/core/dataservice/statistics/statistics.dto';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import {
-    AuthenticatedUserDTO,
-    AuthService,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
-import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
+    PaymentAdviceDto,
+    PaymentAdviceSummaryDTO,
+} from 'src/app/core/dto/payments/payment-advice.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
 import { OwnerAddBuildingComponent } from '../../owner/shared/owner-add-building/owner-add-building.component';
@@ -27,6 +27,9 @@ import { TabViewModule } from 'primeng/tabview';
 import { AdminDashboardPendingPaymentListComponent } from './components/admin-dashboard-pending-payment-list/admin-dashboard-pending-payment-list.component';
 import { AdminDashboardDamageItemsComponent } from './components/admin-dashboard-damage-items/admin-dashboard-damage-items.component';
 import { AdminDashboardBroadcastSmsComponent } from './components/admin-dashboard-broadcast-sms/admin-dashboard-broadcast-sms.component';
+import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
+import { AdminDashboardLeaseActionSummaryComponent } from './components/admin-dashboard-lease-action-summary/admin-dashboard-lease-action-summary.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-dashboard',
@@ -43,6 +46,7 @@ import { AdminDashboardBroadcastSmsComponent } from './components/admin-dashboar
         TabViewModule,
         AdminDashboardPendingPaymentListComponent,
         AdminDashboardDamageItemsComponent,
+        AdminDashboardLeaseActionSummaryComponent,
     ],
     providers: [DialogService],
 })
@@ -65,6 +69,12 @@ export class AdminDashboardComponent implements OnInit {
         ownerCount: 0,
     };
 
+    paymentSummaryStats: PaymentAdviceSummaryDTO = {
+        totalMonthlyIncome: 0,
+        totalPendingAmount: 0,
+        totalPendingAdvices: 0,
+    };
+
     totalPending: number = 0;
     authenticatedUser: AuthenticatedUserDTO;
 
@@ -77,14 +87,13 @@ export class AdminDashboardComponent implements OnInit {
         private dialogService: DialogService,
         private cdr: ChangeDetectorRef,
         private authService: AuthService,
-        private leaseaDataService: LeaseAgreementDataService
+        private router: Router,
+        private paymentAdviceDataService: PaymentAdviceDataService
     ) {}
 
     ngOnInit() {
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
 
-        console.log('AUTHENTICATED USER', this.authenticatedUser);
-        console.log('CURRENT ROLE', this.authService.GetCurrentRole());
         this.statsService
             .GetSummaryStatsByAdmin(this.authService.GetCurrentRole().adminId)
             .subscribe({
@@ -92,7 +101,19 @@ export class AdminDashboardComponent implements OnInit {
                     this.summaryStats = res;
                 },
             });
-        this.getExpiringLease();
+        this.getPaymentsSummary();
+    }
+
+    getPaymentsSummary() {
+        this.paymentAdviceDataService
+            .GetPaymentAdviceSummaryByAdmin(
+                this.authService.GetCurrentRole().adminId
+            )
+            .subscribe({
+                next: (res) => {
+                    this.paymentSummaryStats = res;
+                },
+            });
     }
 
     roundUp(number: number) {
@@ -100,15 +121,6 @@ export class AdminDashboardComponent implements OnInit {
     }
     ngAfterViewChecked() {
         this.cdr.detectChanges();
-    }
-
-    getExpiringLease() {}
-
-    openViewPaymentAdvice(item: PaymentAdviceDto) {
-        this.ref = this.dialogService.open(OwnerViewPaymentAdviceComponent, {
-            header: 'Payment Advice',
-            data: { ...item },
-        });
     }
 
     openBroadcastSmsModal() {
@@ -120,31 +132,8 @@ export class AdminDashboardComponent implements OnInit {
             }
         );
     }
-    openAddBuildingModal() {
-        this.ref = this.dialogService.open(OwnerAddBuildingComponent, {
-            header: 'Add Building',
-        });
-    }
-    openAddLeaseAgreementModal() {
-        this.ref = this.dialogService.open(OwnerGenerateLeaseStepperComponent, {
-            header: 'Generate Lease Agreement',
-        });
-    }
 
-    openRentalIncomeBreakdownReport() {
-        this.ref = this.dialogService.open(
-            OwnerRentalIncomeBreakdownComponent,
-            {
-                header: 'Rental Income Breakdown',
-            }
-        );
-    }
-
-    getDaysUntilExpiry(expirationDate: string): number {
-        const today = new Date();
-        const endDate = new Date(expirationDate);
-        const timeDifference = endDate.getTime() - today.getTime();
-        const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-        return daysDifference;
+    goToPayments() {
+        this.router.navigate(['/admin/master-transactions']);
     }
 }

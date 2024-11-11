@@ -1,5 +1,5 @@
 <div class="flex align-items-center justify-content-between my-4">
-    <p>Units</p>
+    <p class="text-lg">Units</p>
     <div class="flex gap-2">
         <p-button
             label="Download Excel"
@@ -37,11 +37,11 @@
 >
     <ng-template pTemplate="header">
         <tr>
-            <th>Plot ID</th>
-            <th>Building Name</th>
-            <th>Unit Number</th>
+            <th>Unit</th>
+            <th>Building</th>
+            <th>Plot</th>
             <th>Location</th>
-            <th>Lease</th>
+
             <th>Tenant</th>
             <th></th>
         </tr>
@@ -49,25 +49,27 @@
     <ng-template pTemplate="body" let-item>
         <tr>
             <td>
-                <p *ngFor="let plot of item.building?.plots">
-                    {{ plot.plotId }}
-                </p>
-            </td>
-            <td>
-                <p>
-                    {{ item.building?.name }}
-                </p>
-                <p>
-                    {{ item.building.buildingNumber }}
-                </p>
-            </td>
-            <td>
                 <p>{{ item.floorLevel }}-{{ item.unitNumber }}</p>
             </td>
             <td>
                 <p>
+                    {{
+                        item.building?.name
+                            ? item.building.name
+                            : item.building.buildingNumber
+                    }}
+                </p>
+            </td>
+            <td>
+                <p *ngFor="let plot of item.building?.plots">
+                    {{ plot.plotId }}
+                </p>
+            </td>
+
+            <td>
+                <p>
                     <strong
-                        >{{ item.building.subadministrativeZone?.name }},
+                        >{{ item.building.subadministrativeZone?.name }}, <br />
                         {{ item.building.administrativeZone?.name }},
                         {{ item.building.dzongkhag?.name }}</strong
                     >
@@ -76,13 +78,13 @@
 
             <td>
                 <div *ngFor="let lease of item.leaseAgreements">
-                    {{ lease.status }}
-                </div>
-            </td>
-            <td>
-                <div *ngFor="let lease of item.leaseAgreements">
                     <div *ngIf="lease.lesseeType === LESSEETYPES.INDIVIDUAL">
-                        <p>
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                            (dblclick)="goToTenantDetailedView(lease.tenantId)"
+                        >
                             Name: {{ lease.tenant.nameEnglish }}
                             {{ lease.tenant.nameDzongkha }}
                         </p>
@@ -94,13 +96,28 @@
                         <p class="font-semibold mt-1 mb-2">
                             {{ lease.organization.userType }} Details
                         </p>
-                        <p>
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                            (dblclick)="goToTenantDetailedView(lease.tenantId)"
+                        >
                             Name: {{ lease.tenant.nameEnglish }}
                             {{ lease.tenant.nameDzongkha }}
                         </p>
                         <p>Phone Number: {{ lease.tenant.phoneNumber }}</p>
                         <p>CID: {{ lease.tenant.cid }}</p>
                     </div>
+
+                    <p
+                        class="text-sm text-blue-700 cursor-pointer hover:underline"
+                        (click)="goToLeaseView(lease.id)"
+                    >
+                        (view lease)
+                    </p>
+                </div>
+                <div *ngIf="!item.leaseAgreements.length">
+                    - No active lease
                 </div>
             </td>
 
@@ -115,12 +132,5 @@
                 </div>
             </td>
         </tr>
-    </ng-template>
-
-    <ng-template pTemplate="summary">
-        <div class="flex align-items-center justify-content-between">
-            Showing {{ paginatedUnits?.length }} Units
-        </div>
-        <div></div>
     </ng-template>
 </p-table>

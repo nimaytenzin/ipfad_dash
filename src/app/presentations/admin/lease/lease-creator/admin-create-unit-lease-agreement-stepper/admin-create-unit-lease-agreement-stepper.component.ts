@@ -42,10 +42,7 @@ import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharg
 import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organization.dto';
 import { UnitSurchargeDataService } from 'src/app/core/dataservice/units/unit-surcharge.data.service';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
-import {
-    AuthenticatedUserDTO,
-    AuthService,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { BuildingSurchargeDTO } from 'src/app/core/dto/properties/building-surcharge.dto';

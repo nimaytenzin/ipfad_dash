@@ -62,4 +62,8 @@ export class PlotDataService {
     SearchPlotById(plotId: string): Observable<PlotDTO> {
         return this.http.get<PlotDTO>(`${this.apiUrl}/plot/search/${plotId}`);
     }
+
+    GetPlotByPlotDatabaseId(plotDatabaseId: number): Observable<PlotDTO> {
+        return this.http.get<PlotDTO>(`${this.apiUrl}/plot/${plotDatabaseId}`);
+    }
 }

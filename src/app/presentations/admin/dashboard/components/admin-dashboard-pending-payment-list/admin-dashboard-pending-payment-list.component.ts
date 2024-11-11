@@ -67,8 +67,8 @@ export class AdminDashboardPendingPaymentListComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.handlePagination();
-        this.getSummary();
+        // this.handlePagination();
+        // this.getSummary();
     }
 
     getSummary() {
@@ -111,9 +111,5 @@ export class AdminDashboardPendingPaymentListComponent implements OnInit {
             header: 'Payment Advice',
             data: item,
         });
-    }
-
-    goToPayments() {
-        this.router.navigate(['/admin/master-transactions']);
     }
 }

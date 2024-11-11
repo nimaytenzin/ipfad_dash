@@ -17,7 +17,7 @@ import { LocationDataService } from 'src/app/core/dataservice/location/location.
 import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative-zone.dto';
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
-import { AdminSpatialViewerPlotComponent } from '../admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
+import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 
 @Component({
     selector: 'app-admin-property-search',
@@ -141,11 +141,11 @@ export class AdminPropertySearchComponent implements OnInit {
     }
 
     viewPlotsSpatially(plot: PlotDTO) {
-        this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
+        this.ref = this.dialogService.open(AdminMapviewPlotdetailsComponent, {
             header: plot.plotId,
-            style: { 'min-width': '40vw' },
+
             data: {
-                ...plot,
+                plotId: plot.plotId,
             },
         });
     }

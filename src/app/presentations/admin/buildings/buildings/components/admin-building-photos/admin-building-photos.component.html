@@ -1,39 +1,46 @@
-<div class="">
-    <p-galleria
-        [(value)]="buildingImages"
-        [showIndicators]="true"
-        [showThumbnails]="false"
-        [showIndicatorsOnItem]="true"
-        indicatorsPosition="left"
-        [autoPlay]="true"
-        [circular]="true"
-    >
-        <ng-template pTemplate="item" let-item>
-            <div style="width: 430px">
-                <div
-                    [style.background-image]="'url(' + item + ')'"
-                    style="
-                        height: 300px;
-                        width: 100% auto;
-                        background-size: cover;
-                        border-radius: 10px;
-                    "
-                ></div>
-            </div>
-        </ng-template>
+<p-confirmDialog />
+<div class="flex justify-content-between" *ngIf="editMode">
+    <p class="font-semibold">Property Images</p>
+    <div class="flex align-items-end gap-2 justify-content-end">
+        <p-fileUpload
+            mode="basic"
+            name="file"
+            chooseIcon="pi pi-file"
+            accept="image/*"
+            maxFileSize="10000000"
+            (onSelect)="onFileSelected($event)"
+        ></p-fileUpload>
 
-        <ng-template pTemplate="indicator" let-index>
-            <span style="color: #e9ecef; cursor: pointer">
-                {{ index + 1 }}
-            </span>
-        </ng-template>
-    </p-galleria>
-    <div class="flex w-full mt-1 align-items-center justify-content-between">
         <p-button
-            icon="pi pi-plus"
-            size="small"
-            label="Photo"
-            class="p-0"
+            icon="pi pi-upload"
+            label="Upload Photo"
+            class="p-button-outlined"
+            (click)="uploadImage()"
         ></p-button>
     </div>
 </div>
+
+<div class="image-grid-container">
+    <div
+        *ngFor="let item of buildingImages | slice : 0 : 3; let i = index"
+        [ngClass]="{ 'large-image': i === 0, 'small-image': i !== 0 }"
+    >
+        <div
+            class="grid-image"
+            [ngStyle]="{
+                'background-image': 'url(' + getBuildingImageUrl(item) + ')'
+            }"
+        >
+            <div class="p-1" *ngIf="editMode">
+                <p-button
+                    [rounded]="true"
+                    severity="danger"
+                    icon="pi pi-trash"
+                    (click)="confirmDeletePhoto(item)"
+                ></p-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p *ngIf="!buildingImages.length">-No property images added.</p>

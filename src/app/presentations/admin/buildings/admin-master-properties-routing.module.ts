@@ -10,6 +10,7 @@ import { AdminThramListingsComponent } from '../land/thrams/admin-thram-listings
 import { AdminPlotsListingComponent } from '../land/plots/admin-plots-listing/admin-plots-listing.component';
 import { AdminAllUnitListingComponent } from '../units/admin-all-unit-listing/admin-all-unit-listing.component';
 import { AdminPropertySearchComponent } from '../land/shared/admin-property-search/admin-property-search.component';
+import { AdminPlotDetailedViewComponent } from '../land/plots/admin-plot-detailed-view/admin-plot-detailed-view.component';
 
 const routes: Routes = [
     {
@@ -23,6 +24,10 @@ const routes: Routes = [
             {
                 path: 'plots',
                 component: AdminPlotsListingComponent,
+            },
+            {
+                path: 'plot/:plotDatabaseId',
+                component: AdminPlotDetailedViewComponent,
             },
             {
                 path: 'map-view',

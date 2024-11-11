@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AdminSpatialViewerPlotComponent } from './admin-spatial-viewer-plot.component';
+import { AdminDashboardLeaseActionSummaryComponent } from './admin-dashboard-lease-action-summary.component';
 
-describe('AdminSpatialViewerPlotComponent', () => {
-  let component: AdminSpatialViewerPlotComponent;
-  let fixture: ComponentFixture<AdminSpatialViewerPlotComponent>;
+describe('AdminDashboardLeaseActionSummaryComponent', () => {
+  let component: AdminDashboardLeaseActionSummaryComponent;
+  let fixture: ComponentFixture<AdminDashboardLeaseActionSummaryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminSpatialViewerPlotComponent ]
+      declarations: [ AdminDashboardLeaseActionSummaryComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminSpatialViewerPlotComponent);
+    fixture = TestBed.createComponent(AdminDashboardLeaseActionSummaryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,4 +1,6 @@
 <div>
+    <p-confirmDialog />
+
     <div
         #generator
         class="flex mb-4 justify-content-between align-items-center"
@@ -31,6 +33,7 @@
                 icon="pi pi-envelope"
                 severity="danger"
                 label="Send SMS Reminder"
+                (click)="sendLandLeasePaymentStatusReminder()"
             ></p-button>
         </div>
     </div>

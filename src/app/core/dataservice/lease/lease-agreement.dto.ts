@@ -34,10 +34,11 @@ export interface LeaseAgreeementDTO {
     entryDamageReportSubmitted: boolean;
     securityDepositPaid: boolean;
 
-    leaseSigningDate: string;
-
     leaseDurationMonths: number;
     leaseStartDate: string;
+    leaseSigningDate: string;
+    leaseModificationDate: string;
+    leaseModificationRemarks: string;
     leaseEndDate: string;
 
     plotId: number;
@@ -75,10 +76,6 @@ export interface LeaseAgreeementDTO {
     areaLeased?: number;
     areaUnit?: string;
     ratePerArea?: number;
-
-    terminationRemarks?: string;
-    terminationDate?: string;
-    modificationDate?: string;
 }
 
 export interface CreateLeaseAgreementDTO {
@@ -128,88 +125,9 @@ export interface CreateLeaseAgreementDTO {
     leaseRules: LeaseRuleDTO[];
 }
 
-export interface CreateBuildingLeaseAgreementDTO {
-    type: LEASETYPE;
-    bankAccountId: number;
-
-    status: LEASESTATUS;
-    lesseeType: LESSEETYPE;
-
-    entryDamageReportSubmitted: boolean;
-    securityDepositPaid: boolean;
-
-    leaseDurationMonths: number;
-    leaseStartDate: string;
-    leaseEndDate: string;
-
-    plotId: number;
-    tenantId: number;
-    organizationId?: number;
-
-    buildingId: number;
-    rent: number;
-    use: LEASEUSES;
-
-    securityDepositAmount: number;
-    paymentDueDay: number;
-    applyLatePaymentFee: boolean;
-
-    tenantSubletAuthority: boolean;
-    tenantPrematureTermination: boolean;
-    ownerPrematureTermination: boolean;
-
-    vacationNoticePeriod: number;
-    evictionNoticePeriod: number;
-    rentIncreaseNoticePeriod: number;
-
-    leaseSurcharges: LeaseSurchargeDTO[];
-    leaseRules: LeaseRuleDTO[];
-}
-
-export interface CreatePlotLeaseAgreementDTO {
-    type: LEASETYPE;
-    bankAccountId: number;
-
-    status: LEASESTATUS;
-    lesseeType: LESSEETYPE;
-
-    entryDamageReportSubmitted: boolean;
-    securityDepositPaid: boolean;
-
-    leaseDurationMonths: number;
-    leaseStartDate: string;
-    leaseEndDate: string;
-
-    plotId: number;
-    tenantId: number;
-    organizationId?: number;
-
-    areaLeased: number;
-    areaUnit: string;
-    ratePerArea: number;
-
-    rent: number;
-    use: LEASEUSES;
-
-    securityDepositAmount: string;
-    paymentDueDay: number;
-    applyLatePaymentFee: boolean;
-
-    tenantSubletAuthority: boolean;
-    tenantPrematureTermination: boolean;
-    ownerPrematureTermination: boolean;
-
-    vacationNoticePeriod: number;
-    evictionNoticePeriod: number;
-    rentIncreaseNoticePeriod: number;
-
-    leaseSurcharges: LeaseSurchargeDTO[];
-    leaseRules: LeaseRuleDTO[];
-}
-
-export interface TerminateLeaseAgreementDTO {
-    terminationRemarks: string;
-    terminationDate: string;
+export interface LeaseModificationDTO {
+    leaseModificationRemarks: string;
+    leaseModificationDate: string;
     leaseAgreementId: number;
 }
 

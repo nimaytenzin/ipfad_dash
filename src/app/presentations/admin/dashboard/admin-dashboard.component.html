@@ -16,42 +16,75 @@
 
         <div class="flex justify-content-between gap-3 my-4">
             <div
-                class="w-6 border-1 surface-border text-right border-round-md p-2"
+                class="w-4 border-1 surface-border text-right border-round-md p-2"
+            >
+                <div class="flex justify-content-between align-items-end">
+                    <p class="text-xl font-semibold">Payments</p>
+                    <p-button
+                        label="Go to payments"
+                        (click)="goToPayments()"
+                        size="small"
+                        text="true"
+                    ></p-button>
+                </div>
+                <p-divider type="dashed"></p-divider>
+                <div>
+                    <p class="text-xl">
+                        <strong>
+                            Nu.{{
+                                paymentSummaryStats.totalMonthlyIncome
+                            }}</strong
+                        >
+                    </p>
+                    <p>Total Monthly Income</p>
+                    <p class="mt-3 text-xl">
+                        <strong
+                            >Nu.{{
+                                paymentSummaryStats.totalPendingAmount
+                            }}</strong
+                        >
+                    </p>
+                    <p>Total Pending Amount</p>
+                </div>
+            </div>
+            <div
+                class="w-4 border-1 surface-border text-right border-round-md p-2"
             >
                 <p class="text-2xl font-bold">Properties</p>
-                <p-divider></p-divider>
+                <p-divider type="dashed"></p-divider>
+
                 <div class="flex gap-2">
                     <div class="flex-1">
-                        <p class="text-2xl font-semibold">
-                            {{ summaryStats.buildingCount }}
+                        <p class="text-xl">
+                            <strong>{{ summaryStats.buildingCount }}</strong>
                         </p>
-                        <p class="text-sm text-gray-600">Buildings</p>
+                        <p class="text-gray-600">Buildings</p>
                     </div>
                     <div class="flex-1">
-                        <p class="text-2xl font-semibold">
-                            {{ summaryStats.unitCount }}
+                        <p class="text-xl">
+                            <strong> {{ summaryStats.unitCount }}</strong>
                         </p>
-                        <p class="text-sm text-gray-600">Units</p>
+                        <p class="text-gray-600">Units</p>
                     </div>
                 </div>
 
                 <div class="flex gap-2">
                     <div class="flex-1">
-                        <p class="text-2xl font-semibold">
+                        <p class="text-2xl font-bold">
                             {{ summaryStats.thramCount }}
                         </p>
-                        <p class="text-sm text-gray-600">Thrams</p>
+                        <p class="text-gray-600">Thrams</p>
                     </div>
                     <div class="flex-1">
-                        <p class="text-2xl font-semibold">
+                        <p class="text-xl font-bold">
                             {{ summaryStats.plotCount }}
                         </p>
-                        <p class="text-sm text-gray-600">Plots</p>
+                        <p class="text-gray-600">Plots</p>
                     </div>
                 </div>
             </div>
-            <div class="w-6 border-1 surface-border border-round-md p-2">
-                <p class="text-2xl font-bold">
+            <div class="w-4 border-1 surface-border border-round-md p-2">
+                <p class="text-xl font-bold">
                     Occupancy ({{
                         roundUp(
                             (summaryStats.activeLeaseCount /
@@ -61,154 +94,34 @@
                     }}
                     %)
                 </p>
-                <p-divider></p-divider>
-                <div>
-                    <p class="text-2xl font-semibold">
-                        {{ summaryStats.activeLeaseCount }}
+                <p-divider type="dashed"></p-divider>
+
+                <div class="text-right">
+                    <p class="text-xl">
+                        <strong> {{ summaryStats.activeLeaseCount }}</strong>
                     </p>
-                    <p class="text-sm text-gray-600">Active Lease</p>
+                    <p>Active Lease</p>
                 </div>
-                <div class="flex justify-content-between align-items-end">
-                    <div class="mt-4">
-                        <p class="text-2xl font-semibold">
+                <div class="mt-4 text-right">
+                    <p class="text-xl">
+                        <strong>
                             {{
                                 summaryStats.unitCount -
                                     summaryStats.activeLeaseCount
-                            }}
-                        </p>
-                        <p class="text-sm text-gray-600">Vacant Units</p>
-                    </div>
+                            }}</strong
+                        >
+                    </p>
+                    <p>Vacant Units</p>
                 </div>
             </div>
         </div>
 
         <div class="flex gap-2">
-            <div class="border-1 w-5 surface-border border-round-md p-2">
-                <div style="max-height: 40vh">
-                    <p class="text-xl font-semibold">Vacation Notices</p>
-                    <p-divider type="dashed"></p-divider>
-                    <div>
-                        <p>No Vacation Notices</p>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <p class="text-xl font-semibold">Lease Expiring Soon</p>
-                    <p class="text-sm">Lease expiring in two months</p>
-                    <p-divider type="dashed"></p-divider>
-
-                    <div>
-                        <p>No Lease Expiring</p>
-                    </div>
-                    <div *ngIf="expiringLeaseAgreements.length">
-                        <div
-                            class="flex flex-column my-3 justify-content-between p-4 border-dashed surface-border border-round surface-ground"
-                            *ngFor="
-                                let item of expiringLeaseAgreements;
-                                index as i
-                            "
-                        >
-                            <div class="w-12">
-                                <p class="text-xl font-semibold text-red-400">
-                                    {{ getDaysUntilExpiry(item.leaseEndDate) }}
-                                    Days Untill Expiry
-                                </p>
-                                <div
-                                    class="flex gap-2 justify-content-between align-items-end mb-1"
-                                >
-                                    <div>
-                                        <p class="text-xl mb-2 font-bold">
-                                            {{ item.unit?.floorLevel }}-{{
-                                                item.unit?.unitNumber
-                                            }}
-                                        </p>
-
-                                        <p>{{ item.building?.name }}</p>
-                                        <p class="mb-4 p-0">
-                                            {{ item.building?.buildingNumber }}
-                                            {{ item.building?.streetName }}
-                                            {{
-                                                item.building
-                                                    ?.adminsitrativeZone?.name
-                                            }}
-                                            {{
-                                                item.building
-                                                    ?.subadministrativeZone
-                                                    ?.name
-                                            }}
-
-                                            {{ item.building.landmark }}
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="flex gap-3 text-sm"
-                                    style="flex-wrap: wrap"
-                                >
-                                    <div class="flex align-items-end">
-                                        <img
-                                            src="assets/icons/bed.svg"
-                                            style="height: 1.5rem"
-                                        />
-                                        <p>
-                                            {{ item.unit?.bedroomCount }} Beds
-                                        </p>
-                                    </div>
-                                    <div class="flex align-items-end">
-                                        <img
-                                            src="assets/icons/toilet.svg"
-                                            style="height: 1.5rem"
-                                        />
-                                        <p>
-                                            {{ item.unit?.toiletCount }} Baths
-                                        </p>
-                                    </div>
-                                    <div class="flex align-items-end">
-                                        <img
-                                            src="assets/icons/balcony.svg"
-                                            style="height: 1.5rem"
-                                            alt="Icon"
-                                        />
-                                        <p>
-                                            {{ item.unit?.balconyCount }}
-                                            Balconies
-                                        </p>
-                                    </div>
-
-                                    <div
-                                        class="flex align-items-end"
-                                        *ngIf="item.unit.floorArea"
-                                    >
-                                        <img
-                                            src="assets/icons/floorArea.svg"
-                                            style="height: 1.5rem"
-                                        />
-                                        <p>{{ item.unit?.floorArea }} SqM</p>
-                                    </div>
-                                </div>
-
-                                <p-divider type="dashed" />
-                                <div class="flex justify-content-between">
-                                    <p>
-                                        Purpose:
-                                        <strong>{{ item.use }}</strong>
-                                    </p>
-                                    <p>
-                                        End Date:
-                                        <strong>{{ item.leaseEndDate }}</strong>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <p-divider type="dashed" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="border-1 w-10 surface-border border-round-md p-2">
-                <div>
-                    <app-admin-dashboard-pending-payment-list></app-admin-dashboard-pending-payment-list>
-                </div>
+            <!-- <div class="border-1 w-4 surface-border border-round-md p-2">
+                <app-admin-dashboard-pending-payment-list></app-admin-dashboard-pending-payment-list>
+            </div> -->
+            <div class="border-1 w-12 surface-border border-round-md p-2">
+                <app-admin-dashboard-lease-action-summary></app-admin-dashboard-lease-action-summary>
             </div>
         </div>
     </div>

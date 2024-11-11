@@ -21,12 +21,10 @@ import {
     DamageItemDTO,
     DamageItemThreamDTO,
 } from 'src/app/core/dataservice/damage-item/damage.item.dto';
-import {
-    AuthenticatedUserDTO,
-    AuthService,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { DamageItemService } from 'src/app/core/dataservice/damage-item/damage-item.dataservice';
 import { Avatar, AvatarModule } from 'primeng/avatar';
+import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 
 @Component({
     selector: 'app-damage-item-chat-box',

@@ -72,6 +72,21 @@
                                 label="Reset Password"
                                 size="small"
                                 severity="secondary"
+                                (click)="requestPasswordReset(item)"
+                            ></p-button>
+                            <p-button
+                                *ngIf="item.hasLoginAccess"
+                                label="Disable Login"
+                                size="small"
+                                severity="secondary"
+                                (click)="disableLoginAccess(item)"
+                            ></p-button>
+                            <p-button
+                                *ngIf="!item.hasLoginAccess"
+                                label="Enable Login"
+                                size="small"
+                                severity="secondary"
+                                (click)="enableLoginAccess(item)"
                             ></p-button>
 
                             <p-button

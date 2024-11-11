@@ -9,22 +9,16 @@ import { GalleriaModule } from 'primeng/galleria';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { ROWSPERPAGEOPTION, PageEvent } from 'src/app/core/constants/constants';
-import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
-import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
-import { BuildingPlotDataService } from 'src/app/core/dataservice/ownership/buildingplot.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
-import { BuildingOwnershipDto } from 'src/app/core/dto/properties/building-ownership.dto';
-import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
-import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
 import { AdminBuildingDetailsCardComponent } from '../../buildings/buildings/components/admin-building-details-card/admin-building-details-card.component';
-import { AdminSpatialViewerPlotComponent } from '../../land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
-import { AdminEditBuildingownershipComponent } from '../../ownership/crud-modals/admin-edit-buildingownership/admin-edit-buildingownership.component';
-import { AdminEditBuildingplotComponent } from '../../ownership/crud-modals/admin-edit-buildingplot/admin-edit-buildingplot.component';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { LESSEETYPE } from 'src/app/core/constants/enums';
 import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.selection.preferences';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
+import { MessageService } from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-admin-all-unit-listing',
@@ -41,6 +35,7 @@ import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.se
         DialogModule,
         AdminBuildingDetailsCardComponent,
         PaginatorModule,
+        TooltipModule,
     ],
     providers: [DialogService],
 })
@@ -67,11 +62,11 @@ export class AdminAllUnitListingComponent implements OnInit {
     constructor(
         public dialogService: DialogService,
         private unitDataService: UnitDataService,
-        private buildingDataService: BuildingDataService,
         private router: Router,
-        private buildingPlotDataService: BuildingPlotDataService,
         private authService: AuthService,
-        private adminTabSelectionPreferenceService: AdminTabPreferenceService
+        private adminTabSelectionPreferenceService: AdminTabPreferenceService,
+        private excelGeneratorService: ExcelGeneratorDataService,
+        private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
@@ -80,6 +75,14 @@ export class AdminAllUnitListingComponent implements OnInit {
 
     getQr(val) {
         return val;
+    }
+
+    goToTenantDetailedView(tenantId: number) {
+        this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
+    }
+
+    goToLeaseView(leaseId: number) {
+        this.router.navigate([`/admin/master-lease/view/${leaseId}`]);
     }
 
     openViewUnit(unitId: number, buildingId: number) {
@@ -94,8 +97,31 @@ export class AdminAllUnitListingComponent implements OnInit {
         );
     }
 
-    downloadMasterTable() {}
-
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadUnitsByAdmin(this.authService.GetCurrentRole().adminId)
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'units.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
+    }
     onPageChange(event: PageEvent): void {
         this.firstPageNumber = event.first;
         this.currentPage = event.page;
@@ -111,7 +137,7 @@ export class AdminAllUnitListingComponent implements OnInit {
 
         this.unitDataService
             .GetAllUnitsByAdminPaginated(
-                this.authService.GetAuthenticatedUser().id,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe((res) => {

@@ -22,10 +22,7 @@ import {
     NotificationService,
 } from 'src/app/core/dataservice/notification/notification.service';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
-import {
-    AuthenticatedUserDTO,
-    AuthService,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { GETMONTHNAME, GETMONTHDIFF } from 'src/app/core/utility/date.helper';
 import { GETUNITCONFIGSTRING } from 'src/app/core/utility/helper.function';
 import { ToWords } from 'to-words';
@@ -56,6 +53,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { AdminLeaseNotificationsComponent } from '../components/admin-lease-notifications/admin-lease-notifications.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { API_URL } from 'src/app/core/constants/constants';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -102,8 +100,8 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
     totalMonthlyPayable = 0;
 
     showTerminateLeaseModal: boolean = false;
-    terminationDate = new Date();
-    leaseTerminationRemarks: string;
+    leaseModificationDate = new Date();
+    leaseModificationRemarks: string;
 
     showRenewLeaseModal: boolean = false;
     newLeaseEndDate = new Date();
@@ -249,7 +247,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         // Loop through damageItemImages and construct the objects
         for (let image of item.damageItemImages) {
             let obj = {
-                itemImageSrc: 'http://localhost:3002/' + image.uri, // Adjust URL as necessary
+                itemImageSrc: API_URL + image.uri, // Adjust URL as necessary
             };
             images.push(obj);
         }
@@ -305,16 +303,27 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         this.showTerminateLeaseModal = true;
     }
     confirmLeaseTermination() {
+        if (!this.leaseModificationDate || !this.leaseModificationRemarks) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Missing Input',
+                detail: 'Please enter both lease termination date and remarks',
+                life: 3000,
+            });
+            return;
+        }
         this.messageService.add({
             severity: 'info',
             summary: 'Terminating Lease',
             detail: 'terminating lease...',
             life: 3000,
         });
+
         this.leaseAgreemenetDataService
             .OwnerTerminateLeaseAgreement({
-                terminationRemarks: this.leaseTerminationRemarks,
-                terminationDate: this.terminationDate.toDateString(),
+                leaseModificationRemarks: this.leaseModificationRemarks,
+                leaseModificationDate:
+                    this.leaseModificationDate.toDateString(),
                 leaseAgreementId: this.leaseAgreement.id,
             })
             .subscribe({
@@ -552,7 +561,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
             maxZoom: 24,
         });
 
-        this.map = L.map('propertyMap', {
+        this.map = L.map('leaseDetailedMap', {
             layers: [satelliteMap],
             zoomControl: false,
             attributionControl: false,

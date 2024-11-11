@@ -1,5 +1,5 @@
 <div class="flex align-items-center justify-content-between my-4">
-    <p>Buildings</p>
+    <p class="text-lg">Buildings</p>
     <div class="flex gap-2">
         <p-button
             icon="pi pi-plus"
@@ -44,49 +44,34 @@
 >
     <ng-template pTemplate="header">
         <tr>
-            <th>ID</th>
-            <th>Plot ID</th>
             <th>Building Name</th>
-            <th>Building Number</th>
+            <th>Plot ID</th>
             <th>Building Type</th>
             <th>Floor Config</th>
-            <th>Address</th>
             <th>Location</th>
+            <th>Year of Construction</th>
             <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-building>
         <tr>
-            <td class="m">
-                <div class="text-center">
-                    <p class="text-sm">
-                        {{ building.isActive ? "Active" : "Idle" }}
-                    </p>
-
-                    <small> ID: {{ building.id }} </small>
-                </div>
+            <td>
+                <p>
+                    {{ building.name || "Not assigned" }}
+                </p>
             </td>
             <td>
                 <p>
                     <span
                         *ngFor="let item of building.plots"
-                        (click)="openViewPlotModal(item, building)"
+                        (click)="openViewPlotModal(item)"
                         class="text-blue-700 hover:underline cursor-pointer hover:font-semibold"
                     >
                         {{ item.plotId + "," }}
                     </span>
                 </p>
             </td>
-            <td>
-                <p>
-                    {{ building.name }}
-                </p>
-            </td>
-            <td>
-                <p>
-                    {{ building.buildingNumber }}
-                </p>
-            </td>
+
             <td>
                 <p>
                     {{ building.buildingType }}
@@ -107,11 +92,6 @@
                     >
                 </p>
             </td>
-            <td>
-                <p>
-                    {{ building.address }}
-                </p>
-            </td>
 
             <td>
                 <p>
@@ -122,6 +102,12 @@
                     >
                 </p>
             </td>
+            <td>
+                <p>
+                    {{ building.yearOfConstruction || "No Data" }}
+                </p>
+            </td>
+
             <td>
                 <div class="flex gap-2">
                     <p-button

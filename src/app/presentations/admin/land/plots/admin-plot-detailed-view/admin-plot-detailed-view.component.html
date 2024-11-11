@@ -1,0 +1,59 @@
+<div class="grid">
+    <div *ngIf="plot" class="col-4">
+        <p class="mt-2">
+            <strong>PlotId: {{ plot.plotId }} </strong>
+        </p>
+        <p><strong>Plot Category:</strong> {{ plot?.plotCategory }}</p>
+        <p><strong>Area:</strong> {{ plot?.netArea }} {{ plot?.areaUnit }}</p>
+
+        <p-divider type="dashed"></p-divider>
+        <p><strong> Thram:</strong> {{ plot?.thram?.thramNo }}</p>
+        <p><strong>Ownership Type:</strong> {{ plot?.thram?.ownershipType }}</p>
+        <p-divider></p-divider>
+        <p><strong>Owner/s:</strong></p>
+        <p *ngFor="let item of plot?.thram?.owners">
+            - {{ item.nameEnglish }}/{{ item.nameDzongkha }}
+        </p>
+        <p-divider></p-divider>
+
+        <p class="font-semibold mb-2">Location Details</p>
+        <p>Dzongkhag: {{ plot?.thram?.dzongkhag?.name }}</p>
+        <p>Administrative Zone: {{ plot?.thram?.administrativeZone?.name }}</p>
+        <p>
+            Sub Administrative Zone:
+            {{ plot?.thram?.subAdministrativeZone?.name }}
+        </p>
+        <p-divider></p-divider>
+
+        <p class="font-semibold mb-2">Development Zone Details</p>
+        <p>
+            LAP: <strong>{{ plot?.lapName }} ({{ plot?.lapCode }})</strong>
+        </p>
+        <p>
+            Precinct:
+            <strong>{{ plot?.precinctName }} ({{ plot?.precinctCode }})</strong>
+        </p>
+
+        <hr class="mt-4 mb-3" />
+        <app-admin-plot-photos
+            [plotDatabaseId]="plotDataBaseId"
+            [editMode]="true"
+        >
+        </app-admin-plot-photos>
+    </div>
+
+    <div class="col-8">
+        <p-tabView>
+            <p-tabPanel header="Lease">
+                <app-admin-plot-lease-listings
+                    [plotDatabaseId]="plotDataBaseId"
+                ></app-admin-plot-lease-listings>
+            </p-tabPanel>
+            <p-tabPanel header="Payments">
+                <app-admin-plot-payment-advice-listings
+                    [plotDatabaseId]="plotDataBaseId"
+                ></app-admin-plot-payment-advice-listings>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>

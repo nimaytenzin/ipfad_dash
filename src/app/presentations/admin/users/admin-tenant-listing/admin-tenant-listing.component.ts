@@ -24,6 +24,7 @@ import { FormsModule } from '@angular/forms';
 import { AdminSearchTenantModalComponent } from '../components/admin-search-tenant-modal/admin-search-tenant-modal.component';
 import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
 import { Router } from '@angular/router';
+import { AdminUsersUpdatePhoneNumberModalComponent } from '../components/admin-users-update-phone-number-modal/admin-users-update-phone-number-modal.component';
 
 @Component({
     selector: 'app-admin-tenant-listing',
@@ -120,6 +121,23 @@ export class AdminTenantListingComponent implements OnInit {
             }
         });
     }
+
+    openUpdatePhoneNumberModal(user: UserDTO) {
+        this.ref = this.dialogService.open(
+            AdminUsersUpdatePhoneNumberModalComponent,
+            {
+                header: 'Update Phone Number',
+                data: {
+                    ...user,
+                },
+            }
+        );
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.getAllTenantsByAdmin();
+            }
+        });
+    }
     openDeleteOwnerModal(owner: OwnerDTO) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
@@ -198,5 +216,47 @@ export class AdminTenantListingComponent implements OnInit {
 
     goToDetailedTenantView(item: UserDTO) {
         this.router.navigate(['/admin/master-users/tenant/' + item.id]);
+    }
+
+    requestPasswordReset(item: UserDTO) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+                'Are you sure that you want to Reset Password for ' +
+                item.nameEnglish +
+                '?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.authService
+                    .AdminRequestPasswordReset({
+                        phoneNumber: item.phoneNumber,
+                    })
+                    .subscribe({
+                        next: (res) => {
+                            if (res) {
+                                this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Password Reset',
+                                    detail:
+                                        'Password reset for ' +
+                                        item.nameEnglish,
+                                });
+                                this.getAllTenantsByAdmin();
+                            }
+                        },
+                        error: (err) => {
+                            this.messageService.add({
+                                severity: 'info',
+                                summary: 'Error',
+                                detail: err.error.message,
+                            });
+                        },
+                    });
+            },
+        });
     }
 }

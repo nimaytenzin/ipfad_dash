@@ -7,10 +7,7 @@ import { TenantPendingPaymentComponent } from './components/tenant-pending-payme
 import { BadgeModule } from 'primeng/badge';
 import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 import { TenantDataService } from 'src/app/core/dataservice/users-and-auth/tenant.dataservice';
-import {
-    AuthService,
-    AuthenticatedUserDTO,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { DialogModule } from 'primeng/dialog';
 import {
     DialogService,
@@ -37,6 +34,7 @@ import {
     NotificationDTO,
     NotificationService,
 } from 'src/app/core/dataservice/notification/notification.service';
+import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 
 @Component({
     selector: 'app-tenant-dashboard',

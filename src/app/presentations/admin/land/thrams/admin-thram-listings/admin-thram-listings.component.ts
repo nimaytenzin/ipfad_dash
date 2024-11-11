@@ -10,13 +10,13 @@ import { AdminPlotCreateComponent } from '../../plots/components/admin-plot-crea
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { AdminThramUpdateComponent } from '../components/admin-thram-update/admin-thram-update.component';
-import { AdminSpatialViewerPlotComponent } from '../../shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaginatorModule } from 'primeng/paginator';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { MessageService } from 'primeng/api';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
+import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 
 @Component({
     selector: 'app-admin-thram-listings',
@@ -150,11 +150,10 @@ export class AdminThramListingsComponent implements OnInit {
 
     openViewPlotModal(plot: PlotDTO, thram: ThramDTO) {
         console.log('PLOT', plot);
-        this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
+        this.ref = this.dialogService.open(AdminMapviewPlotdetailsComponent, {
             header: plot.plotId,
             data: {
-                ...plot,
-                thram: thram,
+                plotId: plot.plotId,
             },
         });
     }

@@ -122,4 +122,10 @@ export class NotificationService {
             { params: httpParams }
         );
     }
+
+    SendPaymentReminderForAllLandLeaseByAdmin(adminId: number) {
+        return this.http.get(
+            `${this.apiUrl}/lease-agreement/payment-status/land/reminder/${adminId}`
+        );
+    }
 }

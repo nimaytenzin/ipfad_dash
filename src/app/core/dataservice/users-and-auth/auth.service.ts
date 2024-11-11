@@ -10,47 +10,17 @@ import {
 import { AdminCreateTenantDTO } from '../../dto/users/tenant.dto';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { UpdateUserDetailsDTO, UserDTO } from './dto/user.dto';
-import { USERROLESENUM } from '../../constants/enums';
-
-export interface AuthenticatedUserDTO {
-    phoneNumber: number;
-    role: string;
-    id: number;
-    roles: {
-        role: string;
-        adminId: number | null;
-    }[];
-    exp: number;
-    iat: number;
-    isVerified: number;
-    userAuthId: number;
-    nameEnglish: string;
-    nameDzongkha: string;
-}
-export interface CurrentRoleDTO {
-    role: USERROLESENUM;
-    adminId: number | null;
-}
-export interface UpdatePinDto {
-    userAuthId: number;
-    pin: string;
-}
-
-export interface ResetPinDto {
-    userAuthId: number;
-}
-
-export interface UpdatePasswordDTO {
-    userId: number;
-
-    newPassword: string;
-
-    newPasswordRentry: string;
-
-    role: string;
-    adminId: number;
-}
+import {
+    AdminDisableUserLoginDTO,
+    UpdateUserDetailsDTO,
+    UserDTO,
+} from './dto/user.dto';
+import {
+    CurrentRoleDTO,
+    AuthenticatedUserDTO,
+    UpdatePasswordDTO,
+    RequestPasswordResetDto,
+} from './dto/auth.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -77,6 +47,14 @@ export class AuthService {
         return this.http.get<UserDTO>(
             `${this.apiUrl}/auth/admin-details/${id}`
         );
+    }
+
+    AdminDisableUserLogin(data: AdminDisableUserLoginDTO) {
+        return this.http.post(`${this.apiUrl}/auth/admin/disable-login`, data);
+    }
+
+    AdminEnableUserLogin(data: AdminDisableUserLoginDTO) {
+        return this.http.post(`${this.apiUrl}/auth/admin/enable-login`, data);
     }
 
     GetTenantDetails(phoneNumber: number): Observable<UserDTO> {
@@ -124,14 +102,11 @@ export class AuthService {
         return this.http.post(`${this.apiUrl}/auth/admin-tenant-signup`, data);
     }
 
-    UpdatePINCode(data: UpdatePinDto) {
-        return this.http.post(`${this.apiUrl}/auth/update-pin`, data);
-    }
-    ResetPinCode(data: ResetPinDto) {
-        return this.http.post(`${this.apiUrl}/auth/reset-pin`, data);
-    }
-
     UpdatePassword(data: UpdatePasswordDTO) {
         return this.http.post(`${this.apiUrl}/auth/update-password`, data);
+    }
+
+    AdminRequestPasswordReset(data: RequestPasswordResetDto) {
+        return this.http.post(`${this.apiUrl}/auth/request-reset`, data);
     }
 }

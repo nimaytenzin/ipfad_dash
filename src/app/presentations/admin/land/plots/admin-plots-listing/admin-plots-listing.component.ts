@@ -8,7 +8,6 @@ import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice'
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { DividerModule } from 'primeng/divider';
 import { Router } from '@angular/router';
-import { AdminSpatialViewerPlotComponent } from '../../shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
@@ -17,6 +16,7 @@ import { AdminPlotUpdateComponent } from '../components/admin-plot-update/admin-
 import { AdminAddBuildingComponent } from '../../../buildings/buildings/crud-modal/admin-add-building/admin-add-building.component';
 import { MessageService } from 'primeng/api';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
+import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 
 @Component({
     selector: 'app-admin-plots-listing',
@@ -63,6 +63,11 @@ export class AdminPlotsListingComponent implements OnInit {
 
     ngOnInit() {
         this.handlePagination();
+    }
+
+    goToDetailedView(plot: PlotDTO) {
+        console.log(plot);
+        this.router.navigate(['admin/master-properties/plot/' + plot.id]);
     }
 
     onPageChange(event: PageEvent): void {
@@ -131,11 +136,11 @@ export class AdminPlotsListingComponent implements OnInit {
     }
 
     viewPlotsSpatially(plot: PlotDTO) {
-        this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
+        this.ref = this.dialogService.open(AdminMapviewPlotdetailsComponent, {
             header: plot.plotId,
-            style: { 'min-width': '40vw' },
+
             data: {
-                ...plot,
+                plotId: plot.plotId,
             },
         });
     }

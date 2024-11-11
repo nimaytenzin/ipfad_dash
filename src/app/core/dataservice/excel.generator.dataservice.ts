@@ -55,4 +55,13 @@ export class ExcelGeneratorDataService {
             }
         );
     }
+
+    DownloadUnitsByBuildingAdmin(buildingId: number): Observable<Blob> {
+        return this.http.get<Blob>(
+            `${this.apiUrl}/excel-generator/units/building/${buildingId}`,
+            {
+                responseType: 'blob' as 'json',
+            }
+        );
+    }
 }

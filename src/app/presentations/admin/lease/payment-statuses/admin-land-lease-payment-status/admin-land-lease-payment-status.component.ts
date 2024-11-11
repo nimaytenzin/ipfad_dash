@@ -26,6 +26,9 @@ import { AdminGenerateLandLeasePaymentAdviceComponent } from '../../../payment/a
 import { LEASESTATUS } from 'src/app/core/constants/enums';
 import { Router } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
 
 @Component({
     selector: 'app-admin-land-lease-payment-status',
@@ -41,9 +44,10 @@ import { TooltipModule } from 'primeng/tooltip';
         DialogModule,
         ProgressSpinnerModule,
         DividerModule,
+        ConfirmDialogModule,
         TooltipModule,
     ],
-    providers: [DialogService],
+    providers: [DialogService, ConfirmationService],
 })
 export class AdminLandLeasePaymentStatusComponent implements OnInit {
     ref: DynamicDialogRef;
@@ -67,7 +71,10 @@ export class AdminLandLeasePaymentStatusComponent implements OnInit {
         private http: HttpClient,
         private dialogService: DialogService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private confirmationService: ConfirmationService,
+        private messageService: MessageService,
+        private notificationService: NotificationService
     ) {}
 
     ngOnInit() {
@@ -157,6 +164,25 @@ export class AdminLandLeasePaymentStatusComponent implements OnInit {
             if (res && res.status === 200) {
                 this.getLandLeasePaymentStatus();
             }
+        });
+    }
+
+    sendLandLeasePaymentStatusReminder() {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: 'Send  Reminder to all pending Payments?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Succss',
+                    detail: 'Payment Reminder Sent',
+                });
+            },
         });
     }
 }

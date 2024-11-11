@@ -1,0 +1,46 @@
+<p-confirmDialog />
+<div class="flex justify-content-between" *ngIf="editMode">
+    <p class="font-semibold">Plot Images</p>
+    <div class="flex align-items-end gap-2 justify-content-end">
+        <p-fileUpload
+            mode="basic"
+            name="file"
+            chooseIcon="pi pi-file"
+            accept="image/*"
+            maxFileSize="10000000"
+            (onSelect)="onFileSelected($event)"
+        ></p-fileUpload>
+
+        <p-button
+            icon="pi pi-upload"
+            label="Upload Photo"
+            class="p-button-outlined"
+            (click)="uploadImage()"
+        ></p-button>
+    </div>
+</div>
+
+<div class="image-masonry-container">
+    <div
+        *ngFor="let item of plotImages; let i = index"
+        [ngClass]="{ 'large-image': i === 0, 'small-image': i !== 0 }"
+    >
+        <div
+            class="masonry-image"
+            [ngStyle]="{
+                'background-image': 'url(' + getPlotImageUrl(item) + ')'
+            }"
+        >
+            <div class="p-1" *ngIf="editMode">
+                <p-button
+                    [rounded]="true"
+                    severity="danger"
+                    icon="pi pi-trash"
+                    (click)="confirmDeletePhoto(item)"
+                ></p-button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p *ngIf="!plotImages.length">-No property images added.</p>

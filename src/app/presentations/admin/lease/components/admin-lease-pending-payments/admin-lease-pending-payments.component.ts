@@ -11,6 +11,7 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { AdminGenerateSingleLeasePaymentAdviceComponent } from '../../../payment/admin-generate-single-lease-payment-advice/admin-generate-single-lease-payment-advice.component';
 
 @Component({
     selector: 'app-admin-lease-pending-payments',
@@ -85,12 +86,27 @@ export class AdminLeasePendingPaymentsComponent implements OnInit {
             });
     }
 
-    downloadMasterTable() {}
-
     openViewPaymentReceipt(item: PaymentAdviceDto[]) {
         this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
             header: 'Payment Advice',
             data: item,
+        });
+    }
+
+    openGeneratePA() {
+        this.ref = this.dialogService.open(
+            AdminGenerateSingleLeasePaymentAdviceComponent,
+            {
+                header: 'Generate PA',
+                data: {
+                    leaseAgreement: this.leaseAgreement,
+                },
+            }
+        );
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.handlePagination();
+            }
         });
     }
 }

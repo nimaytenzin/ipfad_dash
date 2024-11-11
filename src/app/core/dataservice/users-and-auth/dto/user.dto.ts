@@ -47,3 +47,7 @@ export interface UpdateUserDetailsDTO {
 
     permanentAddress?: string;
 }
+
+export interface AdminDisableUserLoginDTO {
+    userId: number;
+}

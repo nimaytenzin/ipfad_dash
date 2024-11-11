@@ -56,29 +56,29 @@ export class TenantUpdatePincodeComponent implements OnInit {
     ngOnInit() {}
 
     updatePin() {
-        this.authService
-            .UpdatePINCode({
-                userAuthId: this.authService.GetAuthenticatedUser().userAuthId,
-                pin: this.pin.join(''),
-            })
-            .subscribe({
-                next: (res) => {
-                    if (res) {
-                        this.ref.close({
-                            status: 200,
-                        });
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Pin Changed',
-                            life: 20000,
-                            detail: 'Please login with your new pin codes',
-                        });
-                        this.router.navigate(['/']);
-                    }
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
+        // this.authService
+        //     .UpdatePINCode({
+        //         userAuthId: this.authService.GetAuthenticatedUser().userAuthId,
+        //         pin: this.pin.join(''),
+        //     })
+        //     .subscribe({
+        //         next: (res) => {
+        //             if (res) {
+        //                 this.ref.close({
+        //                     status: 200,
+        //                 });
+        //                 this.messageService.add({
+        //                     severity: 'success',
+        //                     summary: 'Pin Changed',
+        //                     life: 20000,
+        //                     detail: 'Please login with your new pin codes',
+        //                 });
+        //                 this.router.navigate(['/']);
+        //             }
+        //         },
+        //         error: (err) => {
+        //             console.log(err);
+        //         },
+        //     });
     }
 }

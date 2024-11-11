@@ -32,8 +32,6 @@ export class UnitDataService {
         params?: PaginatedParamsOptions
     ): Observable<PaginatedData<UnitDTO>> {
         let httpParams = new HttpParams();
-
-        // Check if params exist and append query parameters accordingly
         if (params) {
             if (params.pageNo !== undefined) {
                 httpParams = httpParams.append(

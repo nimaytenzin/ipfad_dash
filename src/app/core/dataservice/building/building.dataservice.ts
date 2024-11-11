@@ -90,6 +90,13 @@ export class BuildingDataService {
             `${this.apiUrl}/building/${buildingId}`
         );
     }
+    GetOneByZhicharBuildingId(
+        zhicharBuildingId: number
+    ): Observable<BuildingDTO> {
+        return this.http.get<BuildingDTO>(
+            `${this.apiUrl}/building/zhichar-id/${zhicharBuildingId}`
+        );
+    }
 
     GetBuildingsByLandlord(landlordId: number): Observable<BuildingDTO[]> {
         return this.http.get<BuildingDTO[]>(

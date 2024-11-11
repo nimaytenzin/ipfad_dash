@@ -5,7 +5,7 @@ import {
     CreateLeaseAgreementDTO,
     LandLeasePaymentStatusDTO,
     LeaseAgreeementDTO,
-    TerminateLeaseAgreementDTO,
+    LeaseModificationDTO,
     UnitLeasePaymentStatusDTO,
 } from './lease-agreement.dto';
 import {
@@ -101,6 +101,32 @@ export class LeaseAgreementDataService {
         );
     }
 
+    GetAllUpcomingExpiryLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/upcoming-expiry/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
     GetLeaseAgreementDetailed(
         leaseAgreementId: number
     ): Observable<LeaseAgreeementDTO> {
@@ -119,14 +145,14 @@ export class LeaseAgreementDataService {
         );
     }
 
-    OwnerTerminateLeaseAgreement(data: TerminateLeaseAgreementDTO) {
+    OwnerTerminateLeaseAgreement(data: LeaseModificationDTO) {
         console.log('FONRTENT TERMINATING LEASE', data);
         return this.http.post(
             `${this.apiUrl}/lease-agreement/terminate/owner`,
             data
         );
     }
-    TenantTerminateLeaseAgreement(data: TerminateLeaseAgreementDTO) {
+    TenantTerminateLeaseAgreement(data: LeaseModificationDTO) {
         return this.http.post(
             `${this.apiUrl}/lease-agreement/terminate/tenant`,
             data

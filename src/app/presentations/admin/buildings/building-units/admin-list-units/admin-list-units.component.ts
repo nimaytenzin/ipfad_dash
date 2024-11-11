@@ -216,7 +216,7 @@ export class AdminListUnitsComponent implements OnInit {
             detail: 'downloading...',
         });
         this.excelGeneratorService
-            .DownloadUnitsByAdmin(this.authService.GetCurrentRole().adminId)
+            .DownloadUnitsByBuildingAdmin(this.buildingId)
             .subscribe((blob: Blob) => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');

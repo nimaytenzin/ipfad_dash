@@ -109,6 +109,10 @@ export class AdminAddBuildingComponent {
             atticCount: [null, Validators.required],
             jamthogCount: [null, Validators.required],
             areaSqM: [null],
+            yearOfConstruction: [],
+            yearOfCapitalization: [],
+            buildingValue: [],
+
             latitude: ['', Validators.required],
             longitude: ['', Validators.required],
             address: [''],
@@ -161,8 +165,9 @@ export class AdminAddBuildingComponent {
 
             const data: CreateBuildingDTO = {
                 isActive: this.createBuildingForm.controls['isActive'].value,
-                zhicharBuildingId:
-                    this.createBuildingForm.controls['zhicharBuildingId'].value,
+                zhicharBuildingId: Number(
+                    this.createBuildingForm.controls['zhicharBuildingId'].value
+                ),
                 zhicharQrUuid:
                     this.createBuildingForm.controls['zhicharQrUuid'].value,
                 buildingType:
@@ -183,6 +188,15 @@ export class AdminAddBuildingComponent {
                     this.createBuildingForm.controls['jamthogCount'].value
                 ),
                 areaSqM: this.createBuildingForm.controls['areaSqM'].value,
+                yearOfConstruction:
+                    this.createBuildingForm.controls['yearOfConstruction']
+                        .value,
+                yearOfCapitalization:
+                    this.createBuildingForm.controls['yearOfCapitalization']
+                        .value,
+                buildingValue:
+                    this.createBuildingForm.controls['buildingValue'].value,
+
                 latitude: this.createBuildingForm.controls['latitude'].value,
                 longitude: this.createBuildingForm.controls['longitude'].value,
                 name: this.createBuildingForm.controls['name'].value,

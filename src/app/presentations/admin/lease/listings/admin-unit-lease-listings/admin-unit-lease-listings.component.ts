@@ -20,10 +20,7 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { CreateInvoiceDTO } from 'src/app/core/dto/payments/invoice/create-invoice.dto';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
-import {
-    AuthenticatedUserDTO,
-    AuthService,
-} from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';

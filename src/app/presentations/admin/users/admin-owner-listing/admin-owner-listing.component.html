@@ -1,7 +1,7 @@
 <div>
     <p-confirmDialog />
     <div class="flex justify-content-between my-4">
-        <p class="text-2xl">Owners Master Table</p>
+        <p class="text-lg">Owners Master Table</p>
         <div class="flex gap-2">
             <p-button
                 label="Owner"
@@ -113,6 +113,7 @@
                                 label="Enable Login"
                                 size="small"
                                 icon="pi pi-lock"
+                                (click)="enableLogin()"
                                 severity="secondary"
                             ></p-button>
 

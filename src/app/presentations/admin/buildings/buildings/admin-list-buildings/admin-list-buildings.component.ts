@@ -11,23 +11,17 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
 import { TableModule } from 'primeng/table';
-import { AdminAddBuildingplotComponent } from '../../../ownership/crud-modals/admin-add-buildingplot/admin-add-buildingplot.component';
-import { AdminAddBuildingownershipComponent } from '../../../ownership/crud-modals/admin-add-buildingownership/admin-add-buildingownership.component';
 import { DialogModule } from 'primeng/dialog';
-import { LandLordDTO } from 'src/app/core/dto/users/landlord.dto';
-import { BuildingOwnershipDto } from 'src/app/core/dto/properties/building-ownership.dto';
-import { AdminEditBuildingownershipComponent } from '../../../ownership/crud-modals/admin-edit-buildingownership/admin-edit-buildingownership.component';
-import { AdminEditBuildingplotComponent } from '../../../ownership/crud-modals/admin-edit-buildingplot/admin-edit-buildingplot.component';
 import { AdminBuildingDetailsCardComponent } from '../components/admin-building-details-card/admin-building-details-card.component';
 import { BuildingPlotDataService } from 'src/app/core/dataservice/ownership/buildingplot.dataservice';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
-import { AdminSpatialViewerPlotComponent } from '../../../land/shared/admin-spatial-viewer-plot/admin-spatial-viewer-plot.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { MessageService } from 'primeng/api';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
+import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
 
 @Component({
     selector: 'app-admin-list-buildings',
@@ -151,14 +145,8 @@ export class AdminListBuildingsComponent {
             });
     }
 
-    openViewPlotModal(plot: PlotDTO, building: BuildingDTO) {
-        this.ref = this.dialogService.open(AdminSpatialViewerPlotComponent, {
-            header: plot.plotId,
-            data: {
-                ...plot,
-                buildings: [building],
-            },
-        });
+    openViewPlotModal(plot: PlotDTO) {
+        this.router.navigate(['admin/master-properties/plot/' + plot.id]);
     }
 
     onPageChange(event: PageEvent): void {

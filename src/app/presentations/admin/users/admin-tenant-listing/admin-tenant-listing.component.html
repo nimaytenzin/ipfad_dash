@@ -26,13 +26,11 @@
             <p-button
                 label="Tenant"
                 icon="pi pi-plus"
-                size="small"
                 (click)="openCreateUserModal()"
             ></p-button>
             <p-button
                 label="Download Excel"
                 icon="pi pi-file-excel"
-                size="small"
                 (click)="downloadMasterTable()"
             ></p-button>
         </div>
@@ -60,11 +58,11 @@
                         </p>
                     </td>
                     <td>
-                        <p>
+                        <p
+                            (dblclick)="goToDetailedTenantView(item)"
+                            class="text-blue-600 hover:underline"
+                        >
                             {{ item.nameEnglish }}
-                            {{
-                                item.nameDzongkha ? "/" + item.nameDzongkha : ""
-                            }}
                         </p>
                     </td>
                     <td>
@@ -119,18 +117,28 @@
                     </td>
 
                     <td>
-                        <div class="flex gap-2 mb-3">
+                        <div
+                            class="flex flex-column align-items-end mb-2 gap-2"
+                            style="width: max-content"
+                        >
                             <p-button
-                                label="Detailed View"
                                 size="small"
-                                (click)="goToDetailedTenantView(item)"
-                                severity="secondary"
+                                icon="pi pi-pencil"
+                                label="Update details"
+                                (click)="openUpdateUserModal(item)"
+                            ></p-button>
+                            <p-button
+                                size="small"
+                                icon="pi pi-pencil"
+                                label="Update Phone Number"
+                                (click)="openUpdatePhoneNumberModal(item)"
                             ></p-button>
                             <p-button
                                 *ngIf="item.hasLoginAccess"
-                                label="Change Password"
+                                label="Reset Password"
                                 size="small"
                                 severity="secondary"
+                                (click)="requestPasswordReset(item)"
                             ></p-button>
                             <p-button
                                 label="Organization"
@@ -138,11 +146,6 @@
                                 severity="secondary"
                                 icon="pi pi-plus"
                                 (click)="openCreateOrganizationModal(item)"
-                            ></p-button>
-                            <p-button
-                                size="small"
-                                icon="pi pi-pencil"
-                                (click)="openUpdateUserModal(item)"
                             ></p-button>
                         </div>
                     </td>

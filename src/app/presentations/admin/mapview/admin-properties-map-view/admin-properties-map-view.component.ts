@@ -41,7 +41,7 @@ export class AdminPropertiesMapViewComponent implements OnInit {
     map!: L.Map;
     plotsGeojsonLayer: L.GeoJSON;
     buildingsGeoJsonLayer: L.GeoJSON;
-    mapTitle: string = 'Map Showing all properties';
+    mapTitle: string = '';
     ref: DynamicDialogRef;
     thrams: ThramDTO[] = [];
     dzongkhags: DzongkhagDTO[] = [];
@@ -92,7 +92,7 @@ export class AdminPropertiesMapViewComponent implements OnInit {
     }
 
     initializeMap() {
-        this.map = L.map('map', {
+        this.map = L.map('propertyMap', {
             layers: [
                 L.tileLayer(this.googleSatUrl, {
                     maxNativeZoom: 21,
@@ -107,12 +107,12 @@ export class AdminPropertiesMapViewComponent implements OnInit {
     }
 
     loadProperties(zoneType: string, zoneId: number) {
-        this.mapTitle = `Showing Properties for ${zoneType}`;
         this.plotsGeojsonLayer?.remove();
         this.buildingsGeoJsonLayer?.remove();
 
         const adminId = this.authService.GetCurrentRole().adminId;
         let fetchThrams;
+        let areaName;
 
         switch (zoneType) {
             case 'Dzongkhag':
@@ -121,6 +121,7 @@ export class AdminPropertiesMapViewComponent implements OnInit {
                         adminId,
                         zoneId
                     );
+                areaName = this.selectedDzongkhag.name;
                 break;
             case 'AdministrativeZone':
                 fetchThrams =
@@ -128,6 +129,7 @@ export class AdminPropertiesMapViewComponent implements OnInit {
                         adminId,
                         zoneId
                     );
+                areaName = this.selectedAdministrativeZone.name;
                 break;
             case 'SubAdministrativeZone':
                 fetchThrams =
@@ -135,14 +137,20 @@ export class AdminPropertiesMapViewComponent implements OnInit {
                         adminId,
                         zoneId
                     );
+                areaName = this.selectedSubAdministrativeZone.name;
                 break;
         }
+
+        this.mapTitle = `Showing Properties for ${areaName}`;
 
         fetchThrams?.subscribe((res) => {
             this.thrams = res;
             const { plotIDCsv, buildingIDCsv } = this.generateCsvIDs(res);
-            this.loadPlotGeometry(plotIDCsv, zoneType);
-            this.loadBuildingGeometry(buildingIDCsv, zoneType);
+            this.loadPlotGeometryAndBuildingGeometry(
+                plotIDCsv,
+                buildingIDCsv,
+                areaName
+            );
         });
     }
 
@@ -162,7 +170,11 @@ export class AdminPropertiesMapViewComponent implements OnInit {
         return { plotIDCsv, buildingIDCsv };
     }
 
-    private loadPlotGeometry(plotIDCsv: string, zoneName: string) {
+    private loadPlotGeometryAndBuildingGeometry(
+        plotIDCsv: string,
+        buildingIDCsv: string,
+        zoneName: string
+    ) {
         this.geometryDataService
             .GetPlotsGeomByPlotIdCsv(plotIDCsv)
             .subscribe((resp: any) => {
@@ -174,9 +186,9 @@ export class AdminPropertiesMapViewComponent implements OnInit {
                                 {
                                     header:
                                         'PlotId:' + feature.properties.plotId,
-                                    style: { 'min-width': '30vw' },
+
                                     data: {
-                                        plotId: feature.properties.buildingId,
+                                        plotId: feature.properties.plotId,
                                     },
                                 }
                             );
@@ -192,15 +204,14 @@ export class AdminPropertiesMapViewComponent implements OnInit {
 
                 this.map.fitBounds(this.plotsGeojsonLayer.getBounds());
                 this.showSuccessMessage(`Plots Loaded for ${zoneName}`);
+                this.loadBuildingGeometry(buildingIDCsv, zoneName);
             });
     }
 
     private loadBuildingGeometry(buildingIDCsv: string, zoneName: string) {
-        console.log('loading Building geometry', buildingIDCsv);
         this.geometryDataService
             .GetBuildingsGeomByBuildingIdCsv(buildingIDCsv)
             .subscribe((res: any) => {
-                console.log(res);
                 this.buildingsGeoJsonLayer = L.geoJSON(res, {
                     onEachFeature: (feature, layer) => {
                         layer.on('click', () => {
@@ -208,12 +219,13 @@ export class AdminPropertiesMapViewComponent implements OnInit {
                                 AdminMapviewBuildingdetailsComponent,
                                 {
                                     header:
-                                        'Building:' +
-                                        feature.properties.buildingId,
-                                    style: { 'min-width': '40vw' },
+                                        'Zhichar ID:' +
+                                        feature.properties.zhicharBuildingId,
+
                                     data: {
-                                        buildingId:
-                                            feature.properties.buildingId,
+                                        zhicharBuildingId:
+                                            feature.properties
+                                                .zhicharBuildingId,
                                     },
                                 }
                             );

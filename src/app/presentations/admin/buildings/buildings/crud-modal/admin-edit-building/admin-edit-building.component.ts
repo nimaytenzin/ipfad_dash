@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import {
@@ -52,6 +53,7 @@ import {
         ToastModule,
         InputGroupModule,
         InputGroupAddonModule,
+        CalendarModule,
     ],
 
     templateUrl: './admin-edit-building.component.html',
@@ -115,6 +117,9 @@ export class AdminEditBuildingComponent implements OnInit {
             address: [''],
             landmark: [''],
 
+            yearOfConstruction: [],
+            yearOfCapitalization: [],
+            buildingValue: [],
             dzongkhagId: ['', Validators.required],
             administrativeZoneId: ['', Validators.required],
             subadminsitrativeZoneId: ['', Validators.required],
@@ -168,11 +173,11 @@ export class AdminEditBuildingComponent implements OnInit {
     updateBuilding() {
         if (this.updateBuildingForm.valid) {
             this.isSubmitting = true;
-
             const newData: UpdateBuildingDto = {
                 isActive: this.updateBuildingForm.controls['isActive'].value,
-                zhicharBuildingId:
-                    this.updateBuildingForm.controls['zhicharBuildingId'].value,
+                zhicharBuildingId: Number(
+                    this.updateBuildingForm.controls['zhicharBuildingId'].value
+                ),
                 zhicharQrUuid:
                     this.updateBuildingForm.controls['zhicharQrUuid'].value,
                 buildingType: BuildingType.CONTEMPORARY,
@@ -192,6 +197,14 @@ export class AdminEditBuildingComponent implements OnInit {
                     this.updateBuildingForm.controls['jamthogCount'].value
                 ),
                 areaSqM: this.updateBuildingForm.controls['areaSqM'].value,
+                yearOfConstruction:
+                    this.updateBuildingForm.controls['yearOfConstruction']
+                        .value,
+                yearOfCapitalization:
+                    this.updateBuildingForm.controls['yearOfCapitalization']
+                        .value,
+                buildingValue:
+                    this.updateBuildingForm.controls['buildingValue'].value,
                 latitude: this.updateBuildingForm.controls['latitude'].value,
                 longitude: this.updateBuildingForm.controls['longitude'].value,
                 name: this.updateBuildingForm.controls['name'].value,
