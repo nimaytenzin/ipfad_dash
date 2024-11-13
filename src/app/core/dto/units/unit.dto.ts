@@ -10,6 +10,7 @@ export interface UnitDTO {
 
     zhicharUnitId: number;
     zhicharQrUuid: string;
+
     floorLevel: string;
     unitNumber: string;
     bedroomCount: number;
@@ -20,6 +21,7 @@ export interface UnitDTO {
 
     building?: BuildingDTO;
     bankAccount?: BankAccountDto;
+    remarks: string;
 
     activeLeaseAgreement?: LeaseAgreeementDTO;
     paymentAdvices?: PaymentAdviceDto[];
@@ -31,6 +33,7 @@ export interface CreateUnitDTO {
     bankAccountId?: number;
     zhicharUnitId: number;
     zhicharQrUuid: string;
+    remarks?: string;
     floorLevel: string;
     unitNumber: string;
     bedroomCount: number;
@@ -46,6 +49,7 @@ export interface UpdateUnitDto {
     bankAccountId?: number;
     zhicharUnitId?: number;
     zhicharQrUuid?: string;
+    remarks?: string;
     floorLevel?: string;
     unitNumber?: string;
     bedroomCount?: number;

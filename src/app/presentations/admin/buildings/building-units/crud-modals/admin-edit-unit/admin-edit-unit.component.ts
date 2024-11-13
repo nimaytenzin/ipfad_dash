@@ -34,6 +34,7 @@ import { CreateUnitDTO, UnitDTO } from 'src/app/core/dto/units/unit.dto';
         InputTextareaModule,
         MessagesModule,
         CommonModule,
+        InputTextareaModule,
     ],
     providers: [MessageService],
     templateUrl: './admin-edit-unit.component.html',
@@ -78,6 +79,7 @@ export class AdminEditUnitComponent {
             buildingId: [null, Validators.required],
             floorLevel: [null, Validators.required],
             unitNumber: [null, Validators.required],
+            remarks: [],
             bedroomCount: [1, [Validators.required]],
             toiletCount: [1, [Validators.required]],
             balconyCount: [0, [Validators.required]],
@@ -105,6 +107,7 @@ export class AdminEditUnitComponent {
             bedroomCount: this.updateUnitForm.controls['bedroomCount'].value,
             toiletCount: this.updateUnitForm.controls['toiletCount'].value,
             balconyCount: this.updateUnitForm.controls['balconyCount'].value,
+            remarks: this.updateUnitForm.controls['remarks'].value,
             powerConsumerId:
                 this.updateUnitForm.controls['powerConsumerId'].value,
             floorArea: Number(this.updateUnitForm.controls['floorArea'].value),

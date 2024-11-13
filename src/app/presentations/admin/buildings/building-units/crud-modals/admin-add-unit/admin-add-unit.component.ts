@@ -34,6 +34,7 @@ import { CreateUnitDTO } from 'src/app/core/dto/units/unit.dto';
         InputNumberModule,
         InputTextareaModule,
         MessagesModule,
+        InputTextareaModule,
     ],
     providers: [],
     templateUrl: './admin-add-unit.component.html',
@@ -79,6 +80,7 @@ export class AdminAddUnitComponent implements OnInit {
             bedroomCount: [null, [Validators.required]],
             toiletCount: [null, [Validators.required]],
             balconyCount: [null, [Validators.required]],
+            remarks: [null],
             floorArea: [null],
             powerConsumerId: [null],
             zhicharUnitId: [null],
@@ -106,6 +108,7 @@ export class AdminAddUnitComponent implements OnInit {
                 zhicharUnitId: Number(
                     this.createUnitForm.controls['zhicharUnitId'].value
                 ),
+                remarks: this.createUnitForm.controls['remarks'].value,
                 zhicharQrUuid:
                     this.createUnitForm.controls['zhicharQrUuid'].value,
                 floorLevel: this.createUnitForm.controls['floorLevel'].value,
