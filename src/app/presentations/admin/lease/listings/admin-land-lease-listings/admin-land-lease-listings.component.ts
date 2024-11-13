@@ -22,6 +22,8 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 
 @Component({
     selector: 'app-admin-land-lease-listings',
@@ -38,6 +40,7 @@ import { TooltipModule } from 'primeng/tooltip';
         ToastModule,
         TooltipModule,
         TagModule,
+        InputTextModule,
     ],
     providers: [DialogService],
 })
@@ -69,6 +72,9 @@ export class AdminLandLeaseListingsComponent implements OnInit {
 
     goToTenantDetailedView(tenantId: number) {
         this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
+    }
+    goToPlotDetailedView(plot: PlotDTO) {
+        this.router.navigate(['admin/master-properties/plot/' + plot.id]);
     }
 
     getStatusClass(status: string): string {

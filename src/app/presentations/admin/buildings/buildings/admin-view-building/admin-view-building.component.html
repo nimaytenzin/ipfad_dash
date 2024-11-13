@@ -56,12 +56,12 @@
                 </div>
 
                 <div class="w-6 flex-column border-round-md flex gap-4">
+                    <app-admin-building-map [buildingId]="buildingId">
+                    </app-admin-building-map>
                     <app-admin-building-photos
                         [buildingId]="buildingId"
                         [editMode]="true"
                     ></app-admin-building-photos>
-                    <app-admin-building-map [buildingId]="buildingId">
-                    </app-admin-building-map>
                 </div>
             </div>
         </p-tabPanel>

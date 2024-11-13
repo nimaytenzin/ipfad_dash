@@ -12,13 +12,17 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 import { ROWSPERPAGEOPTION, PageEvent } from 'src/app/core/constants/constants';
 import { LEASETYPE, LEASESTATUS } from 'src/app/core/constants/enums';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 
 @Component({
     selector: 'app-admin-tenant-lease',
@@ -37,6 +41,7 @@ import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
         PaginatorModule,
         TableModule,
         DividerModule,
+        TooltipModule,
     ],
     providers: [DialogService],
 })
@@ -98,8 +103,22 @@ export class AdminTenantLeaseComponent implements OnInit {
         }
     }
 
-    goToDetailedView(leaseAgreement: LeaseAgreeementDTO) {
+    goToLeaseDetailedView(leaseAgreement: LeaseAgreeementDTO) {
         this.router.navigate([`/admin/master-lease/view/${leaseAgreement.id}`]);
+    }
+
+    goToUnitDetailedView(item: UnitDTO) {
+        this.router.navigate([
+            `/admin/master-properties/building/${item.buildingId}/unit/${item.id}`,
+        ]);
+    }
+
+    goToBuildingDetailedView(item: BuildingDTO) {
+        this.router.navigate([`/admin/master-properties/building/${item.id}`]);
+    }
+
+    goToPlotDetailedView(item: PlotDTO) {
+        this.router.navigate([`/admin/master-properties/plot/${item.id}`]);
     }
 
     onPageChange(event: PageEvent): void {

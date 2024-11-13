@@ -70,8 +70,11 @@
                             <p style="text-wrap: wrap">
                                 <span
                                     *ngFor="let plot of item.plots"
+                                    pTooltip="double click to view Plot details"
+                                    tooltipPosition="left"
+                                    class="cursor-pointer hover:underline hover:font-semibold"
                                     class="cursor-pointer hover:underline text-blue-700"
-                                    (click)="openViewPlotModal(plot, item)"
+                                    (dblclick)="goToDetailedView(plot)"
                                 >
                                     {{ plot.plotId + "," }}
                                 </span>

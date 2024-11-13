@@ -98,6 +98,7 @@ export class AdminDashboardComponent implements OnInit {
             .GetSummaryStatsByAdmin(this.authService.GetCurrentRole().adminId)
             .subscribe({
                 next: (res) => {
+                    console.log('SUMARY STATS', res);
                     this.summaryStats = res;
                 },
             });

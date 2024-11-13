@@ -17,13 +17,21 @@ import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { MessageService } from 'primeng/api';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
+import { Router } from '@angular/router';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-admin-thram-listings',
     templateUrl: './admin-thram-listings.component.html',
     styleUrls: ['./admin-thram-listings.component.css'],
     standalone: true,
-    imports: [ButtonModule, TableModule, CommonModule, PaginatorModule],
+    imports: [
+        ButtonModule,
+        TableModule,
+        CommonModule,
+        PaginatorModule,
+        TooltipModule,
+    ],
     providers: [DialogService],
 })
 export class AdminThramListingsComponent implements OnInit {
@@ -50,11 +58,15 @@ export class AdminThramListingsComponent implements OnInit {
         private thramDataService: ThramDataService,
         private authService: AuthService,
         private messageService: MessageService,
-        private excelGeneratorService: ExcelGeneratorDataService
+        private excelGeneratorService: ExcelGeneratorDataService,
+        private router: Router
     ) {}
 
     ngOnInit() {
         this.handlePagination();
+    }
+    goToDetailedView(plot: PlotDTO) {
+        this.router.navigate(['admin/master-properties/plot/' + plot.id]);
     }
 
     onPageChange(event: PageEvent): void {

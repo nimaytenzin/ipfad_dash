@@ -18,6 +18,7 @@ import { AdministrativeZoneDTO } from 'src/app/core/dto/locations/administrative
 import { DzongkhagDTO } from 'src/app/core/dto/locations/dzongkhag.dto';
 import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-administrative-zone.dto';
 import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-admin-property-search',
@@ -33,6 +34,7 @@ import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/ad
         TableModule,
         DividerModule,
         TabViewModule,
+        TooltipModule,
     ],
     providers: [DialogService],
 })
@@ -148,6 +150,10 @@ export class AdminPropertySearchComponent implements OnInit {
                 plotId: plot.plotId,
             },
         });
+    }
+
+    goToPlotDetailedView(plot: PlotDTO) {
+        this.router.navigate([`admin/master-properties/plot/${plot.id}`]);
     }
 
     navigateToBuilding(buildingId: string) {

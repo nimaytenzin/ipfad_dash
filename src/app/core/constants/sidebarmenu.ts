@@ -166,6 +166,7 @@ export const ADMINSIDEBARITEMS = [
                 label: 'Tenants',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/master-users/tenants'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             // {
             //     label: 'Admins',

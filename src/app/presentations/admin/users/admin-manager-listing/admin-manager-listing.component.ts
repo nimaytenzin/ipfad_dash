@@ -18,6 +18,7 @@ import { AdminUserAddOrganizationModalComponent } from '../components/admin-user
 import { AdminUsersCreateModalComponent } from '../components/admin-users-create-modal/admin-users-create-modal.component';
 import { USERROLESENUM } from 'src/app/core/constants/enums';
 import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-admin-manager-listing',
@@ -31,6 +32,7 @@ import { AdminUsersUpdateModalComponent } from '../components/admin-users-update
         ConfirmDialogModule,
         ChipModule,
         DividerModule,
+        InputTextModule,
     ],
     providers: [DialogService, ConfirmationService],
 })

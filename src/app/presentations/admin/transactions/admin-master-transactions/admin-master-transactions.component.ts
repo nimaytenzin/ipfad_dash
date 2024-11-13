@@ -44,7 +44,7 @@ export class AdminMasterTransactionsComponent implements OnInit {
     ngOnInit() {
         this.paymentDataService
             .GetPaymentAdviceSummaryByAdmin(
-                this.authService.GetAuthenticatedUser().id
+                this.authService.GetCurrentRole().adminId
             )
             .subscribe({
                 next: (res) => {

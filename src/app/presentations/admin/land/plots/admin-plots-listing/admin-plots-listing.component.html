@@ -37,7 +37,23 @@
         </div>
     </div>
 
-    <p-table [value]="paginatedPlotData.data" styleClass="p-datatable-striped">
+    <p-table
+        [value]="paginatedPlotData.data"
+        styleClass="p-datatable-striped"
+        #dt
+        [globalFilterFields]="['plotId']"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column align-items-end justify-content-end">
+                <p class="text-sm font-normal">Filter by Plot ID</p>
+                <input
+                    pInputText
+                    type="text"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Search keyword"
+                />
+            </div>
+        </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th>Plot Id</th>
@@ -55,8 +71,10 @@
             <tr>
                 <td>
                     <p
-                        class="text-blue-600 hover:underline cursor-pointer"
-                        (click)="goToDetailedView(plot)"
+                        pTooltip="double click to view Plot details"
+                        tooltipPosition="left"
+                        class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                        (dblclick)="goToPlotDetailedView(plot)"
                     >
                         {{ plot.plotId }}
                     </p>

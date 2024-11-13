@@ -22,6 +22,7 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { MessageService } from 'primeng/api';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-admin-list-buildings',
@@ -36,6 +37,7 @@ import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/ad
         DialogModule,
         AdminBuildingDetailsCardComponent,
         PaginatorModule,
+        TooltipModule,
     ],
     providers: [DialogService],
     templateUrl: './admin-list-buildings.component.html',
@@ -145,7 +147,7 @@ export class AdminListBuildingsComponent {
             });
     }
 
-    openViewPlotModal(plot: PlotDTO) {
+    goToPlotDetailedView(plot: PlotDTO) {
         this.router.navigate(['admin/master-properties/plot/' + plot.id]);
     }
 

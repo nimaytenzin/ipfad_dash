@@ -17,6 +17,7 @@ import { USERROLESENUM } from 'src/app/core/constants/enums';
 import { AdminViewPropertiesModalComponent } from '../components/admin-view-properties-modal/admin-view-properties-modal.component';
 import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
     selector: 'app-admin-owner-listing',
@@ -30,6 +31,7 @@ import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.genera
         ConfirmDialogModule,
         ChipModule,
         DividerModule,
+        InputTextModule,
     ],
     providers: [DialogService, ConfirmationService],
 })

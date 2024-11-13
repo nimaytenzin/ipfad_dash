@@ -64,7 +64,9 @@
                 <p>
                     <span
                         *ngFor="let item of building.plots"
-                        (click)="openViewPlotModal(item)"
+                        pTooltip="double click to view Plot details"
+                        tooltipPosition="left"
+                        (dblclick)="goToPlotDetailedView(item)"
                         class="text-blue-700 hover:underline cursor-pointer hover:font-semibold"
                     >
                         {{ item.plotId + "," }}
@@ -124,50 +126,8 @@
                     ></p-button>
                 </div>
             </td>
-            <!-- 
-            <td class="">
-                <div *ngFor="let item of building.plots">
-                    <p>
-                        <span class="font-semibold">Thram No</span>:
-                        {{ item.thram.thramNo }}
-                    </p>
-                    <p>
-                        <span class="font-semibold">PlotID</span>:
-                        {{ item.plotId }}
-                    </p>
-                    <div>
-                        <p class="font-semibold">Owner/s:</p>
-                        <p *ngFor="let owner of item.thram.owners">
-                            - {{ owner.nameEnglish
-                            }}{{ "/" + owner.nameDzongkha }}
-                        </p>
-                    </div>
-
-                    <div class="flex gap-2 mt-4">
-                        <p-button
-                            icon="pi pi-trash"
-                            size="small"
-                            label="Remove Mapping"
-                            severity="danger "
-                            (click)="
-                                openConfirmDeleteBuildingPlotDialog(
-                                    item.BuildingPlot
-                                )
-                            "
-                        />
-                    </div>
-                </div>
-                <div *ngIf="!building.plots.length" class="text-red-500">
-                    ! Building Plot not mapped
-                </div>
-            </td> -->
         </tr>
     </ng-template>
-
-    <ng-template pTemplate="summary">
-        <div class="flex align-items-center justify-content-between">
-            Showing {{ buildingsPaginated?.length }} Buildings
-        </div>
-        <div></div>
-    </ng-template>
 </p-table>
+
+<p *ngIf="!paginatedBuildings.count" class="mt-4">- No Buildings</p>

@@ -18,7 +18,30 @@
         </div>
     </div>
     <div>
-        <p-table [value]="owners" styleClass="p-datatable-striped">
+        <p-table
+            [value]="owners"
+            styleClass="p-datatable-striped"
+            #dt
+            [globalFilterFields]="['nameEnglish', 'phoneNumber', 'cid']"
+        >
+            <ng-template pTemplate="caption">
+                <div
+                    class="flex flex-column align-items-end justify-content-end"
+                >
+                    <p class="text-sm font-normal">
+                        Search by name,cid & phone number
+                    </p>
+                    <input
+                        pInputText
+                        type="text"
+                        (input)="
+                            dt.filterGlobal($event.target.value, 'contains')
+                        "
+                        placeholder="Search keyword"
+                    />
+                </div>
+            </ng-template>
+
             <ng-template pTemplate="header">
                 <tr>
                     <th class="text-center">Id</th>
@@ -27,10 +50,10 @@
                     <th>Roles</th>
                     <th>CID</th>
                     <th>Phone Number</th>
-
                     <th></th>
                 </tr>
             </ng-template>
+
             <ng-template pTemplate="body" let-item>
                 <tr [ngClass]="item.isDeleted ? 'text-red-800 bg-red-50' : ''">
                     <td>
@@ -130,5 +153,5 @@
             </ng-template>
         </p-table>
     </div>
-    <p *ngIf="!owners" class="mt-4">- No Owners</p>
+    <p *ngIf="!owners.length" class="mt-4">- No Owners</p>
 </div>

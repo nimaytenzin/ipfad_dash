@@ -25,6 +25,10 @@ import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreeme
 import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
+import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
+import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 
 @Component({
     selector: 'app-admin-unit-lease-listings',
@@ -41,6 +45,7 @@ import { TooltipModule } from 'primeng/tooltip';
         ToastModule,
         TagModule,
         TooltipModule,
+        InputTextModule,
     ],
     providers: [DialogService],
 })
@@ -94,8 +99,21 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         }
     }
 
+    goToUnitDetailedView(item: UnitDTO) {
+        this.router.navigate([
+            `/admin/master-properties/building/${item.buildingId}/unit/${item.id}`,
+        ]);
+    }
+
+    goToBuildingDetailedView(item: BuildingDTO) {
+        this.router.navigate([`/admin/master-properties/building/${item.id}`]);
+    }
     goToDetailedView(leaseAgreement: LeaseAgreeementDTO) {
         this.router.navigate([`/admin/master-lease/view/${leaseAgreement.id}`]);
+    }
+
+    goToPlotDetailedView(item: PlotDTO) {
+        this.router.navigate([`/admin/master-properties/plot/${item.id}`]);
     }
 
     goToTenantDetailedView(tenantId: number) {

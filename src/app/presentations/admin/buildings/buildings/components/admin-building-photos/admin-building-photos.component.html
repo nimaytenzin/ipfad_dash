@@ -22,7 +22,7 @@
 
 <div class="image-grid-container">
     <div
-        *ngFor="let item of buildingImages | slice : 0 : 3; let i = index"
+        *ngFor="let item of buildingImages; let i = index"
         [ngClass]="{ 'large-image': i === 0, 'small-image': i !== 0 }"
     >
         <div

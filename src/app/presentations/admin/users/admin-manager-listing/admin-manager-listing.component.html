@@ -18,7 +18,29 @@
         </div>
     </div>
     <div>
-        <p-table [value]="managers" styleClass="p-datatable-striped">
+        <p-table
+            [value]="managers"
+            styleClass="p-datatable-striped"
+            #dt
+            [globalFilterFields]="['nameEnglish', 'phoneNumber', 'cid']"
+        >
+            <ng-template pTemplate="caption">
+                <div
+                    class="flex flex-column align-items-end justify-content-end"
+                >
+                    <p class="text-sm font-normal">
+                        Search by name,cid & phone number
+                    </p>
+                    <input
+                        pInputText
+                        type="text"
+                        (input)="
+                            dt.filterGlobal($event.target.value, 'contains')
+                        "
+                        placeholder="Search keyword"
+                    />
+                </div>
+            </ng-template>
             <ng-template pTemplate="header">
                 <tr>
                     <th>Login Access</th>

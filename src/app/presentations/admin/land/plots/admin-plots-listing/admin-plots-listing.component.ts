@@ -17,6 +17,8 @@ import { AdminAddBuildingComponent } from '../../../buildings/buildings/crud-mod
 import { MessageService } from 'primeng/api';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/admin-mapview-plotdetails/admin-mapview-plotdetails.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
     selector: 'app-admin-plots-listing',
@@ -30,6 +32,8 @@ import { AdminMapviewPlotdetailsComponent } from '../../../mapview/components/ad
         ButtonModule,
         DividerModule,
         PaginatorModule,
+        InputTextModule,
+        TooltipModule,
     ],
     providers: [DialogService],
 })
@@ -65,8 +69,7 @@ export class AdminPlotsListingComponent implements OnInit {
         this.handlePagination();
     }
 
-    goToDetailedView(plot: PlotDTO) {
-        console.log(plot);
+    goToPlotDetailedView(plot: PlotDTO) {
         this.router.navigate(['admin/master-properties/plot/' + plot.id]);
     }
 

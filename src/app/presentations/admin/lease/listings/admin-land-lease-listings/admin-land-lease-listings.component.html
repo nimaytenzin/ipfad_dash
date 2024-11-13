@@ -40,7 +40,31 @@
             <p-table
                 [value]="paginatedLandLease.data"
                 styleClass="p-datatable-striped mb-2"
+                #dt
+                [globalFilterFields]="[
+                    'plot.plotId',
+                    'tenant.nameEnglish',
+                    'tenant.cid',
+                    'tenant.phoneNumber'
+                ]"
             >
+                <ng-template pTemplate="caption">
+                    <div
+                        class="flex flex-column align-items-end justify-content-end"
+                    >
+                        <p class="text-sm font-normal">
+                            Filter by PlotId, Tenant Name, phone Number & CID
+                        </p>
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="
+                                dt.filterGlobal($event.target.value, 'contains')
+                            "
+                            placeholder="Search keyword"
+                        />
+                    </div>
+                </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
                         <th>Status</th>
@@ -66,7 +90,14 @@
                         </td>
 
                         <td>
-                            {{ item.plot.plotId }}
+                            <p
+                                pTooltip="Double click to view Plot details"
+                                tooltipPosition="left"
+                                class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                                (dblclick)="goToPlotDetailedView(plot)"
+                            >
+                                {{ item.plot.plotId }}
+                            </p>
                         </td>
                         <td>{{ item.plot.thram.thramNo }}</td>
 
@@ -76,16 +107,14 @@
                         <td>
                             <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
                                 <p
-                                    pTooltip="double click to view Tenant details"
+                                    pTooltip="Double click to view Tenant details"
                                     tooltipPosition="left"
-                                    class="cursor-pointer hover:underline hover:font-semibold"
+                                    class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
                                     (dblclick)="
                                         goToTenantDetailedView(item.tenant.id)
                                     "
                                 >
-                                    Name: {{ item.tenant?.nameEnglish }}/{{
-                                        item.tenant.nameDzongkha
-                                    }}
+                                    Name: {{ item.tenant?.nameEnglish }}
                                 </p>
                                 <p>
                                     Phone Number: {{ item.tenant.phoneNumber }}

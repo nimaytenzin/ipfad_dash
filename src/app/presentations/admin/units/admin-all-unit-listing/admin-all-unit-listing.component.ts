@@ -19,6 +19,9 @@ import { AdminTabPreferenceService } from 'src/app/core/preferences/admin.tab.se
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 import { MessageService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 
 @Component({
     selector: 'app-admin-all-unit-listing',
@@ -36,6 +39,7 @@ import { TooltipModule } from 'primeng/tooltip';
         AdminBuildingDetailsCardComponent,
         PaginatorModule,
         TooltipModule,
+        InputTextModule,
     ],
     providers: [DialogService],
 })
@@ -79,6 +83,16 @@ export class AdminAllUnitListingComponent implements OnInit {
 
     goToTenantDetailedView(tenantId: number) {
         this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
+    }
+    goToPlotDetailedView(plot: PlotDTO) {
+        console.log(plot);
+        this.router.navigate(['admin/master-properties/plot/' + plot.id]);
+    }
+
+    goToBuildingDetailedView(building: BuildingDTO) {
+        this.router.navigate([
+            `/admin/master-properties/building/${building.id}`,
+        ]);
     }
 
     goToLeaseView(leaseId: number) {

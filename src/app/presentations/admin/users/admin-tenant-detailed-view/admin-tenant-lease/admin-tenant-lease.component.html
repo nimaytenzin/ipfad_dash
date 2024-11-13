@@ -33,14 +33,32 @@
                 <td>
                     <p>{{ item.type }}</p>
                 </td>
-                <td class="text-center">{{ item.plot.plotId }}</td>
                 <td class="text-center">
-                    <p>
-                        {{ item.unit?.floorLevel }}-{{ item.unit?.unitNumber }}
+                    <p
+                        pTooltip="Double click to view Plot details"
+                        tooltipPosition="left"
+                        class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                        (dblclick)="goToPlotDetailedView(item.plot)"
+                    >
+                        {{ item.plot.plotId }}
                     </p>
-                    <p>
-                        {{ item.building?.name }}
-                    </p>
+                </td>
+                <td class="text-center">
+                    <div
+                        pTooltip="Double click to view Unit details"
+                        tooltipPosition="left"
+                        class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                        (dblclick)="goToUnitDetailedView(item.unit)"
+                    >
+                        <p>
+                            {{ item.unit?.floorLevel }}-{{
+                                item.unit?.unitNumber
+                            }}
+                        </p>
+                        <p>
+                            {{ item.building?.name }}
+                        </p>
+                    </div>
                 </td>
                 <td>{{ item.use }}</td>
                 <td>{{ item.leaseStartDate }}</td>
@@ -73,7 +91,7 @@
                         <p-button
                             size="small"
                             label="View"
-                            (click)="goToDetailedView(item)"
+                            (click)="goToLeaseDetailedView(item)"
                             severity="secondary"
                             icon="pi pi-eye"
                         ></p-button>
@@ -120,9 +138,24 @@
                 <td>
                     <p>{{ item.type }}</p>
                 </td>
-                <td class="text-center">{{ item.plot.plotId }}</td>
                 <td class="text-center">
-                    <p>
+                    <p
+                        pTooltip="Double click to view Plot details"
+                        tooltipPosition="left"
+                        class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                        (dblclick)="goToPlotDetailedView(item.plot)"
+                    >
+                        {{ item.plot.plotId }}
+                    </p>
+                </td>
+                <td class="text-center">
+                    <p
+                        *ngIf="item.unit"
+                        pTooltip="Double click to view Unit details"
+                        tooltipPosition="left"
+                        class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                        (dblclick)="goToUnitDetailedView(item.unit)"
+                    >
                         {{ item.unit?.floorLevel }}-{{ item.unit?.unitNumber }}
                     </p>
                     <p>
@@ -187,6 +220,7 @@
                 <th>Status</th>
                 <th>Type</th>
                 <th class="text-center">Plot</th>
+                <th class="text-center">Building</th>
                 <th class="text-center">Unit</th>
                 <th>Use</th>
                 <th>Start Date</th>
@@ -208,14 +242,36 @@
                 <td>
                     <p>{{ item.type }}</p>
                 </td>
-                <td class="text-center">{{ item.plot.plotId }}</td>
                 <td class="text-center">
-                    <p>
-                        {{ item.unit?.floorLevel }}-{{ item.unit?.unitNumber }}
+                    <p
+                        pTooltip="Double click to view Plot details"
+                        tooltipPosition="left"
+                        class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                        (dblclick)="goToPlotDetailedView(item.plot)"
+                    >
+                        {{ item.plot.plotId }}
                     </p>
+                </td>
+                <td>
                     <p>
                         {{ item.building?.name }}
                     </p>
+                </td>
+
+                <td class="text-center">
+                    <div>
+                        <p
+                            *ngIf="item.unit"
+                            pTooltip="Double click to view Unit details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                            (dblclick)="goToUnitDetailedView(item.unit)"
+                        >
+                            {{ item.unit?.floorLevel }}-{{
+                                item.unit?.unitNumber
+                            }}
+                        </p>
+                    </div>
                 </td>
                 <td>{{ item.use }}</td>
                 <td>{{ item.leaseStartDate }}</td>
@@ -320,7 +376,13 @@
                     </td>
                     <td class="text-center">{{ item.plot.plotId }}</td>
                     <td class="text-center">
-                        <p>
+                        <p
+                            *ngIf="item.unit"
+                            pTooltip="Double click to view Unit details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                            (dblclick)="goToUnitDetailedView(item.unit)"
+                        >
                             {{ item.unit?.floorLevel }}-{{
                                 item.unit?.unitNumber
                             }}
