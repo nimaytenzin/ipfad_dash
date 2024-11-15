@@ -50,7 +50,9 @@ export class AdminMapviewBuildingdetailsComponent implements OnInit {
 
     ngOnInit() {}
 
-    navigateToBuilding() {
-        this.router.navigate([`admin/master-properties/building/1`]);
+    goToBuildingDetailedView() {
+        this.router.navigate([
+            `admin/master-properties/building/` + this.building.id,
+        ]);
     }
 }

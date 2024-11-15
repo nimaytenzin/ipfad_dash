@@ -72,4 +72,12 @@
         Building Value:
         <strong> {{ building.buildingValue || "Not Assessed" }} </strong>
     </p>
+
+    <hr class="mt-4 mb-4" />
+    <div class="flex justify-content-center">
+        <p-button
+            label="Detailed View"
+            (click)="goToBuildingDetailedView()"
+        ></p-button>
+    </div>
 </div>

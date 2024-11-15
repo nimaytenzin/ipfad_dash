@@ -1,5 +1,7 @@
 <div>
-    <p>
+    <app-admin-plot-photos [editMode]="false" [plotDatabaseId]="plot.id">
+    </app-admin-plot-photos>
+    <p class="mt-4">
         <strong>PlotId:</strong>
         {{ plotId }}
     </p>
@@ -33,4 +35,12 @@
         Precinct:
         <strong>{{ plot?.precinctName }} ({{ plot?.precinctCode }})</strong>
     </p>
+
+    <hr class="mt-4 mb-4" />
+    <div class="flex justify-content-center">
+        <p-button
+            label="Detailed View"
+            (click)="goToPlotDetailedView()"
+        ></p-button>
+    </div>
 </div>
