@@ -9,7 +9,12 @@ import { ImageModule } from 'primeng/image';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CarouselModule } from 'primeng/carousel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 
+interface UploadQueueItem {
+    file: File;
+    status: 'Pending' | 'In Progress' | 'Uploaded' | 'Failed';
+}
 @Component({
     selector: 'app-admin-building-photos',
     templateUrl: './admin-building-photos.component.html',
@@ -22,6 +27,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         FileUploadModule,
         ConfirmDialogModule,
         CarouselModule,
+        DialogModule,
     ],
     providers: [ConfirmationService],
 })
@@ -29,8 +35,12 @@ export class AdminBuildingPhotosComponent implements OnInit {
     @Input({ required: true }) buildingId: number;
     @Input({ required: true }) editMode: boolean;
 
+    uploadQueue: UploadQueueItem[] = [];
     buildingImages: BuildingImageDTO[] = [];
     selectedFile: File | null = null;
+    selectedBuildingImage: BuildingImageDTO | null = null;
+
+    showPreviewBuildingImage: boolean = false;
 
     constructor(
         private buildingImageService: BuildingImageDataService,
@@ -54,42 +64,51 @@ export class AdminBuildingPhotosComponent implements OnInit {
         return API_URL + '/' + item.uri;
     }
 
-    onFileSelected(event: any) {
+    onFileSelected(event: any, fileUpload: any) {
         this.selectedFile = event.files[0];
+        this.uploadQueue.push({
+            file: this.selectedFile,
+            status: 'Pending',
+        });
+        this.uploadImage(this.selectedFile, fileUpload); // Pass fileUpload reference to the method
     }
 
-    uploadImage() {
-        if (!this.selectedFile) {
-            this.messageService.add({
-                severity: 'warn',
-                summary: 'Warning',
-                detail: 'Please select a file',
-            });
-            return;
-        }
+    async uploadImage(file: File, fileUpload: any) {
+        const queueItem = this.uploadQueue.find(
+            (item) =>
+                item.file.name === file.name && item.file.size === file.size
+        );
+
+        if (!queueItem) return;
+
+        queueItem.status = 'In Progress';
 
         const formData = new FormData();
-        formData.append('file', this.selectedFile);
+        formData.append('file', file);
         formData.append('buildingId', this.buildingId.toString());
+        fileUpload.clear();
+        try {
+            await this.buildingImageService
+                .CreateBuildingImage(formData)
+                .toPromise();
+            queueItem.status = 'Uploaded';
 
-        this.buildingImageService.CreateBuildingImage(formData).subscribe({
-            next: (res) => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'Image uploaded successfully',
-                });
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: `${file.name} uploaded successfully.`,
+            });
 
-                this.getBuildingImages();
-            },
-            error: () => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Image upload failed',
-                });
-            },
-        });
+            // Refresh the list of plot images
+            this.getBuildingImages();
+        } catch (error) {
+            queueItem.status = 'Failed';
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: `Failed to upload ${file.name}.`,
+            });
+        }
     }
 
     confirmDeletePhoto(item: BuildingImageDTO) {
@@ -118,5 +137,10 @@ export class AdminBuildingPhotosComponent implements OnInit {
                     });
             },
         });
+    }
+
+    previewImage(image: BuildingImageDTO) {
+        this.showPreviewBuildingImage = true;
+        this.selectedBuildingImage = image;
     }
 }

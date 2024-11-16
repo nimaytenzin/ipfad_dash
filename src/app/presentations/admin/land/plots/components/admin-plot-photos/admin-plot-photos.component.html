@@ -40,8 +40,12 @@
             [ngStyle]="{
                 'background-image': 'url(' + getPlotImageUrl(item) + ')'
             }"
+            (click)="previewImage(item)"
         >
-            <div class="p-1" *ngIf="editMode">
+            <div class="p-1 flex justify-content-between" *ngIf="editMode">
+                <p class="text-white text-sm">
+                    {{ item.createdAt | date : "mediumDate" }}
+                </p>
                 <p-button
                     [rounded]="true"
                     severity="danger"
@@ -54,3 +58,22 @@
 </div>
 
 <p *ngIf="!plotImages.length">-No property images added.</p>
+
+<p-dialog
+    [modal]="true"
+    [(visible)]="showPreviewPlotImage"
+    [style]="{ padding: '0rem' }"
+    [closable]="true"
+    [dismissableMask]="true"
+>
+    <ng-template pTemplate="headless">
+        <div
+            *ngIf="selectedPlotImage"
+            style="width: 50vw; height: 50vh; background-size: cover"
+            [ngStyle]="{
+                'background-image':
+                    'url(' + getPlotImageUrl(selectedPlotImage) + ')'
+            }"
+        ></div>
+    </ng-template>
+</p-dialog>

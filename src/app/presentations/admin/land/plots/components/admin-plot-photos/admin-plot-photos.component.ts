@@ -3,6 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
 import { ImageModule } from 'primeng/image';
@@ -29,6 +30,7 @@ interface UploadQueueItem {
         FileUploadModule,
         ConfirmDialogModule,
         CarouselModule,
+        DialogModule,
     ],
     providers: [ConfirmationService],
 })
@@ -36,10 +38,13 @@ export class AdminPlotPhotosComponent implements OnInit {
     @Input({ required: true }) plotDatabaseId: number;
     @Input({ required: true }) editMode: boolean;
 
+    showPreviewPlotImage: boolean = false;
+
     uploadQueue: UploadQueueItem[] = [];
 
     plotImages: PlotImageDTO[] = [];
     selectedFile: File | null = null;
+    selectedPlotImage: PlotImageDTO | null = null;
 
     constructor(
         private plotImageDataservice: PlotImageDataservice,
@@ -150,5 +155,10 @@ export class AdminPlotPhotosComponent implements OnInit {
                     });
             },
         });
+    }
+
+    previewImage(image: PlotImageDTO) {
+        this.showPreviewPlotImage = true;
+        this.selectedPlotImage = image;
     }
 }

@@ -1,27 +1,28 @@
-.image-grid-container {
+.image-masonry-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 120px;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
     gap: 5px;
     overflow-y: auto;
     margin-top: 20px;
     max-height: 500px;
-    padding: 0px;
+    padding: 0;
+}
 
-    .large-image {
-        grid-row: span 2;
-        grid-column: span 2;
-    }
+.large-image {
+    grid-column: span 2; /* First image spans both columns */
+    height: 250px;
+}
 
-    .small-image {
-        grid-row: span 1;
-    }
+.small-image {
+    height: 120px;
+}
 
-    .grid-image {
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        border-radius: 4px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+.masonry-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
