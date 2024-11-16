@@ -1,22 +1,32 @@
 <p-confirmDialog />
+
+<div class="upload-status" *ngFor="let upload of uploadQueue">
+    <p>
+        {{ upload.file.name }} -
+        <span
+            [ngClass]="{
+                'status-in-progress': upload.status === 'In Progress',
+                'status-success': upload.status === 'Uploaded',
+                'status-failed': upload.status === 'Failed'
+            }"
+        >
+            {{ upload.status }}
+        </span>
+    </p>
+</div>
+
 <div class="flex justify-content-between" *ngIf="editMode">
     <p class="font-semibold">Plot Images</p>
     <div class="flex align-items-end gap-2 justify-content-end">
         <p-fileUpload
             mode="basic"
+            #fileUpload
             name="file"
             chooseIcon="pi pi-file"
             accept="image/*"
-            maxFileSize="10000000"
-            (onSelect)="onFileSelected($event)"
+            maxFileSize="100000000"
+            (onSelect)="onFileSelected($event, fileUpload)"
         ></p-fileUpload>
-
-        <p-button
-            icon="pi pi-upload"
-            label="Upload Photo"
-            class="p-button-outlined"
-            (click)="uploadImage()"
-        ></p-button>
     </div>
 </div>
 

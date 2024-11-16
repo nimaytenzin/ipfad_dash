@@ -12,6 +12,11 @@ import { PlotImageDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PlotImageDataservice } from 'src/app/core/dataservice/land/plot-image.dataservice';
 import { BuildingImageDTO } from 'src/app/core/dto/properties/building-image.dto';
 
+interface UploadQueueItem {
+    file: File;
+    status: 'Pending' | 'In Progress' | 'Uploaded' | 'Failed';
+}
+
 @Component({
     selector: 'app-admin-plot-photos',
     templateUrl: './admin-plot-photos.component.html',
@@ -30,6 +35,8 @@ import { BuildingImageDTO } from 'src/app/core/dto/properties/building-image.dto
 export class AdminPlotPhotosComponent implements OnInit {
     @Input({ required: true }) plotDatabaseId: number;
     @Input({ required: true }) editMode: boolean;
+
+    uploadQueue: UploadQueueItem[] = [];
 
     plotImages: PlotImageDTO[] = [];
     selectedFile: File | null = null;
@@ -56,42 +63,65 @@ export class AdminPlotPhotosComponent implements OnInit {
         return API_URL + '/' + item.uri;
     }
 
-    onFileSelected(event: any) {
+    onFileSelected(event: any, fileUpload: any) {
         this.selectedFile = event.files[0];
+        this.uploadQueue.push({
+            file: this.selectedFile,
+            status: 'Pending',
+        });
+        this.uploadImage(this.selectedFile, fileUpload); // Pass fileUpload reference to the method
     }
 
-    uploadImage() {
-        if (!this.selectedFile) {
-            this.messageService.add({
-                severity: 'warn',
-                summary: 'Warning',
-                detail: 'Please select a file',
-            });
-            return;
-        }
+    async uploadImage(file: File, fileUpload: any) {
+        const queueItem = this.uploadQueue.find(
+            (item) =>
+                item.file.name === file.name && item.file.size === file.size
+        );
+
+        if (!queueItem) return;
+
+        queueItem.status = 'In Progress';
 
         const formData = new FormData();
-        formData.append('file', this.selectedFile);
+        formData.append('file', file);
         formData.append('plotDatabaseId', this.plotDatabaseId.toString());
+        fileUpload.clear();
+        try {
+            await this.plotImageDataservice
+                .CreatePlotImage(formData)
+                .toPromise();
+            queueItem.status = 'Uploaded';
 
-        this.plotImageDataservice.CreatePlotImage(formData).subscribe({
-            next: (res) => {
-                this.messageService.add({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'Image uploaded successfully',
-                });
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: `${file.name} uploaded successfully.`,
+            });
 
-                this.getPlotImages();
-            },
-            error: () => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Error',
-                    detail: 'Image upload failed',
-                });
-            },
-        });
+            // Refresh the list of plot images
+            this.getPlotImages();
+        } catch (error) {
+            queueItem.status = 'Failed';
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: `Failed to upload ${file.name}.`,
+            });
+        }
+    }
+
+    async getPlotImagesAsync() {
+        try {
+            this.plotImages = await this.plotImageDataservice
+                .GetPlotImageByplot(this.plotDatabaseId)
+                .toPromise();
+        } catch (error) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to load plot images',
+            });
+        }
     }
 
     confirmDeletePhoto(item: BuildingImageDTO) {
