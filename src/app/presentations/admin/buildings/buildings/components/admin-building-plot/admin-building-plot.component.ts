@@ -8,6 +8,7 @@ import { AdminBuildingPlotCreateComponent } from '../../crud-modal/admin-buildin
 import { BuildingPlotDataService } from 'src/app/core/dataservice/ownership/buildingplot.dataservice';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-building-plot',
@@ -35,7 +36,8 @@ export class AdminBuildingPlotComponent implements OnInit {
         private dialogService: DialogService,
         private buildingPlotDataService: BuildingPlotDataService,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private router: Router
     ) {}
 
     ngOnInit() {}
@@ -87,5 +89,10 @@ export class AdminBuildingPlotComponent implements OnInit {
                     });
             },
         });
+    }
+
+    goToDetailedPlotView(item: PlotDTO) {
+        console.log(item);
+        this.router.navigate(['/admin/master-properties/plot/' + item.id]);
     }
 }

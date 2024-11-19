@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from '../../constants/constants';
 import {
+    BuildingLeasePaymentStatusDTO,
     CreateLeaseAgreementDTO,
     LandLeasePaymentStatusDTO,
     LeaseAgreeementDTO,
@@ -49,6 +50,87 @@ export class LeaseAgreementDataService {
         );
     }
 
+    GetAllActiveUnitLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/unit/active/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllPendingUnitLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/unit/pending/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllUpcomingExpirationUnitLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/unit/upcoming-expiration/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    //END EUNIT LEASe
+
+    //LAND LEASE
     GetAllLandLeaseByAdminPaginated(
         adminId: number,
         params?: PaginatedParamsOptions
@@ -75,6 +157,85 @@ export class LeaseAgreementDataService {
         );
     }
 
+    GetAllActiveLandLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/land/active/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+    GetAllPendingLandLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/land/pending/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+    GetAllUpcomingExpirationLandLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/land/upcoming-expiration/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    //END LAND LEASE
+
+    // BUILDING LEASE
     GetAllBuildingLeaseByAdminPaginated(
         adminId: number,
         params?: PaginatedParamsOptions
@@ -100,6 +261,83 @@ export class LeaseAgreementDataService {
             { params: httpParams }
         );
     }
+    GetAllActiveBuildingLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/building/active/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+    GetAllPendingBuildingLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/building/pending/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+    GetAllUpcomingExpirationBuildingLeaseByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<LeaseAgreeementDTO>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
+            `${this.apiUrl}/lease-agreement/admin/building/upcoming-expiration/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    //END BUILDING LEASE
 
     GetAllUpcomingExpiryLeaseByAdminPaginated(
         adminId: number,
@@ -246,6 +484,15 @@ export class LeaseAgreementDataService {
     ): Observable<LandLeasePaymentStatusDTO[]> {
         return this.http.get<LandLeasePaymentStatusDTO[]>(
             `${this.apiUrl}/lease-agreement/payment-status/land/admin/${adminId}/${year}`
+        );
+    }
+
+    findBuildingLeasePaymentStatusByAdminAndYear(
+        adminId: number,
+        year: number
+    ): Observable<BuildingLeasePaymentStatusDTO[]> {
+        return this.http.get<BuildingLeasePaymentStatusDTO[]>(
+            `${this.apiUrl}/lease-agreement/payment-status/building/admin/${adminId}/${year}`
         );
     }
 

@@ -12,6 +12,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
+import { TooltipModule } from 'primeng/tooltip';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { LEASESTATUS } from 'src/app/core/constants/enums';
 import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
@@ -20,6 +21,7 @@ import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreeme
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { TenantDTO } from 'src/app/core/dto/users/tenant.dto';
 
 @Component({
     selector: 'app-admin-plot-lease-listings',
@@ -38,6 +40,7 @@ import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
         PaginatorModule,
         TableModule,
         DividerModule,
+        TooltipModule,
     ],
     providers: [DialogService],
 })
@@ -80,15 +83,26 @@ export class AdminPlotLeaseListingsComponent implements OnInit {
     getStatusClass(status: string): string {
         switch (status) {
             case LEASESTATUS.PENDING:
-                return 'bg-red-600 text-gray-100 px-2';
+                return 'bg-red-100 text-red-700 px-1';
             case LEASESTATUS.ACTIVE:
-                return 'bg-green-600 text-gray-100 px-2';
+                return 'bg-green-600 text-gray-100 px-1';
             case LEASESTATUS.UPCOMING_EXPIRATION:
-                return 'bg-yellow-600 text-gray-100 px-2';
-            case LEASESTATUS.EXPIRED:
-                return 'bg-red-600 text-gray-100 px-2';
+                return 'bg-yellow-600 text-gray-100 px-1';
             default:
-                return 'bg-gray-600 text-gray-100 px-2';
+                return 'bg-gray-100 text-gray-700 px-1';
+        }
+    }
+
+    getStatusName(status: string): string {
+        switch (status) {
+            case LEASESTATUS.PENDING:
+                return 'Pending';
+            case LEASESTATUS.ACTIVE:
+                return 'Active';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'Expiring';
+            default:
+                return 'Terminated';
         }
     }
 
@@ -96,6 +110,9 @@ export class AdminPlotLeaseListingsComponent implements OnInit {
         this.router.navigate([`/admin/master-lease/view/${leaseAgreement.id}`]);
     }
 
+    goToTenantDetailedView(tenantId: number) {
+        this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
+    }
     onPageChange(event: PageEvent): void {
         this.firstPageNumber = event.first;
         this.currentPage = event.page;
@@ -142,6 +159,15 @@ export class AdminPlotLeaseListingsComponent implements OnInit {
                     this.pendingLeaseAgreements = res;
                 },
             });
+    }
+
+    computeMonthlyPayable(item: LeaseAgreeementDTO) {
+        let total = item.rent;
+        for (let i = 0; i < item.leaseSurcharges.length; i++) {
+            total += item.leaseSurcharges[i].amount;
+        }
+
+        return total;
     }
 
     findUpcomingExpirationLeaseAgreementsByPlot() {

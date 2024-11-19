@@ -5,68 +5,98 @@
 
     <p-table
         [value]="upcomingExpiryLeaseAgreements"
+        *ngIf="upcomingExpiryLeaseAgreements.length"
         styleClass="p-datatable-striped mb-2"
     >
         <ng-template pTemplate="header">
             <tr>
+                <th>ref</th>
                 <th>Status</th>
-                <th>Type</th>
-                <th class="text-center">Plot</th>
-                <th class="text-center">Unit</th>
-                <th>Use</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Duration</th>
-                <th>Monthly Charges</th>
+                <th>Plot</th>
+                <th>Admin Zone</th>
+                <th>Sub Admin Zone</th>
+                <th>Lessee Type</th>
                 <th>Lessee</th>
+                <th>Use</th>
+                <th>Rate/Sqft</th>
+                <th>Start Date</th>
+                <th>Duration</th>
+                <th>Monthly Payable</th>
                 <th></th>
             </tr>
         </ng-template>
-
         <ng-template pTemplate="body" let-item>
             <tr>
                 <td>
-                    <p [ngClass]="getStatusClass(item.status)">
-                        {{ item.status }}
+                    <p>
+                        {{ item.id }}
                     </p>
                 </td>
                 <td>
-                    <p>{{ item.type }}</p>
-                </td>
-                <td class="text-center">{{ item.plot.plotId }}</td>
-                <td class="text-center">
-                    <p>
-                        {{ item.unit?.floorLevel }}-{{ item.unit?.unitNumber }}
-                    </p>
-                    <p>
-                        {{ item.building?.name }}
+                    <p
+                        [ngClass]="getStatusClass(item.status)"
+                        class="border-round text-center font-semibold text-sm"
+                    >
+                        {{ getStatusName(item.status) }}
                     </p>
                 </td>
-                <td>{{ item.use }}</td>
-                <td>{{ item.leaseStartDate }}</td>
-                <td>{{ item.leaseEndDate }}</td>
-                <td>{{ item.leaseDurationMonths }} Months</td>
-                <td>Nu.{{ computeMonthlyCharges(item) }}</td>
+
                 <td>
-                    <div
-                        *ngIf="item.lesseeType === 'INDIVIDUAL'"
-                        style="text-wrap: nowrap"
-                    >
-                        <p>Name: {{ item.tenant?.nameEnglish }}</p>
-                        <p>Phone: {{ item.tenant?.phoneNumber }}</p>
-                    </div>
-                    <div
-                        *ngIf="item.lesseeType !== 'INDIVIDUAL'"
-                        style="text-wrap: nowrap"
-                    >
-                        <p>Name: {{ item.organization?.name }}</p>
+                    <p style="text-wrap: nowrap">
+                        {{ item.plot.plotId }}
+                    </p>
+                </td>
+                <td>{{ item.plot.thram.administrativeZone.name }}</td>
+                <td>
+                    {{ item.plot.thram.subAdministrativeZone.name }}
+                </td>
+
+                <td>
+                    {{ item.lesseeType | lowercase }}
+                </td>
+
+                <td>
+                    <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            class="cursor-pointer hover:underline font-semibold"
+                            (dblclick)="goToTenantDetailedView(item.tenant.id)"
+                            style="text-wrap: nowrap"
+                        >
+                            Name: {{ item.tenant?.nameEnglish }}
+                        </p>
                         <p>
-                            {{ item.organization?.userType }} Name:
+                            {{ item.tenant.phoneNumber }}
+                        </p>
+                    </div>
+                    <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
+                        <p>Name: {{ item.organization.name }}</p>
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline font-semibold"
+                            (dblclick)="goToTenantDetailedView(item.tenant.id)"
+                            style="text-wrap: nowrap"
+                        >
+                            {{ item.organization.userType }} :
                             {{ item.tenant?.nameEnglish }}
                         </p>
-                        <p>Phone: {{ item.tenant.phoneNumber }}</p>
+                        <p>Phone Number: {{ item.tenant.phoneNumber }}</p>
                     </div>
                 </td>
+                <td>
+                    {{ item.use | lowercase }}
+                </td>
+                <td>
+                    {{ item.ratePerArea }}
+                </td>
+                <td>
+                    <p style="text-wrap: nowrap">
+                        {{ item.leaseStartDate | date : "mediumDate" }}
+                    </p>
+                </td>
+                <td>{{ item.leaseDurationMonths }} Months</td>
+                <td>Nu.{{ computeMonthlyPayable(item) }}</td>
 
                 <td>
                     <div class="flex gap-2">
@@ -96,64 +126,93 @@
     >
         <ng-template pTemplate="header">
             <tr>
+                <th>ref</th>
                 <th>Status</th>
-                <th>Type</th>
-                <th class="text-center">Plot</th>
-                <th class="text-center">Unit</th>
-                <th>Use</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Duration</th>
-                <th>Monthly Charges</th>
+                <th>Plot</th>
+                <th>Admin Zone</th>
+                <th>Sub Admin Zone</th>
+                <th>Lessee Type</th>
                 <th>Lessee</th>
+                <th>Use</th>
+                <th>Rate/Sqft</th>
+                <th>Start Date</th>
+                <th>Duration</th>
+                <th>Monthly Payable</th>
                 <th></th>
             </tr>
         </ng-template>
-
         <ng-template pTemplate="body" let-item>
             <tr>
                 <td>
-                    <p [ngClass]="getStatusClass(item.status)">
-                        {{ item.status }}
+                    <p>
+                        {{ item.id }}
                     </p>
                 </td>
                 <td>
-                    <p>{{ item.type }}</p>
-                </td>
-                <td class="text-center">{{ item.plot.plotId }}</td>
-                <td class="text-center">
-                    <p>
-                        {{ item.unit?.floorLevel }}-{{ item.unit?.unitNumber }}
-                    </p>
-                    <p>
-                        {{ item.building?.name }}
+                    <p
+                        [ngClass]="getStatusClass(item.status)"
+                        class="border-round text-center font-semibold text-sm"
+                    >
+                        {{ getStatusName(item.status) }}
                     </p>
                 </td>
-                <td>{{ item.use }}</td>
-                <td>{{ item.leaseStartDate }}</td>
-                <td>{{ item.leaseEndDate }}</td>
-                <td>{{ item.leaseDurationMonths }} Months</td>
-                <td>Nu.{{ computeMonthlyCharges(item) }}</td>
+
                 <td>
-                    <div
-                        *ngIf="item.lesseeType === 'INDIVIDUAL'"
-                        style="text-wrap: nowrap"
-                    >
-                        <p>Name: {{ item.tenant?.nameEnglish }}</p>
-                        <p>Phone: {{ item.tenant?.phoneNumber }}</p>
-                    </div>
-                    <div
-                        *ngIf="item.lesseeType !== 'INDIVIDUAL'"
-                        style="text-wrap: nowrap"
-                    >
-                        <p>Name: {{ item.organization?.name }}</p>
+                    <p style="text-wrap: nowrap">
+                        {{ item.plot.plotId }}
+                    </p>
+                </td>
+                <td>{{ item.plot.thram.administrativeZone.name }}</td>
+                <td>
+                    {{ item.plot.thram.subAdministrativeZone.name }}
+                </td>
+
+                <td>
+                    {{ item.lesseeType | lowercase }}
+                </td>
+
+                <td>
+                    <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            class="cursor-pointer hover:underline font-semibold"
+                            (dblclick)="goToTenantDetailedView(item.tenant.id)"
+                            style="text-wrap: nowrap"
+                        >
+                            Name: {{ item.tenant?.nameEnglish }}
+                        </p>
                         <p>
-                            {{ item.organization?.userType }} Name:
+                            {{ item.tenant.phoneNumber }}
+                        </p>
+                    </div>
+                    <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
+                        <p>Name: {{ item.organization.name }}</p>
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline font-semibold"
+                            (dblclick)="goToTenantDetailedView(item.tenant.id)"
+                            style="text-wrap: nowrap"
+                        >
+                            {{ item.organization.userType }} :
                             {{ item.tenant?.nameEnglish }}
                         </p>
-                        <p>Phone: {{ item.tenant.phoneNumber }}</p>
+                        <p>Phone Number: {{ item.tenant.phoneNumber }}</p>
                     </div>
                 </td>
+                <td>
+                    {{ item.use | lowercase }}
+                </td>
+                <td>
+                    {{ item.ratePerArea }}
+                </td>
+                <td>
+                    <p style="text-wrap: nowrap">
+                        {{ item.leaseStartDate | date : "mediumDate" }}
+                    </p>
+                </td>
+                <td>{{ item.leaseDurationMonths }} Months</td>
+                <td>Nu.{{ computeMonthlyPayable(item) }}</td>
 
                 <td>
                     <div class="flex gap-2">
@@ -184,64 +243,93 @@
     >
         <ng-template pTemplate="header">
             <tr>
+                <th>ref</th>
                 <th>Status</th>
-                <th>Type</th>
-                <th class="text-center">Plot</th>
-                <th class="text-center">Unit</th>
-                <th>Use</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Duration</th>
-                <th>Monthly Charges</th>
+                <th>Plot</th>
+                <th>Admin Zone</th>
+                <th>Sub Admin Zone</th>
+                <th>Lessee Type</th>
                 <th>Lessee</th>
+                <th>Use</th>
+                <th>Rate/Sqft</th>
+                <th>Start Date</th>
+                <th>Duration</th>
+                <th>Monthly Payable</th>
                 <th></th>
             </tr>
         </ng-template>
-
         <ng-template pTemplate="body" let-item>
             <tr>
                 <td>
-                    <p [ngClass]="getStatusClass(item.status)">
-                        {{ item.status }}
+                    <p>
+                        {{ item.id }}
                     </p>
                 </td>
                 <td>
-                    <p>{{ item.type }}</p>
-                </td>
-                <td class="text-center">{{ item.plot.plotId }}</td>
-                <td class="text-center">
-                    <p>
-                        {{ item.unit?.floorLevel }}-{{ item.unit?.unitNumber }}
-                    </p>
-                    <p>
-                        {{ item.building?.name }}
+                    <p
+                        [ngClass]="getStatusClass(item.status)"
+                        class="border-round text-center font-semibold text-sm"
+                    >
+                        {{ getStatusName(item.status) }}
                     </p>
                 </td>
-                <td>{{ item.use }}</td>
-                <td>{{ item.leaseStartDate }}</td>
-                <td>{{ item.leaseEndDate }}</td>
-                <td>{{ item.leaseDurationMonths }} Months</td>
-                <td>Nu.{{ computeMonthlyCharges(item) }}</td>
+
                 <td>
-                    <div
-                        *ngIf="item.lesseeType === 'INDIVIDUAL'"
-                        style="text-wrap: nowrap"
-                    >
-                        <p>Name: {{ item.tenant?.nameEnglish }}</p>
-                        <p>Phone: {{ item.tenant?.phoneNumber }}</p>
-                    </div>
-                    <div
-                        *ngIf="item.lesseeType !== 'INDIVIDUAL'"
-                        style="text-wrap: nowrap"
-                    >
-                        <p>Name: {{ item.organization?.name }}</p>
+                    <p style="text-wrap: nowrap">
+                        {{ item.plot.plotId }}
+                    </p>
+                </td>
+                <td>{{ item.plot.thram.administrativeZone.name }}</td>
+                <td>
+                    {{ item.plot.thram.subAdministrativeZone.name }}
+                </td>
+
+                <td>
+                    {{ item.lesseeType | lowercase }}
+                </td>
+
+                <td>
+                    <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            class="cursor-pointer hover:underline font-semibold"
+                            (dblclick)="goToTenantDetailedView(item.tenant.id)"
+                            style="text-wrap: nowrap"
+                        >
+                            Name: {{ item.tenant?.nameEnglish }}
+                        </p>
                         <p>
-                            {{ item.organization?.userType }} Name:
+                            {{ item.tenant.phoneNumber }}
+                        </p>
+                    </div>
+                    <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
+                        <p>Name: {{ item.organization.name }}</p>
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline font-semibold"
+                            (dblclick)="goToTenantDetailedView(item.tenant.id)"
+                            style="text-wrap: nowrap"
+                        >
+                            {{ item.organization.userType }} :
                             {{ item.tenant?.nameEnglish }}
                         </p>
-                        <p>Phone: {{ item.tenant.phoneNumber }}</p>
+                        <p>Phone Number: {{ item.tenant.phoneNumber }}</p>
                     </div>
                 </td>
+                <td>
+                    {{ item.use | lowercase }}
+                </td>
+                <td>
+                    {{ item.ratePerArea }}
+                </td>
+                <td>
+                    <p style="text-wrap: nowrap">
+                        {{ item.leaseStartDate | date : "mediumDate" }}
+                    </p>
+                </td>
+                <td>{{ item.leaseDurationMonths }} Months</td>
+                <td>Nu.{{ computeMonthlyPayable(item) }}</td>
 
                 <td>
                     <div class="flex gap-2">
@@ -289,71 +377,107 @@
 
         <p-table
             [value]="paginatedLeaseHistory.data"
-            *ngIf="paginatedLeaseHistory.data.length"
             styleClass="p-datatable-striped mb-2"
         >
             <ng-template pTemplate="header">
                 <tr>
+                    <th>ref</th>
                     <th>Status</th>
-                    <th>Type</th>
-                    <th class="text-center">Plot</th>
-                    <th class="text-center">Unit</th>
-                    <th>Use</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Duration</th>
-                    <th>Monthly Charges</th>
+                    <th>Plot</th>
+                    <th>Admin Zone</th>
+                    <th>Sub Admin Zone</th>
+                    <th>Lessee Type</th>
                     <th>Lessee</th>
+                    <th>Use</th>
+                    <th>Rate/Sqft</th>
+                    <th>Start Date</th>
+                    <th>Duration</th>
+                    <th>Monthly Payable</th>
                     <th></th>
                 </tr>
             </ng-template>
-
             <ng-template pTemplate="body" let-item>
                 <tr>
                     <td>
-                        <p [ngClass]="getStatusClass(item.status)">
-                            {{ item.status }}
+                        <p>
+                            {{ item.id }}
                         </p>
                     </td>
                     <td>
-                        <p>{{ item.type }}</p>
-                    </td>
-                    <td class="text-center">{{ item.plot.plotId }}</td>
-                    <td class="text-center">
-                        <p>
-                            {{ item.unit?.floorLevel }}-{{
-                                item.unit?.unitNumber
-                            }}
-                        </p>
-                        <p>
-                            {{ item.building?.name }}
+                        <p
+                            [ngClass]="getStatusClass(item.status)"
+                            class="border-round text-center font-semibold text-sm"
+                        >
+                            {{ getStatusName(item.status) }}
                         </p>
                     </td>
-                    <td>{{ item.use }}</td>
-                    <td>{{ item.leaseStartDate }}</td>
-                    <td>{{ item.leaseEndDate }}</td>
-                    <td>{{ item.leaseDurationMonths }} Months</td>
-                    <td>Nu.{{ computeMonthlyCharges(item) }}</td>
+
                     <td>
-                        <div
-                            *ngIf="item.lesseeType === 'INDIVIDUAL'"
+                        <p
+                            pTooltip="Double click to view Plot details"
+                            tooltipPosition="left"
+                            class="cursor-pointer hover:underline font-semibold"
+                            (dblclick)="goToPlotDetailedView(item.plot)"
                             style="text-wrap: nowrap"
                         >
-                            <p>Name: {{ item.tenant?.nameEnglish }}</p>
-                            <p>Phone: {{ item.tenant?.phoneNumber }}</p>
-                        </div>
-                        <div
-                            *ngIf="item.lesseeType !== 'INDIVIDUAL'"
-                            style="text-wrap: nowrap"
-                        >
-                            <p>Name: {{ item.organization?.name }}</p>
+                            {{ item.plot.plotId }}
+                        </p>
+                    </td>
+                    <td>{{ item.plot.thram.administrativeZone.name }}</td>
+                    <td>
+                        {{ item.plot.thram.subAdministrativeZone.name }}
+                    </td>
+
+                    <td>
+                        {{ item.lesseeType | lowercase }}
+                    </td>
+
+                    <td>
+                        <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
+                            <p
+                                pTooltip="double click to view Tenant details"
+                                class="cursor-pointer hover:underline font-semibold"
+                                (dblclick)="
+                                    goToTenantDetailedView(item.tenant.id)
+                                "
+                                style="text-wrap: nowrap"
+                            >
+                                Name: {{ item.tenant?.nameEnglish }}
+                            </p>
                             <p>
-                                {{ item.organization?.userType }} Name:
+                                {{ item.tenant.phoneNumber }}
+                            </p>
+                        </div>
+                        <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
+                            <p>Name: {{ item.organization.name }}</p>
+                            <p
+                                pTooltip="double click to view Tenant details"
+                                tooltipPosition="left"
+                                class="cursor-pointer hover:underline font-semibold"
+                                (dblclick)="
+                                    goToTenantDetailedView(item.tenant.id)
+                                "
+                                style="text-wrap: nowrap"
+                            >
+                                {{ item.organization.userType }} :
                                 {{ item.tenant?.nameEnglish }}
                             </p>
-                            <p>Phone: {{ item.tenant.phoneNumber }}</p>
+                            <p>Phone Number: {{ item.tenant.phoneNumber }}</p>
                         </div>
                     </td>
+                    <td>
+                        {{ item.use | lowercase }}
+                    </td>
+                    <td>
+                        {{ item.ratePerArea }}
+                    </td>
+                    <td>
+                        <p style="text-wrap: nowrap">
+                            {{ item.leaseStartDate | date : "mediumDate" }}
+                        </p>
+                    </td>
+                    <td>{{ item.leaseDurationMonths }} Months</td>
+                    <td>Nu.{{ computeMonthlyPayable(item) }}</td>
 
                     <td>
                         <div class="flex gap-2">

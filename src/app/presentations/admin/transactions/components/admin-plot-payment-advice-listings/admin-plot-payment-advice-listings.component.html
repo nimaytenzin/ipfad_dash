@@ -66,7 +66,17 @@
                     {{ item.dueDate | date : "mediumDate" }}
                 </td>
                 <td>
-                    <p>Name:{{ item.leaseAgreement.tenant?.nameEnglish }}</p>
+                    <p
+                        pTooltip="double click to view Tenant details"
+                        class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                        (dblclick)="
+                            goToTenantDetailedView(
+                                item.leaseAgreement.tenant.id
+                            )
+                        "
+                    >
+                        Name:{{ item.leaseAgreement.tenant?.nameEnglish }}
+                    </p>
                     <p>Phone: {{ item.leaseAgreement.tenant?.phoneNumber }}</p>
                 </td>
 
@@ -181,7 +191,15 @@
                     </td>
 
                     <td>
-                        <p>
+                        <p
+                            pTooltip="double click to view Tenant details"
+                            class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                            (dblclick)="
+                                goToTenantDetailedView(
+                                    item.leaseAgreement.tenant.id
+                                )
+                            "
+                        >
                             Name:{{ item.leaseAgreement.tenant?.nameEnglish }}
                         </p>
                         <p>

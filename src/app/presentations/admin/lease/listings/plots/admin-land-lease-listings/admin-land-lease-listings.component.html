@@ -3,12 +3,6 @@
         <p>Land Lease Master Table</p>
         <div class="flex gap-2">
             <p-button
-                label=" Lease"
-                icon="pi pi-plus"
-                size="small"
-                (click)="openCreateLeaseAgreementModal()"
-            ></p-button>
-            <p-button
                 label="Download Excel"
                 icon="pi pi-file-excel"
                 size="small"
@@ -40,52 +34,37 @@
             <p-table
                 [value]="paginatedLandLease.data"
                 styleClass="p-datatable-striped mb-2"
-                #dt
-                [globalFilterFields]="[
-                    'plot.plotId',
-                    'tenant.nameEnglish',
-                    'tenant.cid',
-                    'tenant.phoneNumber'
-                ]"
             >
-                <ng-template pTemplate="caption">
-                    <div
-                        class="flex flex-column align-items-end justify-content-end"
-                    >
-                        <p class="text-sm font-normal">
-                            Filter by PlotId, Tenant Name, phone Number & CID
-                        </p>
-                        <input
-                            pInputText
-                            type="text"
-                            (input)="
-                                dt.filterGlobal($event.target.value, 'contains')
-                            "
-                            placeholder="Search keyword"
-                        />
-                    </div>
-                </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
+                        <th>ref</th>
                         <th>Status</th>
                         <th>Plot</th>
-                        <th>Thram</th>
-
+                        <th>Admin Zone</th>
+                        <th>Sub Admin Zone</th>
                         <th>Lessee Type</th>
                         <th>Lessee</th>
                         <th>Use</th>
                         <th>Rate/Sqft</th>
                         <th>Start Date</th>
                         <th>Duration</th>
-                        <th>Rent</th>
+                        <th>Monthly Payable</th>
                         <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-item>
                     <tr>
                         <td>
-                            <p [ngClass]="getStatusClass(item.status)">
-                                {{ item.status }}
+                            <p>
+                                {{ item.id }}
+                            </p>
+                        </td>
+                        <td>
+                            <p
+                                [ngClass]="getStatusClass(item.status)"
+                                class="border-round text-center font-semibold text-sm"
+                            >
+                                {{ getStatusName(item.status) }}
                             </p>
                         </td>
 
@@ -93,47 +72,51 @@
                             <p
                                 pTooltip="Double click to view Plot details"
                                 tooltipPosition="left"
-                                class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
-                                (dblclick)="goToPlotDetailedView(plot)"
+                                class="cursor-pointer hover:underline font-semibold"
+                                (dblclick)="goToPlotDetailedView(item.plot)"
+                                style="text-wrap: nowrap"
                             >
                                 {{ item.plot.plotId }}
                             </p>
                         </td>
-                        <td>{{ item.plot.thram.thramNo }}</td>
+                        <td>{{ item.plot.thram.administrativeZone.name }}</td>
+                        <td>
+                            {{ item.plot.thram.subAdministrativeZone.name }}
+                        </td>
 
                         <td>
-                            {{ item.lesseeType }}
+                            {{ item.lesseeType | lowercase }}
                         </td>
+
                         <td>
                             <div *ngIf="item.lesseeType === 'INDIVIDUAL'">
                                 <p
-                                    pTooltip="Double click to view Tenant details"
-                                    tooltipPosition="left"
-                                    class="cursor-pointer hover:underline hover:font-semibold text-blue-600"
+                                    pTooltip="double click to view Tenant details"
+                                    class="cursor-pointer hover:underline font-semibold"
                                     (dblclick)="
                                         goToTenantDetailedView(item.tenant.id)
                                     "
+                                    style="text-wrap: nowrap"
                                 >
                                     Name: {{ item.tenant?.nameEnglish }}
                                 </p>
                                 <p>
-                                    Phone Number: {{ item.tenant.phoneNumber }}
+                                    {{ item.tenant.phoneNumber }}
                                 </p>
                             </div>
-
                             <div *ngIf="item.lesseeType !== 'INDIVIDUAL'">
                                 <p>Name: {{ item.organization.name }}</p>
                                 <p
                                     pTooltip="double click to view Tenant details"
                                     tooltipPosition="left"
-                                    class="cursor-pointer hover:underline hover:font-semibold"
+                                    class="cursor-pointer hover:underline font-semibold"
                                     (dblclick)="
                                         goToTenantDetailedView(item.tenant.id)
                                     "
+                                    style="text-wrap: nowrap"
                                 >
-                                    {{ item.organization.userType }} Name:{{
-                                        item.tenant?.nameEnglish
-                                    }}
+                                    {{ item.organization.userType }} :
+                                    {{ item.tenant?.nameEnglish }}
                                 </p>
                                 <p>
                                     Phone Number: {{ item.tenant.phoneNumber }}
@@ -141,13 +124,15 @@
                             </div>
                         </td>
                         <td>
-                            {{ item.use }}
+                            {{ item.use | lowercase }}
                         </td>
                         <td>
                             {{ item.ratePerArea }}
                         </td>
                         <td>
-                            {{ item.leaseStartDate }}
+                            <p style="text-wrap: nowrap">
+                                {{ item.leaseStartDate | date : "mediumDate" }}
+                            </p>
                         </td>
                         <td>{{ item.leaseDurationMonths }} Months</td>
                         <td>Nu.{{ computeMonthlyPayable(item) }}</td>

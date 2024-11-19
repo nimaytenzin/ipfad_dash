@@ -147,3 +147,8 @@ export interface UnitLeasePaymentStatusDTO {
     unit: UnitDTO;
     monthlyStatus: MonthlyPaymentStatusI[];
 }
+
+export interface BuildingLeasePaymentStatusDTO {
+    building: BuildingDTO;
+    monthlyStatus: MonthlyPaymentStatusI[];
+}

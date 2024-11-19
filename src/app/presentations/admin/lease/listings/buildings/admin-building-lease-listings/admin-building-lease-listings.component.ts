@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -11,12 +11,19 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
 import { ROWSPERPAGEOPTION, PageEvent } from 'src/app/core/constants/constants';
-import { INVOICESTATUS, LEASETYPE } from 'src/app/core/constants/enums';
+import {
+    INVOICESTATUS,
+    LEASESTATUS,
+    LEASETYPE,
+} from 'src/app/core/constants/enums';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
-import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
+import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 @Component({
     selector: 'app-admin-building-lease-listings',
@@ -36,6 +43,20 @@ import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
     providers: [DialogService],
 })
 export class AdminBuildingLeaseListingsComponent implements OnInit {
+    private _refreshEvent: EventEmitter<void>;
+
+    @Input({
+        required: true,
+    })
+    set refreshEvent(event: EventEmitter<void>) {
+        if (event) {
+            this._refreshEvent = event;
+            this._refreshEvent.subscribe(() => {
+                this.handlePagination();
+            });
+        }
+    }
+
     ref: DynamicDialogRef | undefined;
     paginatedBuilingLease: PaginatedData<LeaseAgreeementDTO> = {
         firstPage: 0,
@@ -58,29 +79,38 @@ export class AdminBuildingLeaseListingsComponent implements OnInit {
         private router: Router,
         private leaseAgreementDataService: LeaseAgreementDataService,
         private messageService: MessageService,
-        private authService: AuthService
+        private authService: AuthService,
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {}
 
     ngOnInit(): void {
         this.handlePagination();
     }
 
-    openCreateLeaseAgreementModal() {
-        this.ref = this.dialogService.open(
-            AdminCreateUnitLeaseAgreementStepperComponent,
-            {
-                header: 'Lease Creator',
-                width: 'max-content',
-                data: {
-                    type: LEASETYPE.BUILDING,
-                },
-            }
-        );
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.handlePagination();
-            }
-        });
+    getStatusClass(status: string): string {
+        switch (status) {
+            case LEASESTATUS.PENDING:
+                return 'bg-red-100 text-red-700 px-1';
+            case LEASESTATUS.ACTIVE:
+                return 'bg-green-600 text-gray-100 px-1';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'bg-yellow-600 text-gray-100 px-1';
+            default:
+                return 'bg-gray-100 text-gray-700 px-1';
+        }
+    }
+
+    getStatusName(status: string): string {
+        switch (status) {
+            case LEASESTATUS.PENDING:
+                return 'Pending';
+            case LEASESTATUS.ACTIVE:
+                return 'Active';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'Expiring';
+            default:
+                return 'Terminated';
+        }
     }
 
     onPageChange(event: PageEvent): void {
@@ -118,8 +148,19 @@ export class AdminBuildingLeaseListingsComponent implements OnInit {
         return total;
     }
 
+    goToBuildingDetailedView(item: BuildingDTO) {
+        this.router.navigate([`/admin/master-properties/building/${item.id}`]);
+    }
     goToDetailedView(leaseAgreement: LeaseAgreeementDTO) {
         this.router.navigate([`/admin/master-lease/view/${leaseAgreement.id}`]);
+    }
+
+    goToPlotDetailedView(item: PlotDTO) {
+        this.router.navigate([`/admin/master-properties/plot/${item.id}`]);
+    }
+
+    goToTenantDetailedView(tenantId: number) {
+        this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
     }
 
     getSeverity(status: string) {
@@ -135,5 +176,31 @@ export class AdminBuildingLeaseListingsComponent implements OnInit {
         }
     }
 
-    downloadMasterTable() {}
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadAllBuildingLeaseAgreementByAdmin(
+                this.authService.GetCurrentRole().adminId
+            )
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Building Lease.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
+    }
 }

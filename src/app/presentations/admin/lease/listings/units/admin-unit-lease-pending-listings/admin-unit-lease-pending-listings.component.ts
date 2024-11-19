@@ -1,39 +1,38 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { ROWSPERPAGEOPTION, PageEvent } from 'src/app/core/constants/constants';
 import {
-    INVOICESTATUS,
+    LESSORTYPE,
     LEASESTATUS,
     LEASETYPE,
-    LESSORTYPE,
 } from 'src/app/core/constants/enums';
-import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
-import { CreateInvoiceDTO } from 'src/app/core/dto/payments/invoice/create-invoice.dto';
-import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
-import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
-import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
-import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
-import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
-import { TooltipModule } from 'primeng/tooltip';
-import { InputTextModule } from 'primeng/inputtext';
-import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
-import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
+import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
+import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
+import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 
 @Component({
-    selector: 'app-admin-unit-lease-listings',
-    templateUrl: './admin-unit-lease-listings.component.html',
-    styleUrls: ['./admin-unit-lease-listings.component.css'],
+    selector: 'app-admin-unit-lease-pending-listings',
+    templateUrl: './admin-unit-lease-pending-listings.component.html',
+    styleUrls: ['./admin-unit-lease-pending-listings.component.css'],
     standalone: true,
     imports: [
         CheckboxModule,
@@ -49,7 +48,21 @@ import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
     ],
     providers: [DialogService],
 })
-export class AdminUnitLeaseListingsComponent implements OnInit {
+export class AdminUnitLeasePendingListingsComponent implements OnInit {
+    private _refreshEvent: EventEmitter<void>;
+
+    @Input({
+        required: true,
+    })
+    set refreshEvent(event: EventEmitter<void>) {
+        if (event) {
+            this._refreshEvent = event;
+            this._refreshEvent.subscribe(() => {
+                this.handlePagination();
+            });
+        }
+    }
+
     ref: DynamicDialogRef | undefined;
     LessorTypes = LESSORTYPE;
 
@@ -75,8 +88,9 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         public dialogService: DialogService,
         private router: Router,
         private leaseAgreementDataService: LeaseAgreementDataService,
+        private authService: AuthService,
         private messageService: MessageService,
-        private authService: AuthService
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {
         this.authService
             .GetAdminDetails(this.authService.GetCurrentRole().adminId)
@@ -84,18 +98,30 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
                 this.admin = res;
             });
     }
+
     getStatusClass(status: string): string {
         switch (status) {
             case LEASESTATUS.PENDING:
-                return 'bg-red-600 text-gray-100 px-2';
+                return 'bg-red-100 text-red-700 px-1';
             case LEASESTATUS.ACTIVE:
-                return 'bg-green-600 text-gray-100 px-2';
+                return 'bg-green-600 text-gray-100 px-1';
             case LEASESTATUS.UPCOMING_EXPIRATION:
-                return 'bg-yellow-600 text-gray-100 px-2';
-            case LEASESTATUS.EXPIRED:
-                return 'bg-red-600 text-gray-100 px-2';
+                return 'bg-yellow-600 text-gray-100 px-1';
             default:
-                return 'bg-gray-600 text-gray-100 px-2';
+                return 'bg-gray-100 text-gray-700 px-1';
+        }
+    }
+
+    getStatusName(status: string): string {
+        switch (status) {
+            case LEASESTATUS.PENDING:
+                return 'Pending';
+            case LEASESTATUS.ACTIVE:
+                return 'Active';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'Expiring';
+            default:
+                return 'Terminated';
         }
     }
 
@@ -156,14 +182,13 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         };
 
         this.leaseAgreementDataService
-            .GetAllUnitLeaseByAdminPaginated(
+            .GetAllPendingUnitLeaseByAdminPaginated(
                 this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({
                 next: (res) => {
                     this.paginatedUnitLease = res;
-                    console.log('PAGINATED UNIT LEASE', res);
                 },
             });
     }
@@ -177,5 +202,31 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         return total;
     }
 
-    downloadMasterTable() {}
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadAllPendingUnitLeaseAgreementByAdmin(
+                this.authService.GetCurrentRole().adminId
+            )
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Pending Unit Lease.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
+    }
 }

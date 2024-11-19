@@ -16,6 +16,8 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice/view-payment-advice.component';
+import { TooltipModule } from 'primeng/tooltip';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-plot-payment-advice-listings',
@@ -33,6 +35,7 @@ import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment
         CommonModule,
         PaginatorModule,
         TableModule,
+        TooltipModule,
     ],
     providers: [DialogService],
 })
@@ -62,7 +65,8 @@ export class AdminPlotPaymentAdviceListingsComponent implements OnInit {
     constructor(
         private messageService: MessageService,
         private paymentAdviceDataService: PaymentAdviceDataService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -92,6 +96,10 @@ export class AdminPlotPaymentAdviceListingsComponent implements OnInit {
             header: 'Payment Advice',
             data: item,
         });
+    }
+
+    goToTenantDetailedView(tenantId: number) {
+        this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
     }
 
     onPageChange(event: PageEvent): void {

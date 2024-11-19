@@ -104,11 +104,12 @@ export const ADMINSIDEBARITEMS = [
                 routerLink: ['/admin/master-lease/lands'],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
-            // {
-            //     label: 'Building Lease',
-            //     icon: 'pi pi-fw pi-th-large',
-            //     routerLink: ['/admin/master-lease/buildings'],
-            // },
+            {
+                label: 'Building Lease',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/master-lease/buildings'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
             {
                 label: 'Unit Lease',
                 icon: 'pi pi-fw pi-th-large',

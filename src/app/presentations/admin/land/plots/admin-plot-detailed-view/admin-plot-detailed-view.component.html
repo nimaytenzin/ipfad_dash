@@ -36,6 +36,14 @@
 
         <hr class="mt-4 mb-3" />
 
+        <p class="font-semibold">Buildings</p>
+        <p
+            *ngFor="let item of plot.buildings"
+            class="text-blue-500 cursor-pointer hover:underline"
+            (click)="goToBuildingDetailedView(item)"
+        >
+            - {{ item.name }}
+        </p>
         <app-admin-plot-map-viewer
             [plotId]="plot.plotId"
             [buildings]="plot.buildings"

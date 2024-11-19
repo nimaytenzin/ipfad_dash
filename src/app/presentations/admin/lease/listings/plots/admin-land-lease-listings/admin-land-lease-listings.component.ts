@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -19,11 +19,12 @@ import {
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
-import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
+import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 @Component({
     selector: 'app-admin-land-lease-listings',
@@ -42,10 +43,22 @@ import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
         TagModule,
         InputTextModule,
     ],
-    providers: [DialogService],
 })
 export class AdminLandLeaseListingsComponent implements OnInit {
-    ref: DynamicDialogRef | undefined;
+    private _refreshEvent: EventEmitter<void>;
+
+    @Input({
+        required: true,
+    })
+    set refreshEvent(event: EventEmitter<void>) {
+        if (event) {
+            this._refreshEvent = event;
+            this._refreshEvent.subscribe(() => {
+                this.handlePagination();
+            });
+        }
+    }
+
     paginatedLandLease: PaginatedData<LeaseAgreeementDTO> = {
         firstPage: 0,
         currentPage: 0,
@@ -63,55 +76,41 @@ export class AdminLandLeaseListingsComponent implements OnInit {
     currentPage = 0;
 
     constructor(
-        public dialogService: DialogService,
         private router: Router,
         private leaseAgreementDataService: LeaseAgreementDataService,
+        private authService: AuthService,
         private messageService: MessageService,
-        private authService: AuthService
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {}
-
-    goToTenantDetailedView(tenantId: number) {
-        this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
-    }
-    goToPlotDetailedView(plot: PlotDTO) {
-        this.router.navigate(['admin/master-properties/plot/' + plot.id]);
-    }
 
     getStatusClass(status: string): string {
         switch (status) {
             case LEASESTATUS.PENDING:
-                return 'bg-red-600 text-gray-100 px-2';
+                return 'bg-red-100 text-red-700 px-1';
             case LEASESTATUS.ACTIVE:
-                return 'bg-green-600 text-gray-100 px-2';
+                return 'bg-green-600 text-gray-100 px-1';
             case LEASESTATUS.UPCOMING_EXPIRATION:
-                return 'bg-yellow-600 text-gray-100 px-2';
-            case LEASESTATUS.EXPIRED:
-                return 'bg-red-600 text-gray-100 px-2';
+                return 'bg-yellow-600 text-gray-100 px-1';
             default:
-                return 'bg-gray-600 text-gray-100 px-2';
+                return 'bg-gray-100 text-gray-700 px-1';
+        }
+    }
+
+    getStatusName(status: string): string {
+        switch (status) {
+            case LEASESTATUS.PENDING:
+                return 'Pending';
+            case LEASESTATUS.ACTIVE:
+                return 'Active';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'Expiring';
+            default:
+                return 'Terminated';
         }
     }
 
     ngOnInit(): void {
         this.handlePagination();
-    }
-
-    openCreateLeaseAgreementModal() {
-        this.ref = this.dialogService.open(
-            AdminCreateUnitLeaseAgreementStepperComponent,
-            {
-                header: 'Lease Creator',
-                width: 'max-content',
-                data: {
-                    type: LEASETYPE.LAND,
-                },
-            }
-        );
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.handlePagination();
-            }
-        });
     }
 
     onPageChange(event: PageEvent): void {
@@ -151,6 +150,39 @@ export class AdminLandLeaseListingsComponent implements OnInit {
     goToDetailedView(leaseAgreement: LeaseAgreeementDTO) {
         this.router.navigate([`/admin/master-lease/view/${leaseAgreement.id}`]);
     }
+    goToPlotDetailedView(item: PlotDTO) {
+        this.router.navigate([`/admin/master-properties/plot/${item.id}`]);
+    }
 
-    downloadMasterTable() {}
+    goToTenantDetailedView(tenantId: number) {
+        this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
+    }
+
+    downloadMasterTable() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadAllLandLeaseAgreementByAdmin(
+                this.authService.GetCurrentRole().adminId
+            )
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Land Lease.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
+    }
 }
