@@ -55,9 +55,35 @@
             </div>
         </div>
     </div>
+    <div
+        *ngFor="let item of buildingImages; let i = index"
+        [ngClass]="{ 'large-image': i === 0, 'small-image': i !== 0 }"
+    >
+        <div
+            class="masonry-image"
+            [ngStyle]="{
+                'background-image': 'url(' + getPlotImageUrl(item) + ')'
+            }"
+            (click)="previewImage(item)"
+        >
+            <div class="p-1 flex justify-content-between" *ngIf="editMode">
+                <p class="text-white text-sm">
+                    {{ item.createdAt | date : "mediumDate" }}
+                </p>
+                <p-button
+                    [rounded]="true"
+                    severity="danger"
+                    icon="pi pi-trash"
+                    (click)="confirmDeletePhoto(item)"
+                ></p-button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<p *ngIf="!plotImages.length">-No property images added.</p>
+<p *ngIf="!plotImages.length && !buildingImages.length">
+    -No property images added.
+</p>
 
 <p-dialog
     [modal]="true"

@@ -38,8 +38,8 @@ import { TooltipModule } from 'primeng/tooltip';
 export class ViewPaymentAdviceComponent implements OnInit {
     @Input()
     paymentAdvices: PaymentAdviceDto[];
-    companyDetails = ZHIDHAYCONTACTDETAILS;
-    ref: DynamicDialogRef;
+
+    openDialogRef: DynamicDialogRef;
 
     totalAmmount: number = 0;
     totalAmountDue: number = 0;
@@ -52,10 +52,10 @@ export class ViewPaymentAdviceComponent implements OnInit {
         private config: DynamicDialogConfig,
         private dialogService: DialogService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private ref: DynamicDialogRef
     ) {
         this.paymentAdvices = this.config.data;
-
         for (let item of this.paymentAdvices) {
             this.totalAmmount += item.totalAmount;
             this.totalAmountDue += item.amountDue;
@@ -75,23 +75,8 @@ export class ViewPaymentAdviceComponent implements OnInit {
             });
     }
 
-    openPaymentGatewayPaymentModal(paymentAdvice: PaymentAdviceDto) {
-        this.ref = this.dialogService.open(AdminPgPaymentStepperComponent, {
-            header: 'Process Payment',
-            width: '600px',
-            data: { ...paymentAdvice },
-        });
-
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 200) {
-                this.ref.close();
-            }
-        });
-    }
-
     receivePayment() {
-        console.log(this.paymentAdvices, 'Payment Advices');
-        this.ref = this.dialogService.open(
+        this.openDialogRef = this.dialogService.open(
             AdminReceivePaymentPaymentAdviceModalComponent,
             {
                 header: 'Receive Payment',
@@ -99,5 +84,10 @@ export class ViewPaymentAdviceComponent implements OnInit {
                 data: this.paymentAdvices,
             }
         );
+        this.openDialogRef.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.ref.close({ status: 200 });
+            }
+        });
     }
 }

@@ -113,22 +113,15 @@
                                     (View)
                                 </span>
                             </p>
-                            <p style="text-wrap: nowrap">
+                            <p>
                                 Lease Status:
                                 <span
                                     [ngClass]="
-                                        getStatusClass(leaseAgreement?.status)
+                                        getStatusClass(leaseAgreement.status)
                                     "
+                                    class="border-round text-center font-semibold text-sm"
                                 >
-                                    {{ leaseAgreement?.status }}
-                                    <span
-                                        *ngIf="leaseAgreement.modificationDate"
-                                        >(
-                                        {{
-                                            leaseAgreement.modificationDate
-                                                | date : "mediumDate"
-                                        }})</span
-                                    >
+                                    {{ getStatusName(leaseAgreement.status) }}
                                 </span>
                             </p>
 
@@ -157,37 +150,68 @@
                                 >
                             </p>
 
+                            <div *ngIf="leaseAgreement.paymentAdvises.length">
+                                <div
+                                    style="text-wrap: nowrap"
+                                    *ngFor="
+                                        let advice of leaseAgreement.paymentAdvises
+                                    "
+                                >
+                                    <p
+                                        *ngIf="advice.month === status.month"
+                                        class="font-semibold mt-2"
+                                    >
+                                        Payments
+                                    </p>
+                                    <p *ngIf="advice.month === status.month">
+                                        <span
+                                            class="font-semibold px-2 py-1 border-round-md text-sm"
+                                            [ngClass]="{
+                                                'bg-green-50  text-green-600  ':
+                                                    advice.status === 'PAID',
+                                                'bg-red-50 text-red-600  ':
+                                                    advice.status === 'DUE'
+                                            }"
+                                        >
+                                            {{ advice.status }}
+                                            Nu.
+                                            {{ advice.totalAmount }}</span
+                                        >
+
+                                        <span
+                                            class="hover:underline cursor-pointer"
+                                            *ngIf="advice.status === 'DUE'"
+                                            pTooltip="double click to view Payment Advice"
+                                            tooltipPosition="left"
+                                            (dblclick)="
+                                                openPADetails(
+                                                    [advice],
+                                                    leaseAgreement
+                                                )
+                                            "
+                                        >
+                                            View advice
+                                        </span>
+                                        <span
+                                            pTooltip="double click to view Payment Receipt"
+                                            class="hover:underline"
+                                            class="cursor-pointer hover:underline"
+                                            *ngIf="advice.status === 'PAID'"
+                                            (dblclick)="
+                                                openPRDetails(
+                                                    advice.paymentReceipts
+                                                )
+                                            "
+                                        >
+                                            View receipt
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
                             <p-divider></p-divider>
                         </ng-container>
 
-                        <ng-container *ngIf="status.paymentAdvice">
-                            <p style="text-wrap: nowrap">
-                                <span
-                                    class="font-semibold mr-2 px-2 py-1 border-round-md text-sm"
-                                    [ngClass]="{
-                                        'text-green-50  bg-green-600  ':
-                                            status.paymentAdvice.status ===
-                                            'PAID',
-                                        'text-red-50 bg-red-600  ':
-                                            status.paymentAdvice.status ===
-                                            'DUE'
-                                    }"
-                                >
-                                    {{ status.paymentAdvice.status }}
-                                    Nu.
-                                    {{ status.paymentAdvice.totalAmount }}</span
-                                >
-                            </p>
-                        </ng-container>
-                        <ng-container
-                            *ngIf="
-                                status.leaseAgreements && !status.paymentAdvice
-                            "
-                        >
-                            <p>-No PA Generated</p>
-                        </ng-container>
-
-                        <ng-container *ngIf="!status.leaseAgreements">
+                        <ng-container *ngIf="!status.leaseAgreements.length">
                             <p class="text-center">Vacant</p>
                         </ng-container>
                     </td>

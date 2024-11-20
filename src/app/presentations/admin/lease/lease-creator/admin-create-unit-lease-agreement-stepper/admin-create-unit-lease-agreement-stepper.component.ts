@@ -61,6 +61,7 @@ import { AdminLeaseCreatorSelectBuildingComponent } from '../components/admin-le
 import { AdminLeaseCreatorSelectUnitComponent } from '../components/admin-lease-creator-select-unit/admin-lease-creator-select-unit.component';
 import { LeaseCreatorStateService } from 'src/app/core/dataservice/lease/create-lease.dataservice';
 import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-create-unit-lease-agreement-stepper',
@@ -182,7 +183,8 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
         private leaseAgreementDataService: LeaseAgreementDataService,
         private bankAccountDataService: BankAccountDataService,
         private leaseCreatorStateService: LeaseCreatorStateService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private router: Router
     ) {
         this.userDataService
             .FindOneAuthenticated(this.authService.GetCurrentRole().adminId)
@@ -475,12 +477,37 @@ export class AdminCreateUnitLeaseAgreementStepperComponent implements OnInit {
                                         leaseAgreementId: res.id,
                                     })
                                     .subscribe((respp) => {
+                                        this.messageService.add({
+                                            severity: 'info',
+                                            summary: 'Notified',
+                                            detail: 'Lease Agreement Signing Notification Sent',
+                                        });
                                         if (respp) {
-                                            this.messageService.add({
-                                                severity: 'info',
-                                                summary: 'Notified',
-                                                detail: 'Lease Agreement Signing Notification Sent',
-                                            });
+                                            this.notificationService
+                                                .SendNotification({
+                                                    fromUserId: this.admin.id,
+                                                    toUserId: res.tenantId,
+                                                    notificationType:
+                                                        NOTIFICATIONTYPES.SECUTIRYDEPOSIT_PAYMENT_REMINDER,
+                                                    leaseAgreementId: res.id,
+                                                })
+                                                .subscribe((ok) => {
+                                                    if (ok) {
+                                                        this.messageService.add(
+                                                            {
+                                                                severity:
+                                                                    'info',
+                                                                summary:
+                                                                    'Notified',
+                                                                detail: 'Lease Agreement Security Deposit Payment Notification Sent',
+                                                            }
+                                                        );
+                                                        this.router.navigate([
+                                                            'admin/master-lease/view/' +
+                                                                res.id,
+                                                        ]);
+                                                    }
+                                                });
                                         }
                                     });
                             }

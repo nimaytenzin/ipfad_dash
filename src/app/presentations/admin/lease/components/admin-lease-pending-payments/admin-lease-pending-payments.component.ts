@@ -91,6 +91,11 @@ export class AdminLeasePendingPaymentsComponent implements OnInit {
             header: 'Payment Advice',
             data: item,
         });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.handlePagination();
+            }
+        });
     }
 
     openGeneratePA() {

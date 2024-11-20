@@ -27,6 +27,8 @@ import { AdminGenerateLandLeasePaymentAdviceComponent } from '../../../payment/a
 import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
 import { AdminGenerateUnitLeasePaymentAdviceComponent } from '../../../payment/admin-generate-unit-lease-payment-advice/admin-generate-unit-lease-payment-advice.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
+import { AdminViewPaymentReceiptModalComponent } from '../../../transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 
 @Component({
     selector: 'app-admin-unit-lease-payment-status',
@@ -93,25 +95,29 @@ export class AdminUnitLeasePaymentStatusComponent implements OnInit {
             });
     }
 
-    getStatusClass(status: LEASESTATUS): string {
+    getStatusClass(status: string): string {
         switch (status) {
-            case LEASESTATUS.ACTIVE:
-                return 'text-green-600 font-bold';
-            case LEASESTATUS.UPCOMING_EXPIRATION:
-                return 'text-yellow-600 font-bold';
-            case LEASESTATUS.EXPIRED:
-            case LEASESTATUS.CANCELLED:
-            case LEASESTATUS.TERMINATED_BY_TENANT:
-            case LEASESTATUS.TERMINATED_BY_OWNER:
-                return 'text-red-600 font-bold';
             case LEASESTATUS.PENDING:
-                return 'text-blue-600 font-bold';
-            case LEASESTATUS.HOLDOVER:
-                return 'text-orange-600 font-bold';
-            case LEASESTATUS.SUSPENDED:
-                return 'text-purple-600 font-bold';
+                return 'bg-red-100 text-red-700 px-1';
+            case LEASESTATUS.ACTIVE:
+                return 'bg-green-600 text-gray-100 px-1';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'bg-yellow-600 text-gray-100 px-1';
             default:
-                return 'text-gray-600'; // Default for any other or unknown statuses
+                return 'bg-gray-100 text-gray-700 px-1';
+        }
+    }
+
+    getStatusName(status: string): string {
+        switch (status) {
+            case LEASESTATUS.PENDING:
+                return 'Pending';
+            case LEASESTATUS.ACTIVE:
+                return 'Active';
+            case LEASESTATUS.UPCOMING_EXPIRATION:
+                return 'Expiring';
+            default:
+                return 'Terminated';
         }
     }
 
@@ -137,13 +143,31 @@ export class AdminUnitLeasePaymentStatusComponent implements OnInit {
         advices: PaymentAdviceDto[],
         leaseAgreement: LeaseAgreeementDTO
     ) {
+        console.log(advices, leaseAgreement);
         advices.forEach((item) => {
             item.leaseAgreement = leaseAgreement;
         });
         this.ref = this.daialogService.open(ViewPaymentAdviceComponent, {
-            header: 'Details',
+            header: 'Advice',
             data: advices,
         });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status) {
+                this.fetchPaymentData();
+            }
+        });
+    }
+
+    openPRDetails(paymentReceipts: PaymentReceiptDTO[]) {
+        this.ref = this.daialogService.open(
+            AdminViewPaymentReceiptModalComponent,
+            {
+                header: 'Receipt',
+                data: {
+                    paymentReceiptId: paymentReceipts[0].id,
+                },
+            }
+        );
     }
 
     generatePaymentAdvice() {

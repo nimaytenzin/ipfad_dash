@@ -71,7 +71,7 @@ export interface LeaseAgreeementDTO {
 
     leaseSurcharges: LeaseSurchargeDTO[];
     leaseRules: LeaseRuleDTO[];
-    paymentAdvise?: PaymentAdviceDto[];
+    paymentAdvises?: PaymentAdviceDto[];
 
     areaLeased?: number;
     areaUnit?: string;
@@ -136,7 +136,6 @@ export interface LeaseModificationDTO {
 interface MonthlyPaymentStatusI {
     month: number;
     leaseAgreements: LeaseAgreeementDTO[];
-    paymentAdvice: PaymentAdviceDto;
 }
 export interface LandLeasePaymentStatusDTO {
     plotId: string;

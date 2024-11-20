@@ -84,14 +84,16 @@
                     >
                         <ng-container *ngIf="status.leaseAgreement">
                             <p class="font-semibold" style="text-wrap: nowrap">
-                                Leased to Tenant
+                                Leased
                                 <span
-                                    (click)="
+                                    pTooltip="double click to view Lease Details"
+                                    tooltipPosition="left"
+                                    class="cursor-pointer hover:underline hover:font-semibold"
+                                    (dblclick)="
                                         goToDetailedView(status.leaseAgreement)
                                     "
-                                    class="hover:underline cursor-pointer font-normal"
                                 >
-                                    (View)
+                                    (View Lease)
                                 </span>
                             </p>
                             <p>
@@ -102,8 +104,13 @@
                                             status.leaseAgreement.status
                                         )
                                     "
+                                    class="border-round text-center font-semibold text-sm"
                                 >
-                                    {{ status.leaseAgreement.status }}
+                                    {{
+                                        getStatusName(
+                                            status.leaseAgreement.status
+                                        )
+                                    }}
                                 </span>
                             </p>
                             <p
@@ -139,10 +146,10 @@
                                 <span
                                     class="font-semibold mr-2 px-2 py-1 border-round-md text-sm"
                                     [ngClass]="{
-                                        'text-green-50  bg-green-600  ':
+                                        'bg-green-50  text-green-600  ':
                                             status.paymentAdvice.status ===
                                             'PAID',
-                                        'text-red-50 bg-red-600  ':
+                                        'bg-red-50 text-red-600  ':
                                             status.paymentAdvice.status ===
                                             'DUE'
                                     }"
@@ -151,6 +158,38 @@
                                     Nu.
                                     {{ status.paymentAdvice.totalAmount }}</span
                                 >
+
+                                <span
+                                    class="hover:underline cursor-pointer"
+                                    *ngIf="
+                                        status.paymentAdvice.status === 'DUE'
+                                    "
+                                    pTooltip="double click to view Payment Advice"
+                                    tooltipPosition="left"
+                                    (dblclick)="
+                                        openPADetails(
+                                            [status.paymentAdvice],
+                                            status.leaseAgreement
+                                        )
+                                    "
+                                >
+                                    View advice
+                                </span>
+                                <span
+                                    pTooltip="double click to view Payment Receipt"
+                                    class="hover:underline"
+                                    class="cursor-pointer hover:underline"
+                                    *ngIf="
+                                        status.paymentAdvice.status === 'PAID'
+                                    "
+                                    (dblclick)="
+                                        openPRDetails(
+                                            status.paymentAdvice.paymentReceipts
+                                        )
+                                    "
+                                >
+                                    View receipt
+                                </span>
                             </p>
                         </ng-container>
                         <ng-container

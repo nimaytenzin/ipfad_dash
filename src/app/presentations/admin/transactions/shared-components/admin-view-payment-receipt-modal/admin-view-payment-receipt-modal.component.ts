@@ -43,7 +43,6 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
     admin: UserDTO;
 
     companyDetails = ZHIDHAYCONTACTDETAILS;
-    ref: DynamicDialogRef;
     adminProfileUri: string;
 
     constructor(
@@ -51,7 +50,8 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
         private dialogService: DialogService,
         private paymentReceiptDataService: PaymentReceiptDataService,
         private messageService: MessageService,
-        private authService: AuthService
+        private authService: AuthService,
+        private ref: DynamicDialogRef
     ) {
         this.paymentReceiptId = this.config.data.paymentReceiptId;
         this.getPaymentReceiptDetails();
@@ -62,7 +62,6 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
             .FindOne(this.paymentReceiptId)
             .subscribe({
                 next: (res) => {
-                    console.log('{AYMENT RECEIPTS', res);
                     this.paymentReceipt = res;
                 },
                 error: (err) => {

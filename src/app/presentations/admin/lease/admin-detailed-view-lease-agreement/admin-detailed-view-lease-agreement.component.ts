@@ -54,6 +54,9 @@ import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { AdminLeaseNotificationsComponent } from '../components/admin-lease-notifications/admin-lease-notifications.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { API_URL } from 'src/app/core/constants/constants';
+import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
+import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
+import { AdminViewPaymentReceiptModalComponent } from '../../transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -93,6 +96,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
     lesseeTypeEnums = LESSEETYPE;
     lessorTypes = LESSORTYPE;
     leaseStatus = LEASESTATUS;
+    securityDepositPA: PaymentAdviceDto | null = null;
 
     leaseAgreement: LeaseAgreeementDTO;
     leaseAgreementId: number;
@@ -142,6 +146,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         private adminTabSelectionPreferenceService: AdminTabPreferenceService,
         private confirmationService: ConfirmationService,
         private geometryDataService: GeometryDataService,
+        private paymentAdviceDataService: PaymentAdviceDataService,
         private router: Router
     ) {
         this.leaseAgreementId = Number(
@@ -184,6 +189,16 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                     this.leaseCharges.forEach((item) => {
                         this.totalMonthlyPayable += item.amount;
                     });
+                    if (this.leaseAgreement.securityDepositPaid) {
+                        this.paymentAdviceDataService
+                            .GetSecurityDepositPADetailsByLease(
+                                this.leaseAgreementId
+                            )
+                            .subscribe((res) => {
+                                this.securityDepositPA = res;
+                            });
+                    }
+
                     if (
                         this.leaseAgreement.status ===
                             LEASESTATUS.TERMINATED_BY_OWNER ||
@@ -216,6 +231,19 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
 
     goToTenantDetailedView(tenantId: number) {
         this.router.navigate([`/admin/master-users/tenant/${tenantId}`]);
+    }
+
+    openPRDetails() {
+        this.ref = this.dialogService.open(
+            AdminViewPaymentReceiptModalComponent,
+            {
+                header: 'Receipt',
+                data: {
+                    paymentReceiptId:
+                        this.securityDepositPA.paymentReceipts[0].id,
+                },
+            }
+        );
     }
 
     getEntryDamageItems() {

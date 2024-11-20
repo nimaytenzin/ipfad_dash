@@ -146,7 +146,7 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
                     this.processPayment(data);
                 },
                 reject: () => {
-                    this.isSubmitting = false; // Reset isSubmitting if rejected
+                    this.isSubmitting = false;
                 },
             });
         } else {
@@ -159,7 +159,7 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
             next: (res) => {
                 this.notificationService
                     .SendNotification({
-                        fromUserId: this.authService.GetAuthenticatedUser().id,
+                        fromUserId: this.authService.GetCurrentRole().adminId,
                         toUserId:
                             this.paymentAdvices[0].leaseAgreement.tenantId,
                         notificationType:
@@ -180,7 +180,9 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
                     summary: 'Payment Received',
                     detail: 'Payment has been successfully processed.',
                 });
-                this.close();
+                this.ref.close({
+                    status: 200,
+                });
             },
             error: (err) => {
                 this.messageService.add({

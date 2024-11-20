@@ -1,4 +1,4 @@
-<div style="min-width: 500px">
+<div style="max-width: 500px">
     <div class="flex justify-content-between align-items-end">
         <div class="flex flex-column gap-2">
             <p-image
@@ -50,10 +50,16 @@
             Total: Nu. {{ paymentReceipt.amount }}
         </p>
 
-        <div class="flex gap-4 align-items-start mt-4 justify-content-end mb-4">
+        <div
+            class="flex gap-4 align-items-start mt-4 justify-content-end mb-4 text-right"
+        >
             <div>
                 <p class="font-semibold">
                     Transfer Mode: {{ paymentReceipt.paymentMode }}
+                </p>
+                <p class="font-semibold">
+                    Transaction Time:
+                    {{ paymentReceipt.createdAt | date : "medium" }}
                 </p>
                 <p>Reference: {{ paymentReceipt.refNo }}</p>
                 <p>
@@ -70,6 +76,7 @@
                 <p>
                     {{ paymentReceipt.receiver.nameEnglish }}
                 </p>
+                <p>(System Manager)</p>
                 <p>
                     {{ paymentReceipt.receiver.phoneNumber }}
                 </p>
@@ -84,6 +91,7 @@
                             .nameEnglish
                     }}
                 </p>
+                <p>(Tenant)</p>
                 <p>
                     {{
                         paymentReceipt.paymentAdvises[0].leaseAgreement.tenant

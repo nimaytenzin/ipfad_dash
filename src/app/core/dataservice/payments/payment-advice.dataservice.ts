@@ -267,6 +267,14 @@ export class PaymentAdviceDataService {
         );
     }
 
+    GetSecurityDepositPADetailsByLease(
+        leaseAgreementId: number
+    ): Observable<PaymentAdviceDto> {
+        return this.http.get<PaymentAdviceDto>(
+            `${this.apiUrl}/payment-advice/admin/lease/securitydeposit-advice/${leaseAgreementId}`
+        );
+    }
+
     GetAllPaidPaymentAdvicesByUnitPaginated(
         unitId: number,
         params?: PaginatedParamsOptions

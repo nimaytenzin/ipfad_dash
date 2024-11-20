@@ -12,6 +12,7 @@ import { BuildingImageDataService } from 'src/app/core/dataservice/building/buil
 import { PlotImageDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PlotImageDataservice } from 'src/app/core/dataservice/land/plot-image.dataservice';
 import { BuildingImageDTO } from 'src/app/core/dto/properties/building-image.dto';
+import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 
 interface UploadQueueItem {
     file: File;
@@ -37,23 +38,27 @@ interface UploadQueueItem {
 export class AdminPlotPhotosComponent implements OnInit {
     @Input({ required: true }) plotDatabaseId: number;
     @Input({ required: true }) editMode: boolean;
+    @Input({ required: true }) buildings: BuildingDTO[];
 
     showPreviewPlotImage: boolean = false;
 
     uploadQueue: UploadQueueItem[] = [];
 
     plotImages: PlotImageDTO[] = [];
+    buildingImages: BuildingImageDTO[] = [];
     selectedFile: File | null = null;
     selectedPlotImage: PlotImageDTO | null = null;
 
     constructor(
         private plotImageDataservice: PlotImageDataservice,
+        private buildingImageDataService: BuildingImageDataService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit() {
         this.getPlotImages();
+        this.getBuildingImages();
     }
 
     getPlotImages() {
@@ -62,6 +67,15 @@ export class AdminPlotPhotosComponent implements OnInit {
             .subscribe((res) => {
                 this.plotImages = res;
             });
+    }
+    getBuildingImages() {
+        for (let building of this.buildings) {
+            this.buildingImageDataService
+                .GetBuildingImageByBuilding(building.id)
+                .subscribe((res) => {
+                    this.buildingImages = res;
+                });
+        }
     }
 
     getPlotImageUrl(item: PlotImageDTO) {
@@ -111,20 +125,6 @@ export class AdminPlotPhotosComponent implements OnInit {
                 severity: 'error',
                 summary: 'Error',
                 detail: `Failed to upload ${file.name}.`,
-            });
-        }
-    }
-
-    async getPlotImagesAsync() {
-        try {
-            this.plotImages = await this.plotImageDataservice
-                .GetPlotImageByplot(this.plotDatabaseId)
-                .toPromise();
-        } catch (error) {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Failed to load plot images',
             });
         }
     }

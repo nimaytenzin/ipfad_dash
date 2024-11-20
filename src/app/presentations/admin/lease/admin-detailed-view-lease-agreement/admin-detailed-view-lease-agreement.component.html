@@ -352,6 +352,14 @@
                                         ? "PAID"
                                         : "DUE"
                                 }}
+
+                                <span
+                                    *ngIf="leaseAgreement?.securityDepositPaid"
+                                    class="font-semibold hover:underline cursor-pointer"
+                                    (click)="openPRDetails()"
+                                >
+                                    (receipt)
+                                </span>
                             </p>
                             <p>
                                 Entry Damage Report Status:
