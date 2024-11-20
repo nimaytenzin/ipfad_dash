@@ -36,6 +36,7 @@ export class AdminMapviewPlotdetailsComponent {
         this.plotId = this.config.data.plotId;
         this.plotDataService.SearchPlotById(this.plotId).subscribe({
             next: (res) => {
+                console.log('MAP VIE WPLOT DETAILS', res);
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Success',

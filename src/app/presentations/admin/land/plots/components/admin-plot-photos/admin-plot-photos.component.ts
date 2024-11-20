@@ -69,6 +69,7 @@ export class AdminPlotPhotosComponent implements OnInit {
             });
     }
     getBuildingImages() {
+        console.log('POT PHOTO BUIDLINGS', this.buildings);
         for (let building of this.buildings) {
             this.buildingImageDataService
                 .GetBuildingImageByBuilding(building.id)

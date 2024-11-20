@@ -1,5 +1,6 @@
 <div>
     <app-admin-plot-photos
+        *ngIf="plot"
         [editMode]="false"
         [plotDatabaseId]="plot.id"
         [buildings]="plot.buildings"
