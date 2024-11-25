@@ -6,10 +6,8 @@ import { AdminUnitLeaseActiveListingsComponent } from '../listings/units/admin-u
 import { AdminUnitLeasePendingListingsComponent } from '../listings/units/admin-unit-lease-pending-listings/admin-unit-lease-pending-listings.component';
 import { AdminUnitLeaseUpcomingExpirationListingsComponent } from '../listings/units/admin-unit-lease-upcoming-expiration-listings/admin-unit-lease-upcoming-expiration-listings.component';
 import { ButtonModule } from 'primeng/button';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { LEASETYPE } from 'src/app/core/constants/enums';
-import { AdminCreateUnitLeaseAgreementStepperComponent } from '../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { AdminMasterLeaseTabPreferenceService } from 'src/app/core/preferences/admin.master-lease.tab.selection.preferences';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-admin-master-unit-lease',
@@ -25,16 +23,14 @@ import { AdminMasterLeaseTabPreferenceService } from 'src/app/core/preferences/a
         AdminUnitLeaseUpcomingExpirationListingsComponent,
         ButtonModule,
     ],
-    providers: [DialogService],
 })
 export class AdminMasterUnitLeaseComponent implements OnInit {
-    ref: DynamicDialogRef | undefined;
     refreshEvent = new EventEmitter<void>();
     activeIndex: number;
 
     constructor(
-        public dialogService: DialogService,
-        private adminMasterLeaseTabSelectionPreferenceService: AdminMasterLeaseTabPreferenceService
+        private adminMasterLeaseTabSelectionPreferenceService: AdminMasterLeaseTabPreferenceService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -45,22 +41,8 @@ export class AdminMasterUnitLeaseComponent implements OnInit {
         );
     }
 
-    openCreateLeaseAgreementModal() {
-        this.ref = this.dialogService.open(
-            AdminCreateUnitLeaseAgreementStepperComponent,
-            {
-                header: 'Lease Creator',
-
-                data: {
-                    type: LEASETYPE.UNIT,
-                },
-            }
-        );
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.refreshEvent.emit();
-            }
-        });
+    goToLeaseBuilder() {
+        this.router.navigate(['admin/master-lease/create/property']);
     }
 
     handleTabChange(event: TabViewChangeEvent) {

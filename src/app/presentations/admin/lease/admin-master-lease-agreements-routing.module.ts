@@ -8,6 +8,12 @@ import { AdminMasterLandLeaseComponent } from './admin-master-land-lease/admin-m
 import { AdminMasterUnitLeaseComponent } from './admin-master-unit-lease/admin-master-unit-lease.component';
 import { AdminSearchLeaseComponent } from './admin-search-lease/admin-search-lease.component';
 import { AdminMasterBuildingLeaseComponent } from './admin-master-building-lease/admin-master-building-lease.component';
+import { AdminCreateLeaseComponent } from './lease-creator/admin-create-lease/admin-create-lease.component';
+import { AdminLeaseCreatorPropertySelectorComponent } from './lease-creator/components/admin-lease-creator-property-selector/admin-lease-creator-property-selector.component';
+import { AdminLeaseCreatorTenantSelectorComponent } from './lease-creator/components/admin-lease-creator-tenant-selector/admin-lease-creator-tenant-selector.component';
+import { AdminLeaseCreatorGeneralTermsComponent } from './lease-creator/components/admin-lease-creator-general-terms/admin-lease-creator-general-terms.component';
+import { AdminLeaseCreatorDetailedTermsComponent } from './lease-creator/components/admin-lease-creator-detailed-terms/admin-lease-creator-detailed-terms.component';
+import { AdminLeaseCreatorLeaseFinalizationComponent } from './lease-creator/components/admin-lease-creator-lease-finalization/admin-lease-creator-lease-finalization.component';
 const routes: Routes = [
     { path: 'lands', component: AdminMasterLandLeaseComponent },
     { path: 'buildings', component: AdminMasterBuildingLeaseComponent },
@@ -17,6 +23,32 @@ const routes: Routes = [
         component: AdminDetailedViewLeaseAgreementComponent,
     },
     { path: 'search', component: AdminSearchLeaseComponent },
+    {
+        path: 'create',
+        component: AdminCreateLeaseComponent,
+        children: [
+            {
+                path: 'property',
+                component: AdminLeaseCreatorPropertySelectorComponent,
+            },
+            {
+                path: 'parties',
+                component: AdminLeaseCreatorTenantSelectorComponent,
+            },
+            {
+                path: 'general-terms',
+                component: AdminLeaseCreatorGeneralTermsComponent,
+            },
+            {
+                path: 'detailed-terms',
+                component: AdminLeaseCreatorDetailedTermsComponent,
+            },
+            {
+                path: 'finalize',
+                component: AdminLeaseCreatorLeaseFinalizationComponent,
+            },
+        ],
+    },
 ];
 
 @NgModule({

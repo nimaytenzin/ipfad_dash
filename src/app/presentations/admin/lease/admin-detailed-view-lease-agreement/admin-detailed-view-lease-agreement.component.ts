@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {
     DynamicDialogRef,
@@ -6,6 +6,7 @@ import {
     DialogService,
 } from 'primeng/dynamicdialog';
 import {
+    LEASEATTACHMENTTYPES,
     LEASESTATUS,
     LEASETYPE,
     LESSEETYPE,
@@ -15,7 +16,10 @@ import {
 import { DamageItemService } from 'src/app/core/dataservice/damage-item/damage-item.dataservice';
 import { DamageItemDTO } from 'src/app/core/dataservice/damage-item/damage.item.dto';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
-import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import {
+    LeaseAgreeementDTO,
+    LeaseAgreementAttachmentDTO,
+} from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
 import {
     NotificationDTO,
@@ -57,6 +61,7 @@ import { API_URL } from 'src/app/core/constants/constants';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { AdminViewPaymentReceiptModalComponent } from '../../transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -82,6 +87,7 @@ import { AdminViewPaymentReceiptModalComponent } from '../../transactions/shared
         ProgressSpinnerModule,
         AdminLeaseNotificationsComponent,
         TooltipModule,
+        FileUploadModule,
     ],
     providers: [ConfirmationService, DialogService],
 })
@@ -134,6 +140,13 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
 
     pdfSrc: string;
 
+    showUploadSignedCopyModal: boolean = false;
+    selectedSignedPdfFile: File | null = null;
+    signedLeaseAgreement: LeaseAgreementAttachmentDTO | null = null;
+    showReUploadSignedCopyModal: boolean = false;
+
+    fileUpload: any;
+
     constructor(
         private pdfGeneratorDataService: PDFGeneratorDataService,
         private messageService: MessageService,
@@ -152,9 +165,9 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         this.leaseAgreementId = Number(
             this.route.snapshot.paramMap.get('leaseAgreementId')
         );
-        this.pdfSrc = this.pdfGeneratorDataService.GetPdfUrl(
-            this.leaseAgreementId
-        );
+
+        this.getSignedLeaseAgreementCopy();
+
         this.adminTabSelectionPreferenceService.adminViewLeaseDetailedSelectedTabIndex$.subscribe(
             (tabIndex) => {
                 this.activeIndex = tabIndex;
@@ -658,5 +671,59 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
             default:
                 return 'bg-gray-600 text-gray-100';
         }
+    }
+
+    onLeaseSignedCopyFileSelected(event: any, fileUpload: any) {
+        this.selectedSignedPdfFile = event.files[0];
+        this.fileUpload = fileUpload;
+    }
+
+    async uploadLeaseSignedCopy() {
+        const formData = new FormData();
+        formData.append('file', this.selectedSignedPdfFile);
+        formData.append('leaseAgreementId', this.leaseAgreementId.toString());
+        formData.append('type', LEASEATTACHMENTTYPES.SIGNED_COPY);
+
+        this.leaseAgreemenetDataService
+            .UploadLeaseAgreementAttachment(formData)
+            .subscribe((res) => {
+                if (res) {
+                    this.getSignedLeaseAgreementCopy();
+                    this.showUploadSignedCopyModal = false;
+                    this.fileUpload.clear();
+                }
+            });
+    }
+
+    async reuploadSignedCopy() {
+        const formData = new FormData();
+        formData.append('file', this.selectedSignedPdfFile);
+        formData.append('leaseAgreementId', this.leaseAgreementId.toString());
+        formData.append('type', LEASEATTACHMENTTYPES.SIGNED_COPY);
+
+        this.leaseAgreemenetDataService
+            .ReUploadLeaseAgreementAttachment(formData)
+            .subscribe((res) => {
+                if (res) {
+                    this.getSignedLeaseAgreementCopy();
+                    this.fileUpload.clear();
+                    this.showReUploadSignedCopyModal = false;
+                }
+            });
+    }
+
+    getSignedLeaseAgreementCopy() {
+        this.leaseAgreemenetDataService
+            .GetSignedLeaseAgreementCopy(this.leaseAgreementId)
+            .subscribe((res) => {
+                if (res) {
+                    this.signedLeaseAgreement = res;
+                    this.pdfSrc = API_URL + '/' + res.uri;
+                } else {
+                    this.pdfSrc = this.pdfGeneratorDataService.GetPdfUrl(
+                        this.leaseAgreementId
+                    );
+                }
+            });
     }
 }

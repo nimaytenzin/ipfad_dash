@@ -270,3 +270,13 @@ export enum PAYMENTMODES {
     'BANK_TRANSFER' = 'BANKTRANSFER',
     'MBOB' = 'MBOB',
 }
+
+export enum AREAUNITS {
+    'ACRE' = 'ACRE',
+    'SQFT' = 'SQFT',
+}
+
+export enum LEASEATTACHMENTTYPES {
+    'SIGNED_COPY' = 'SIGNED_COPY',
+    'OTHERS' = 'OTHERS',
+}

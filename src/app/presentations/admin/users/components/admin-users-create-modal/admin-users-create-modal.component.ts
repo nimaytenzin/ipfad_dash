@@ -46,22 +46,21 @@ export class AdminUsersCreateModalComponent implements OnInit {
     createUserForm: FormGroup;
     role: USERROLESENUM;
     adminId: number;
-    allowLoginAccess: boolean = false;
+    hasLoginAccess: boolean = false;
     isSubmitting: boolean = false;
 
     constructor(
         private fb: FormBuilder,
         private ref: DynamicDialogRef,
         private userDataService: UserDataService,
-        private authService: AuthService,
         private config: DynamicDialogConfig,
         private messageService: MessageService
     ) {
         this.role = this.config.data.role;
         this.adminId = this.config.data.adminId;
-        this.allowLoginAccess = this.config.data.allowLoginAccess
-            ? this.config.data.allowLoginAccess
-            : false;
+        // this.hasLoginAccess = this.config.data.allowLoginAccess
+        //     ? this.config.data.allowLoginAccess
+        //     : false;
     }
 
     ngOnInit() {
@@ -73,7 +72,7 @@ export class AdminUsersCreateModalComponent implements OnInit {
 
             email: [null],
             permanentAddress: [null],
-            hasLoginAccess: [this.allowLoginAccess, [Validators.required]],
+            hasLoginAccess: [this.hasLoginAccess, [Validators.required]],
         });
     }
 
@@ -81,10 +80,11 @@ export class AdminUsersCreateModalComponent implements OnInit {
         if (this.isSubmitting) return;
 
         let data: CreateUserDTO;
-        this.isSubmitting = true;
+        // this.isSubmitting = true;
 
         data = {
-            hasLoginAccess: this.allowLoginAccess,
+            hasLoginAccess:
+                this.createUserForm.controls['hasLoginAccess'].value,
             role: this.role,
             adminId: this.adminId,
             nameEnglish: this.createUserForm.controls['nameEnglish'].value,

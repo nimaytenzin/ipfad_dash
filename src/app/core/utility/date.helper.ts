@@ -1,11 +1,29 @@
 export function GETMONTHDIFF(startDate: Date, endDate: Date): number {
     const startYear = startDate.getFullYear();
     const startMonth = startDate.getMonth();
+    const startDay = startDate.getDate();
+
+    const endYear = endDate.getFullYear();
+    const endMonth = endDate.getMonth();
+    const endDay = endDate.getDate();
+
+    let monthDiff = (endYear - startYear) * 12 + (endMonth - startMonth);
+
+    if (endDay < startDay) {
+        monthDiff -= 1;
+    }
+
+    return monthDiff;
+}
+export function GETTOTALMONTHS(startDate: Date, endDate: Date): number {
+    const startYear = startDate.getFullYear();
+    const startMonth = startDate.getMonth();
 
     const endYear = endDate.getFullYear();
     const endMonth = endDate.getMonth();
 
-    return (endYear - startYear) * 12 + (endMonth - startMonth);
+    // Calculate total months including both start and end months
+    return (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
 }
 
 export function GETDMYFROMDATE(date: Date) {

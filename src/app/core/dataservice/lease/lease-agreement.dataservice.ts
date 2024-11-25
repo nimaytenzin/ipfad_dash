@@ -6,7 +6,12 @@ import {
     CreateLeaseAgreementDTO,
     LandLeasePaymentStatusDTO,
     LeaseAgreeementDTO,
+    LeaseAgreementAttachmentDTO,
     LeaseModificationDTO,
+    PropertyLeaseAvailabilityCheckerReturnDTO,
+    PropertyLeaseAvailabiltyCheckerDTO,
+    PropertyLeaseOverDueCalculatorDTO,
+    PropertyLeaseOverDueReturnDTO,
     UnitLeasePaymentStatusDTO,
 } from './lease-agreement.dto';
 import {
@@ -602,6 +607,51 @@ export class LeaseAgreementDataService {
         return this.http.get<PaginatedData<LeaseAgreeementDTO>>(
             `${this.apiUrl}/lease-agreement/lease-hisotry/non-active/plot/p/${plotDatabaseId}`,
             { params: httpParams }
+        );
+    }
+
+    CheckPropertyAvailabilityForLease(
+        data: PropertyLeaseAvailabiltyCheckerDTO
+    ): Observable<PropertyLeaseAvailabilityCheckerReturnDTO> {
+        return this.http.post<PropertyLeaseAvailabilityCheckerReturnDTO>(
+            `${this.apiUrl}/lease-agreement/admin/check-availability`,
+            data
+        );
+    }
+
+    CheckPropertyPaymentDue(
+        data: PropertyLeaseOverDueCalculatorDTO
+    ): Observable<PropertyLeaseOverDueReturnDTO> {
+        return this.http.post<PropertyLeaseOverDueReturnDTO>(
+            `${this.apiUrl}/lease-agreement/admin/get-dues`,
+            data
+        );
+    }
+
+    //LEASE AGREEMENT ATTACHMENT
+    UploadLeaseAgreementAttachment(
+        data: FormData
+    ): Observable<LeaseAgreementAttachmentDTO> {
+        return this.http.post<LeaseAgreementAttachmentDTO>(
+            `${this.apiUrl}/lease-attachment/upload`,
+            data
+        );
+    }
+
+    ReUploadLeaseAgreementAttachment(
+        data: FormData
+    ): Observable<LeaseAgreementAttachmentDTO> {
+        return this.http.post<LeaseAgreementAttachmentDTO>(
+            `${this.apiUrl}/lease-attachment/re-upload/signed-copy`,
+            data
+        );
+    }
+
+    GetSignedLeaseAgreementCopy(
+        leaseAgreementId: number
+    ): Observable<LeaseAgreementAttachmentDTO> {
+        return this.http.get<LeaseAgreementAttachmentDTO>(
+            `${this.apiUrl}/lease-attachment/signed-copy/${leaseAgreementId}`
         );
     }
 }

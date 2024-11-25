@@ -17,7 +17,6 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import { ChipModule } from 'primeng/chip';
 import { TagModule } from 'primeng/tag';
 import { LESSEETYPE, NOTIFICATIONTYPES } from 'src/app/core/constants/enums';
-import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease/lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
@@ -88,21 +87,6 @@ export class AdminListUnitsComponent implements OnInit {
             });
     }
 
-    openCreateLeaseAgreementModal(unit: UnitDTO) {
-        this.ref = this.dialogService.open(
-            AdminCreateUnitLeaseAgreementStepperComponent,
-            {
-                header:
-                    'Create Lease for ' +
-                    unit.floorLevel +
-                    '-' +
-                    unit.unitNumber,
-                data: {
-                    unit: unit,
-                },
-            }
-        );
-    }
     openAddUnitModal() {
         this.ref = this.dialogService.open(AdminAddUnitComponent, {
             header: 'Create Unit',

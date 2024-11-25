@@ -22,7 +22,6 @@ import { CreateInvoiceDTO } from 'src/app/core/dto/payments/invoice/create-invoi
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
-import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
@@ -150,24 +149,6 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
 
     ngOnInit(): void {
         this.handlePagination();
-    }
-
-    openCreateLeaseAgreementModal() {
-        this.ref = this.dialogService.open(
-            AdminCreateUnitLeaseAgreementStepperComponent,
-            {
-                header: 'Lease Creator',
-
-                data: {
-                    type: LEASETYPE.UNIT,
-                },
-            }
-        );
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.handlePagination();
-            }
-        });
     }
 
     onPageChange(event: PageEvent): void {

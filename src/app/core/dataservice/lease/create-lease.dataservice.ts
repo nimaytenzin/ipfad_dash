@@ -5,53 +5,104 @@ import { Router } from '@angular/router';
 import { BuildingDTO } from '../../dto/properties/building.dto';
 import { PlotDTO } from '../land/dto/plot.dto';
 import { UnitDTO } from '../../dto/units/unit.dto';
-import { LESSORTYPE } from '../../constants/enums';
+import {
+    AREAUNITS,
+    LEASETYPE,
+    LEASEUSES,
+    LESSEETYPE,
+    LESSORTYPE,
+} from '../../constants/enums';
+import { UserDTO } from '../users-and-auth/dto/user.dto';
+import { OrganiztionDTO } from '../organization/organization.dto';
+import { LeaseSurchargeDTO } from './lease-surcharge.dto';
+import { LeaseRuleDTO } from './lease-rule.dto';
+import { BankAccountDto } from '../bankaccounts/bankaccount.dto';
 
+export interface LeaseCreateState_PropertySelectionStateDTO {
+    unit: UnitDTO | null;
+    building: BuildingDTO | null;
+    plot: PlotDTO;
+    leaseType: LEASETYPE;
+    leaseStartDate: Date;
+    leaseEndDate: Date;
+}
+
+export interface LeaseCreateState_TenantSelectionStateDTO {
+    lessorType: LESSORTYPE | null;
+    lesseeType: LESSEETYPE | null;
+    tenant: UserDTO | null;
+    organization: OrganiztionDTO | null;
+}
+
+export interface LeaseCreateState_LeasePurposeAndChargesDTO {
+    selectedUse: LEASEUSES | null;
+    rent: number | null;
+    securityDepositAmount: number | null;
+    areaLeased: number | null;
+    ratePerArea: number | null;
+    areaUnit: AREAUNITS | null;
+    leaseCharges: LeaseSurchargeDTO[];
+    selectedBankAcccount: BankAccountDto | null;
+}
+
+export interface LeaseCreateState_LeaseTermsDTO {
+    tenantSubletAuthority: boolean | null;
+    ownerPrematureTermination: boolean | null;
+    tenantPrematureTermination: boolean | null;
+    paymentDueDay: number | null;
+    rentIncreaseNoticePeriod: number | null;
+    vacationNoticePeriod: number | null;
+    evictionNoticePeriod: number | null;
+    penaltyPercentagePerAnnum: number | null;
+    rentIncrementPercentage: number | null;
+    rentIncrementDurationYear: number | null;
+    leaseRules: LeaseRuleDTO[] | null;
+}
 @Injectable({
     providedIn: 'root',
 })
 export class LeaseCreatorStateService {
-    private plotSource = new BehaviorSubject<PlotDTO | null>(null);
-    private buildingSource = new BehaviorSubject<BuildingDTO | null>(null);
-    private buildingsSource = new BehaviorSubject<BuildingDTO[]>([]);
-    private unitSource = new BehaviorSubject<UnitDTO | null>(null);
-    private unitsSource = new BehaviorSubject<UnitDTO[]>([]);
+    private propertySelectionSource =
+        new BehaviorSubject<LeaseCreateState_PropertySelectionStateDTO | null>(
+            null
+        );
 
-    private lessorTypeSource = new BehaviorSubject<LESSORTYPE | null>(null);
+    private tenantSelectionSource =
+        new BehaviorSubject<LeaseCreateState_TenantSelectionStateDTO | null>(
+            null
+        );
 
-    plot$ = this.plotSource.asObservable();
-    building$ = this.buildingSource.asObservable();
-    buildings$ = this.buildingsSource.asObservable();
+    private leasePurposeAndChargeSource =
+        new BehaviorSubject<LeaseCreateState_LeasePurposeAndChargesDTO | null>(
+            null
+        );
 
-    unit$ = this.unitSource.asObservable();
-    units$ = this.unitsSource.asObservable();
+    private leaseTermsSource =
+        new BehaviorSubject<LeaseCreateState_LeaseTermsDTO | null>(null);
 
-    lessorType$ = this.lessorTypeSource.asObservable();
+    propertySelection$ = this.propertySelectionSource.asObservable();
+    tenantSelection$ = this.tenantSelectionSource.asObservable();
+    leasePurposeAndCharge$ = this.leasePurposeAndChargeSource.asObservable();
+    leaseTerms$ = this.leaseTermsSource.asObservable();
 
-    setPlot(plot: PlotDTO | null) {
-        this.plotSource.next(plot);
+    setPropertySelection(data: LeaseCreateState_PropertySelectionStateDTO) {
+        this.propertySelectionSource.next(data);
+    }
+    setTenantSelection(data: LeaseCreateState_TenantSelectionStateDTO) {
+        this.tenantSelectionSource.next(data);
     }
 
-    setBuilding(building: BuildingDTO | null) {
-        this.buildingSource.next(building);
+    setLeasePurposeAndCharge(data: LeaseCreateState_LeasePurposeAndChargesDTO) {
+        this.leasePurposeAndChargeSource.next(data);
     }
-
-    setBuildings(buildings: BuildingDTO[]) {
-        this.buildingsSource.next(buildings);
-    }
-
-    setUnit(unit: UnitDTO) {
-        this.unitSource.next(unit);
-    }
-    setUnits(units: UnitDTO[]) {
-        this.unitsSource.next(units);
+    setLeaseTerms(data: LeaseCreateState_LeaseTermsDTO) {
+        this.leaseTermsSource.next(data);
     }
 
     clearState() {
-        this.plotSource.next(null);
-        this.buildingSource.next(null);
-        this.buildingsSource.next([]);
-        this.unitSource.next(null);
-        this.unitsSource.next([]);
+        this.propertySelectionSource.next(null);
+        this.tenantSelectionSource.next(null);
+        this.leasePurposeAndChargeSource.next(null);
+        this.leaseTermsSource.next(null);
     }
 }

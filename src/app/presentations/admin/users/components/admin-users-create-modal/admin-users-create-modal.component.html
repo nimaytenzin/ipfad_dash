@@ -46,7 +46,7 @@
         <input pInputText id="email" formControlName="email" type="text" />
     </div>
 
-    <div *ngIf="createUserForm.get('hasLoginAccess')?.value">
+    <div>
         <div class="flex flex-column gap-2 mb-2">
             <label for="phoneNumber">Phone Number (*required) </label>
             <p-inputNumber

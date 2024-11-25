@@ -27,7 +27,6 @@ import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
-import { AdminCreateUnitLeaseAgreementStepperComponent } from '../../../lease-creator/admin-create-unit-lease-agreement-stepper/admin-create-unit-lease-agreement-stepper.component';
 
 @Component({
     selector: 'app-admin-unit-lease-pending-listings',
@@ -148,24 +147,6 @@ export class AdminUnitLeasePendingListingsComponent implements OnInit {
 
     ngOnInit(): void {
         this.handlePagination();
-    }
-
-    openCreateLeaseAgreementModal() {
-        this.ref = this.dialogService.open(
-            AdminCreateUnitLeaseAgreementStepperComponent,
-            {
-                header: 'Lease Creator',
-
-                data: {
-                    type: LEASETYPE.UNIT,
-                },
-            }
-        );
-        this.ref.onClose.subscribe((res) => {
-            if (res && res.status === 201) {
-                this.handlePagination();
-            }
-        });
     }
 
     onPageChange(event: PageEvent): void {

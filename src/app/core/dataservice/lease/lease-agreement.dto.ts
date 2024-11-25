@@ -69,13 +69,17 @@ export interface LeaseAgreeementDTO {
     evictionNoticePeriod: number;
     rentIncreaseNoticePeriod: number;
 
-    leaseSurcharges: LeaseSurchargeDTO[];
-    leaseRules: LeaseRuleDTO[];
-    paymentAdvises?: PaymentAdviceDto[];
+    penaltyPercentagePerAnnum: number;
+    rentIncrementPercentage: number;
+    rentIncrementDurationYear: number;
 
     areaLeased?: number;
     areaUnit?: string;
     ratePerArea?: number;
+
+    leaseSurcharges: LeaseSurchargeDTO[];
+    leaseRules: LeaseRuleDTO[];
+    paymentAdvises?: PaymentAdviceDto[];
 }
 
 export interface CreateLeaseAgreementDTO {
@@ -92,8 +96,8 @@ export interface CreateLeaseAgreementDTO {
     securityDepositPaid: boolean;
 
     leaseDurationMonths: number;
-    leaseStartDate: string;
-    leaseEndDate: string;
+    leaseStartDate: Date;
+    leaseEndDate: Date;
 
     plotId: number;
     tenantId: number;
@@ -117,6 +121,10 @@ export interface CreateLeaseAgreementDTO {
     evictionNoticePeriod: number;
     rentIncreaseNoticePeriod: number;
 
+    penaltyPercentagePerAnnum: number;
+    rentIncrementPercentage: number;
+    rentIncrementDurationYear: number;
+
     areaLeased?: number;
     areaUnit?: string;
     ratePerArea?: number;
@@ -130,8 +138,6 @@ export interface LeaseModificationDTO {
     leaseModificationDate: string;
     leaseAgreementId: number;
 }
-
-//payment status
 
 interface MonthlyPaymentStatusI {
     month: number;
@@ -150,4 +156,40 @@ export interface UnitLeasePaymentStatusDTO {
 export interface BuildingLeasePaymentStatusDTO {
     building: BuildingDTO;
     monthlyStatus: MonthlyPaymentStatusI[];
+}
+
+//Property availablity Checker
+export interface PropertyLeaseAvailabiltyCheckerDTO {
+    leaseType: LEASETYPE;
+    plotId: number;
+    buildingId: number;
+    unitId: number;
+    leaseStartDate: Date;
+    leaseEndDate: Date;
+}
+
+export interface PropertyLeaseAvailabilityCheckerReturnDTO {
+    available: boolean;
+    message: string;
+    conflictingLeases: LeaseAgreeementDTO[] | null;
+}
+
+//property overdue calaculator
+export interface PropertyLeaseOverDueCalculatorDTO {
+    leaseType: LEASETYPE;
+    plotId: number;
+    buildingId: number;
+    unitId: number;
+}
+
+export interface PropertyLeaseOverDueReturnDTO {
+    totalOverDue: number;
+    pendingPaymentAdvices: PaymentAdviceDto[];
+}
+
+//lease agreement attachment
+export interface LeaseAgreementAttachmentDTO {
+    leaseAgreementId: number;
+    uri: string;
+    type: string;
 }

@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AdminLeaseCreatorSelectBuildingComponent } from './admin-lease-creator-select-building.component';
+import { AdminLeaseTimelineComponent } from './admin-lease-timeline.component';
 
-describe('AdminLeaseCreatorSelectBuildingComponent', () => {
-  let component: AdminLeaseCreatorSelectBuildingComponent;
-  let fixture: ComponentFixture<AdminLeaseCreatorSelectBuildingComponent>;
+describe('AdminLeaseTimelineComponent', () => {
+  let component: AdminLeaseTimelineComponent;
+  let fixture: ComponentFixture<AdminLeaseTimelineComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminLeaseCreatorSelectBuildingComponent ]
+      declarations: [ AdminLeaseTimelineComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminLeaseCreatorSelectBuildingComponent);
+    fixture = TestBed.createComponent(AdminLeaseTimelineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
