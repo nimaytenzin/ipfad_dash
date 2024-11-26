@@ -148,51 +148,6 @@ export class AdminListUnitsComponent implements OnInit {
         ]);
     }
 
-    viewLease(leaseAgreement) {
-        // this.ref = this.dialogService.open(AdminViewLeaseAgreementComponent, {
-        //     header: 'View Lease',
-        //     width: '100vw',
-        //     height: '100vh',
-        //     data: {
-        //         ...leaseAgreement,
-        //     },
-        // });
-    }
-
-    openConfirmSendLeaseSigningReminder(lease: LeaseAgreeementDTO) {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Send Signing reminder?',
-            header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
-            acceptIcon: 'none',
-            rejectIcon: 'none',
-            rejectButtonStyleClass: 'p-button-text',
-            accept: () => {
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Sending',
-                    detail: 'Sending Lease signing reminder!',
-                });
-                this.notificationService
-                    .SendNotification({
-                        fromUserId: this.authService.GetAuthenticatedUser().id,
-                        toUserId: lease.tenantId,
-                        leaseAgreementId: lease.id,
-                        notificationType:
-                            NOTIFICATIONTYPES.LEASE_SIGNING_REMINDER,
-                    })
-                    .subscribe((res) => {
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Sent',
-                            detail: 'Lease signing reminder sent!',
-                        });
-                    });
-            },
-        });
-    }
-
     downloadMasterTable() {
         this.messageService.add({
             severity: 'info',
@@ -217,5 +172,13 @@ export class AdminListUnitsComponent implements OnInit {
                     life: 3000,
                 });
             });
+    }
+
+    computeTotalMonthlyPayable(item: LeaseAgreeementDTO) {
+        let total = item.rent;
+        for (let charge of item.leaseSurcharges) {
+            total += charge.amount;
+        }
+        return total;
     }
 }
