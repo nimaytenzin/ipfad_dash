@@ -117,10 +117,13 @@ export class AdminLeaseCreatorLeaseFinalizationComponent implements OnInit {
         this.showConfirmLeaseCreateModal = true;
     }
 
-    formatDateToISO = (date: string | Date): string => {
+    formatDateToLocalISO = (date: string | Date): string => {
         if (!date) return null;
         const localDate = new Date(date);
-        return localDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+        const year = localDate.getFullYear();
+        const month = String(localDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const day = String(localDate.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`; // Format as 'YYYY-MM-DD'
     };
 
     createLeaseAgreement() {
@@ -138,10 +141,10 @@ export class AdminLeaseCreatorLeaseFinalizationComponent implements OnInit {
                 new Date(this.propertyDetails.leaseStartDate),
                 new Date(this.propertyDetails.leaseEndDate)
             ),
-            leaseStartDate: this.formatDateToISO(
+            leaseStartDate: this.formatDateToLocalISO(
                 this.propertyDetails.leaseStartDate
             ),
-            leaseEndDate: this.formatDateToISO(
+            leaseEndDate: this.formatDateToLocalISO(
                 this.propertyDetails.leaseEndDate
             ),
 
