@@ -96,8 +96,8 @@ export interface CreateLeaseAgreementDTO {
     securityDepositPaid: boolean;
 
     leaseDurationMonths: number;
-    leaseStartDate: Date;
-    leaseEndDate: Date;
+    leaseStartDate: string;
+    leaseEndDate: string;
 
     plotId: number;
     tenantId: number;

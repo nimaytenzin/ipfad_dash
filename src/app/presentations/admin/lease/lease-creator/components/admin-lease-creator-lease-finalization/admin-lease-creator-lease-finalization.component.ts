@@ -117,6 +117,12 @@ export class AdminLeaseCreatorLeaseFinalizationComponent implements OnInit {
         this.showConfirmLeaseCreateModal = true;
     }
 
+    formatDateToISO = (date: string | Date): string => {
+        if (!date) return null;
+        const localDate = new Date(date);
+        return localDate.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+    };
+
     createLeaseAgreement() {
         let data: CreateLeaseAgreementDTO = {
             // Populate the lease agreement details
@@ -132,8 +138,13 @@ export class AdminLeaseCreatorLeaseFinalizationComponent implements OnInit {
                 new Date(this.propertyDetails.leaseStartDate),
                 new Date(this.propertyDetails.leaseEndDate)
             ),
-            leaseStartDate: this.propertyDetails.leaseStartDate,
-            leaseEndDate: this.propertyDetails.leaseEndDate,
+            leaseStartDate: this.formatDateToISO(
+                this.propertyDetails.leaseStartDate
+            ),
+            leaseEndDate: this.formatDateToISO(
+                this.propertyDetails.leaseEndDate
+            ),
+
             rent: this.leasePurposeAndCharges.rent,
             securityDepositAmount:
                 this.leasePurposeAndCharges.securityDepositAmount,

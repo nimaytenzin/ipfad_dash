@@ -4,6 +4,16 @@
     <p class="font-semibold mt-4 mb-2">Property Details</p>
     <p>Lease Type: {{ propertyDetails.leaseType }}</p>
 
+    <p>
+        Lease Start Date:
+        {{ formatDateToISO(propertyDetails.leaseStartDate) }}
+    </p>
+    <p>
+        Lease End Date:
+
+        {{ formatDateToISO(propertyDetails.leaseEndDate) }}
+    </p>
+
     <div #plotDetails>
         <p>PlotID: {{ propertyDetails.plot.plotId }}</p>
 
