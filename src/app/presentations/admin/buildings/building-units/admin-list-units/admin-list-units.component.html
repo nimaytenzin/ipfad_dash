@@ -21,11 +21,13 @@
         [value]="units"
         responsiveLayout="stack"
         [breakpoint]="'960px'"
+        [globalFilterFields]="['floorLevel']"
         [tableStyle]="{ 'min-width': '50rem' }"
     >
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th>Floor Level</th>
+                <th></th>
+                <th pSortableColumn="floorLevel">Floor Level</th>
                 <th>Unit Number</th>
                 <th>Config</th>
                 <th>Lease Status</th>
@@ -34,8 +36,14 @@
                 <th>Actions</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-unit let-columns="columns">
+        <ng-template
+            pTemplate="body"
+            let-unit
+            let-columns="columns"
+            let-rowIndex="rowIndex"
+        >
             <tr class="">
+                <td>{{ rowIndex + 1 }}</td>
                 <td>
                     {{ unit.floorLevel }}
                 </td>
@@ -142,6 +150,12 @@
                         ></p-button>
                     </div>
                 </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <tr>
+                <td colspan="8">Total Units: {{ units?.length }}</td>
             </tr>
         </ng-template>
     </p-table>
