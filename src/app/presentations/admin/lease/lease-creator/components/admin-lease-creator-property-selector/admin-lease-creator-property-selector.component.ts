@@ -185,7 +185,6 @@ export class AdminLeaseCreatorPropertySelectorComponent implements OnInit {
             .CheckPropertyAvailabilityForLease(data)
             .subscribe({
                 next: (res) => {
-                    console.log('POPERTY CHECKING RESULT', res);
                     this.propertyAvailabilityResult = res;
                     this.getPropertyPaymentDues();
                 },
