@@ -93,13 +93,13 @@ export class AdminLeaseCreatorGeneralTermsComponent implements OnInit {
         private router: Router,
         private leaseCreatorStateService: LeaseCreatorStateService
     ) {
-        // this.leaseCreatorStateService.propertySelection$.subscribe((res) => {
-        //     if (res) {
-        //         this.propertyDetails = res;
-        //     } else {
-        //         this.router.navigate(['admin/master-lease/create/property']);
-        //     }
-        // });
+        this.leaseCreatorStateService.propertySelection$.subscribe((res) => {
+            if (res) {
+                this.propertyDetails = res;
+            } else {
+                this.router.navigate(['admin/master-lease/create/property']);
+            }
+        });
         this.createLeaseChargeForm = this.fb.group({
             particular: [null],
             amount: [null],

@@ -380,124 +380,153 @@
                             </p>
                         </div>
                     </div>
-                    <div class="grid">
-                        <div class="col-6">
-                            <div #parties>
-                                <p class="font-bold">Parties</p>
-                                <hr class="my-1" />
-                                <div class="mb-2">
-                                    <p
+                    <div class="flex gap-4 mt-5 text-md">
+                        <div #parties class="w-6">
+                            <p class="font-bold">Parties</p>
+                            <hr class="my-1" />
+                            <div class="mb-2">
+                                <p
+                                    *ngIf="
+                                        leaseAgreement?.lessorType ===
+                                        lessorTypes.ADMIN
+                                    "
+                                >
+                                    Lessor/Owner:
+                                    <Strong
+                                        >{{ admin?.nameEnglish }}/{{
+                                            admin?.nameDzongkha
+                                        }}
+                                    </Strong>
+                                </p>
+
+                                <div #lessee class="mt-4">
+                                    <p>
+                                        Tenant/Lessee Type:
+                                        <strong>
+                                            {{
+                                                leaseAgreement?.lesseeType
+                                            }}</strong
+                                        >
+                                    </p>
+                                    <div
                                         *ngIf="
-                                            leaseAgreement?.lessorType ===
-                                            lessorTypes.ADMIN
+                                            leaseAgreement?.lesseeType ===
+                                            lesseeTypeEnums.INDIVIDUAL
                                         "
                                     >
-                                        Lessor:
-                                        <Strong
-                                            >{{ admin?.nameEnglish }}/{{
-                                                admin?.nameDzongkha
-                                            }}
-                                        </Strong>
-                                    </p>
-                                    <p
-                                        *ngIf="
-                                            leaseAgreement?.lessorType ===
-                                            lessorTypes.OWNER
-                                        "
-                                    >
-                                        Lessor: show owner details
-                                    </p>
-
-                                    <div #lessee class="mt-4">
-                                        <div
-                                            *ngIf="
-                                                leaseAgreement?.lesseeType ===
-                                                lesseeTypeEnums.INDIVIDUAL
-                                            "
-                                        >
-                                            <p>
-                                                Tenant Name:
-                                                <strong>
-                                                    {{
-                                                        leaseAgreement?.tenant
-                                                            ?.nameEnglish
-                                                    }}</strong
-                                                >
-                                            </p>
-                                            <p>
-                                                Tenant Phone Number:
-                                                <strong>
-                                                    {{
-                                                        leaseAgreement?.tenant
-                                                            ?.phoneNumber
-                                                    }}</strong
-                                                >
-                                            </p>
-                                            <p>
-                                                Tenant CID:
-                                                <strong>
-                                                    {{
-                                                        leaseAgreement?.tenant
-                                                            ?.cid
-                                                    }}</strong
-                                                >
-                                            </p>
-                                        </div>
-
-                                        <div
-                                            *ngIf="
-                                                leaseAgreement?.lesseeType !==
-                                                lesseeTypeEnums.INDIVIDUAL
-                                            "
-                                        >
-                                            <p>
-                                                Name:
+                                        <p class="mt-2 mb-1">Tenant Details</p>
+                                        <p>
+                                            Name:
+                                            <strong>
                                                 {{
-                                                    leaseAgreement?.organization
-                                                        ?.name
-                                                }}
-                                            </p>
-                                            <p>
-                                                License Number:
-                                                {{
-                                                    leaseAgreement?.organization
-                                                        ?.licenseNumber
-                                                }}
-                                            </p>
-
-                                            <p class="font-semibold mt-2 mb-1">
-                                                {{
-                                                    leaseAgreement?.organization
-                                                        ?.userType
-                                                }}
-                                                Details
-                                            </p>
-                                            <p>
-                                                Name:{{
                                                     leaseAgreement?.tenant
                                                         ?.nameEnglish
-                                                }}
-                                            </p>
-                                            <p>
-                                                Phone Number:
+                                                }}</strong
+                                            >
+                                        </p>
+                                        <p>
+                                            Phone Number:
+                                            <strong>
                                                 {{
                                                     leaseAgreement?.tenant
                                                         ?.phoneNumber
-                                                }}
-                                            </p>
-                                            <p>
-                                                CID:
-                                                {{
-                                                    leaseAgreement?.tenant?.cid
-                                                }}
-                                            </p>
-                                        </div>
-
+                                                }}</strong
+                                            >
+                                        </p>
                                         <p>
-                                            Lesee Type:
+                                            CID:
                                             <strong>
                                                 {{
-                                                    leaseAgreement?.lesseeType
+                                                    leaseAgreement?.tenant?.cid
+                                                }}</strong
+                                            >
+                                        </p>
+                                        <p>
+                                            Permanent Address:
+                                            <strong>
+                                                {{
+                                                    leaseAgreement?.tenant
+                                                        ?.permanentAddress
+                                                }}</strong
+                                            >
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        *ngIf="
+                                            leaseAgreement?.lesseeType !==
+                                            lesseeTypeEnums.INDIVIDUAL
+                                        "
+                                    >
+                                        <p class="mt-2 mb-1 font-semibold">
+                                            {{
+                                                leaseAgreement?.organization
+                                                    ?.type | titlecase
+                                            }}
+                                            Details
+                                        </p>
+                                        <p>
+                                            {{
+                                                leaseAgreement?.organization
+                                                    ?.type | titlecase
+                                            }}
+                                            Name:
+                                            <strong>
+                                                {{
+                                                    leaseAgreement?.organization
+                                                        ?.name
+                                                }}</strong
+                                            >
+                                        </p>
+                                        <p>
+                                            License Number:
+                                            <strong>
+                                                {{
+                                                    leaseAgreement?.organization
+                                                        ?.licenseNumber
+                                                        ? leaseAgreement
+                                                              ?.organization
+                                                              ?.licenseNumber
+                                                        : "NA"
+                                                }}</strong
+                                            >
+                                        </p>
+
+                                        <p class="font-semibold mt-2 mb-1">
+                                            {{
+                                                leaseAgreement?.organization
+                                                    ?.userType | titlecase
+                                            }}
+                                            Details
+                                        </p>
+                                        <p>
+                                            Name:
+                                            <strong>{{
+                                                leaseAgreement?.tenant
+                                                    ?.nameEnglish
+                                            }}</strong>
+                                        </p>
+                                        <p>
+                                            Phone Number:
+                                            <strong>{{
+                                                leaseAgreement?.tenant
+                                                    ?.phoneNumber
+                                            }}</strong>
+                                        </p>
+                                        <p>
+                                            CID:
+                                            <strong>
+                                                {{
+                                                    leaseAgreement?.tenant?.cid
+                                                }}</strong
+                                            >
+                                        </p>
+                                        <p>
+                                            Permanent Address:
+                                            <strong>
+                                                {{
+                                                    leaseAgreement?.tenant
+                                                        ?.permanentAddress
                                                 }}</strong
                                             >
                                         </p>
@@ -505,72 +534,71 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div #charges>
-                                <p class="font-bold">Payments</p>
-                                <hr class="my-1" />
-                                <p>
-                                    Monthly Rent:
-                                    <strong>
-                                        Nu.{{ leaseAgreement?.rent }}</strong
-                                    >
-                                </p>
-                                <p>
-                                    Security Deposit:
-                                    <strong>
-                                        Nu.{{
-                                            leaseAgreement?.securityDepositAmount
-                                        }}</strong
-                                    >
-                                </p>
-
-                                <p class="mt-2 mb-1 font-semibold">
-                                    Additional Surcharges
-                                </p>
-
-                                <p
-                                    *ngFor="
-                                        let item of leaseAgreement?.leaseSurcharges
-                                    "
+                        <div #charges class="w-6">
+                            <p class="font-bold">Payments</p>
+                            <hr class="my-1" />
+                            <p>
+                                Monthly Rent:
+                                <strong> Nu.{{ leaseAgreement?.rent }}</strong>
+                            </p>
+                            <p>
+                                Security Deposit:
+                                <strong>
+                                    Nu.{{
+                                        leaseAgreement?.securityDepositAmount
+                                    }}</strong
                                 >
-                                    - {{ item.particular }}, Amount: Nu.
-                                    {{ item.amount }}
-                                </p>
-                                <p
-                                    *ngIf="
-                                        !leaseAgreement?.leaseSurcharges?.length
-                                    "
-                                >
-                                    - No additional Surcharges
-                                </p>
-                                <p-divider></p-divider>
-                                <div
-                                    class="my-2 flex justify-content-between gap-3"
-                                >
-                                    <p>Total Monthly Payable:</p>
-                                    <div class="text-right">
-                                        <p>
-                                            <strong
-                                                >Nu.{{
-                                                    totalMonthlyPayable
-                                                }}</strong
-                                            >
-                                        </p>
+                            </p>
 
-                                        <p>
-                                            <strong>{{
-                                                getWords(totalMonthlyPayable)
-                                            }}</strong>
-                                        </p>
-                                    </div>
+                            <p class="mt-2 mb-1 font-semibold">
+                                Additional Surcharges
+                            </p>
+
+                            <p
+                                *ngFor="
+                                    let item of leaseAgreement?.leaseSurcharges
+                                "
+                            >
+                                - {{ item.particular }}, Amount: Nu.
+                                {{ item.amount }}
+                            </p>
+                            <p *ngIf="!leaseAgreement?.leaseSurcharges?.length">
+                                - No additional Surcharges
+                            </p>
+                            <p-divider></p-divider>
+                            <div
+                                class="my-2 flex justify-content-between gap-3"
+                            >
+                                <p>Total Monthly Payable:</p>
+                                <div class="text-right">
+                                    <p>
+                                        <strong
+                                            >Nu.{{
+                                                totalMonthlyPayable
+                                            }}</strong
+                                        >
+                                    </p>
+
+                                    <p>
+                                        <strong>{{
+                                            getWords(totalMonthlyPayable)
+                                        }}</strong>
+                                    </p>
                                 </div>
-                                <p class="mt-4 text-sm">
-                                    Total Monthly charges payable on or before
-                                    day
-                                    {{ leaseAgreement?.paymentDueDay }} of the
-                                    following month.
-                                </p>
-                                <!-- <p class="text-right">
+                            </div>
+                            <p class="mt-4 text-sm">
+                                Total Monthly charges payable on or before day
+                                {{ leaseAgreement?.paymentDueDay }} of the
+                                following month.
+                            </p>
+
+                            <p class="text-sm">
+                                Any amout due after the above date shall result
+                                in application of a penalty of
+                                {{ leaseAgreement?.penaltyPercentagePerAnnum }}
+                                % per annum on the amount due applied daily.
+                            </p>
+                            <!-- <p class="text-right">
                                 <strong> Apply late payment penalty:</strong>
                                 {{
                                     leaseAgreement?.applyLatePaymentFee
@@ -579,102 +607,122 @@
                                 }}
                                 .
                             </p> -->
-                            </div>
                         </div>
-                        <div class="col-12">
+                    </div>
+                    <div class="flex gap-4 mt-6">
+                        <div #duration class="w-6">
                             <p class="font-bold">Duration</p>
                             <hr class="my-1" />
-                            <div #terms>
-                                <p>
-                                    Lease Start Date:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.leaseStartDate
-                                                | date : "mediumDate"
-                                        }}
-                                    </strong>
-                                </p>
-                                <p>
-                                    Lease End Date:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.leaseEndDate
-                                                | date : "mediumDate"
-                                        }}</strong
-                                    >
-                                </p>
-                                <p>
-                                    Duration:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.leaseDurationMonths
-                                        }}
-                                        Months</strong
-                                    >
-                                </p>
+                            <p>
+                                Lease Start Date:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.leaseStartDate
+                                            | date : "mediumDate"
+                                    }}
+                                </strong>
+                            </p>
+                            <p>
+                                Lease End Date:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.leaseEndDate
+                                            | date : "mediumDate"
+                                    }}</strong
+                                >
+                            </p>
+                            <p>
+                                Duration:
+                                <strong>
+                                    {{ leaseAgreement?.leaseDurationMonths }}
+                                    Months</strong
+                                >
+                            </p>
+                        </div>
+                        <div #terms class="w-6">
+                            <p class="font-bold">General Terms</p>
+                            <hr class="my-1" />
+                            <p>
+                                Rent Increment Notice Period:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.rentIncreaseNoticePeriod
+                                    }}
+                                    Months</strong
+                                >
+                            </p>
+                            <p>
+                                Tenant Vacation Notice Period:
+                                <strong
+                                    >{{
+                                        leaseAgreement?.vacationNoticePeriod
+                                    }}
+                                    Months</strong
+                                >
+                            </p>
+                            <p>
+                                Eviction Notice Period:
+                                <strong>
+                                    {{ leaseAgreement?.evictionNoticePeriod }}
+                                    Months</strong
+                                >
+                            </p>
 
-                                <p class="font-bold mt-4">General Terms</p>
-                                <hr class="my-1" />
-                                <p>
-                                    Rent Increment Notice Period:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.rentIncreaseNoticePeriod
-                                        }}
-                                        Months</strong
-                                    >
-                                </p>
-                                <p>
-                                    Tenant Vacation Notice Period:
-                                    <strong
-                                        >{{
-                                            leaseAgreement?.vacationNoticePeriod
-                                        }}
-                                        Months</strong
-                                    >
-                                </p>
+                            <p>
+                                Tenant Sublet Authority:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.tenantSubletAuthority
+                                            ? "Yes"
+                                            : "No"
+                                    }}</strong
+                                >
+                            </p>
+                            <p>
+                                Tenant Premature Termination:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.tenantPrematureTermination
+                                            ? "Yes"
+                                            : "No"
+                                    }}
+                                </strong>
+                            </p>
+                            <p>
+                                Owner Premature Termination:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.ownerPrematureTermination
+                                            ? "Yes"
+                                            : "No"
+                                    }}
+                                </strong>
+                            </p>
 
-                                <p>
-                                    Eviction Notice Period:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.evictionNoticePeriod
-                                        }}
-                                        Months</strong
-                                    >
-                                </p>
-
-                                <p>
-                                    Tenant Sublet Authority:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.tenantSubletAuthority
-                                                ? "Yes"
-                                                : "No"
-                                        }}</strong
-                                    >
-                                </p>
-                                <p>
-                                    Tenant Premature Termination:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.tenantPrematureTermination
-                                                ? "Yes"
-                                                : "No"
-                                        }}
-                                    </strong>
-                                </p>
-                                <p>
-                                    Owner Premature Termination:
-                                    <strong>
-                                        {{
-                                            leaseAgreement?.ownerPrematureTermination
-                                                ? "Yes"
-                                                : "No"
-                                        }}
-                                    </strong>
-                                </p>
-                            </div>
+                            <p>
+                                Penalty Percentage per annum on over dues:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.penaltyPercentagePerAnnum
+                                    }}
+                                    %
+                                </strong>
+                            </p>
+                            <p>
+                                Rent Increment:
+                                <strong>
+                                    {{
+                                        leaseAgreement?.rentIncrementPercentage
+                                    }}
+                                    %
+                                </strong>
+                                every
+                                <strong>
+                                    {{
+                                        leaseAgreement?.rentIncrementDurationYear
+                                    }}</strong
+                                >
+                            </p>
                         </div>
                     </div>
                 </p-tabPanel>
