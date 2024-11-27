@@ -225,7 +225,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
 
                     switch (this.leaseAgreement.type) {
                         case LEASETYPE.UNIT:
-                            this.pageTitle = `Lease Agreement for Unit ${this.leaseAgreement.unit.floorLevel}-${this.leaseAgreement.unit.unitNumber}`;
+                            this.pageTitle = `Lease Agreement for Unit ${this.leaseAgreement.unit.floorLevel}-${this.leaseAgreement.unit.unitNumber} on building ${this.leaseAgreement.building.buildingNumber}`;
                             break;
                         case LEASETYPE.BUILDING:
                             this.pageTitle = `Lease Agreement for Building ${this.leaseAgreement.building.name}(${this.leaseAgreement.building.buildingNumber})`;

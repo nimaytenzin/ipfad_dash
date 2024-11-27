@@ -59,6 +59,14 @@
                             Tenant CID:
                             <strong> {{ leaseAgreement?.tenant?.cid }}</strong>
                         </p>
+                        <p>
+                            Tenant Permanent Address:
+                            <strong>
+                                {{
+                                    leaseAgreement?.tenant?.permanentAddress
+                                }}</strong
+                            >
+                        </p>
                     </div>
 
                     <div
@@ -590,6 +598,31 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="flex gap-4">
+                                <p>Pay to</p>
+                                <div class="flex-1 text-right">
+                                    <p>
+                                        Account Number:
+                                        {{
+                                            leaseAgreement.bankAccount
+                                                ?.accountNumber
+                                        }}
+                                    </p>
+                                    <p>
+                                        Account Name:
+                                        {{
+                                            leaseAgreement.bankAccount
+                                                ?.accountName
+                                        }}
+                                    </p>
+                                    <p>
+                                        Bank:
+                                        {{
+                                            leaseAgreement.bankAccount?.bankName
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
                             <p class="mt-4 text-sm">
                                 Total Monthly charges payable on or before day
                                 {{ leaseAgreement?.paymentDueDay }} of the
@@ -646,6 +679,12 @@
                         <div #terms class="w-6">
                             <p class="font-bold">General Terms</p>
                             <hr class="my-1" />
+                            <p>
+                                Purpose:
+                                <strong>
+                                    {{ leaseAgreement?.use }}
+                                </strong>
+                            </p>
                             <p>
                                 Rent Increment Notice Period:
                                 <strong>
