@@ -28,6 +28,10 @@ import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { AccordionModule } from 'primeng/accordion';
 import { Router } from '@angular/router';
+import {
+    GETDURATIONDIFFINYEAR,
+    GETTOTALMONTHS,
+} from 'src/app/core/utility/date.helper';
 
 @Component({
     selector: 'app-admin-lease-creator-property-selector',
@@ -49,6 +53,8 @@ import { Router } from '@angular/router';
 })
 export class AdminLeaseCreatorPropertySelectorComponent implements OnInit {
     getBuildingFloorConfiguration = PARSEBUILDINGFLOORS;
+    calculateMonthsDifference = GETTOTALMONTHS;
+    getDurationDiffInYears = GETDURATIONDIFFINYEAR;
 
     plotId: string;
     selectedPlot: PlotDTO;

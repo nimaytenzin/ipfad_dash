@@ -358,6 +358,16 @@
             (click)="checkPropertyAvailabilityForLease()"
         ></p-button>
     </div>
+    <div *ngIf="leaseStartDate && leaseEndDate" class="mt-2">
+        <p>
+            Lease Duration in Years:
+            <strong>
+                {{
+                    getDurationDiffInYears(leaseStartDate, leaseEndDate)
+                }}</strong
+            >
+        </p>
+    </div>
 </div>
 
 <div class="mt-4" *ngIf="propertyAvailabilityResult">

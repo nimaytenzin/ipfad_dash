@@ -26,6 +26,23 @@ export function GETTOTALMONTHS(startDate: Date, endDate: Date): number {
     return (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
 }
 
+export function GETDURATIONDIFFINYEAR(start: Date, end: Date): string {
+    // Use the existing function to calculate the total months difference
+    const totalMonths = this.calculateMonthsDifference(start, end);
+
+    // Derive years and remaining months
+    const years = Math.floor(totalMonths / 12);
+    const months = totalMonths % 12;
+
+    // Construct output
+    const yearsText = years > 0 ? `${years} year${years > 1 ? 's' : ''}` : '';
+    const monthsText =
+        months > 0 ? `${months} month${months > 1 ? 's' : ''}` : '';
+
+    // Combine parts with proper spacing
+    return [yearsText, monthsText].filter((part) => part).join(' ');
+}
+
 export function GETDMYFROMDATE(date: Date) {
     const parsedDate = new Date(date);
     const day = parsedDate.getDate();
