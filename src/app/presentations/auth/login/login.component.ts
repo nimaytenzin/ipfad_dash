@@ -156,23 +156,26 @@ export class LoginComponent {
         if (authenticatedUser.roles.length > 1) {
             this.showRoleSelection = true;
         } else {
+            console.log(authenticatedUser.roles);
             this.navigateToRole(authenticatedUser.roles[0]);
         }
     }
 
     navigateToRole(role: any): void {
         const authenticatedUser = this.authService.GetAuthenticatedUser();
+        console.log('AUTH USE', authenticatedUser);
         this.authService.SetCurrentRole(
-            role.role === USERROLESENUM.ADMIN
-                ? { role: role.role, adminId: authenticatedUser.id }
+            role.name === USERROLESENUM.ADMIN
+                ? { role: role.name, adminId: authenticatedUser.id }
                 : role
         );
 
         const route =
-            role.role === USERROLESENUM.ADMIN ||
-            role.role === USERROLESENUM.MANAGER
+            role.name === USERROLESENUM.ADMIN ||
+            role.name === USERROLESENUM.MANAGER
                 ? '/admin'
                 : '/owner';
+
         if (route) {
             this.router.navigate([route]);
         } else {
