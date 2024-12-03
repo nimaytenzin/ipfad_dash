@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { API_URL } from '../constants/constants';
@@ -20,14 +20,20 @@ export class RecaptchaService {
 
     constructor(private http: HttpClient) {}
 
-    VerifyToken(
-        token: string
+    Requestdemo(
+        token: string,
+        message: string
     ): Observable<recaptchaV3TokenVerificationResponse> {
+        const headers = new HttpHeaders({
+            'x-recaptcha-token': token,
+        });
+
         return this.http.post<recaptchaV3TokenVerificationResponse>(
-            `${this.apiUrl}/notification/verify/captcha`,
+            `${this.apiUrl}/request-demo`,
             {
-                token: token,
-            }
+                message: message,
+            },
+            { headers }
         );
     }
 }

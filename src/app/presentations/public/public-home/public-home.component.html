@@ -62,62 +62,6 @@
     </div>
 </div>
 
-<!-- <section
-    class="w-full my-6 py-4 flex flex-column align-items-center justify-content-center"
-    style="padding: 0 10rem"
->
-    <p class="text-4xl py-4">Rental Property Listings</p>
-
-    <div
-        class="w-8 flex gap-4"
-        style="flex-wrap: wrap"
-        *ngIf="listedUnits.length"
-    >
-        <div *ngFor="let unit of listedUnits" class="flex p-2 gap-2">
-            <div>
-                <div
-                    [style.background-image]="'url(' + buildingImages[0] + ')'"
-                    style="
-                        height: 200px;
-                        width: 200px;
-                        background-size: cover;
-                        filter: grayscale(0.5);
-                    "
-                ></div>
-            </div>
-
-            <div>
-                <p class="text-xl font-semibold">
-                    {{ unit.floorLevel }} - {{ unit.unitNumber }}
-                </p>
-                <div>
-                    <p class="m-0 p-0">
-                        {{ unit.building?.name }}
-                    </p>
-                    <p class="m-0 p-0">
-                        {{ unit.building?.buildingNumber }}
-                        {{ unit.building?.streetName }}
-                        {{ unit.building?.adminsitrativeZone?.name }}
-                        {{ unit.building?.subadministrativeZone?.name }}
-                        {{ unit.building?.dzongkhag?.name }}
-                    </p>
-                    <p>Contact {{ unit.building?.owners[0].phoneNumber }}</p>
-                </div>
-
-                <div>
-                    <p-button
-                        label="Locate on Map"
-                        size="small"
-                        [text]="true"
-                        icon="pi pi-map-marker"
-                        (click)="locateBuildingOnMap(unit.building)"
-                    ></p-button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> -->
-
 <div class="varpad">
     <div class="surface-section py-8 text-center">
         <div class="mb-3 font-bold text-3xl">
@@ -370,23 +314,11 @@
                 >
                 </p-button>
             </div>
-            <p>Phone : {{ zhidhayContactDetails.phoneNumber }}</p>
-            <p>Email : {{ zhidhayContactDetails.email }}</p>
-            <p>Address : {{ zhidhayContactDetails.address }}</p>
+
+            <p>Request for Demo and We will get back to you.</p>
         </div>
     </div>
 </div>
-
-<!-- <p-dialog
-    header="Request Demo"
-    [modal]="true"
-    [(visible)]="showRequestDemoModal"
-    [style]="{ width: '25rem' }"
->
-    <span class="p-text-secondary block mb-5">Fill in your information.</span>
-
-    
-</p-dialog> -->
 
 <p-sidebar [(visible)]="showRequestDemoModal" styleClass="requestdemo-sidebar ">
     <p class="text-2xl mt-2 text-center text-primary">Book a demo</p>
@@ -394,6 +326,7 @@
         Get a Personalized Introduction to Zhidhay. Book a custom demo with our
         Sales team to explore how Zhidhay could work for your property.
     </p>
+
     <form [formGroup]="requestDemoForm" class="p-fluid flex flex-column gap-4">
         <div class="flex flex-column gap-2">
             <label for="name" class="font-semibold">Name</label>

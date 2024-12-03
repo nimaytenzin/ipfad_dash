@@ -60,6 +60,7 @@ import { GalleriaModule } from 'primeng/galleria';
         InputGroupModule,
         InputGroupAddonModule,
         CardModule,
+        RecaptchaV3Module,
         GalleriaModule,
     ],
     providers: [],
@@ -69,7 +70,7 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
     @ViewChild('centerElement') centerElement!: ElementRef;
     showRequestDemoModal: boolean = false;
     zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
-    characterLimit = 255;
+    characterLimit = 100;
     characterCountExceeded: boolean = false;
     listedUnits: UnitDTO[] = [];
 
@@ -210,37 +211,23 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
 
         let formattedDate = `${month} ${day} ${year}`;
 
-        const message = `${formValue.name},#ph${formValue.phoneNumber} has requested a demo on ${formattedDate}.(${formValue.remarks})`;
+        const message = `${formValue.name},#${formValue.phoneNumber} has requested a demo on ${formattedDate}.message: ${formValue.remarks}`;
 
-        console.log(message);
         this.recaptchaV3Service
             .execute('RequestingDemoForZhidhay')
             .subscribe((token) => {
-                console.log('REcAPCHA TOKEN ', token);
                 this.recaptchaVerificationService
-                    .VerifyToken(token)
+                    .Requestdemo(token, message)
                     .subscribe((res) => {
-                        console.log('token verificaiotn results', res);
-                        if (res.success === true) {
-                            // this.notificationService
-                            // .SendSMS({
-                            //     contact: 17263764,
-                            //     message: message,
-                            // })
-                            // .subscribe((message: any) => {
-                            //     if (message.status === 'Success') {
-                            //         this.showRequestDemoModal = false;
-                            //         this.messageService.add({
-                            //             severity: 'success',
-                            //             summary:
-                            //                 'Demo request has been sent.',
-                            //             detail: 'Our Team will contact you shortly with the details.',
-                            //         });
-                            //     }
-                            // });
+                        if (res) {
+                            this.showRequestDemoModal = false;
+                            this.messageService.add({
+                                severity: 'success',
+                                summary: 'Demo request has been sent.',
+                                detail: 'Our Team will contact you shortly with the details.',
+                            });
                         }
                     });
             });
-        console.log(this.requestDemoForm.value);
     }
 }
