@@ -14,7 +14,7 @@ export interface AuthenticatedUserDTO {
     role: string;
     id: number;
     roles: {
-        role: string;
+        name: string;
         adminId: number | null;
     }[];
     exp: number;
