@@ -76,7 +76,8 @@ export interface ReceivePaymentDTO {
 }
 
 export interface PaymentAdviceSummaryDTO {
-    totalMonthlyIncome: number;
-    totalPendingAmount: number;
-    totalPendingAdvices: number;
+    totalMonthlyRentalIncome: number;
+    totalSecurityDepositAmount: number;
+    totalPendingRentalAmount: number;
+    totalPendingSecurityDepositAmount: number;
 }

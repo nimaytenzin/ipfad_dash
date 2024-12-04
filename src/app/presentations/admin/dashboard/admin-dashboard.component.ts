@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
-import { TableModule } from 'primeng/table';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
-import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { StatsDataService } from 'src/app/core/dataservice/statistics/statistics.dataservice';
 import { AdminSummaryStatisticsDTO } from 'src/app/core/dataservice/statistics/statistics.dto';
@@ -15,21 +13,19 @@ import {
 } from 'src/app/core/dto/payments/payment-advice.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
-import { OwnerAddBuildingComponent } from '../../owner/shared/owner-add-building/owner-add-building.component';
-import { OwnerGenerateLeaseStepperComponent } from '../../owner/shared/owner-generate-lease-stepper/owner-generate-lease-stepper.component';
-import { OwnerRentalIncomeBreakdownComponent } from '../../owner/shared/owner-rental-income-breakdown/owner-rental-income-breakdown.component';
-import { OwnerViewPaymentAdviceComponent } from '../../owner/shared/owner-view-payment-advice/owner-view-payment-advice.component';
+
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { GalleriaModule } from 'primeng/galleria';
 import { MeterGroupModule } from 'primeng/metergroup';
 import { TabViewModule } from 'primeng/tabview';
-import { AdminDashboardPendingPaymentListComponent } from './components/admin-dashboard-pending-payment-list/admin-dashboard-pending-payment-list.component';
-import { AdminDashboardDamageItemsComponent } from './components/admin-dashboard-damage-items/admin-dashboard-damage-items.component';
 import { AdminDashboardBroadcastSmsComponent } from './components/admin-dashboard-broadcast-sms/admin-dashboard-broadcast-sms.component';
 import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 import { AdminDashboardLeaseActionSummaryComponent } from './components/admin-dashboard-lease-action-summary/admin-dashboard-lease-action-summary.component';
 import { Router } from '@angular/router';
+import { ToWords } from 'to-words';
+import { TooltipModule } from 'primeng/tooltip';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
     selector: 'app-admin-dashboard',
@@ -44,9 +40,10 @@ import { Router } from '@angular/router';
         MeterGroupModule,
         DividerModule,
         TabViewModule,
-        AdminDashboardPendingPaymentListComponent,
-        AdminDashboardDamageItemsComponent,
+        ProgressBarModule,
+
         AdminDashboardLeaseActionSummaryComponent,
+        TooltipModule,
     ],
     providers: [DialogService],
 })
@@ -70,9 +67,10 @@ export class AdminDashboardComponent implements OnInit {
     };
 
     paymentSummaryStats: PaymentAdviceSummaryDTO = {
-        totalMonthlyIncome: 0,
-        totalPendingAmount: 0,
-        totalPendingAdvices: 0,
+        totalMonthlyRentalIncome: 0,
+        totalSecurityDepositAmount: 0,
+        totalPendingRentalAmount: 0,
+        totalPendingSecurityDepositAmount: 0,
     };
 
     totalPending: number = 0;
@@ -136,5 +134,40 @@ export class AdminDashboardComponent implements OnInit {
 
     goToPayments() {
         this.router.navigate(['/admin/master-transactions']);
+    }
+    goToMapView() {
+        this.router.navigate(['/admin/master-properties/map-view']);
+    }
+
+    getWords(number: number) {
+        const toWords = new ToWords({
+            localeCode: 'en-IN',
+            converterOptions: {
+                currency: true,
+                ignoreDecimal: false,
+                ignoreZeroCurrency: false,
+                doNotAddOnly: false,
+                currencyOptions: {
+                    name: 'Ngultrum',
+                    plural: 'Ngultrum',
+                    symbol: 'Nu.',
+                    fractionalUnit: {
+                        name: 'Chetrum',
+                        plural: 'Chetrums',
+                        symbol: '',
+                    },
+                },
+            },
+        });
+
+        return toWords.convert(number);
+    }
+
+    calculateDueProgress(total: number, pending: number): number {
+        if (!total || total <= 0) {
+            return 0;
+        }
+        const progress = ((total - pending) / total) * 100;
+        return Math.round(Math.min(progress, 100));
     }
 }

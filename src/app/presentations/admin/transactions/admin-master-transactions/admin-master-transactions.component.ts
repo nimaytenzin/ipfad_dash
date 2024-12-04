@@ -21,9 +21,7 @@ import { AdminPaymentAdviceSearchByPlotComponent } from '../components/admin-pay
         DividerModule,
         AdminPaymentAdvicePendingListComponent,
         AdminPaymentAdvicePaidListComponent,
-        AdminPaymentAdviceSearchByBuildingComponent,
-        AdminPaymentAdviceSearchByTenantComponent,
-        AdminPaymentAdviceSearchByPlotComponent,
+
         TabViewModule,
         CommonModule,
     ],
@@ -31,9 +29,10 @@ import { AdminPaymentAdviceSearchByPlotComponent } from '../components/admin-pay
 })
 export class AdminMasterTransactionsComponent implements OnInit {
     summaryStats: PaymentAdviceSummaryDTO = {
-        totalMonthlyIncome: 0,
-        totalPendingAmount: 0,
-        totalPendingAdvices: 0,
+        totalMonthlyRentalIncome: 0,
+        totalSecurityDepositAmount: 0,
+        totalPendingRentalAmount: 0,
+        totalPendingSecurityDepositAmount: 0,
     };
 
     constructor(
