@@ -44,6 +44,14 @@ export class PaymentAdviceDataService {
         );
     }
 
+    GetBuildingPaymentSummaryByAdmin(
+        adminId: number
+    ): Observable<PaymentAdviceSummaryDTO> {
+        return this.http.get<PaymentAdviceSummaryDTO>(
+            `${this.apiUrl}/payment-advice/summary/stats/building/${adminId}`
+        );
+    }
+
     GenerateBuildingPA(data: GenerateBuildingPADto) {
         return this.http.post(
             `${this.apiUrl}/payment-advice/generate/building`,
@@ -363,6 +371,111 @@ export class PaymentAdviceDataService {
 
         return this.http.get<PaginatedData<PaymentAdviceDto>>(
             `${this.apiUrl}/payment-advice/admin/plot/paid/p/${plotDatabaseId}`,
+            { params: httpParams }
+        );
+    }
+
+    //LEase types
+
+    GetAllPendingBuildingAndUnitRentPaymentAdivcesPaginatedByAdmin(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/building/security-deposit/pending/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllPaidBuildingAndUnitRentPaymentAdivcesPaginatedByAdmin(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/building/rent/paid/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
+    GetAllPaidBuildingAndUnitSecurityDepositPaymentAdivcesPaginatedByAdmin(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/building/security-deposit/paid/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+    GetAllPendingBuildingAndUnitSecurityDepositPaymentAdivcesPaginatedByAdmin(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/building/security-deposit/paid/p/${adminId}`,
             { params: httpParams }
         );
     }

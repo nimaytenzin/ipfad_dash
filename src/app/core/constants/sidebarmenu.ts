@@ -82,7 +82,7 @@ export const ADMINSIDEBARITEMS = [
             },
             {
                 label: 'Search',
-                icon: 'pi pi-fw pi-th-large',
+                icon: 'pi pi-fw pi-search',
                 routerLink: ['/admin/master-properties/search'],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
@@ -118,7 +118,7 @@ export const ADMINSIDEBARITEMS = [
             },
             {
                 label: 'Search',
-                icon: 'pi pi-fw pi-th-large',
+                icon: 'pi pi-fw pi-search',
                 routerLink: ['/admin/master-lease/search'],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
@@ -126,17 +126,25 @@ export const ADMINSIDEBARITEMS = [
     },
 
     {
-        label: 'Transactions',
+        label: 'Transactions-Building',
         items: [
             {
-                label: 'Advice',
-                icon: 'pi pi-fw pi-building',
-                routerLink: ['/admin/master-transactions'],
+                label: 'Rents',
+                icon: 'pi pi-fw pi-file-excel',
+                routerLink: ['/admin/master-transactions/building/rent'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
+            {
+                label: 'Security Deposits',
+                icon: 'pi pi-fw pi-file-excel',
+                routerLink: [
+                    '/admin/master-transactions/building/security-deposits',
+                ],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
             {
                 label: 'Search',
-                icon: 'pi pi-fw pi-th-large',
+                icon: 'pi pi-fw pi-search',
                 routerLink: ['/admin/master-transactions/search'],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
@@ -153,6 +161,41 @@ export const ADMINSIDEBARITEMS = [
         ],
     },
 
+    {
+        label: 'Transactions-Land',
+        items: [
+            {
+                label: 'Rents',
+                icon: 'pi pi-fw pi-file-excel',
+                routerLink: ['/admin/master-transactions/land/rent'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
+            {
+                label: 'Security Deposits',
+                icon: 'pi pi-fw pi-file-excel',
+                routerLink: [
+                    '/admin/master-transactions/land/security-deposits',
+                ],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
+            {
+                label: 'Search',
+                icon: 'pi pi-fw pi-search',
+                routerLink: ['/admin/master-transactions/search'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
+            // {
+            //     label: 'Receipts',
+            //     icon: 'pi pi-fw pi-th-large',
+            //     routerLink: ['/admin/master-transactions/invoices'],
+            // },
+            // {
+            //     label: 'Remittance',
+            //     icon: 'pi pi-fw pi-th-large',
+            //     routerLink: ['/admin/master-transactions/invoices'],
+            // },
+        ],
+    },
     {
         label: 'Users',
         items: [
