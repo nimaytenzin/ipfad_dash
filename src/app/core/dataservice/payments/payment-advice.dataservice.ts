@@ -398,7 +398,7 @@ export class PaymentAdviceDataService {
         }
 
         return this.http.get<PaginatedData<PaymentAdviceDto>>(
-            `${this.apiUrl}/payment-advice/admin/building/security-deposit/pending/p/${adminId}`,
+            `${this.apiUrl}/payment-advice/admin/building/rent/pending/p/${adminId}`,
             { params: httpParams }
         );
     }
