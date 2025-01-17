@@ -6,6 +6,7 @@ import { TenantProfileComponent } from './presentations/tenant/profile/tenant-pr
 import { OwnerLayoutComponent } from './presentations/layout/owner/owner-layout.component';
 import { RoleGuard } from './core/guards/role.guard';
 import { USERROLESENUM } from './core/constants/enums';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 @NgModule({
     imports: [
@@ -17,6 +18,10 @@ import { USERROLESENUM } from './core/constants/enums';
                         import(
                             './presentations/public/public-routing.module'
                         ).then((m) => m.PublicRoutingModule),
+                },
+                {
+                    path: 'privacy',
+                    component: PrivacyComponent
                 },
                 {
                     path: 'auth',
