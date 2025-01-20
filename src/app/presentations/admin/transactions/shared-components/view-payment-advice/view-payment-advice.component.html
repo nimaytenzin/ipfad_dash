@@ -1,4 +1,4 @@
-<div style="max-width: 500px">
+<div style="min-width: 40vw">
     <div class="flex justify-content-between align-items-end">
         <div class="flex flex-column gap-2">
             <p-image
@@ -20,8 +20,8 @@
     <p-divider></p-divider>
 
     <div *ngFor="let paymentAdvice of paymentAdvices" class="mt-4 mb-4">
-        <p class="font-semibold text-center mt-2 mb-2">
-            {{ paymentAdvice?.title }}
+        <p class="font-semibold text-lg mt-2 mb-2">
+            #{{ paymentAdvice.id }} {{ paymentAdvice?.title }}
         </p>
         <div>
             <p-table
@@ -47,7 +47,7 @@
 
     <div class="flex justify-content-between align-items-end mt-4">
         <div>
-            <p>To be received from</p>
+            <p class="mb-2">To be received from Tenant</p>
             <p
                 pTooltip="double click to view Tenant details"
                 tooltipPosition="left"
@@ -66,10 +66,12 @@
             <p>CID:{{ paymentAdvices[0].leaseAgreement.tenant.cid }}</p>
         </div>
 
-        <div class="mt-4 text-right">
-            <p class="my-2 font-semibold">Total: Nu. {{ totalAmmount }}</p>
-            <p class="my-2 font-semibold">
-                Amount Due: Nu. {{ totalAmountDue }}
+        <div class="text-right text-lg">
+            <p>
+                Total: <strong> Nu. {{ totalAmmount }}</strong>
+            </p>
+            <p>
+                Amount Due: <strong>Nu. {{ totalAmountDue }}</strong>
             </p>
         </div>
     </div>

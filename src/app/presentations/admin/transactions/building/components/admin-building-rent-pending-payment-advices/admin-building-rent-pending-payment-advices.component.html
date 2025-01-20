@@ -119,13 +119,15 @@
                     <p>Phone: {{ item.leaseAgreement.tenant?.phoneNumber }}</p>
                 </td>
                 <td>
-                    <p-button
-                        size="small"
-                        label="Payment Advice"
-                        icon="pi pi-file-o"
-                        (click)="openViewPaymentReceipt([item])"
-                        severity="secondary"
-                    ></p-button>
+                    <div class="flex">
+                        <p-button
+                            size="small"
+                            label="Advice"
+                            icon="pi pi-file-o"
+                            (click)="openViewPaymentReceipt([item])"
+                            severity="secondary"
+                        ></p-button>
+                    </div>
                 </td>
             </tr>
         </ng-template>

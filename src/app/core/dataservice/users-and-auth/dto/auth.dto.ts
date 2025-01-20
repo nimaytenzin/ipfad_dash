@@ -25,7 +25,7 @@ export interface AuthenticatedUserDTO {
     nameDzongkha: string;
 }
 export interface CurrentRoleDTO {
-    role: USERROLESENUM;
+    name: USERROLESENUM;
     adminId: number | null;
 }
 export interface UpdatePinDto {

@@ -87,12 +87,24 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
             this.totalAmount += item.totalAmount;
             this.totalAmountDue += item.amountDue;
         }
+
+        this.receivePaymentForm.patchValue({
+            amount: this.totalAmountDue,
+        });
     }
 
     ngOnInit() {}
 
     close() {
         this.ref.close();
+    }
+
+    getTotalAmount() {
+        let total = 0;
+        for (let item of this.paymentAdvices) {
+            total += item.amountDue;
+        }
+        return total;
     }
 
     confirmReceivePayment() {

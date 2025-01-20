@@ -8,7 +8,7 @@
         imageClass="circular"
     />
     <p>
-        {{ currentRole.role }} at {{ admin?.nameEnglish }}
+        {{ currentRole.name }} at {{ admin?.nameEnglish }}
         {{ admin?.nameDzongkha }}
     </p>
 </div>
@@ -48,7 +48,7 @@
 
     <div
         class="flex flex-column gap-2 flex-1"
-        *ngIf="currentRole.role === userRoleEnum.ADMIN"
+        *ngIf="currentRole.name === userRoleEnum.ADMIN"
     >
         <label for="nameDzongkha">SMS Header Title *header of SMS title </label>
         <input

@@ -109,9 +109,11 @@
                 <td>
                     <p-button
                         size="small"
-                        label="Payment Receipt"
+                        label="Receipt"
                         icon="pi pi-file-o"
-                        (click)="openViewPaymentReceipt([item])"
+                        (click)="
+                            openViewPaymentReceipt(item.paymentReceipts[0].id)
+                        "
                         severity="secondary"
                     ></p-button>
                 </td>

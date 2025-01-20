@@ -77,6 +77,7 @@ export class AuthService {
         sessionStorage.setItem(this.currentRoleKey, JSON.stringify(role));
     }
     GetCurrentRole(): CurrentRoleDTO {
+        console.log(sessionStorage.getItem(this.currentRoleKey));
         return JSON.parse(sessionStorage.getItem(this.currentRoleKey));
     }
     RemoveCurrentRole() {

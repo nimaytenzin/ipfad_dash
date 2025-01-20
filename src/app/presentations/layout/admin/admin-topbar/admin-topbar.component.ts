@@ -81,7 +81,7 @@ export class AdminTopbarComponent {
         this.isNotVerified = !Boolean(this.authenticatedUser.isVerified);
 
         console.log(this.isNotVerified);
-        if (this.currentRole.role === USERROLESENUM.ADMIN) {
+        if (this.currentRole.name === USERROLESENUM.ADMIN) {
             this.userService
                 .FindOneAuthenticated(this.authenticatedUser.id)
                 .subscribe((res) => {
@@ -90,7 +90,7 @@ export class AdminTopbarComponent {
                         API_URL + '/' + this.admin.profileUri;
                 });
         } else if (
-            this.currentRole.role === USERROLESENUM.MANAGER ||
+            this.currentRole.name === USERROLESENUM.MANAGER ||
             USERROLESENUM.OWNER
         ) {
             this.userService
@@ -126,7 +126,7 @@ export class AdminTopbarComponent {
                 userId: this.authenticatedUser.id,
                 newPassword: this.newPassword,
                 newPasswordRentry: this.newPasswordReentry,
-                role: this.currentRole.role,
+                role: this.currentRole.name,
                 adminId: this.currentRole.adminId,
             })
             .subscribe((res) => {

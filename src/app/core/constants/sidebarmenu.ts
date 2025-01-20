@@ -142,12 +142,7 @@ export const ADMINSIDEBARITEMS = [
                 ],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
-            {
-                label: 'Search',
-                icon: 'pi pi-fw pi-search',
-                routerLink: ['/admin/master-transactions/search'],
-                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
-            },
+
             // {
             //     label: 'Receipts',
             //     icon: 'pi pi-fw pi-th-large',
@@ -178,12 +173,7 @@ export const ADMINSIDEBARITEMS = [
                 ],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
             },
-            {
-                label: 'Search',
-                icon: 'pi pi-fw pi-search',
-                routerLink: ['/admin/master-transactions/search'],
-                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
-            },
+
             // {
             //     label: 'Receipts',
             //     icon: 'pi pi-fw pi-th-large',
@@ -194,6 +184,18 @@ export const ADMINSIDEBARITEMS = [
             //     icon: 'pi pi-fw pi-th-large',
             //     routerLink: ['/admin/master-transactions/invoices'],
             // },
+        ],
+    },
+
+    {
+        label: 'Transactions',
+        items: [
+            {
+                label: 'Search Transactions',
+                icon: 'pi pi-fw pi-search',
+                routerLink: ['/admin/master-transactions/search'],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
         ],
     },
     {
