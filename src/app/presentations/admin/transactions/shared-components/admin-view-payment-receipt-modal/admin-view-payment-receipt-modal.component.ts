@@ -63,6 +63,7 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     this.paymentReceipt = res;
+                    console.log(res);
                 },
                 error: (err) => {
                     console.log(err);

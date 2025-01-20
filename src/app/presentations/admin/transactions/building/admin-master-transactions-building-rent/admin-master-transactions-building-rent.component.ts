@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { InputGroupModule } from 'primeng/inputgroup';
+import { TableModule } from 'primeng/table';
 
 @Component({
     selector: 'app-admin-master-transactions-building-rent',
@@ -27,6 +28,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
         CalendarModule,
         FormsModule,
         InputGroupModule,
+        TableModule,
     ],
 })
 export class AdminMasterTransactionsBuildingRentComponent implements OnInit {
@@ -39,6 +41,8 @@ export class AdminMasterTransactionsBuildingRentComponent implements OnInit {
 
     selectedMonth: Date = new Date();
     selectedYear: Date = new Date();
+
+    data = [];
 
     constructor(
         private paymentDataService: PaymentAdviceDataService,

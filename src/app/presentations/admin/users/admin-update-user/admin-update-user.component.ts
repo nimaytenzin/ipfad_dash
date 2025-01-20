@@ -81,7 +81,7 @@ export class AdminUpdateUserComponent implements OnInit {
 
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
         this.currentRole = this.authService.GetCurrentRole();
-        if (this.currentRole.role === USERROLESENUM.ADMIN) {
+        if (this.currentRole.name === USERROLESENUM.ADMIN) {
             this.userService
                 .FindOneAuthenticated(this.authenticatedUser.id)
                 .subscribe((res) => {
@@ -91,7 +91,7 @@ export class AdminUpdateUserComponent implements OnInit {
                         API_URL + '/' + this.admin.profileUri;
                 });
         } else if (
-            this.currentRole.role === USERROLESENUM.MANAGER ||
+            this.currentRole.name === USERROLESENUM.MANAGER ||
             USERROLESENUM.OWNER
         ) {
             this.userService
@@ -134,7 +134,7 @@ export class AdminUpdateUserComponent implements OnInit {
                 userId: this.authService.GetAuthenticatedUser().id,
                 newPassword: this.newPassword,
                 newPasswordRentry: this.newPasswordReentry,
-                role: this.authService.GetCurrentRole().role,
+                role: this.authService.GetCurrentRole().name,
                 adminId: this.authService.GetCurrentRole().adminId,
             })
             .subscribe({

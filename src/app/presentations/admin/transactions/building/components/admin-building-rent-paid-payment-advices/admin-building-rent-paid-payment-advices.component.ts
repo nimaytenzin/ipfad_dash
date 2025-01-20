@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { ViewPaymentAdviceComponent } from '../../../shared-components/view-payment-advice/view-payment-advice.component';
+import { AdminViewPaymentReceiptModalComponent } from '../../../shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 
 @Component({
     selector: 'app-admin-building-rent-paid-payment-advices',
@@ -81,10 +82,15 @@ export class AdminBuildingRentPaidPaymentAdvicesComponent implements OnInit {
 
     downloadMasterTable() {}
 
-    openViewPaymentReceipt(item: PaymentAdviceDto[]) {
-        this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
-            header: 'Payment Advice',
-            data: item,
-        });
+    openViewPaymentReceipt(paymentReceiptId: number) {
+        this.ref = this.dialogService.open(
+            AdminViewPaymentReceiptModalComponent,
+            {
+                header: 'Payment Receipt',
+                data: {
+                    paymentReceiptId: paymentReceiptId,
+                },
+            }
+        );
     }
 }

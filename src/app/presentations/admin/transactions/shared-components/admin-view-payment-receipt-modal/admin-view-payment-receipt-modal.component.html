@@ -1,4 +1,4 @@
-<div style="max-width: 500px">
+<div style="min-width: 30vw">
     <div class="flex justify-content-between align-items-end">
         <div class="flex flex-column gap-2">
             <p-image
@@ -22,7 +22,7 @@
             class="mb-4"
         >
             <p class="font-semibold text-center mt-2 mb-2">
-                {{ paymentAdvice?.title }}
+                advice #{{ paymentAdvice.id }} {{ paymentAdvice?.title }}
             </p>
             <div>
                 <p-table
@@ -44,16 +44,21 @@
                     </ng-template>
                 </p-table>
             </div>
-        </div>
 
-        <p class="my-2 font-semibold text-right">
-            Total: Nu. {{ paymentReceipt.amount }}
-        </p>
+            <div class="text-right">
+                <p>Advice Amount: {{ paymentAdvice.totalAmount }}</p>
+                <p>Amount Due: {{ paymentAdvice.amountDue }}</p>
+            </div>
+        </div>
 
         <div
             class="flex gap-4 align-items-start mt-4 justify-content-end mb-4 text-right"
         >
             <div>
+                <p class="my-2 font-semibold text-right">
+                    Amount Transacted: Nu. {{ paymentReceipt.amount }}
+                </p>
+
                 <p class="font-semibold">
                     Transfer Mode: {{ paymentReceipt.paymentMode }}
                 </p>
@@ -71,7 +76,7 @@
 
         <div class="flex justify-content-between py-3">
             <div class="text-right" *ngIf="paymentReceipt.receivedBy">
-                <p>Received By</p>
+                <p class="font-semibold">Received By</p>
 
                 <p>
                     {{ paymentReceipt.receiver.nameEnglish }}
@@ -83,7 +88,7 @@
             </div>
 
             <div class="text-right">
-                <p>Received From</p>
+                <p class="font-semibold">Received From</p>
 
                 <p>
                     {{
