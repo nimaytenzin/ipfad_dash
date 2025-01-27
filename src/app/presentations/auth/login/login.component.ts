@@ -163,10 +163,9 @@ export class LoginComponent {
 
     navigateToRole(role: any): void {
         const authenticatedUser = this.authService.GetAuthenticatedUser();
-        console.log('AUTH USE', authenticatedUser);
         this.authService.SetCurrentRole(
             role.name === USERROLESENUM.ADMIN
-                ? { role: role.name, adminId: authenticatedUser.id }
+                ? { name: role.name, adminId: authenticatedUser.id }
                 : role
         );
 

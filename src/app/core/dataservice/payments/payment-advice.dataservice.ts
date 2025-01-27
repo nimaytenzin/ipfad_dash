@@ -479,4 +479,26 @@ export class PaymentAdviceDataService {
             { params: httpParams }
         );
     }
+
+    GetAllPaymentAdivceByAdminMonthYearForActiveLease(
+        adminId: number,
+        month: number,
+        year: number
+    ) {
+        return this.http.get<PaymentAdviceDto[]>(
+            `${this.apiUrl}/lease-agreement/admin/building/active/${adminId}/${month}/${year}`
+        );
+    }
+
+    //MONTH PAs FOR BUILDING and LAND
+
+    GetAllPaymentAdviceByActiveLeaseUnderAdminByMonthYear(
+        adminId: number,
+        year: number,
+        month: number
+    ): Observable<PaymentAdviceDto[]> {
+        return this.http.get<PaymentAdviceDto[]>(
+            `${this.apiUrl}/lease-agreement/payment-status/unit/monthly/admin/${adminId}/${year}/${month}`
+        );
+    }
 }

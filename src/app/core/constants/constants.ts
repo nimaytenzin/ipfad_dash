@@ -1,5 +1,5 @@
-//export const API_URL = 'http://localhost:3002';
-export const API_URL = 'https://www.zhidhay.com/api';
+export const API_URL = 'http://localhost:3002';
+// export const API_URL = 'https://www.zhidhay.com/api';
 export const CHAT_APIURL = 'https://chat.zhidhay.com';
 export const COMPANY_NAME = 'zhidhay.com';
 export const ZHICHAR_API_URL = 'https://zhichar.bt/dev';

@@ -129,7 +129,15 @@ export const ADMINSIDEBARITEMS = [
         label: 'Transactions-Building',
         items: [
             {
-                label: 'Rents',
+                label: 'Rents - Monthly',
+                icon: 'pi pi-fw pi-file-excel',
+                routerLink: [
+                    '/admin/master-transactions/building/rent/monthly',
+                ],
+                roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+            },
+            {
+                label: 'Rents - All',
                 icon: 'pi pi-fw pi-file-excel',
                 routerLink: ['/admin/master-transactions/building/rent'],
                 roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
