@@ -1,12 +1,29 @@
 <p class="text-2xl font-bold">Building & Units Rental Payment</p>
 
 <div class="flex gap-6 align-items-end justify-content-between">
-    <p class="text-lg">
+    <div class="flex algin-items-end gap-4">
+        <p class="font-semibold text-lg">
+            Summary for
+
+            {{ selectedDate | date : "MMMM y" }}
+        </p>
+
+        <div>
+            <p-button
+                label="Download Excel Data"
+                size="small"
+                icon="pi pi-file-excel"
+                severity="secondary"
+                (click)="downloadExcel()"
+            ></p-button>
+        </div>
+    </div>
+    <!-- <p class="text-lg">
         Showing Payment Details for
         <strong>
             {{ selectedDate | date : "MMMM y" }}
         </strong>
-    </p>
+    </p> -->
     <div>
         <p>Load for another month</p>
         <p-inputGroup>
@@ -29,11 +46,6 @@
 <hr />
 
 <div class="my-4">
-    <p class="font-semibold text-lg mb-3">
-        Summary for
-
-        {{ selectedDate | date : "MMMM y" }}
-    </p>
     <div class="flex">
         <div>
             <p>

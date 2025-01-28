@@ -186,4 +186,19 @@ export class ExcelGeneratorDataService {
             }
         );
     }
+
+    //PAYMENT STATUS
+
+    DownloadBuildingFlatPaymentStatusByAdminMonth(
+        adminId: number,
+        year: number,
+        month: number
+    ): Observable<Blob> {
+        return this.http.get<Blob>(
+            `${this.apiUrl}/excel-generator/payment-status/admin/${adminId}/building/monthly/${year}/${month}`,
+            {
+                responseType: 'blob' as 'json',
+            }
+        );
+    }
 }

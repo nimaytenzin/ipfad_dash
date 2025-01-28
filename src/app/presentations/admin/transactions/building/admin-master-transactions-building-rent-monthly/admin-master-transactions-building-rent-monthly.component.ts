@@ -25,6 +25,8 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice/view-payment-advice.component';
 import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
 import { AdminViewPaymentReceiptModalComponent } from '../../shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
+import { MessageService } from 'primeng/api';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 
 interface YearMonthDTO {
     year: number;
@@ -88,7 +90,9 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
     constructor(
         private paymentDataService: PaymentAdviceDataService,
         private authService: AuthService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private messageService: MessageService,
+        private excelGeneratorService: ExcelGeneratorDataService
     ) {
         this.adminId = this.authService.GetCurrentRole().adminId;
     }
@@ -264,5 +268,35 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
                 this.filteredData.length) *
                 100
         );
+    }
+
+    downloadExcel() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.excelGeneratorService
+            .DownloadBuildingFlatPaymentStatusByAdminMonth(
+                this.authService.GetCurrentRole().adminId,
+                this.getYearMonth().year,
+                this.getYearMonth().month
+            )
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'paymentStatus.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Download Completed.',
+                    life: 3000,
+                });
+            });
     }
 }
