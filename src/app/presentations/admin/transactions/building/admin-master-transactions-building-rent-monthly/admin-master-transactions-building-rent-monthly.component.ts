@@ -260,8 +260,8 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
 
     getOccupancyRate(): number {
         return Math.floor(
-            (this.filteredData.length -
-                this.getVacantUnits() / this.filteredData.length) *
+            ((this.filteredData.length - this.getVacantUnits()) /
+                this.filteredData.length) *
                 100
         );
     }
