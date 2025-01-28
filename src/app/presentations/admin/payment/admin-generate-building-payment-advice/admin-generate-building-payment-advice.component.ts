@@ -50,7 +50,7 @@ export class AdminGenerateBuildingPaymentAdviceComponent implements OnInit {
                 buildingId: this.buildingId,
                 month: monthYear.month,
                 year: monthYear.year,
-                type: PAType.RECURRING,
+                type: PAType.RENT,
             })
             .subscribe((res: any) => {
                 console.log(res);

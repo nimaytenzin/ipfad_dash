@@ -4,14 +4,14 @@
     <p class="text-lg">
         Showing Payment Details for
         <strong>
-            {{ confirmedMonth | date : "MMMM y" }}
+            {{ selectedDate | date : "MMMM y" }}
         </strong>
     </p>
     <div>
         <p>Load for another month</p>
         <p-inputGroup>
             <p-calendar
-                [(ngModel)]="selectedMonth"
+                [(ngModel)]="selectedDate"
                 view="month"
                 dateFormat="mm/yy"
                 [readonlyInput]="true"
@@ -24,374 +24,332 @@
                 severity="secondary"
             ></p-button>
         </p-inputGroup>
-        <p *ngIf="selectedMonth">
-            load for {{ selectedMonth | date : "MMMM y" }}?
-        </p>
     </div>
 </div>
 <hr />
 
 <div class="my-4">
-    <p class="font-semibold text-lg">
+    <p class="font-semibold text-lg mb-3">
         Summary for
 
-        {{ confirmedMonth | date : "MMMM y" }}
+        {{ selectedDate | date : "MMMM y" }}
     </p>
     <div class="flex">
         <div>
-            <p>Total Receivable: Nu. 15,23123</p>
-            <p>Total Received: Nu. 12,2423</p>
-            <p>Pending</p>
+            <p>
+                Total Receivable: Nu.
+                {{ getPaymentsSummary().totalReceivable | number : "1.0-0" }}
+            </p>
+            <p>
+                Total Received: Nu.
+                {{ getPaymentsSummary().totalReceived | number : "1.0-0" }}
+            </p>
+            <div class="my-2">
+                <p-progressBar
+                    [value]="getCollectionProgressPercentage()"
+                    color="darkseagreen"
+                />
+                <p class="text-sm">Collection Progress</p>
+            </div>
+            <p class="text-red-600">
+                Pending: Nu.
+                {{
+                    getPaymentsSummary().totalReceivable -
+                        getPaymentsSummary().totalReceived | number : "1.0-0"
+                }}
+            </p>
         </div>
     </div>
 </div>
 
-<p-tabView>
-    <p-tabPanel header="All">
-        <p-table
-            #dt2
-            [value]="data"
-            class="p-datatable-sm"
-            [tableStyle]="{ 'min-width': '50rem' }"
-            [globalFilterFields]="[
-                'name',
-                'country.name',
-                'representative.name',
-                'status'
-            ]"
-        >
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>#</th>
-                    <th>Plot ID</th>
-                    <th>Building</th>
-                    <th>Unit</th>
-                    <th>Tenant Name</th>
-                    <th>Tenant Contact</th>
-                    <th>Payment Status</th>
-                    <th>Total Receivable</th>
-                    <th>Total Received</th>
-                    <th>Balance</th>
-                    <th>Payment Mode</th>
-                    <th>Payment Date</th>
-                    <th>Remarks</th>
-                    <th></th>
-                </tr>
+<div class="my-3">
+    <div class="flex gap-4">
+        <div>
+            <p-inputGroup>
+                <p-inputGroupAddon>+975</p-inputGroupAddon>
+                <p-inputNumber
+                    [(ngModel)]="tenantPhoneNumberFilter"
+                    mode="decimal"
+                    inputId="withoutgrouping"
+                    [useGrouping]="false"
+                    placeholder="Tenant Phone Number"
+                    [maxlength]="8"
+                />
+                <p-button
+                    label="Filter By Phone Number"
+                    icon="pi pi-search"
+                    severity="secondary"
+                    (click)="filterRowsByTenantPhoneNumber()"
+                ></p-button>
+            </p-inputGroup>
+        </div>
 
-                <tr>
-                    <th></th>
-                    <th>
-                        <p-columnFilter
-                            type="text"
-                            field="item.building.plots[0].plotId"
-                            placeholder="Search by name"
-                            ariaLabel="Filter Name"
-                        ></p-columnFilter>
-                    </th>
-                </tr>
-            </ng-template>
+        <div>
+            <p-inputGroup>
+                <input
+                    type="text"
+                    pInputText
+                    placeholder="Plot ID"
+                    [(ngModel)]="plotIdFilter"
+                />
+                <p-button
+                    label="Filter By Plot ID"
+                    icon="pi pi-search"
+                    severity="secondary"
+                    (click)="filterRowsByPlotId()"
+                ></p-button>
+            </p-inputGroup>
+        </div>
 
-            <ng-template pTemplate="body" let-item>
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>
-                        {{ item.building.plots[0].plotId }}
-                    </td>
-                    <td>
-                        {{ item.building.name }}
-                    </td>
-                    <td>{{ item.floorLevel }}-{{ item.unitNumber }}</td>
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+        <div class="">
+            <p-button
+                label="Clear Filters"
+                (click)="clearFilters()"
+                severity="secondary"
+            ></p-button>
+        </div>
+    </div>
+</div>
 
-                        <p *ngIf="item.leaseAgreements.length">
-                            {{ item.leaseAgreements[0].tenant.nameEnglish }}
+<hr />
+
+<p-table
+    #dt2
+    [value]="filteredData"
+    class="p-datatable-sm"
+    [tableStyle]="{ 'min-width': '50rem' }"
+>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>#</th>
+            <th>Plot ID</th>
+            <th>Building</th>
+            <th>Unit</th>
+            <th>Tenant Name</th>
+            <th>Tenant Contact</th>
+            <th>Payment Status</th>
+            <th>Total Receivable</th>
+            <th>Total Received</th>
+            <th>Balance</th>
+            <th>Payment Mode</th>
+            <th>Payment Date</th>
+            <th>Remarks</th>
+            <th></th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-item>
+        <tr [ngClass]="getRowStatus(item)">
+            <td>{{ item.id }}</td>
+            <td>
+                {{ item.building.plots[0].plotId }}
+            </td>
+            <td>
+                {{ item.building.name }}
+            </td>
+            <td>
+                <p>{{ item.floorLevel }}-{{ item.unitNumber }}</p>
+                <p class="text-sm">({{ item.remarks }})</p>
+            </td>
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+
+                <p *ngIf="item.leaseAgreements.length">
+                    {{ item.leaseAgreements[0].tenant.nameEnglish }}
+                </p>
+            </td>
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+
+                <p *ngIf="item.leaseAgreements.length">
+                    {{ item.leaseAgreements[0].tenant.phoneNumber }}
+                </p>
+            </td>
+
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+
+                <div *ngIf="item.leaseAgreements.length">
+                    <div *ngFor="let lease of item.leaseAgreements">
+                        <p
+                            *ngIf="!lease.paymentAdvises.length"
+                            class="text-yellow-800 text-sm"
+                        >
+                            - PA not Generated
                         </p>
-                    </td>
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                        <p *ngIf="item.leaseAgreements.length">
-                            {{ item.leaseAgreements[0].tenant.phoneNumber }}
-                        </p>
-                    </td>
-
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                        <div *ngIf="item.leaseAgreements.length">
-                            <div *ngFor="let lease of item.leaseAgreements">
+                        <div *ngIf="lease.paymentAdvises">
+                            <div *ngFor="let pa of lease.paymentAdvises">
                                 <p
-                                    *ngIf="!lease.paymentAdvises.length"
-                                    class="text-yellow-800 text-sm"
+                                    [ngClass]="{
+                                        'text-red-500 font-semibold':
+                                            pa.status === 'DUE',
+                                        'text-green-500 font-semibold':
+                                            pa.status === 'PAID'
+                                    }"
                                 >
-                                    - PA not Generated
+                                    {{ pa.status }}
                                 </p>
-                                <div *ngIf="lease.paymentAdvises">
-                                    <div
-                                        *ngFor="let pa of lease.paymentAdvises"
-                                    >
-                                        <p
-                                            [ngClass]="{
-                                                'text-red-500 font-semibold':
-                                                    pa.status === 'DUE',
-                                                'text-green-500 font-semibold':
-                                                    pa.status === 'PAID'
-                                            }"
-                                        >
-                                            {{ pa.status }}
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </div>
+            </td>
 
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
 
-                        <p *ngIf="item.leaseAgreements.length">
-                            Nu.{{
-                                computeTotalPayable(item.leaseAgreements[0])
-                            }}
+                <p *ngIf="item.leaseAgreements.length">
+                    Nu.{{ computeTotalPayable(item.leaseAgreements[0]) }}
+                </p>
+            </td>
+
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+
+                <div *ngIf="item.leaseAgreements.length">
+                    <div *ngFor="let lease of item.leaseAgreements">
+                        <p
+                            *ngIf="!lease.paymentAdvises.length"
+                            class="text-yellow-800 text-sm"
+                        >
+                            - PA not Generated
                         </p>
-                    </td>
-
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                        <div *ngIf="item.leaseAgreements.length">
-                            <div *ngFor="let lease of item.leaseAgreements">
-                                <p
-                                    *ngIf="!lease.paymentAdvises.length"
-                                    class="text-yellow-800 text-sm"
-                                >
-                                    - PA not Generated
-                                </p>
-                                <div *ngIf="lease.paymentAdvises">
-                                    <div
-                                        *ngFor="let pa of lease.paymentAdvises"
+                        <div *ngIf="lease.paymentAdvises">
+                            <div *ngFor="let pa of lease.paymentAdvises">
+                                <p>
+                                    {{
+                                        pa.status === "DUE"
+                                            ? pa.amountDue
+                                            : computeTotalPayable(
+                                                  item.leaseAgreements[0]
+                                              )
+                                    }}
+                                    <small>
+                                        ({{ pa.status | lowercase }})</small
                                     >
-                                        <p>
-                                            {{
-                                                pa.status === "DUE"
-                                                    ? pa.amountDue
-                                                    : computeTotalPayable(
-                                                          item
-                                                              .leaseAgreements[0]
-                                                      )
-                                            }}
-                                            <small>
-                                                ({{
-                                                    pa.status | lowercase
-                                                }})</small
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
+                                </p>
                             </div>
                         </div>
-                    </td>
+                    </div>
+                </div>
+            </td>
 
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-                        <div *ngFor="let lease of item.leaseAgreements">
-                            <p
-                                *ngIf="!lease.paymentAdvises.length"
-                                class="text-yellow-800 text-sm"
-                            >
-                                - PA not Generated
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+                <div *ngFor="let lease of item.leaseAgreements">
+                    <p
+                        *ngIf="!lease.paymentAdvises.length"
+                        class="text-yellow-800 text-sm"
+                    >
+                        - PA not Generated
+                    </p>
+                    <div *ngIf="lease.paymentAdvises">
+                        <div *ngFor="let pa of lease.paymentAdvises">
+                            <p>
+                                {{ pa.amountDue }}
                             </p>
-                            <div *ngIf="lease.paymentAdvises">
-                                <div *ngFor="let pa of lease.paymentAdvises">
-                                    <p>
-                                        {{ pa.amountDue }}
-                                    </p>
-                                </div>
-                            </div>
                         </div>
-                    </td>
+                    </div>
+                </div>
+            </td>
 
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
 
-                        <div *ngIf="item.leaseAgreements.length">
-                            <div *ngFor="let lease of item.leaseAgreements">
-                                <p
-                                    *ngIf="!lease.paymentAdvises.length"
-                                    class="text-yellow-800 text-sm"
-                                >
-                                    - PA not Generated
+                <div *ngIf="item.leaseAgreements.length">
+                    <div *ngFor="let lease of item.leaseAgreements">
+                        <p
+                            *ngIf="!lease.paymentAdvises.length"
+                            class="text-yellow-800 text-sm"
+                        >
+                            - PA not Generated
+                        </p>
+                        <div *ngIf="lease.paymentAdvises">
+                            <div *ngFor="let pa of lease.paymentAdvises">
+                                <p *ngFor="let receipt of pa.paymentReceipts">
+                                    {{ receipt.paymentMode }}
                                 </p>
-                                <div *ngIf="lease.paymentAdvises">
-                                    <div
-                                        *ngFor="let pa of lease.paymentAdvises"
-                                    >
-                                        <p
-                                            *ngFor="
-                                                let receipt of pa.paymentReceipts
-                                            "
-                                        >
-                                            {{ receipt.paymentMode }}
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </td>
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
 
-                        <div *ngIf="item.leaseAgreements.length">
-                            <div *ngFor="let lease of item.leaseAgreements">
-                                <p
-                                    *ngIf="!lease.paymentAdvises.length"
-                                    class="text-yellow-800 text-sm"
-                                >
-                                    - PA not Generated
+                <div *ngIf="item.leaseAgreements.length">
+                    <div *ngFor="let lease of item.leaseAgreements">
+                        <p
+                            *ngIf="!lease.paymentAdvises.length"
+                            class="text-yellow-800 text-sm"
+                        >
+                            - PA not Generated
+                        </p>
+                        <div *ngIf="lease.paymentAdvises">
+                            <div *ngFor="let pa of lease.paymentAdvises">
+                                <p *ngFor="let receipt of pa.paymentReceipts">
+                                    {{ receipt.createdAt | date }}
                                 </p>
-                                <div *ngIf="lease.paymentAdvises">
-                                    <div
-                                        *ngFor="let pa of lease.paymentAdvises"
-                                    >
-                                        <p
-                                            *ngFor="
-                                                let receipt of pa.paymentReceipts
-                                            "
-                                        >
-                                            {{ receipt.createdAt | date }}
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </td>
-                    <td>
-                        <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
 
-                        <div *ngIf="item.leaseAgreements.length">
-                            <div *ngFor="let lease of item.leaseAgreements">
-                                <p
-                                    *ngIf="!lease.paymentAdvises.length"
-                                    class="text-yellow-800 text-sm"
-                                >
-                                    - PA not Generated
+                <div *ngIf="item.leaseAgreements.length">
+                    <div *ngFor="let lease of item.leaseAgreements">
+                        <p
+                            *ngIf="!lease.paymentAdvises.length"
+                            class="text-yellow-800 text-sm"
+                        >
+                            - PA not Generated
+                        </p>
+                        <div *ngIf="lease.paymentAdvises">
+                            <div *ngFor="let pa of lease.paymentAdvises">
+                                <p *ngFor="let receipt of pa.paymentReceipts">
+                                    {{ receipt.remarks }}
                                 </p>
-                                <div *ngIf="lease.paymentAdvises">
-                                    <div
-                                        *ngFor="let pa of lease.paymentAdvises"
-                                    >
-                                        <p
-                                            *ngFor="
-                                                let receipt of pa.paymentReceipts
-                                            "
-                                        >
-                                            {{ receipt.remarks }}
-                                        </p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </p-tabPanel>
-    <p-tabPanel header="Pending">
-        <p-table
-            [value]="data"
-            class="p-datatable-sm"
-            [tableStyle]="{ 'min-width': '50rem' }"
-        >
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>#</th>
-                    <th>Plot ID</th>
-                    <th>Building</th>
-                    <th>Unit</th>
-                    <th>Tenant Type</th>
-                    <th>Tenant Name</th>
-                    <th>Tenant Contact</th>
-                    <th>Total Receivable</th>
-                    <th>Total Received</th>
-                    <th>Balance</th>
-                    <th>Payment Mode</th>
-                    <th>Payment Date</th>
-                    <th>Remarks</th>
-                    <th></th>
-                </tr>
-            </ng-template>
+                    </div>
+                </div>
+            </td>
 
-            <ng-template pTemplate="body">
-                <tr>
-                    <td>1</td>
-                    <td>SM1-12</td>
-                    <td>Namgyel Khangzang</td>
-                    <td>1-01(F1)</td>
-                    <td>Institution</td>
-                    <td>RICBL</td>
-                    <td>17872321</td>
-                    <td>50,0000</td>
-                    <td>50,000</td>
-                    <td>0</td>
-                    <td>Cash</td>
-                    <td>22nd Jan 2025</td>
-                    <td>Cash Payment</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </p-tabPanel>
-    <p-tabPanel header="Paid">
-        <p-table
-            [value]="data"
-            class="p-datatable-sm"
-            [tableStyle]="{ 'min-width': '50rem' }"
-        >
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>#</th>
-                    <th>Plot ID</th>
-                    <th>Building</th>
-                    <th>Unit</th>
-                    <th>Tenant Type</th>
-                    <th>Tenant Name</th>
-                    <th>Tenant Contact</th>
-                    <th>Total Receivable</th>
-                    <th>Total Received</th>
-                    <th>Balance</th>
-                    <th>Payment Mode</th>
-                    <th>Payment Date</th>
-                    <th>Remarks</th>
-                    <th></th>
-                </tr>
-            </ng-template>
+            <td>
+                <div
+                    *ngFor="let lease of item.leaseAgreements"
+                    class="flex jusitify-content-end"
+                >
+                    <div *ngFor="let pa of lease.paymentAdvises" class="">
+                        <p-button
+                            label="Advice"
+                            size="small"
+                            *ngIf="pa.status !== 'PAID'"
+                            severity="secondary"
+                            (click)="openPADetails([pa], lease)"
+                        ></p-button>
 
-            <ng-template pTemplate="body">
-                <tr>
-                    <td>1</td>
-                    <td>SM1-12</td>
-                    <td>Namgyel Khangzang</td>
-                    <td>1-01(F1)</td>
-                    <td>Institution</td>
-                    <td>RICBL</td>
-                    <td>17872321</td>
-                    <td>50,0000</td>
-                    <td>50,000</td>
-                    <td>0</td>
-                    <td>Cash</td>
-                    <td>22nd Jan 2025</td>
-                    <td>Cash Payment</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </p-tabPanel>
-</p-tabView>
+                        <div *ngFor="let receipt of pa.paymentReceipts">
+                            <p-button
+                                label="Receipt"
+                                size="small"
+                                icon="pi pi-file"
+                                (onClick)="openViewPaymentReceipt(receipt)"
+                            ></p-button>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
 
 <!-- <p-tabView>
-    <p-tabPanel header="Pending">
-        <app-admin-building-rent-pending-payment-advices></app-admin-building-rent-pending-payment-advices>
+    <p-tabPanel header="All">
+      
     </p-tabPanel>
-    <p-tabPanel header="Paid">
-        <app-admin-building-rent-paid-payment-advices></app-admin-building-rent-paid-payment-advices>
-    </p-tabPanel>
+    <p-tabPanel header="Pending"> </p-tabPanel>
+    <p-tabPanel header="Paid"> </p-tabPanel>
 </p-tabView> -->

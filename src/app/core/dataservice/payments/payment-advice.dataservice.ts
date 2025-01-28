@@ -496,8 +496,8 @@ export class PaymentAdviceDataService {
         adminId: number,
         year: number,
         month: number
-    ): Observable<PaymentAdviceDto[]> {
-        return this.http.get<PaymentAdviceDto[]>(
+    ): Observable<UnitDTO[]> {
+        return this.http.get<UnitDTO[]>(
             `${this.apiUrl}/lease-agreement/payment-status/unit/monthly/admin/${adminId}/${year}/${month}`
         );
     }

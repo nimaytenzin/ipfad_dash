@@ -216,6 +216,15 @@ export enum ORGANIZATIONUSERTYPES {
     MANAGER = 'MANAGER',
 }
 
+export enum PaymentAdviseStatus {
+    'DUE' = 'DUE',
+    'OVERDUE' = 'OVERDUE',
+    'PAID' = 'PAID',
+    'PARTIAL_PAID' = 'PARTIAL_PAID',
+    'REMITTED' = 'REMITTED',
+    'WRITEOFF' = 'WRITEOFF',
+}
+
 export enum NOTIFICATIONTYPES {
     LEASE_CREATION = 'LEASE_CREATION',
     LEASE_SIGNING_REMINDER = 'LEASE_SIGNING_REMINDER',
@@ -238,7 +247,7 @@ export enum NOTIFICATIONTYPES {
 
 export enum PAType {
     'SD' = 'Security_Deposit',
-    'RECURRING' = 'RECURRING',
+    'RENT' = 'RENT',
 }
 
 export enum PLOTAREAETYPES {
