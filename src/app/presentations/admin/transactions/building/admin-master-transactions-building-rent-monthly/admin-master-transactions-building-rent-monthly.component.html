@@ -60,6 +60,13 @@
             </p>
         </div>
     </div>
+    <hr />
+
+    <div>
+        <p>Number of properties: {{ filteredData.length }}</p>
+        <p>Number of Vacant Properties: {{ getVacantUnits() }}</p>
+        <p>Occupancy Rate: {{ getOccupancyRate() }}%</p>
+    </div>
 </div>
 
 <div class="my-3">
@@ -138,9 +145,9 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-item>
+    <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
         <tr [ngClass]="getRowStatus(item)">
-            <td>{{ item.id }}</td>
+            <td>{{ rowIndex + 1 }}</td>
             <td>
                 {{ item.building.plots[0].plotId }}
             </td>

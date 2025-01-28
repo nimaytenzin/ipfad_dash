@@ -246,4 +246,21 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
             }
         );
     }
+
+    getVacantUnits(): number {
+        let numberOfVacantUnits = 0;
+        for (let unit of this.filteredData) {
+            if (!unit.leaseAgreements.length) {
+                numberOfVacantUnits++;
+            }
+        }
+
+        return numberOfVacantUnits;
+    }
+
+    getOccupancyRate(): number {
+        return Math.floor(
+            (this.getVacantUnits() / this.filteredData.length) * 100
+        );
+    }
 }
