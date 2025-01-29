@@ -146,6 +146,7 @@
             <th>Unit</th>
             <th>Tenant Name</th>
             <th>Tenant Contact</th>
+            <th>Tenant CID</th>
             <th>Payment Status</th>
             <th>Total Receivable</th>
             <th>Total Received</th>
@@ -182,6 +183,13 @@
 
                 <p *ngIf="item.leaseAgreements.length">
                     {{ item.leaseAgreements[0].tenant.phoneNumber }}
+                </p>
+            </td>
+            <td>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+
+                <p *ngIf="item.leaseAgreements.length">
+                    {{ item.leaseAgreements[0].tenant.cid }}
                 </p>
             </td>
 

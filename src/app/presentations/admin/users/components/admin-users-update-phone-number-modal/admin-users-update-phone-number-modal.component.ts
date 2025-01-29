@@ -46,7 +46,6 @@ import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.da
 })
 export class AdminUsersUpdatePhoneNumberModalComponent implements OnInit {
     updateUserForm: FormGroup;
-
     isSubmitting: boolean = false;
     passedUser: UserDTO;
 
@@ -77,15 +76,8 @@ export class AdminUsersUpdatePhoneNumberModalComponent implements OnInit {
     updatePhoneNumber() {
         if (this.isSubmitting) return;
         this.isSubmitting = true;
-
         const data: UpdateUserDetailsDTO = {
-            nameEnglish: this.updateUserForm.controls['nameEnglish'].value,
-            email: this.updateUserForm.controls['email'].value || null,
-            cid: this.updateUserForm.controls['cid'].value || null,
-            permanentAddress:
-                this.updateUserForm.controls['permanentAddress'].value,
-            nameDzongkha:
-                this.updateUserForm.controls['nameDzongkha'].value || null,
+            phoneNumber: this.updateUserForm.controls['phoneNumber'].value,
         };
 
         this.messageService.add({
