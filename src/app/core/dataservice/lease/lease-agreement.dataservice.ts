@@ -12,6 +12,8 @@ import {
     PropertyLeaseAvailabiltyCheckerDTO,
     PropertyLeaseOverDueCalculatorDTO,
     PropertyLeaseOverDueReturnDTO,
+    ReviseLeasePaymentDTO,
+    ReviseLeaseTermsDTO,
     UnitLeasePaymentStatusDTO,
 } from './lease-agreement.dto';
 import {
@@ -652,6 +654,20 @@ export class LeaseAgreementDataService {
     ): Observable<LeaseAgreementAttachmentDTO> {
         return this.http.get<LeaseAgreementAttachmentDTO>(
             `${this.apiUrl}/lease-attachment/signed-copy/${leaseAgreementId}`
+        );
+    }
+
+    //REVISE LEASE
+    ReviseLeasePayment(data: ReviseLeasePaymentDTO, leaseAgreementId: number) {
+        return this.http.patch(
+            `${this.apiUrl}/lease-agreement/revise/payment/${leaseAgreementId}`,
+            data
+        );
+    }
+    ReviseLeaseTerms(data: ReviseLeaseTermsDTO, leaseAgreementId: number) {
+        return this.http.patch(
+            `${this.apiUrl}/lease-agreement/revise/terms/${leaseAgreementId}`,
+            data
         );
     }
 }

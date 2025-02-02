@@ -27,6 +27,9 @@ import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto
 import { AdminViewPaymentReceiptModalComponent } from '../../shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 import { MessageService } from 'primeng/api';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
+import { AdminUsersUpdateModalComponent } from '../../../users/components/admin-users-update-modal/admin-users-update-modal.component';
+import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
+import { AdminReviseLeaseComponent } from '../../../lease/components/admin-revise-lease/admin-revise-lease.component';
 
 interface YearMonthDTO {
     year: number;
@@ -298,5 +301,35 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
                     life: 3000,
                 });
             });
+    }
+
+    openUpdateTenantDetailsModal(tenant: UserDTO) {
+        this.ref = this.dialogService.open(AdminUsersUpdateModalComponent, {
+            header: 'Update Tenant',
+            data: {
+                ...tenant,
+            },
+        });
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status) {
+                this.loadData();
+            }
+        });
+    }
+
+    openReviseLeaseModal(lease: LeaseAgreeementDTO) {
+        this.ref = this.dialogService.open(AdminReviseLeaseComponent, {
+            header: 'Revise Lease Terms',
+
+            data: {
+                ...lease,
+            },
+        });
+
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.loadData();
+            }
+        });
     }
 }

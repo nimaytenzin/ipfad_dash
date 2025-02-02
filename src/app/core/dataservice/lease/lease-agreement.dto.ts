@@ -57,7 +57,7 @@ export interface LeaseAgreeementDTO {
     rent: number;
     use: LEASEUSES;
 
-    securityDepositAmount: string;
+    securityDepositAmount: number;
     paymentDueDay: number;
     applyLatePaymentFee: boolean;
 
@@ -192,4 +192,24 @@ export interface LeaseAgreementAttachmentDTO {
     leaseAgreementId: number;
     uri: string;
     type: string;
+}
+
+// ***** LEASE RREVISION ***//
+
+export interface ReviseLeasePaymentDTO {
+    rent: number;
+    securityDepositAmount: number;
+
+    leaseSurcharges: LeaseSurchargeDTO[];
+
+    areaLeased?: number;
+    areaUnit?: string;
+    ratePerArea?: number;
+    penaltyPercentagePerAnnum: number;
+}
+
+export interface ReviseLeaseTermsDTO {
+    use: string;
+    leaseStartDate: Date;
+    leaseEndDate: Date;
 }

@@ -1,0 +1,47 @@
+<div class="p-fluid my-2">
+    <p>Lease Purpose</p>
+    <p-dropdown
+        [options]="uses"
+        [(ngModel)]="selectedUse"
+        [showClear]="true"
+        placeholder="Select Use"
+        appendTo="body"
+    >
+    </p-dropdown>
+</div>
+<div class="p-fluid my-2">
+    <p>Lease Start Date</p>
+    <p-calendar
+        view="month"
+        [(ngModel)]="leaseStartDate"
+        dateFormat="mm/yy"
+        appendTo="body"
+    ></p-calendar>
+</div>
+
+<div class="p-fluid my-2">
+    <p>Lease End Date</p>
+    <p-calendar
+        view="month"
+        [(ngModel)]="leaseEndDate"
+        dateFormat="mm/yy"
+        appendTo="body"
+        [minDate]="leaseStartDate"
+    >
+    </p-calendar>
+</div>
+
+<div *ngIf="leaseStartDate && leaseEndDate" class="mt-2">
+    <p>
+        Lease Duration in Years:
+        <strong>
+            {{ getDurationDiffInYears(leaseStartDate, leaseEndDate) }}</strong
+        >
+    </p>
+</div>
+
+<p-divider></p-divider>
+
+<div class="flex justify-content-end">
+    <p-button label="Update" (click)="updateLeaseAgreementTerms()"></p-button>
+</div>
