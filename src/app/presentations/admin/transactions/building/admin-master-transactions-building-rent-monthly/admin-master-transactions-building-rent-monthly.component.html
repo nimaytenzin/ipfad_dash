@@ -120,6 +120,22 @@
             </p-inputGroup>
         </div>
 
+        <div>
+            <p-dropdown
+                [options]="paymentStatusOptions"
+                [(ngModel)]="selectedPaymentStatus"
+                placeholder="Select Payment Status"
+                optionLabel="label"
+                optionValue="value"
+            ></p-dropdown>
+            <p-button
+                label="Filter By Payment Status"
+                icon="pi pi-search"
+                severity="secondary"
+                (click)="filterRowsByPaymentStatus()"
+            ></p-button>
+        </div>
+
         <div class="">
             <p-button
                 label="Clear Filters"

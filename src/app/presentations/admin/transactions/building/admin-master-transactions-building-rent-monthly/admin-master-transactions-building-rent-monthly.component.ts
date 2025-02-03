@@ -30,6 +30,7 @@ import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.genera
 import { AdminUsersUpdateModalComponent } from '../../../users/components/admin-users-update-modal/admin-users-update-modal.component';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { AdminReviseLeaseComponent } from '../../../lease/components/admin-revise-lease/admin-revise-lease.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 interface YearMonthDTO {
     year: number;
@@ -64,6 +65,7 @@ interface PaymentSummaryDTO {
         InputNumberModule,
         InputTextModule,
         TreeTableModule,
+        DropdownModule,
     ],
     providers: [DialogService],
 })
@@ -79,6 +81,11 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
     ref: DynamicDialogRef;
 
     adminId: number;
+    paymentStatusOptions = [
+        { label: 'DUE', value: 'DUE' },
+        { label: 'PAID', value: 'PAID' },
+    ];
+    selectedPaymentStatus: string;
 
     selectedDate: Date;
 
@@ -192,10 +199,25 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         );
     }
 
+    filterRowsByPaymentStatus() {
+        if (!this.selectedPaymentStatus) {
+            return;
+        }
+        this.filteredData = [...this.originalData];
+        this.filteredData = this.filteredData.filter((item) =>
+            item.leaseAgreements.some((lease) =>
+                lease.paymentAdvises.some(
+                    (pa) => pa.status === this.selectedPaymentStatus
+                )
+            )
+        );
+    }
+
     // Clear all filters
     clearFilters() {
         this.tenantPhoneNumberFilter = null;
         this.plotIdFilter = '';
+        this.selectedPaymentStatus = null;
         this.filteredData = [...this.originalData];
     }
 

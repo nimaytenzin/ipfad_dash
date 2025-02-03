@@ -44,7 +44,6 @@ export interface UpdateUserDetailsDTO {
     cid?: string;
     email?: string;
     phoneNumber?: number;
-
     permanentAddress?: string;
 }
 

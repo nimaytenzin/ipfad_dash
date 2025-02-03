@@ -71,6 +71,7 @@ export class AdminUsersUpdateModalComponent implements OnInit {
 
             cid: [''],
 
+            phoneNumber: [],
             permanentAddress: [''],
             email: [''],
             hasLoginAccess: ['', [Validators.required]],
@@ -91,6 +92,9 @@ export class AdminUsersUpdateModalComponent implements OnInit {
                 this.updateUserForm.controls['permanentAddress'].value,
             nameDzongkha:
                 this.updateUserForm.controls['nameDzongkha'].value || null,
+            phoneNumber:
+                Number(this.updateUserForm.controls['phoneNumber'].value) ||
+                null,
         };
 
         // Disable the form and button while submitting
