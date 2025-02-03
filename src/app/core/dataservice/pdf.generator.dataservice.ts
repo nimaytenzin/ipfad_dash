@@ -19,6 +19,14 @@ export class PDFGeneratorDataService {
             }
         );
     }
+    DownloadPaymentReceiptPDF(paymentReceiptId: number): Observable<Blob> {
+        return this.http.get<Blob>(
+            `${this.apiUrl}/pdf-generator/payment-receipt/${paymentReceiptId}`,
+            {
+                responseType: 'blob' as 'json', // Explicitly specify the response type
+            }
+        );
+    }
 
     GetPdfUrl(leaseAgreementId: number): string {
         return `${this.apiUrl}/pdf-generator/lease-agreement/${leaseAgreementId}`;

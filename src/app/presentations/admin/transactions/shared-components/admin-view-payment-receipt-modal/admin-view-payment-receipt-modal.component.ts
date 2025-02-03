@@ -22,6 +22,7 @@ import { ImageModule } from 'primeng/image';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { TooltipModule } from 'primeng/tooltip';
+import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 
 @Component({
     selector: 'app-admin-view-payment-receipt-modal',
@@ -51,7 +52,8 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
         private paymentReceiptDataService: PaymentReceiptDataService,
         private messageService: MessageService,
         private authService: AuthService,
-        private ref: DynamicDialogRef
+        private ref: DynamicDialogRef,
+        private pdfGeneratorDataService: PDFGeneratorDataService
     ) {
         this.paymentReceiptId = this.config.data.paymentReceiptId;
         this.getPaymentReceiptDetails();
@@ -92,5 +94,31 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
                 this.ref.close();
             }
         });
+    }
+
+    downloadReceiptPdf() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.pdfGeneratorDataService
+            .DownloadPaymentReceiptPDF(this.paymentReceipt.id)
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'payment_receipt.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Lease has been downloaded.Please check your downloads.',
+                    life: 3000,
+                });
+            });
     }
 }

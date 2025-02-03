@@ -179,16 +179,19 @@
                     <p *ngIf="!item.leaseAgreements.length">Vacant</p>
 
                     <div *ngIf="item.leaseAgreements.length">
-                        <div *ngFor="let lease of item.leaseAgreements">
+                        <div
+                            *ngFor="let lease of item.leaseAgreements"
+                            class="flex flex-column text-center"
+                        >
                             <p>
                                 {{ lease.status }}
                             </p>
-                            <p-button
-                                icon="pi pi-pencil"
-                                size="small"
+                            <p
                                 (click)="openReviseLeaseModal(lease)"
-                                [outlined]="false"
-                            ></p-button>
+                                class="text-blue-500 cursor-pointer hover:underline text-xs"
+                            >
+                                Update Lease
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -209,25 +212,25 @@
                 </p>
             </td>
             <td>
-                <div
-                    class="flex justify-content-between align-items-center gap-2"
-                >
-                    <p *ngIf="!item.leaseAgreements.length">Vacant</p>
+                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
 
-                    <p *ngIf="item.leaseAgreements.length">
+                <div
+                    class="flex flex-column text-center"
+                    *ngIf="item.leaseAgreements.length"
+                >
+                    <p>
                         {{ item.leaseAgreements[0].tenant.cid }}
                     </p>
-                    <p-button
-                        *ngIf="item.leaseAgreements.length"
-                        icon="pi pi-pencil"
-                        size="small"
-                        [outlined]="false"
+                    <p
                         (click)="
                             openUpdateTenantDetailsModal(
                                 item.leaseAgreements[0].tenant
                             )
                         "
-                    ></p-button>
+                        class="text-blue-500 cursor-pointer hover:underline text-xs"
+                    >
+                        Update Tenant
+                    </p>
                 </div>
             </td>
 

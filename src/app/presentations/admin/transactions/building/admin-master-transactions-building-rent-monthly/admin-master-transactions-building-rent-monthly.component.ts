@@ -40,6 +40,7 @@ interface PaymentSummaryDTO {
     totalReceivable: number;
     totalReceived: number;
 }
+
 @Component({
     selector: 'app-admin-master-transactions-building-rent-monthly',
     templateUrl:
@@ -52,19 +53,16 @@ interface PaymentSummaryDTO {
         CommonModule,
         DividerModule,
         TabViewModule,
-
         ProgressBarModule,
         ButtonModule,
         CalendarModule,
         FormsModule,
         InputGroupModule,
         TableModule,
-
         InputGroupModule,
         InputGroupAddonModule,
         InputNumberModule,
         InputTextModule,
-
         TreeTableModule,
     ],
     providers: [DialogService],
@@ -82,7 +80,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
 
     adminId: number;
 
-    selectedDate: Date = new Date();
+    selectedDate: Date;
 
     originalData: UnitDTO[] = [];
     filteredData: UnitDTO[] = [];
@@ -101,19 +99,32 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
     }
 
     ngOnInit() {
-        this.paymentDataService
-            .GetAllPaymentAdviceByActiveLeaseUnderAdminByMonthYear(
-                this.adminId,
-                this.getYearMonth().year,
-                this.getYearMonth().month
-            )
-            .subscribe((res) => {
-                this.originalData = res;
-                this.filteredData = [...this.originalData];
-            });
+        this.getSelectedDate(); // Load selected date from sessionStorage
+        this.setSessionState(); // Set session state with the selected date
+        this.loadData(); // Load data based on the selected date
     }
 
+    // Set the selected date in sessionStorage
+    setSessionState() {
+        sessionStorage.setItem(
+            'selectedDate456',
+            this.selectedDate.toDateString()
+        );
+    }
+
+    // Retrieve the selected date from sessionStorage
+    getSelectedDate() {
+        const storedDate = sessionStorage.getItem('selectedDate456');
+        if (storedDate) {
+            this.selectedDate = new Date(storedDate);
+        } else {
+            this.selectedDate = new Date(); // Default to current date if no date is stored
+        }
+    }
+
+    // Load data based on the selected date
     loadData() {
+        this.setSessionState();
         this.paymentDataService
             .GetAllPaymentAdviceByActiveLeaseUnderAdminByMonthYear(
                 this.adminId,
@@ -126,6 +137,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
             });
     }
 
+    // Get the year and month from the selected date
     getYearMonth(): YearMonthDTO {
         const year = this.selectedDate.getFullYear();
         const month = this.selectedDate.getMonth() + 1;
@@ -136,6 +148,14 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         };
     }
 
+    // Handle date change event
+    onDateChange(newDate: Date) {
+        this.selectedDate = newDate;
+        this.setSessionState(); // Update sessionStorage with the new date
+        this.loadData(); // Reload data based on the new date
+    }
+
+    // Compute total payable for a lease agreement
     computeTotalPayable(item: LeaseAgreeementDTO) {
         let total = item.rent;
         for (let charge of item.leaseSurcharges) {
@@ -144,6 +164,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         return total;
     }
 
+    // Filter rows by tenant phone number
     filterRowsByTenantPhoneNumber() {
         if (!this.tenantPhoneNumberFilter) {
             return;
@@ -158,6 +179,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         );
     }
 
+    // Filter rows by plot ID
     filterRowsByPlotId() {
         if (!this.plotIdFilter) {
             return;
@@ -170,12 +192,14 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         );
     }
 
+    // Clear all filters
     clearFilters() {
         this.tenantPhoneNumberFilter = null;
         this.plotIdFilter = '';
         this.filteredData = [...this.originalData];
     }
 
+    // Get row status based on payment advice status
     getRowStatus(item: any): string {
         if (!item.leaseAgreements?.length) {
             return 'bg-gray-100'; // No lease agreements
@@ -191,6 +215,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         return '';
     }
 
+    // Get payment summary (total receivable and total received)
     getPaymentsSummary(): PaymentSummaryDTO {
         let totalReceivable = 0;
         let totalReceived = 0;
@@ -214,6 +239,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         };
     }
 
+    // Get collection progress percentage
     getCollectionProgressPercentage(): number {
         const totalReceived = this.getPaymentsSummary().totalReceived;
         const totalReceivable = this.getPaymentsSummary().totalReceivable;
@@ -226,6 +252,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         return Math.floor(percentage);
     }
 
+    // Open payment advice details modal
     openPADetails(
         advices: PaymentAdviceDto[],
         leaseAgreement: LeaseAgreeementDTO
@@ -244,6 +271,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         });
     }
 
+    // Open payment receipt modal
     openViewPaymentReceipt(item: PaymentReceiptDTO) {
         this.ref = this.dialogService.open(
             AdminViewPaymentReceiptModalComponent,
@@ -254,6 +282,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         );
     }
 
+    // Get the number of vacant units
     getVacantUnits(): number {
         let numberOfVacantUnits = 0;
         for (let unit of this.filteredData) {
@@ -265,6 +294,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         return numberOfVacantUnits;
     }
 
+    // Get occupancy rate
     getOccupancyRate(): number {
         return Math.floor(
             ((this.filteredData.length - this.getVacantUnits()) /
@@ -273,6 +303,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         );
     }
 
+    // Download Excel report
     downloadExcel() {
         this.messageService.add({
             severity: 'info',
@@ -303,6 +334,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
             });
     }
 
+    // Open update tenant details modal
     openUpdateTenantDetailsModal(tenant: UserDTO) {
         this.ref = this.dialogService.open(AdminUsersUpdateModalComponent, {
             header: 'Update Tenant',
@@ -317,10 +349,10 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         });
     }
 
+    // Open revise lease modal
     openReviseLeaseModal(lease: LeaseAgreeementDTO) {
         this.ref = this.dialogService.open(AdminReviseLeaseComponent, {
             header: 'Revise Lease Terms',
-
             data: {
                 ...lease,
             },
