@@ -12,7 +12,11 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import {
+    DialogService,
+    DynamicDialogConfig,
+    DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -28,8 +32,10 @@ import {
     ReviseLeasePaymentDTO,
 } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
+import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { GETMONTHDIFF } from 'src/app/core/utility/date.helper';
+import { AdminReviseLeaseRevisePaymentAdviceComponent } from '../admin-revise-lease-revise-payment-advice/admin-revise-lease-revise-payment-advice.component';
 
 @Component({
     selector: 'app-admin-revise-lease-payments',
@@ -52,7 +58,7 @@ import { GETMONTHDIFF } from 'src/app/core/utility/date.helper';
         CommonModule,
         TableModule,
     ],
-    providers: [ConfirmationService],
+    providers: [ConfirmationService, DialogService],
 })
 export class AdminReviseLeasePaymentsComponent implements OnInit {
     leaseAgreement: LeaseAgreeementDTO;
@@ -80,6 +86,8 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
 
     leaseRevisionData: ReviseLeasePaymentDTO;
 
+    openDialogRef: DynamicDialogRef | undefined;
+
     constructor(
         private fb: FormBuilder,
         private config: DynamicDialogConfig,
@@ -88,7 +96,9 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
         private bankAccountDataService: BankAccountDataService,
         private authService: AuthService,
         private leaseAgreementDataService: LeaseAgreementDataService,
-        public ref: DynamicDialogRef
+        public ref: DynamicDialogRef,
+        private paymentAdviceDataService: PaymentAdviceDataService,
+        private dialogService: DialogService
     ) {
         this.leaseAgreement = this.config.data;
         this.rent = this.leaseAgreement.rent;
@@ -116,12 +126,20 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
             });
     }
 
-    getTotalMonthlyPayabe() {
+    getUpdatedTotalMonthlyPayabe() {
         if (!this.rent) return 0;
         let total = Number(this.rent);
         this.leaseCharges.forEach((item) => {
             total += item.amount;
         });
+        return total;
+    }
+
+    getExistingTotalMonthlyPayable() {
+        let total = this.leaseAgreement.rent;
+        for (let item of this.leaseAgreement.leaseSurcharges) {
+            total += item.amount;
+        }
         return total;
     }
 
@@ -161,20 +179,129 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
     }
 
     updateLeasePayment() {
-        this.leaseRevisionData = {
-            rent: this.rent,
-            securityDepositAmount: this.securityDepositAmount,
-            penaltyPercentagePerAnnum: this.penaltyPercentagePerAnnum,
-            leaseSurcharges: this.leaseCharges,
-        };
-        this.leaseAgreementDataService
-            .ReviseLeasePayment(this.leaseRevisionData, this.leaseAgreement.id)
-            .subscribe({
-                next: (res) => {
-                    if (res) {
-                        this.ref.close({ status: 200 });
-                    }
-                },
+        // Check if there are any changes in rent, security deposit, or lease charges
+        const hasRentChanged = this.rent !== this.leaseAgreement.rent;
+        const hasSecurityDepositChanged =
+            this.securityDepositAmount !==
+            this.leaseAgreement.securityDepositAmount;
+        const hasLeaseChargesChanged = this.hasLeaseChargesChanged();
+
+        if (
+            hasRentChanged ||
+            hasSecurityDepositChanged ||
+            hasLeaseChargesChanged
+        ) {
+            // Prepare the lease revision data
+            this.leaseRevisionData = {
+                rent: this.rent,
+                securityDepositAmount: this.securityDepositAmount,
+                penaltyPercentagePerAnnum: this.penaltyPercentagePerAnnum,
+                leaseSurcharges: this.leaseCharges,
+            };
+
+            // Update the lease payment
+            this.leaseAgreementDataService
+                .ReviseLeasePayment(
+                    this.leaseRevisionData,
+                    this.leaseAgreement.id
+                )
+                .subscribe({
+                    next: (res) => {
+                        if (res) {
+                            // Fetch pending payment advices
+                            this.paymentAdviceDataService
+                                .GetAllPendingPaymentAdvicesByLease(
+                                    this.leaseAgreement.id
+                                )
+                                .subscribe({
+                                    next: (response) => {
+                                        // Open the dialog to update pending payment advices
+                                        this.openDialogRef =
+                                            this.dialogService.open(
+                                                AdminReviseLeaseRevisePaymentAdviceComponent,
+                                                {
+                                                    header: 'Update Payment Advices',
+                                                    data: {
+                                                        pendingPaymentAdvices:
+                                                            response,
+                                                        updatedRent: this.rent,
+                                                        updatedLeaseSurcharges:
+                                                            this.leaseCharges,
+                                                    },
+                                                }
+                                            );
+                                        this.openDialogRef.onClose.subscribe(
+                                            (revisePAResponse) => {
+                                                if (
+                                                    revisePAResponse &&
+                                                    revisePAResponse.status ===
+                                                        200
+                                                ) {
+                                                    this.ref.close({
+                                                        status: 200,
+                                                    });
+                                                }
+                                            }
+                                        );
+                                    },
+                                    error: (err) => {
+                                        console.error(
+                                            'Error fetching pending payment advices:',
+                                            err
+                                        );
+                                        this.messageService.add({
+                                            severity: 'error',
+                                            summary: 'Error',
+                                            detail: 'Failed to fetch pending payment advices.',
+                                        });
+                                    },
+                                });
+                        }
+                    },
+                    error: (err) => {
+                        console.error('Error updating lease payment:', err);
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Failed to update lease payment.',
+                        });
+                    },
+                });
+        } else {
+            // No changes detected
+            this.messageService.add({
+                severity: 'info',
+                summary: 'No Changes',
+                detail: 'No changes detected in rent, security deposit, or lease charges.',
             });
+        }
+    }
+
+    /**
+     * Checks if the lease charges have changed compared to the original lease agreement.
+     */
+    private hasLeaseChargesChanged(): boolean {
+        const originalCharges = this.leaseAgreement.leaseSurcharges;
+        const updatedCharges = this.leaseCharges;
+
+        // Check if the number of charges has changed
+        if (originalCharges.length !== updatedCharges.length) {
+            return true;
+        }
+
+        // Check if any charge has been modified
+        for (let i = 0; i < originalCharges.length; i++) {
+            const originalCharge = originalCharges[i];
+            const updatedCharge = updatedCharges[i];
+
+            if (
+                originalCharge.particular !== updatedCharge.particular ||
+                originalCharge.amount !== updatedCharge.amount
+            ) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

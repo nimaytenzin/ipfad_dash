@@ -31,7 +31,10 @@ import { AdminUsersUpdateModalComponent } from '../../../users/components/admin-
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { AdminReviseLeaseComponent } from '../../../lease/components/admin-revise-lease/admin-revise-lease.component';
 import { DropdownModule } from 'primeng/dropdown';
-
+import { AdminLeaseTerminateLeaseComponent } from '../../../lease/components/admin-lease-terminate-lease/admin-lease-terminate-lease.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 interface YearMonthDTO {
     year: number;
     month: number;
@@ -66,6 +69,9 @@ interface PaymentSummaryDTO {
         InputTextModule,
         TreeTableModule,
         DropdownModule,
+        InputTextareaModule,
+        DialogModule,
+        ProgressSpinnerModule,
     ],
     providers: [DialogService],
 })
@@ -94,6 +100,8 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
 
     tenantPhoneNumberFilter: number;
     plotIdFilter: string = '';
+
+    isDataLoading: boolean = false;
 
     constructor(
         private paymentDataService: PaymentAdviceDataService,
@@ -132,6 +140,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
     // Load data based on the selected date
     loadData() {
         this.setSessionState();
+        this.isDataLoading = true;
         this.paymentDataService
             .GetAllPaymentAdviceByActiveLeaseUnderAdminByMonthYear(
                 this.adminId,
@@ -141,6 +150,18 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
             .subscribe((res) => {
                 this.originalData = res;
                 this.filteredData = [...this.originalData];
+                if (this.tenantPhoneNumberFilter) {
+                    this.filterRowsByTenantPhoneNumber();
+                }
+                if (this.plotIdFilter) {
+                    this.filterRowsByPlotId();
+                }
+                if (this.selectedPaymentStatus) {
+                    this.filterRowsByPaymentStatus();
+                }
+                setTimeout(() => {
+                    this.isDataLoading = false;
+                }, 1000);
             });
     }
 
@@ -380,6 +401,20 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
             },
         });
 
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status === 200) {
+                this.loadData();
+            }
+        });
+    }
+
+    openTerminateLeaseModal(lease: LeaseAgreeementDTO) {
+        this.ref = this.dialogService.open(AdminLeaseTerminateLeaseComponent, {
+            header: 'Terminate Lease Agreement',
+            data: {
+                ...lease,
+            },
+        });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 200) {
                 this.loadData();

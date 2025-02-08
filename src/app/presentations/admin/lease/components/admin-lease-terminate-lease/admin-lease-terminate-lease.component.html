@@ -1,0 +1,30 @@
+<div>
+    <div class="flex flex-column gap-3 mb-3 p-fluid">
+        <label for="username" class="font-semibold">Termination Date</label>
+        <p-calendar
+            [(ngModel)]="leaseModificationDate"
+            [showIcon]="true"
+            appendTo="body"
+            [showOnFocus]="false"
+            inputId="buttondisplay"
+        />
+    </div>
+    <div class="flex flex-column gap-3 mb-3">
+        <label for="username" class="font-semibold">Remarks</label>
+        <textarea
+            rows="5"
+            cols="30"
+            pInputTextarea
+            [(ngModel)]="leaseModificationRemarks"
+        ></textarea>
+    </div>
+
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" />
+        <p-button
+            label="Terminate Lease"
+            severity="danger"
+            (click)="confirmLeaseTermination()"
+        />
+    </div>
+</div>

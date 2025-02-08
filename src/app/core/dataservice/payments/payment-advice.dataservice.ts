@@ -188,6 +188,13 @@ export class PaymentAdviceDataService {
             { params: httpParams }
         );
     }
+    GetAllPendingPaymentAdvicesByLease(
+        leaseAgreementId: number
+    ): Observable<PaymentAdviceDto[]> {
+        return this.http.get<PaymentAdviceDto[]>(
+            `${this.apiUrl}/payment-advice/admin/lease/pending/${leaseAgreementId}`
+        );
+    }
 
     GetPaidPaymentAdivceByLeasePaginated(
         leaseAgreementId: number,
@@ -499,6 +506,13 @@ export class PaymentAdviceDataService {
     ): Observable<UnitDTO[]> {
         return this.http.get<UnitDTO[]>(
             `${this.apiUrl}/lease-agreement/payment-status/unit/monthly/admin/${adminId}/${year}/${month}`
+        );
+    }
+
+    //REGENErATE
+    RegeneratePaymentAdvice(paymentAdviceId: number) {
+        return this.http.get<PaymentAdviceDto>(
+            `${this.apiUrl}/payment-advice/regenerate/${paymentAdviceId}`
         );
     }
 }

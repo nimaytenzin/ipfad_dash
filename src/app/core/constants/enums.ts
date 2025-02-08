@@ -274,10 +274,16 @@ export enum DAMAGERESOLVERTYPE {
 }
 
 export enum PAYMENTMODES {
-    'ONLINE' = 'ONLINE',
+    'ZHIDHAY' = 'ZHIDHAY',
     'CASH' = 'CASH',
     'BANK_TRANSFER' = 'BANKTRANSFER',
-    'MBOB' = 'MBOB',
+    'BOB_MBOB' = 'BOB_MBOB',
+    'BDB_EPAY' = 'BDB_EPAY',
+    'BNB_MPAY' = 'BNB_MPAY',
+    'DK_BANK' = 'DK_BANK',
+    'DPNB_DRUKPAY' = 'DPNB_DRUKPAY',
+    'TBANK_TPAY' = 'TBANK_TPAY',
+    'EPAYMENT' = 'EPAYMENT',
 }
 
 export enum AREAUNITS {

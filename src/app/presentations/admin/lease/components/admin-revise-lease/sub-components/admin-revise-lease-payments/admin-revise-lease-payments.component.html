@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <div class="my-3">
+    <div class="my-4">
         <div class="p-fluid">
             <p>Deposit to Account</p>
             <div
@@ -83,7 +83,7 @@
                 }}
             </div>
         </div>
-        <div class="p-fluid mt-2">
+        <div class="p-fluid my-4">
             <p>Penalty for late payment:</p>
             <div class="flex align-items-center">
                 <p-inputNumber
@@ -109,7 +109,7 @@
         <p-divider></p-divider>
 
         <p-table
-            *ngIf="leaseCharges"
+            *ngIf="leaseCharges.length"
             [value]="leaseCharges"
             class="p-datatable-sm"
         >
@@ -172,11 +172,10 @@
     </div>
 
     <p class="text-xl text-right my-2 font-bold">
-        Total Montly Payable :
-        <strong>
-            {{ getTotalMonthlyPayabe() }}
-        </strong>
+        Updated Total Montly Payable :
+        <strong> {{ getUpdatedTotalMonthlyPayabe() }} </strong>
     </p>
+
     <div #footNote class="max-w-lg">
         <p class="text-sm">
             Penalty of
