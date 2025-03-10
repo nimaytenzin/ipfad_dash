@@ -53,7 +53,6 @@ export class AdminGenerateBuildingPaymentAdviceComponent implements OnInit {
                 type: PAType.RENT,
             })
             .subscribe((res: any) => {
-                console.log(res);
                 this.results = res;
             });
     }

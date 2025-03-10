@@ -24,7 +24,7 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { AdminGenerateLandLeasePaymentAdviceComponent } from '../../../payment/admin-generate-land-lease-payment-advice/admin-generate-land-lease-payment-advice.component';
-import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { AdminGenerateUnitLeasePaymentAdviceComponent } from '../../../payment/admin-generate-unit-lease-payment-advice/admin-generate-unit-lease-payment-advice.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';

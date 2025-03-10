@@ -15,7 +15,7 @@ import { LEASETYPE } from 'src/app/core/constants/enums';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { Router } from '@angular/router';
 

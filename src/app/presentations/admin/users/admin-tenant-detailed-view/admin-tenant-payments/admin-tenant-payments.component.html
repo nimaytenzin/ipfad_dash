@@ -3,87 +3,95 @@
         <p class="font-semibold">Pending Payments</p>
     </div>
 
-    <p-table
-        [value]="pendingPaymentAdvices"
-        *ngIf="pendingPaymentAdvices.length"
-        styleClass="p-datatable-striped"
-    >
-        <ng-template pTemplate="header">
-            <tr>
-                <th>Ref</th>
-                <th>Type</th>
-                <th class="text-center">Unit</th>
-                <th class="text-center">Plot</th>
-                <th>Title</th>
-                <th>Status</th>
+    <div *ngFor="let lease of pendingPaymentAdvicesGroupedByLease" class="mb-3">
+        <div #propertyLeased class="mt-4">
+            <p><strong>Lease Type:</strong> {{ lease?.type }}</p>
+            <div *ngIf="lease?.type === leaseTypeEnums.UNIT">
+                <p>
+                    <strong>Unit Number: </strong>
+                    {{ lease?.unit?.floorLevel }}-{{ lease?.unit?.unitNumber }}
+                    <br />
+                    <strong>Remarks: </strong>
+                    {{ lease?.unit?.remarks }}
+                </p>
+            </div>
+            <div
+                *ngIf="
+                    lease?.type === leaseTypeEnums.BUILDING ||
+                    leaseTypeEnums.UNIT
+                "
+            >
+                <p>
+                    <strong>Building Name:</strong>
+                    {{ lease?.building?.name }}
+                </p>
+                <p>
+                    <strong>Building Number:</strong>
+                    {{ lease?.building?.buildingNumber }}
+                </p>
+            </div>
+            <p>
+                <strong>PlotId:</strong>
+                {{ lease?.plot?.plotId }}
+            </p>
+        </div>
+        <p-table
+            [value]="lease.paymentAdvises"
+            *ngIf="pendingPaymentAdvicesGroupedByLease.length"
+            styleClass="p-datatable-striped"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Ref</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Receivable</th>
+                    <th>Due</th>
+                    <th>Due by</th>
+                    <th>Payer</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>
+                        <p>#{{ item.id }}</p>
+                    </td>
 
-                <th>Total Amount</th>
-                <th>Due by</th>
-                <th>Payer</th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-item>
-            <tr>
-                <td>
-                    <p>#{{ item.id }}</p>
-                </td>
-                <td>
-                    <p>{{ item.leaseAgreement.type }}</p>
-                </td>
-                <td class="text-center">
-                    <div *ngIf="item.leaseAgreement?.type === leaseTypes.UNIT">
-                        <p style="text-wrap: nowrap">
-                            {{ item.leaseAgreement?.unit?.floorLevel }} -
-                            {{ item.leaseAgreement?.unit?.unitNumber }}
+                    <td>
+                        <p>{{ item.title }}</p>
+                    </td>
+                    <td>
+                        <p class="text-red-400 font-semibold">
+                            {{ item.status }}
                         </p>
+                    </td>
 
-                        <span class="text-xs">
-                            {{ item.leaseAgreement?.building?.name }}</span
-                        >
-                    </div>
-                    <p *ngIf="item.leaseAgreement?.type === leaseTypes.LAND">
-                        -
-                    </p>
-                </td>
+                    <td>Nu. {{ item.totalAmount }}</td>
+                    <td>Nu. {{ item.amountDue }}</td>
 
-                <td class="text-center">
-                    <p>{{ item.leaseAgreement?.plot.plotId }}</p>
-                </td>
+                    <td>
+                        {{ item.dueDate | date : "mediumDate" }}
+                    </td>
 
-                <td>
-                    <p>{{ item.title }}</p>
-                </td>
-                <td>
-                    <p class="text-red-400 font-semibold">
-                        {{ item.status }}
-                    </p>
-                </td>
+                    <td>
+                        <p-button
+                            size="small"
+                            label="Payment Advice"
+                            icon="pi pi-file-o"
+                            (click)="openViewPaymentAdvice(item, lease)"
+                            severity="secondary"
+                        ></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-divider></p-divider>
+    </div>
 
-                <td>Nu. {{ item.totalAmount }}</td>
-
-                <td>
-                    {{ item.dueDate | date : "mediumDate" }}
-                </td>
-                <td>
-                    <p>Name:{{ item.leaseAgreement.tenant?.nameEnglish }}</p>
-                    <p>Phone: {{ item.leaseAgreement.tenant?.phoneNumber }}</p>
-                </td>
-
-                <td>
-                    <p-button
-                        size="small"
-                        label="Payment Advice"
-                        icon="pi pi-file-o"
-                        (click)="openViewPaymentReceipt([item])"
-                        severity="secondary"
-                    ></p-button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
-
-    <p *ngIf="!pendingPaymentAdvices.length">- No pending payments</p>
+    <p *ngIf="!pendingPaymentAdvicesGroupedByLease.length">
+        - No pending payments
+    </p>
 </div>
 
 <div>
@@ -141,7 +149,8 @@
                     <td class="text-center">
                         <div
                             *ngIf="
-                                item.leaseAgreement?.type === leaseTypes.UNIT
+                                item.leaseAgreement?.type ===
+                                leaseTypeEnums.UNIT
                             "
                         >
                             <p style="text-wrap: nowrap">
@@ -155,7 +164,8 @@
                         </div>
                         <p
                             *ngIf="
-                                item.leaseAgreement?.type === leaseTypes.LAND
+                                item.leaseAgreement?.type ===
+                                leaseTypeEnums.LAND
                             "
                         >
                             -

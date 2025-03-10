@@ -295,3 +295,21 @@ export enum LEASEATTACHMENTTYPES {
     'SIGNED_COPY' = 'SIGNED_COPY',
     'OTHERS' = 'OTHERS',
 }
+
+export enum PA_GENERATION_STATUS {
+    INFO = 'INFO',
+    SUCCESS = 'SUCCESS',
+    ERROR = 'ERROR',
+}
+
+export enum ReceiptItemType {
+    PENALTY = 'PENALTY',
+    PRINCIPAL = 'PRINCIPAL',
+    DISCOUNT = 'DISCOUNT',
+    OTHER = 'OTHER',
+}
+export enum PaymentAdviceDiscountMode {
+    'NONE' = 'NONE',
+    'PERCENTAGE' = 'PERCENTAGE',
+    'AMOUNT' = 'AMOUNT',
+}

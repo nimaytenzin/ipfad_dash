@@ -15,7 +15,7 @@ import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { ROWSPERPAGEOPTION, PageEvent } from 'src/app/core/constants/constants';
 import { PaginatorModule } from 'primeng/paginator';
 import { AdminTenantPaymentsComponent } from '../../../users/admin-tenant-detailed-view/admin-tenant-payments/admin-tenant-payments.component';

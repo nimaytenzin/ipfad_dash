@@ -16,7 +16,7 @@ import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from 'src/app/core/constants/constants';
 import { AdminGenerateBuildingPaymentAdviceComponent } from 'src/app/presentations/admin/payment/admin-generate-building-payment-advice/admin-generate-building-payment-advice.component';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 
 @Component({

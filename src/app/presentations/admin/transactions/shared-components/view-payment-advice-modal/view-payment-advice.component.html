@@ -1,0 +1,191 @@
+<p-confirmDialog />
+
+<div style="min-width: 40vw">
+    <div class="flex justify-content-between align-items-end">
+        <div class="flex flex-column gap-2">
+            <p-image
+                [src]="adminProfileUri"
+                alt="Image"
+                width="100"
+                imageClass="circular"
+            />
+        </div>
+        <div *ngIf="admin" class="text-right">
+            <p>{{ admin.nameEnglish }} / {{ admin.nameDzongkha }}</p>
+
+            <p>Phone:{{ admin.phoneNumber }}</p>
+            <p>Email:{{ admin.email }}</p>
+            <p>{{ admin.permanentAddress }}</p>
+        </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <div class="mt-4 mb-4">
+        <div class="flex gap-2 algin-items-center">
+            <p-tag
+                [severity]="getTagSeverity(paymentAdvice.status)"
+                [value]="paymentAdvice.status"
+            ></p-tag>
+            <p class="font-semibold text-lg">
+                #{{ paymentAdvice.id }} {{ paymentAdvice?.title }}
+            </p>
+        </div>
+        <p class="mt-1">
+            Due Date: {{ paymentAdvice.dueDate | date : "mediumDate" }}
+        </p>
+
+        <div>
+            <p-table
+                [value]="paymentAdvice?.paymentAdviseItem"
+                [tableStyle]="{ width: '100%' }"
+                styleClass="p-datatable-sm"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Particular</th>
+                        <th>Amount</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-item>
+                    <tr>
+                        <td>{{ item.particular }}</td>
+                        <td>Nu. {{ item.amount }}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr class="bg-red-100 text-red-200">
+                        <td>Penalty</td>
+                        <td>
+                            <div class="flex gap-2 algin-items-center">
+                                <p
+                                    [ngClass]="
+                                        paymentAdvice.writeOffPenalty
+                                            ? 'line-through'
+                                            : ''
+                                    "
+                                >
+                                    Nu.
+                                    {{
+                                        penalty?.totalPenalty +
+                                            penalty?.penaltyPaid || 0
+                                    }}
+                                </p>
+                                <p
+                                    class="text-sm font-normal"
+                                    *ngIf="
+                                        !paymentAdvice.writeOffPenalty &&
+                                        paymentAdvice.status !==
+                                            paymentAdviceStatus.PAID
+                                    "
+                                >
+                                    OverDue by {{ penalty?.daysOverDue }} day/s
+                                </p>
+                                <p *ngIf="paymentAdvice.writeOffPenalty">
+                                    *Penalty Written Off
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr
+                        class="bg-red-100 text-red-200"
+                        *ngIf="penalty?.penaltyPaid"
+                    >
+                        <td>Penalty Paid</td>
+                        <td>
+                            <div class="flex gap-2">
+                                <p
+                                    [ngClass]="
+                                        paymentAdvice.writeOffPenalty
+                                            ? 'line-through'
+                                            : ''
+                                    "
+                                >
+                                    Nu.
+                                    {{ penalty?.penaltyPaid }}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <div
+            class="flex justify-content-end align-items-center mt-4 gap-4"
+            *ngIf="
+                !paymentAdvice.writeOffPenalty &&
+                penalty?.totalPenalty > 0 &&
+                paymentAdvice.status !== paymentAdviceStatus.PAID
+            "
+        >
+            <p>
+                Over due by:
+                {{ penalty.daysOverDue }} Day/s
+            </p>
+            <p-button
+                size="small"
+                [text]="true"
+                severity="danger"
+                label="write off penalty"
+                (click)="confirmWriteOffPenalty(paymentAdvice)"
+            ></p-button>
+        </div>
+        <!-- <p-button size="small" label="Apply discount"></p-button> -->
+    </div>
+
+    <div class="flex justify-content-between align-items-end mt-4">
+        <div>
+            <p class="mb-2">
+                {{
+                    paymentAdvice.status === paymentAdviceStatus.PAID
+                        ? "Received From"
+                        : "To be Received from"
+                }}
+            </p>
+            <p
+                pTooltip="double click to view Tenant details"
+                tooltipPosition="left"
+                class="cursor-pointer text-blue-500 hover:underline hover:font-semibold"
+                (dblclick)="
+                    goToTenantDetailedView(
+                        paymentAdvice.leaseAgreement.tenant.id
+                    )
+                "
+            >
+                Name:{{ paymentAdvice.leaseAgreement?.tenant?.nameEnglish }}
+            </p>
+            <p>Phone:{{ paymentAdvice.leaseAgreement?.tenant?.phoneNumber }}</p>
+            <p>CID:{{ paymentAdvice.leaseAgreement?.tenant?.cid }}</p>
+        </div>
+
+        <div class="text-right">
+            <p class="text-lg">
+                Amount Due: <strong>Nu. {{ totalAmountDue }}</strong>
+                <br />
+                <small
+                    *ngIf="
+                        !paymentAdvice.writeOffPenalty && penalty?.totalPenalty
+                    "
+                >
+                    (advice due amount + penalty)
+                </small>
+            </p>
+            <p class="mt-2">
+                Advice Amount: <strong> Nu. {{ totalAmmount }}</strong>
+            </p>
+        </div>
+    </div>
+
+    <div
+        class="flex justify-content-end align-items-end my-4"
+        *ngIf="totalAmountDue !== 0"
+    >
+        <p-button
+            label="Receive Payment"
+            size="small"
+            (click)="receivePayment()"
+        ></p-button>
+    </div>
+</div>

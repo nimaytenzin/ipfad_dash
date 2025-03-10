@@ -201,4 +201,16 @@ export class ExcelGeneratorDataService {
             }
         );
     }
+    DownloadLandPaymentStatusByAdminMonth(
+        adminId: number,
+        year: number,
+        month: number
+    ): Observable<Blob> {
+        return this.http.get<Blob>(
+            `${this.apiUrl}/excel-generator/payment-status/admin/${adminId}/land/monthly/${year}/${month}`,
+            {
+                responseType: 'blob' as 'json',
+            }
+        );
+    }
 }

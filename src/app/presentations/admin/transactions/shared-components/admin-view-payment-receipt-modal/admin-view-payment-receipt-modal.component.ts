@@ -10,7 +10,7 @@ import {
 } from 'src/app/core/constants/constants';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { AdminPgPaymentStepperComponent } from 'src/app/presentations/admin/payment/admin-pg-payment-stepper/admin-pg-payment-stepper.component';
-import { AdminReceivePaymentPaymentAdviceModalComponent } from '../admin-receive-payment-payment-advice-modal/admin-receive-payment-payment-advice-modal.component';
+import { AdminReceivePaymentPaymentAdviceModalComponent } from '../admin-receive-payment-modal/admin-receive-payment-payment-advice-modal.component';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
@@ -23,6 +23,8 @@ import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
+import { ViewPaymentAdviceComponent } from '../view-payment-advice-modal/view-payment-advice.component';
+import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 
 @Component({
     selector: 'app-admin-view-payment-receipt-modal',
@@ -53,7 +55,8 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
         private messageService: MessageService,
         private authService: AuthService,
         private ref: DynamicDialogRef,
-        private pdfGeneratorDataService: PDFGeneratorDataService
+        private pdfGeneratorDataService: PDFGeneratorDataService,
+        private paymentAdviceDataService: PaymentAdviceDataService
     ) {
         this.paymentReceiptId = this.config.data.paymentReceiptId;
         this.getPaymentReceiptDetails();
@@ -65,7 +68,6 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     this.paymentReceipt = res;
-                    console.log(res);
                 },
                 error: (err) => {
                     console.log(err);
@@ -118,6 +120,16 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
                     summary: 'Downloaded',
                     detail: 'Lease has been downloaded.Please check your downloads.',
                     life: 3000,
+                });
+            });
+    }
+
+    openViewPaymentAdviceModal(paymentAdviceId) {
+        this.paymentAdviceDataService
+            .FindOne(paymentAdviceId)
+            .subscribe((res) => {
+                this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
+                    data: res,
                 });
             });
     }

@@ -18,7 +18,7 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { TabViewModule } from 'primeng/tabview';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ViewPaymentAdviceComponent } from '../../admin/transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../admin/transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { OwnerViewPaymentAdviceComponent } from '../shared/owner-view-payment-advice/owner-view-payment-advice.component';
 import { OwnerBroadcastSmsComponent } from '../shared/owner-broadcast-sms/owner-broadcast-sms.component';
 import { OwnerAddBuildingComponent } from '../shared/owner-add-building/owner-add-building.component';

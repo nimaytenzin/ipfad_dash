@@ -13,7 +13,6 @@ import { AdminPaymentAdviceSearchByPlotComponent } from '../components/admin-pay
     imports: [
         TabViewModule,
         CommonModule,
-        AdminPaymentAdviceSearchByPlotComponent,
         AdminPaymentAdviceSearchByTenantComponent,
     ],
 })

@@ -17,7 +17,7 @@ import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { Router } from '@angular/router';

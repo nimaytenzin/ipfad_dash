@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -17,7 +23,11 @@ import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
+import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
+import { DividerModule } from 'primeng/divider';
+import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
+import { AdminViewPaymentReceiptModalComponent } from '../../../transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 
 @Component({
     selector: 'app-admin-tenant-payments',
@@ -35,14 +45,14 @@ import { ViewPaymentAdviceComponent } from '../../../transactions/shared-compone
         CommonModule,
         PaginatorModule,
         TableModule,
+        DividerModule,
     ],
     providers: [DialogService],
 })
-export class AdminTenantPaymentsComponent implements OnInit {
+export class AdminTenantPaymentsComponent implements OnInit, OnChanges {
     @Input({ required: true }) tenantId: number;
 
-    leaseTypes = LEASETYPE;
-
+    leaseTypeEnums = LEASETYPE;
     paginatedPaidPaymentAdvice: PaginatedData<PaymentAdviceDto> = {
         firstPage: 0,
         currentPage: 0,
@@ -53,7 +63,7 @@ export class AdminTenantPaymentsComponent implements OnInit {
         count: 0,
         data: [],
     };
-    pendingPaymentAdvices: PaymentAdviceDto[] = [];
+    pendingPaymentAdvicesGroupedByLease: LeaseAgreeementDTO[] = [];
 
     ref: DynamicDialogRef;
 
@@ -73,14 +83,22 @@ export class AdminTenantPaymentsComponent implements OnInit {
         this.findPendingByTenant();
         this.handlePagination();
     }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['tenantId'] && !changes['tenantId'].firstChange) {
+            this.findPendingByTenant();
+            this.handlePagination();
+        }
+    }
 
     findPendingByTenant() {
+        console.log(this.tenantId);
         this.paymentAdviceDataService
-            .GetAllPendingByTenant(this.tenantId)
+            .GetAllPendingByTenantGroupedByLease(this.tenantId)
             .subscribe({
                 next: (res) => {
                     if (res) {
-                        this.pendingPaymentAdvices = res;
+                        this.pendingPaymentAdvicesGroupedByLease = res;
+                        console.log(res, 'PENDIN GPA ');
                     }
                 },
                 error: (err) => {
@@ -93,11 +111,31 @@ export class AdminTenantPaymentsComponent implements OnInit {
             });
     }
 
-    openViewPaymentReceipt(item: PaymentAdviceDto[]) {
+    openViewPaymentAdvice(advice: PaymentAdviceDto, lease: LeaseAgreeementDTO) {
+        advice.leaseAgreement = lease;
         this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
-            header: 'Payment Advice',
-            data: item,
+            header: 'Advice',
+            data: advice,
         });
+
+        this.ref.onClose.subscribe((res) => {
+            if (res && res.status) {
+                this.findPendingByTenant();
+                this.handlePagination();
+            }
+        });
+    }
+
+    openViewPaymentReceipt(item: PaymentReceiptDTO) {
+        this.ref = this.dialogService.open(
+            AdminViewPaymentReceiptModalComponent,
+            {
+                header: 'Payment Receipt',
+                data: {
+                    paymentReceiptId: item.id,
+                },
+            }
+        );
     }
 
     onPageChange(event: PageEvent): void {

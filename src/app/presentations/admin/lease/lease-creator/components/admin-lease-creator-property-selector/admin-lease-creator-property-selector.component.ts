@@ -152,7 +152,11 @@ export class AdminLeaseCreatorPropertySelectorComponent implements OnInit {
     }
 
     selectUnit(item: UnitDTO, building: BuildingDTO) {
-        if (this.selectedLeaseType !== this.leaseTypeEnum.UNIT) {
+        // Check if the selected lease type is neither UNIT nor BUILDING
+        if (
+            this.selectedLeaseType !== this.leaseTypeEnum.UNIT &&
+            this.selectedLeaseType !== this.leaseTypeEnum.BUILDING
+        ) {
             this.messageService.add({
                 severity: 'info',
                 summary: 'Lease Type Error',
@@ -160,6 +164,8 @@ export class AdminLeaseCreatorPropertySelectorComponent implements OnInit {
             });
             return;
         }
+
+        // If the lease type is valid, proceed with unit selection
         this.selectedBuilding = building;
         this.selectedPlot = this.searchedPlot;
         this.selectedUnit = item;

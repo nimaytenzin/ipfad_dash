@@ -9,6 +9,7 @@ import { AdminMasterTransactionsLandSecurityDepositsComponent } from './land/adm
 import { AdminMasterTransactionsBuildingRentComponent } from './building/admin-master-transactions-building-rent/admin-master-transactions-building-rent.component';
 import { AdminMasterTransactionsBuildingSecurityDepositsComponent } from './building/admin-master-transactions-building-security-deposits/admin-master-transactions-building-security-deposits.component';
 import { AdminMasterTransactionsBuildingRentMonthlyComponent } from './building/admin-master-transactions-building-rent-monthly/admin-master-transactions-building-rent-monthly.component';
+import { AdminMasterTransactionsLandRentMonthlyComponent } from './land/admin-master-transactions-land-rent-monthly/admin-master-transactions-land-rent-monthly.component';
 
 const routes: Routes = [
     {
@@ -18,6 +19,10 @@ const routes: Routes = [
     {
         path: 'land/rent',
         component: AdminMasterTransactionsLandRentComponent,
+    },
+    {
+        path: 'land/rent-monthly',
+        component: AdminMasterTransactionsLandRentMonthlyComponent,
     },
     {
         path: 'land/security-deposits',

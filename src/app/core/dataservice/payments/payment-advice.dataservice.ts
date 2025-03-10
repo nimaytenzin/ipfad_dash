@@ -12,12 +12,18 @@ import {
 import {
     CreatePaymentAdviceDto,
     GenerateBuildingPADto,
+    MultiPA_PaymentReceiveDTO,
     PaymentAdviceDto,
     PaymentAdviceSummaryDTO,
+    PaymentAdviseGenerationResultMessage,
+    PenaltyDetailsDTO,
     ReceivePaymentDTO,
+    WriteOffPenaltyDTO,
 } from '../../dto/payments/payment-advice.dto';
 import { UnitDTO } from '../../dto/units/unit.dto';
 import { PaymentReceiptDTO } from '../../dto/payments/payment-receipt-dto';
+import { LeaseAgreeementDTO } from '../lease/lease-agreement.dto';
+import { PlotDTO } from '../land/dto/plot.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -36,11 +42,25 @@ export class PaymentAdviceDataService {
         );
     }
 
+    WriteOffPenalty(data: WriteOffPenaltyDTO) {
+        return this.http.post(
+            `${this.apiUrl}/payment-advice/write-off-penalty`,
+            data
+        );
+    }
+
     GetPaymentAdviceSummaryByAdmin(
         adminId: number
     ): Observable<PaymentAdviceSummaryDTO> {
         return this.http.get<PaymentAdviceSummaryDTO>(
             `${this.apiUrl}/payment-advice/summary/stats/${adminId}`
+        );
+    }
+    GetPenaltyByPaymentAdvice(
+        paymentAdviceId: number
+    ): Observable<PenaltyDetailsDTO> {
+        return this.http.get<PenaltyDetailsDTO>(
+            `${this.apiUrl}/payment-advice/penalty/${paymentAdviceId}`
         );
     }
 
@@ -85,6 +105,26 @@ export class PaymentAdviceDataService {
     ) {
         return this.http.get(
             `${this.apiUrl}/payment-advice/generate/admin/unit/${adminId}/${year}/${month}`
+        );
+    }
+
+    GenerateMonthlyPaymentAdviceForActiveBuildingAndUnitLeaseByAdmin(
+        adminId: number,
+        month: number,
+        year: number
+    ): Observable<PaymentAdviseGenerationResultMessage[]> {
+        return this.http.get<PaymentAdviseGenerationResultMessage[]>(
+            `${this.apiUrl}/payment-advice/generate/monthly-pa/building-units/${adminId}/${year}/${month}`
+        );
+    }
+
+    GenerateMonthlyPaymentAdviceForActiveLandLeaseByAdmin(
+        adminId: number,
+        month: number,
+        year: number
+    ): Observable<PaymentAdviseGenerationResultMessage[]> {
+        return this.http.get<PaymentAdviseGenerationResultMessage[]>(
+            `${this.apiUrl}/payment-advice/generate/monthly-pa/land/${adminId}/${year}/${month}`
         );
     }
 
@@ -281,6 +321,14 @@ export class PaymentAdviceDataService {
             data
         );
     }
+    MultiPA_ReceivePayment(
+        data: MultiPA_PaymentReceiveDTO
+    ): Observable<PaymentReceiptDTO> {
+        return this.http.post<PaymentReceiptDTO>(
+            `${this.apiUrl}/payment-receipt/multipa-payment`,
+            data
+        );
+    }
 
     GetSecurityDepositPADetailsByLease(
         leaseAgreementId: number
@@ -319,6 +367,13 @@ export class PaymentAdviceDataService {
     GetAllPendingByTenant(tenantId: number): Observable<PaymentAdviceDto[]> {
         return this.http.get<PaymentAdviceDto[]>(
             `${this.apiUrl}/payment-advice/admin/tenant/pending/${tenantId}`
+        );
+    }
+    GetAllPendingByTenantGroupedByLease(
+        tenantId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/pa-pending/group-lease/${tenantId}`
         );
     }
 
@@ -499,7 +554,7 @@ export class PaymentAdviceDataService {
 
     //MONTH PAs FOR BUILDING and LAND
 
-    GetAllPaymentAdviceByActiveLeaseUnderAdminByMonthYear(
+    GetAllPaymentAdviceByActiveBuildingUnitLeaseUnderAdminByMonthYear(
         adminId: number,
         year: number,
         month: number
@@ -509,10 +564,28 @@ export class PaymentAdviceDataService {
         );
     }
 
+    GetAllPaymentAdviceByActiveLandLeaseUnderAdminByMonthYear(
+        adminId: number,
+        year: number,
+        month: number
+    ): Observable<PlotDTO[]> {
+        return this.http.get<PlotDTO[]>(
+            `${this.apiUrl}/lease-agreement/payment-status/land/monthly/admin/${adminId}/${year}/${month}`
+        );
+    }
     //REGENErATE
     RegeneratePaymentAdvice(paymentAdviceId: number) {
         return this.http.get<PaymentAdviceDto>(
             `${this.apiUrl}/payment-advice/regenerate/${paymentAdviceId}`
+        );
+    }
+
+    GetAllPendingAdvicesByTenantAndLease(
+        tenantId: number,
+        leaseId: number
+    ): Observable<PaymentAdviceDto[]> {
+        return this.http.get<PaymentAdviceDto[]>(
+            `${this.apiUrl}/payment-advice/admin/tenant-lease/pending/${tenantId}/${leaseId}`
         );
     }
 }

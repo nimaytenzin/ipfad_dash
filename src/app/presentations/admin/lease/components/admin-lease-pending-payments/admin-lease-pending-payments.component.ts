@@ -10,7 +10,7 @@ import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreeme
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { AdminGenerateSingleLeasePaymentAdviceComponent } from '../../../payment/admin-generate-single-lease-payment-advice/admin-generate-single-lease-payment-advice.component';
 
 @Component({

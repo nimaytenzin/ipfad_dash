@@ -10,7 +10,7 @@ import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/paym
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from '../../../shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { AdminViewPaymentReceiptModalComponent } from '../../../shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 
 @Component({

@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { InvoiceDTO } from 'src/app/core/dto/payments/invoice/invoice.dto';
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
-import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from 'src/app/presentations/admin/transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 
 @Component({
     selector: 'app-admin-payment-advice-pending-list',

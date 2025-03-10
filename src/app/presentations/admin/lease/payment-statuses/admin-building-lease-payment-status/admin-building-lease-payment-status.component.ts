@@ -25,7 +25,7 @@ import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.servic
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { AdminGenerateUnitLeasePaymentAdviceComponent } from '../../../payment/admin-generate-unit-lease-payment-advice/admin-generate-unit-lease-payment-advice.component';
-import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 
 @Component({
     selector: 'app-admin-building-lease-payment-status',

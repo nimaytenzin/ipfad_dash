@@ -1,0 +1,175 @@
+<p-confirmDialog />
+
+<p>Pending Payment Advices for the Tenant and Lease</p>
+<p-table
+    [value]="pendingPaymentAdvices"
+    [(selection)]="selectedPaymentAdvices"
+    dataKey="id"
+    [tableStyle]="{ 'min-width': 'max-content' }"
+>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+            <th>#</th>
+            <th>Title</th>
+            <th>Amount Due(Principal)</th>
+            <th>Penalty</th>
+            <th>Penalty Paid</th>
+            <th>Amount Received</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item>
+        <tr>
+            <td>
+                <p-tableCheckbox [value]="item" />
+            </td>
+            <td>
+                {{ item.id }}
+            </td>
+            <td>
+                <p class="max-w-sm" style="max-width: 200px">
+                    {{ item.title }}
+                </p>
+            </td>
+            <td>
+                {{ item.totalAmount }}
+            </td>
+            <td>
+                <p [ngClass]="item.writeOffPenalty ? 'line-through' : ''">
+                    {{
+                        item.penalty?.totalPenalty +
+                            item.penalty?.penaltyPaid || 0
+                    }}
+                </p>
+
+                <p *ngIf="item.writeOffPenalty" class="text-xs">
+                    *Penalty Written Off
+                </p>
+            </td>
+            <td>
+                {{ item.penalty?.penaltyPaid }}
+            </td>
+            <td>
+                {{ item.totalAmount - item.amountDue }}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-end">
+            Total Amount Due: Nu. <strong> {{ totalAmountDue }} </strong>
+        </div>
+    </ng-template>
+</p-table>
+
+<p-divider></p-divider>
+<div class="flex justify-content-end gap-3">
+    <p>Selected Payment Advices: {{ selectedPaymentAdvices.length }}</p>
+    <p>Total Due: Nu.{{ getTotalDueForSelectedPA() }}</p>
+</div>
+
+<form
+    [formGroup]="receivePaymentForm"
+    class="p-fluid p-2 flex flex-column gap-4"
+>
+    <div class="flex p-fluid justify-content-between gap-4">
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="mode">Payment Mode*</label>
+            <p-dropdown
+                id="mode"
+                [options]="paymentModes"
+                appendTo="body"
+                formControlName="mode"
+            ></p-dropdown>
+            <div
+                *ngIf="
+                    receivePaymentForm.get('mode')?.invalid &&
+                    receivePaymentForm.get('mode')?.touched
+                "
+                class="p-error"
+            >
+                <small>Payment Mode is required.</small>
+            </div>
+        </div>
+        <div class="flex flex-column gap-2 flex-1">
+            <label for="amount">Amount*</label>
+            <p-inputNumber
+                formControlName="amount"
+                mode="decimal"
+                inputId="withoutgrouping"
+                [min]="1"
+            ></p-inputNumber>
+
+            <div
+                *ngIf="
+                    receivePaymentForm.get('amount')?.invalid &&
+                    receivePaymentForm.get('amount')?.touched
+                "
+                class="text-sm"
+            >
+                <p
+                    class="p-error"
+                    *ngIf="
+                        receivePaymentForm.controls['amount'].hasError(
+                            'required'
+                        )
+                    "
+                >
+                    Amount is required.
+                </p>
+
+                <p
+                    class="p-error"
+                    *ngIf="
+                        receivePaymentForm.controls['amount'].hasError(
+                            'maxAmount'
+                        )
+                    "
+                >
+                    Amount cannot exceed the total Due of Nu.
+                    {{ getTotalDueForSelectedPA() }}.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-column gap-2">
+        <label for="refNo">Reference Number*</label>
+        <input pInputText id="refNo" formControlName="refNo" type="text" />
+
+        <div
+            *ngIf="
+                receivePaymentForm.get('refNo')?.invalid &&
+                receivePaymentForm.get('refNo')?.touched
+            "
+            class="p-error"
+        >
+            <small
+                *ngIf="receivePaymentForm.get('thramNo')?.errors?.['required']"
+                >Reference Number is required.</small
+            >
+        </div>
+    </div>
+
+    <div class="flex flex-column gap-2">
+        <label for="remarks">Remarks</label>
+        <textarea
+            rows="5"
+            cols="30"
+            pInputTextarea
+            formControlName="remarks"
+        ></textarea>
+    </div>
+
+    <div class="flex justify-content-end gap-4">
+        <p-button
+            (click)="confirmProcessPayment()"
+            label="Confirm"
+            [disabled]="isSubmitting || receivePaymentForm.invalid"
+        ></p-button>
+        <p-button
+            severity="secondary"
+            label="Cancel"
+            (click)="close()"
+        ></p-button>
+    </div>
+</form>

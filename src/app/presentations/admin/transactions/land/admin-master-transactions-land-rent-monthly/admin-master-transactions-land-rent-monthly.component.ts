@@ -1,41 +1,43 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { DialogModule } from 'primeng/dialog';
 import { DividerModule } from 'primeng/divider';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
+import { TreeTableModule } from 'primeng/treetable';
+import { LEASETYPE, PaymentAdviseStatus } from 'src/app/core/constants/enums';
+import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
-import {
-    PaymentAdviceDto,
-    PaymentAdviceSummaryDTO,
-} from 'src/app/core/dto/payments/payment-advice.dto';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { TreeTableModule } from 'primeng/treetable';
-import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
-import { LEASETYPE, PaymentAdviseStatus } from 'src/app/core/constants/enums';
-import { ProgressBarModule } from 'primeng/progressbar';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice-modal/view-payment-advice.component';
-import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
-import { AdminViewPaymentReceiptModalComponent } from '../../shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
-import { MessageService } from 'primeng/api';
-import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
-import { AdminUsersUpdateModalComponent } from '../../../users/components/admin-users-update-modal/admin-users-update-modal.component';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
-import { AdminReviseLeaseComponent } from '../../../lease/components/admin-revise-lease/admin-revise-lease.component';
-import { DropdownModule } from 'primeng/dropdown';
+import {
+    PaymentAdviceSummaryDTO,
+    PaymentAdviceDto,
+} from 'src/app/core/dto/payments/payment-advice.dto';
+import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
+import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { AdminLeaseTerminateLeaseComponent } from '../../../lease/components/admin-lease-terminate-lease/admin-lease-terminate-lease.component';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { DialogModule } from 'primeng/dialog';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { AdminBuildingGenerateMonthlyPaymentAdvicesComponent } from '../components/admin-building-generate-monthly-payment-advices/admin-building-generate-monthly-payment-advices.component';
+import { AdminReviseLeaseComponent } from '../../../lease/components/admin-revise-lease/admin-revise-lease.component';
+import { AdminUsersUpdateModalComponent } from '../../../users/components/admin-users-update-modal/admin-users-update-modal.component';
+import { AdminBuildingGenerateMonthlyPaymentAdvicesComponent } from '../../building/components/admin-building-generate-monthly-payment-advices/admin-building-generate-monthly-payment-advices.component';
+import { AdminViewPaymentReceiptModalComponent } from '../../shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
+import { ViewPaymentAdviceComponent } from '../../shared-components/view-payment-advice-modal/view-payment-advice.component';
+import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
+import { AdminLandGenerateMonthlyPaymentAdvicesComponent } from '../components/admin-land-generate-monthly-payment-advices/admin-land-generate-monthly-payment-advices.component';
 interface YearMonthDTO {
     year: number;
     month: number;
@@ -47,12 +49,9 @@ interface PaymentSummaryDTO {
 }
 
 @Component({
-    selector: 'app-admin-master-transactions-building-rent-monthly',
-    templateUrl:
-        './admin-master-transactions-building-rent-monthly.component.html',
-    styleUrls: [
-        './admin-master-transactions-building-rent-monthly.component.css',
-    ],
+    selector: 'app-admin-master-transactions-land-rent-monthly',
+    templateUrl: './admin-master-transactions-land-rent-monthly.component.html',
+    styleUrls: ['./admin-master-transactions-land-rent-monthly.component.css'],
     standalone: true,
     imports: [
         CommonModule,
@@ -76,9 +75,7 @@ interface PaymentSummaryDTO {
     ],
     providers: [DialogService],
 })
-export class AdminMasterTransactionsBuildingRentMonthlyComponent
-    implements OnInit
-{
+export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
     summaryStats: PaymentAdviceSummaryDTO = {
         totalMonthlyRentalIncome: 0,
         totalSecurityDepositAmount: 0,
@@ -96,8 +93,8 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
 
     selectedDate: Date;
 
-    originalData: UnitDTO[] = [];
-    filteredData: UnitDTO[] = [];
+    originalData: PlotDTO[] = [];
+    filteredData: PlotDTO[] = [];
 
     tenantPhoneNumberFilter: number;
     plotIdFilter: string = '';
@@ -144,7 +141,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         this.setSessionState();
         this.isDataLoading = true;
         this.paymentDataService
-            .GetAllPaymentAdviceByActiveBuildingUnitLeaseUnderAdminByMonthYear(
+            .GetAllPaymentAdviceByActiveLandLeaseUnderAdminByMonthYear(
                 this.adminId,
                 this.getYearMonth().year,
                 this.getYearMonth().month
@@ -194,14 +191,15 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         return total;
     }
 
-    // Filter rows by tenant phone number
+    // Filter plots by tenant phone number
     filterRowsByTenantPhoneNumber() {
         if (!this.tenantPhoneNumberFilter) {
+            this.filteredData = [...this.originalData];
             return;
         }
-        this.filteredData = [...this.originalData];
-        this.filteredData = this.filteredData.filter((item) =>
-            item.leaseAgreements.some((lease) =>
+
+        this.filteredData = this.originalData.filter((plot) =>
+            plot.leaseAgreements?.some((lease) =>
                 lease.tenant?.phoneNumber
                     ?.toString()
                     .includes(this.tenantPhoneNumberFilter.toString())
@@ -209,16 +207,15 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         );
     }
 
-    // Filter rows by plot ID
+    // Filter plots by plot ID
     filterRowsByPlotId() {
         if (!this.plotIdFilter) {
+            this.filteredData = [...this.originalData];
             return;
         }
-        this.filteredData = [...this.originalData];
-        this.filteredData = this.originalData.filter((item) =>
-            item.building.plots.some((plot) =>
-                plot.plotId.toString().includes(this.plotIdFilter)
-            )
+
+        this.filteredData = this.originalData.filter((plot) =>
+            plot.plotId.toString().includes(this.plotIdFilter.toString())
         );
     }
 
@@ -359,7 +356,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
             detail: 'downloading...',
         });
         this.excelGeneratorService
-            .DownloadBuildingFlatPaymentStatusByAdminMonth(
+            .DownloadLandPaymentStatusByAdminMonth(
                 this.authService.GetCurrentRole().adminId,
                 this.getYearMonth().year,
                 this.getYearMonth().month
@@ -429,9 +426,9 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
 
     openGeneratePaymentAdviceMonthly() {
         this.ref = this.dialogService.open(
-            AdminBuildingGenerateMonthlyPaymentAdvicesComponent,
+            AdminLandGenerateMonthlyPaymentAdvicesComponent,
             {
-                header: 'Generate Payment Advice',
+                header: 'Generate Payment Advice | Land',
                 data: {
                     selectedDate: this.selectedDate,
                 },

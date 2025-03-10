@@ -44,17 +44,19 @@
 </div>
 
 <div *ngIf="tenant">
-    <p>Tenant Name: {{ tenant.nameEnglish }}</p>
+    <div class="flex align-items-center font-semibold">
+        <p>Tenant Name: {{ tenant.nameEnglish }}</p>
+        <p-button
+            label="Detailed view"
+            size="small"
+            text="true"
+            severity="secondary"
+            (click)="goToTenantDetailedView(tenant.id)"
+        ></p-button>
+    </div>
     <p>Phone Number: {{ tenant.phoneNumber }}</p>
     <p>CID:{{ tenant.cid }}</p>
     <p>Permanent Address: {{ tenant.permanentAddress }}</p>
-
-    <p-button
-        label="Detailed view"
-        size="small"
-        severity="secondary"
-        (click)="goToTenantDetailedView(tenant.id)"
-    ></p-button>
 
     <app-admin-tenant-payments
         [tenantId]="tenant.id"

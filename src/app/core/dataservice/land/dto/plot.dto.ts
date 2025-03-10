@@ -4,6 +4,7 @@ import { SubAdministrativeZoneDTO } from 'src/app/core/dto/locations/sub-adminis
 import { OwnerDTO } from '../../owners/dto/owner.dto';
 import { ThramDTO } from './thram.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { LeaseAgreeementDTO } from '../../lease/lease-agreement.dto';
 
 export interface PlotDTO {
     id: number;
@@ -24,6 +25,7 @@ export interface PlotDTO {
     thram?: ThramDTO;
 
     buildings?: BuildingDTO[];
+    leaseAgreements?: LeaseAgreeementDTO[];
 }
 
 export interface CreatePlotDTO {

@@ -19,7 +19,7 @@ import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice
 import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { AdminGenerateBuildingPaymentAdviceComponent } from '../../../payment/admin-generate-building-payment-advice/admin-generate-building-payment-advice.component';
-import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice/view-payment-advice.component';
+import { ViewPaymentAdviceComponent } from '../../../transactions/shared-components/view-payment-advice-modal/view-payment-advice.component';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { AdminGenerateLandLeasePaymentAdviceComponent } from '../../../payment/admin-generate-land-lease-payment-advice/admin-generate-land-lease-payment-advice.component';

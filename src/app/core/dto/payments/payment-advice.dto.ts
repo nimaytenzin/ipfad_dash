@@ -1,4 +1,8 @@
-import { PAType } from 'src/app/core/constants/enums';
+import {
+    PA_GENERATION_STATUS,
+    PAType,
+    PaymentAdviceDiscountMode,
+} from 'src/app/core/constants/enums';
 import { UnitDTO } from '../units/unit.dto';
 import { TenantDTO } from '../users/tenant.dto';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
@@ -23,6 +27,9 @@ export interface CreatePaymentAdviceDto {
     amountDue: number;
     status: string;
     paymentAdviseItem: CreatePaymentAdviceItemDto[];
+}
+export interface WriteOffPenaltyDTO {
+    paymentAdviceId: number;
 }
 
 export interface PaymentAdviceItemDto {
@@ -51,10 +58,17 @@ export interface PaymentAdviceDto {
     ownerAccountNumber: string;
     allowPartialPayment: boolean;
 
-    paymentAdviseItem: PaymentAdviceDto[];
+    writeOffPenalty: boolean;
+    discountMode: PaymentAdviceDiscountMode;
+    discountAmount: number;
+    discountPercentage: number;
+    totalPenaltyPaid: number;
+
+    paymentAdviseItem: PaymentAdviceItemDTO[];
 
     leaseAgreement: LeaseAgreeementDTO;
     paymentReceipts?: PaymentReceiptDTO[];
+    penalty?: PenaltyDetailsDTO;
 }
 
 export interface GenerateBuildingPADto {
@@ -65,6 +79,10 @@ export interface GenerateBuildingPADto {
     type: PAType;
 }
 
+export interface PaymentAdviceItemDTO {
+    particular: string;
+    amount: number;
+}
 export interface ReceivePaymentDTO {
     paymentAdviceIds: number[];
     amount: number;
@@ -80,4 +98,31 @@ export interface PaymentAdviceSummaryDTO {
     totalSecurityDepositAmount: number;
     totalPendingRentalAmount: number;
     totalPendingSecurityDepositAmount: number;
+}
+
+export interface PaymentAdviseGenerationResultMessage {
+    status: PA_GENERATION_STATUS;
+    message: string;
+}
+
+export interface PenaltyDetailsDTO {
+    paymentAdviceId: number;
+    paymentAdviceStatus: string;
+    dueDate: string;
+    serverDate: string;
+    daysOverDue: number;
+    totalPenalty: number;
+    penaltyPaid: number;
+}
+
+export interface MultiPA_PaymentReceiveDTO {
+    amount: number;
+
+    tenantId: number;
+    refNo: string;
+    isVerified: boolean;
+    receivedBy?: number;
+    paymentMode: string;
+    remarks?: string;
+    paymentAdviceIds?: number[];
 }

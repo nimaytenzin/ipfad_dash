@@ -1,4 +1,8 @@
-import { PAType, PAYMENTMODES } from 'src/app/core/constants/enums';
+import {
+    PAType,
+    PAYMENTMODES,
+    ReceiptItemType,
+} from 'src/app/core/constants/enums';
 import { UnitDTO } from '../units/unit.dto';
 import { TenantDTO } from '../users/tenant.dto';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
@@ -20,4 +24,17 @@ export interface PaymentReceiptDTO {
     remarks: string;
 
     paymentAdvises: PaymentAdviceDto[];
+
+    paymentReceiptItems: PaymentReceiptItemDTO[];
+}
+
+export interface PaymentReceiptItemDTO {
+    paymentReceiptId: number;
+
+    particular: string;
+
+    type: ReceiptItemType;
+
+    amount: number;
+    paymentAdviseId: number;
 }
