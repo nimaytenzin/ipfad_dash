@@ -86,7 +86,8 @@ export class AdminLeasePendingPaymentsComponent implements OnInit {
             });
     }
 
-    openViewPaymentReceipt(item: PaymentAdviceDto[]) {
+    openViewPaymentAdvice(item: PaymentAdviceDto) {
+        item.leaseAgreement = this.leaseAgreement;
         this.ref = this.dialogService.open(ViewPaymentAdviceComponent, {
             header: 'Payment Advice',
             data: item,

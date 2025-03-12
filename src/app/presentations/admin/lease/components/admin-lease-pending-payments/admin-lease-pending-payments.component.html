@@ -3,13 +3,6 @@
         <p class="font-semibold">Pending Advices</p>
         <div class="flex gap-2 justify-content-end">
             <p-button
-                *ngIf="selectedPaymentAdivces.length > 1"
-                label="Pay Multiple Payment Advices"
-                icon="pi pi-wallet"
-                size="small"
-                (click)="openViewPaymentReceipt(selectedPaymentAdivces)"
-            ></p-button>
-            <p-button
                 icon="pi pi-file-o"
                 label="Generate PA"
                 size="small"
@@ -48,7 +41,6 @@
     <p-table
         [value]="paginatedPaymentAdvice?.data"
         styleClass="p-datatable-striped"
-        [(selection)]="selectedPaymentAdivces"
     >
         <ng-template pTemplate="header">
             <tr>
@@ -89,7 +81,7 @@
                         size="small"
                         label="Payment Advice"
                         icon="pi pi-file-o"
-                        (click)="openViewPaymentReceipt([item])"
+                        (click)="openViewPaymentAdvice(item)"
                         severity="secondary"
                     ></p-button>
                 </td>

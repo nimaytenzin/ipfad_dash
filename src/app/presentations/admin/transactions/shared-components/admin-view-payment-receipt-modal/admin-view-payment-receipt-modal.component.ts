@@ -118,7 +118,7 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Downloaded',
-                    detail: 'Lease has been downloaded.Please check your downloads.',
+                    detail: 'Payment Receipt has been downloaded.Please check your downloads.',
                     life: 3000,
                 });
             });

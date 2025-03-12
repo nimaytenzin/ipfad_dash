@@ -21,9 +21,10 @@ import { Router } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { TagModule } from 'primeng/tag';
-import { PaymentAdviseStatus } from 'src/app/core/constants/enums';
+import { PAType, PaymentAdviseStatus } from 'src/app/core/constants/enums';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 @Component({
     selector: 'app-view-payment-advice',
     templateUrl: './view-payment-advice.component.html',
@@ -51,6 +52,7 @@ export class ViewPaymentAdviceComponent implements OnInit {
 
     admin: UserDTO;
     paymentAdviceStatus = PaymentAdviseStatus;
+    paymentAdviceType = PAType;
 
     adminProfileUri: string;
     penalty: PenaltyDetailsDTO;
@@ -63,24 +65,30 @@ export class ViewPaymentAdviceComponent implements OnInit {
         private ref: DynamicDialogRef,
         private paymentAdviceDataService: PaymentAdviceDataService,
         private confirmationService: ConfirmationService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private pdfGeneratorDataService: PDFGeneratorDataService
     ) {
         this.paymentAdvice = this.config.data;
-        this.paymentAdviceDataService
-            .GetPenaltyByPaymentAdvice(this.paymentAdvice.id)
-            .subscribe({
-                next: (penalty) => {
-                    this.penalty = penalty;
-                    console.log(penalty);
-                    this.totalAmmount = this.paymentAdvice.totalAmount;
-                    if (this.paymentAdvice.writeOffPenalty) {
-                        this.totalAmountDue = this.paymentAdvice.amountDue;
-                    } else {
-                        this.totalAmountDue =
-                            this.paymentAdvice.amountDue + penalty.totalPenalty;
-                    }
-                },
-            });
+        if (this.paymentAdvice.type !== this.paymentAdviceType.SD) {
+            this.paymentAdviceDataService
+                .GetPenaltyByPaymentAdvice(this.paymentAdvice.id)
+                .subscribe({
+                    next: (penalty) => {
+                        this.penalty = penalty;
+                        this.totalAmmount = this.paymentAdvice.totalAmount;
+                        if (this.paymentAdvice.writeOffPenalty) {
+                            this.totalAmountDue = this.paymentAdvice.amountDue;
+                        } else {
+                            this.totalAmountDue =
+                                this.paymentAdvice.amountDue +
+                                penalty.totalPenalty;
+                        }
+                    },
+                });
+        } else {
+            this.totalAmmount = this.paymentAdvice.totalAmount;
+            this.totalAmountDue = this.paymentAdvice.amountDue;
+        }
     }
 
     goToTenantDetailedView(tenantId: number) {
@@ -160,5 +168,31 @@ export class ViewPaymentAdviceComponent implements OnInit {
                 });
             },
         });
+    }
+
+    downloadAdvicePdf() {
+        this.messageService.add({
+            severity: 'info',
+            summary: 'Downloading',
+            detail: 'downloading...',
+        });
+        this.pdfGeneratorDataService
+            .DownloadPaymentAdvicePDF(this.paymentAdvice.id)
+            .subscribe((blob: Blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'payment_advice.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Downloaded',
+                    detail: 'Payment Advice has been downloaded.Please check your downloads.',
+                    life: 3000,
+                });
+            });
     }
 }

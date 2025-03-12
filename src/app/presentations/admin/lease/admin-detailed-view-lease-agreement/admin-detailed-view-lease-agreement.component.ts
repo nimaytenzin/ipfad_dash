@@ -88,6 +88,7 @@ import { FileUploadModule } from 'primeng/fileupload';
         AdminLeaseNotificationsComponent,
         TooltipModule,
         FileUploadModule,
+        ButtonModule,
     ],
     providers: [ConfirmationService, DialogService],
 })
@@ -725,5 +726,41 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                     );
                 }
             });
+    }
+
+    confirmForceActivateLeaseAgreement() {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            header: 'Force Activate?',
+            message: 'Are you sure you want to force activate the lease?',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                this.leaseAgreemenetDataService
+                    .ForceActivateLease(this.leaseAgreementId)
+                    .subscribe({
+                        next: (res) => {
+                            if (res) {
+                                this.getLeaseAgreementDetails();
+                                this.getEntryDamageItems();
+                                this.getMaintenanceRequestItems();
+                                this.messageService.add({
+                                    severity: 'info',
+                                    summary: 'Activated',
+                                    detail: 'Lease Agreement is now active.',
+                                    life: 3000,
+                                });
+                            }
+                        },
+                        error: (err) => {
+                            this.messageService.add({
+                                severity: 'error',
+                                summary: 'Error',
+                                detail: err.error.message,
+                                life: 3000,
+                            });
+                        },
+                    });
+            },
+        });
     }
 }

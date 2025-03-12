@@ -164,8 +164,8 @@ export interface PropertyLeaseAvailabiltyCheckerDTO {
     plotId: number;
     buildingId: number;
     unitId: number;
-    leaseStartDate: Date;
-    leaseEndDate: Date;
+    leaseStartDate: string;
+    leaseEndDate: string;
 }
 
 export interface PropertyLeaseAvailabilityCheckerReturnDTO {

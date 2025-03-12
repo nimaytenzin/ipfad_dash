@@ -51,13 +51,18 @@
                         class="flex align-items-center gap-2"
                         *ngIf="selectedOwnerBankAccount"
                     >
+                        {{ selectedOwnerBankAccount.accountName }},
                         {{ selectedOwnerBankAccount.accountNumber }}/{{
                             selectedOwnerBankAccount.bankName
                         }}
                     </div>
                 </ng-template>
                 <ng-template let-item pTemplate="item">
-                    <p>{{ item.accountNumber }}/{{ item.bankName }}</p>
+                    <p>
+                        {{ item.accountName }},{{ item.accountNumber }}/{{
+                            item.bankName
+                        }}
+                    </p>
                 </ng-template>
             </p-dropdown>
         </div>

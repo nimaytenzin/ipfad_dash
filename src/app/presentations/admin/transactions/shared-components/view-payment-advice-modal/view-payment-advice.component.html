@@ -54,7 +54,10 @@
                         <td>Nu. {{ item.amount }}</td>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="footer">
+                <ng-template
+                    pTemplate="footer"
+                    *ngIf="paymentAdvice.type !== paymentAdviceType.SD"
+                >
                     <tr class="bg-red-100 text-red-200">
                         <td>Penalty</td>
                         <td>
@@ -178,13 +181,17 @@
         </div>
     </div>
 
-    <div
-        class="flex justify-content-end align-items-end my-4"
-        *ngIf="totalAmountDue !== 0"
-    >
+    <div class="flex justify-content-end align-items-end gap-4 my-4">
+        <p-button
+            label="Download PDF"
+            size="small"
+            severity="secondary"
+            (click)="downloadAdvicePdf()"
+        ></p-button>
         <p-button
             label="Receive Payment"
             size="small"
+            *ngIf="totalAmountDue !== 0"
             (click)="receivePayment()"
         ></p-button>
     </div>

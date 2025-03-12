@@ -30,6 +30,13 @@ export class LeaseAgreementDataService {
 
     constructor(private http: HttpClient) {}
 
+    //FORCE ACTIVATE
+    ForceActivateLease(leaseAgreementId: number) {
+        return this.http.post(`${this.apiUrl}/lease-agreement/force-activate`, {
+            leaseAgreementId: leaseAgreementId,
+        });
+    }
+
     //UNIT LEASE AGREEMENT//
     GetAllUnitLeaseByAdminPaginated(
         adminId: number,

@@ -19,7 +19,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableModule } from 'primeng/table';
 import { forkJoin, map } from 'rxjs';
-import { NOTIFICATIONTYPES, PAYMENTMODES } from 'src/app/core/constants/enums';
+import {
+    NOTIFICATIONTYPES,
+    PAType,
+    PAYMENTMODES,
+} from 'src/app/core/constants/enums';
 import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
@@ -98,6 +102,7 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
             .subscribe((res) => {
                 this.pendingPaymentAdvices = res;
 
+                // Sort the pending payment advices by year and month
                 this.pendingPaymentAdvices.sort((a, b) => {
                     if (a.year === b.year) {
                         return a.month - b.month;
@@ -105,8 +110,10 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
                     return a.year - b.year;
                 });
 
-                const penaltyObservables = this.pendingPaymentAdvices.map(
-                    (item) =>
+                // Filter out payment advices of type 'SD' from penalty calculations
+                const penaltyObservables = this.pendingPaymentAdvices
+                    .filter((item) => item.type !== PAType.SD) // Exclude SD type
+                    .map((item) =>
                         this.paymentAdviceDataService
                             .GetPenaltyByPaymentAdvice(item.id)
                             .pipe(
@@ -115,20 +122,39 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
                                     return item;
                                 })
                             )
-                );
+                    );
 
                 forkJoin(penaltyObservables).subscribe((results) => {
-                    this.pendingPaymentAdvices = results;
+                    // Update the pendingPaymentAdvices with penalties (excluding SD type)
+                    this.pendingPaymentAdvices = this.pendingPaymentAdvices.map(
+                        (item) => {
+                            if (item.type !== PAType.SD) {
+                                const result = results.find(
+                                    (res) => res.id === item.id
+                                );
+                                if (result) {
+                                    item.penalty = result.penalty;
+                                }
+                            }
+                            return item;
+                        }
+                    );
                     this.totalAmount = 0;
                     this.totalAmountDue = 0;
 
                     for (let item of this.pendingPaymentAdvices) {
                         this.totalAmount += item.totalAmount;
                         this.totalAmountDue += item.amountDue;
-                        if (item.penalty && !item.writeOffPenalty) {
+                        if (
+                            item.type !== PAType.SD &&
+                            item.penalty &&
+                            !item.writeOffPenalty
+                        ) {
                             this.totalAmountDue += item.penalty.totalPenalty;
                         }
                     }
+
+                    // Update the selected payment advices
                     this.selectedPaymentAdvices = this.paymentAdvices
                         .map((passedPa) =>
                             this.pendingPaymentAdvices.find(
@@ -137,6 +163,7 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
                         )
                         .filter((item) => item !== undefined);
 
+                    // Update the form control validation
                     this.receivePaymentForm.controls[
                         'amount'
                     ].updateValueAndValidity();
@@ -149,7 +176,13 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
 
         for (let item of this.selectedPaymentAdvices) {
             totalDue += item.amountDue;
-            if (!item.writeOffPenalty) {
+
+            // Add penalty only if the payment advice is not of type 'SD' and penalty is not written off
+            if (
+                item.type !== PAType.SD &&
+                item.penalty &&
+                !item.writeOffPenalty
+            ) {
                 totalDue += item.penalty.totalPenalty;
             }
         }

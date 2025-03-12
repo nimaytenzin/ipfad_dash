@@ -167,7 +167,6 @@ export class AdminLeaseCreatorGeneralTermsComponent implements OnInit {
         if (this.propertyDetails.leaseType === LEASETYPE.LAND) {
             if (
                 this.rent &&
-                this.securityDepositAmount &&
                 this.selectedOwnerBankAccount &&
                 this.areaLeased &&
                 this.areaUnits &&
@@ -176,11 +175,7 @@ export class AdminLeaseCreatorGeneralTermsComponent implements OnInit {
                 return true;
             }
         } else {
-            if (
-                this.rent &&
-                this.securityDepositAmount &&
-                this.selectedOwnerBankAccount
-            ) {
+            if (this.rent && this.selectedOwnerBankAccount) {
                 return true;
             }
         }
@@ -191,8 +186,7 @@ export class AdminLeaseCreatorGeneralTermsComponent implements OnInit {
 
         if (this.propertyDetails.leaseType === LEASETYPE.LAND) {
             if (!this.rent) missingFields.push('Rent');
-            if (!this.securityDepositAmount)
-                missingFields.push('Security Deposit Amount');
+
             if (!this.selectedOwnerBankAccount)
                 missingFields.push('Owner Bank Account');
             if (!this.areaLeased) missingFields.push('Area Leased ');
@@ -200,8 +194,7 @@ export class AdminLeaseCreatorGeneralTermsComponent implements OnInit {
             if (!this.ratePerArea) missingFields.push('Rate Per Area');
         } else {
             if (!this.rent) missingFields.push('Rent');
-            if (!this.securityDepositAmount)
-                missingFields.push('Security Deposit Amount');
+
             if (!this.selectedOwnerBankAccount)
                 missingFields.push('Owner Bank Account');
         }

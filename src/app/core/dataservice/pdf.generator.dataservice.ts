@@ -28,6 +28,15 @@ export class PDFGeneratorDataService {
         );
     }
 
+    DownloadPaymentAdvicePDF(paymentAdviceId: number): Observable<Blob> {
+        return this.http.get<Blob>(
+            `${this.apiUrl}/pdf-generator/payment-advice/${paymentAdviceId}`,
+            {
+                responseType: 'blob' as 'json', // Explicitly specify the response type
+            }
+        );
+    }
+
     GetPdfUrl(leaseAgreementId: number): string {
         return `${this.apiUrl}/pdf-generator/lease-agreement/${leaseAgreementId}`;
     }
