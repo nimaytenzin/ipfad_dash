@@ -189,323 +189,222 @@
 
             <td>
                 <div class="flex justify-content-between align-items-center">
-                    <p *ngIf="!item.leaseAgreements.length">-</p>
-                    <div *ngIf="item.leaseAgreements.length">
-                        <div
-                            *ngFor="let lease of item.leaseAgreements"
-                            class="flex flex-column text-center"
-                        >
-                            <p>
-                                {{ lease.type }}
-                            </p>
-                        </div>
-                    </div>
+                    {{ item.type }}
                 </div>
             </td>
 
             <td>
-                {{ item.plotId }}
+                {{ item.plot.plotId }}
             </td>
 
             <td>
-                <div class="flex justify-content-between align-items-center">
-                    <p *ngIf="!item.leaseAgreements.length">-</p>
-                    <div *ngIf="item.leaseAgreements.length">
-                        <div
-                            *ngFor="let lease of item.leaseAgreements"
-                            class="flex flex-column text-center"
-                        >
-                            <p>{{ lease.areaLeased }} {{ lease.areaUnits }}</p>
-                        </div>
-                    </div>
-                </div>
+                <p>{{ item.areaLeased }} {{ item.areaUnits }}</p>
             </td>
             <td>
-                <div class="flex justify-content-between align-items-center">
-                    <p *ngIf="!item.leaseAgreements.length">-</p>
-                    <div *ngIf="item.leaseAgreements.length">
-                        <div
-                            *ngFor="let lease of item.leaseAgreements"
-                            class="flex flex-column text-center"
-                        >
-                            <p>Nu.{{ lease.ratePerArea }}</p>
-                        </div>
-                    </div>
-                </div>
-            </td>
-
-            <td>
-                <div class="flex justify-content-between align-items-center">
-                    <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                    <div *ngIf="item.leaseAgreements.length">
-                        <div
-                            *ngFor="let lease of item.leaseAgreements"
-                            class="flex flex-column text-center"
-                        >
-                            <p>
-                                {{ lease.status }}
-                            </p>
-                            <p
-                                (click)="openReviseLeaseModal(lease)"
-                                class="text-blue-500 cursor-pointer hover:underline text-xs"
-                            >
-                                Update Lease
-                            </p>
-                            <p
-                                class="text-red-500 cursor-pointer hover:underline text-xs"
-                                (click)="openTerminateLeaseModal(lease)"
-                            >
-                                Terminate Lease
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </td>
-
-            <td>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <p *ngIf="item.leaseAgreements.length">
-                    {{ item.leaseAgreements[0].tenant.nameEnglish }}
+                <p>
+                    Nu.{{ item.ratePerArea }}
+                    {{ item.areaUnits ? "per" + item.areaUnits : "" }}
                 </p>
             </td>
-            <td>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
 
-                <p *ngIf="item.leaseAgreements.length">
-                    {{ item.leaseAgreements[0].tenant.phoneNumber }}
-                </p>
-            </td>
             <td>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <div
-                    class="flex flex-column text-center"
-                    *ngIf="item.leaseAgreements.length"
-                >
+                <div class="flex justify-content-between align-items-center">
                     <p>
-                        {{ item.leaseAgreements[0].tenant.cid }}
+                        {{ item.status }}
                     </p>
                     <p
-                        (click)="
-                            openUpdateTenantDetailsModal(
-                                item.leaseAgreements[0].tenant
-                            )
-                        "
+                        (click)="openReviseLeaseModal(item)"
+                        class="text-blue-500 cursor-pointer hover:underline text-xs"
+                    >
+                        Update Lease
+                    </p>
+                    <p
+                        class="text-red-500 cursor-pointer hover:underline text-xs"
+                        (click)="openTerminateLeaseModal(item)"
+                    >
+                        Terminate Lease
+                    </p>
+                </div>
+            </td>
+
+            <td>
+                {{ item.tenant.nameEnglish }}
+            </td>
+            <td>
+                <p>
+                    {{ item.tenant.phoneNumber }}
+                </p>
+            </td>
+            <td>
+                <div class="flex flex-column text-center">
+                    <p
+                        (click)="openUpdateTenantDetailsModal(item.tenant)"
                         class="text-blue-500 cursor-pointer hover:underline text-xs"
                     >
                         Update Tenant
+                    </p>
+                    <p>
+                        {{ item.tenant.cid }}
                     </p>
                 </div>
             </td>
 
             <td #status>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <div *ngIf="item.leaseAgreements.length">
-                    <div *ngFor="let lease of item.leaseAgreements">
+                <p
+                    *ngIf="!item.paymentAdvises.length"
+                    class="text-yellow-800 text-sm"
+                >
+                    - PA not Generated
+                </p>
+                <div *ngIf="item.paymentAdvises">
+                    <div *ngFor="let pa of item.paymentAdvises">
                         <p
-                            *ngIf="!lease.paymentAdvises.length"
-                            class="text-yellow-800 text-sm"
+                            [ngClass]="{
+                                'text-red-500 font-semibold':
+                                    pa.status === 'DUE',
+                                'text-green-500 font-semibold':
+                                    pa.status === 'PAID'
+                            }"
                         >
-                            - PA not Generated
+                            {{ pa.status }}
                         </p>
-                        <div *ngIf="lease.paymentAdvises">
-                            <div *ngFor="let pa of lease.paymentAdvises">
-                                <p
-                                    [ngClass]="{
-                                        'text-red-500 font-semibold':
-                                            pa.status === 'DUE',
-                                        'text-green-500 font-semibold':
-                                            pa.status === 'PAID'
-                                    }"
-                                >
-                                    {{ pa.status }}
-                                </p>
-                                <p class="text-sm">
-                                    {{
-                                        pa.paymentReceipts.length > 1
-                                            ? "(" +
-                                              pa.paymentReceipts.length +
-                                              " installments" +
-                                              ")"
-                                            : ""
-                                    }}
-                                </p>
-                            </div>
-                        </div>
+                        <p class="text-sm">
+                            {{
+                                pa.paymentReceipts.length > 1
+                                    ? "(" +
+                                      pa.paymentReceipts.length +
+                                      " installments" +
+                                      ")"
+                                    : ""
+                            }}
+                        </p>
                     </div>
                 </div>
             </td>
 
             <td #totalReceivable>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <p *ngIf="item.leaseAgreements.length">
-                    Nu.{{ computeTotalPayable(item.leaseAgreements[0]) }}
-                </p>
+                <p>Nu.{{ computeTotalPayable(item) }}</p>
             </td>
 
             <td #totalReceived>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <div *ngIf="item.leaseAgreements.length">
-                    <div *ngFor="let lease of item.leaseAgreements">
-                        <p
-                            *ngIf="!lease.paymentAdvises.length"
-                            class="text-yellow-800 text-sm"
-                        >
-                            - PA not Generated
-                        </p>
-                        <div *ngIf="lease.paymentAdvises">
-                            <div *ngFor="let pa of lease.paymentAdvises">
-                                <div *ngIf="pa.paymentReceipts">
-                                    Nu.
-                                    {{ parseTotalReceived(pa) }}
-                                </div>
-                                <div *ngIf="!pa.paymentReceipts.length">0</div>
-                            </div>
+                <p
+                    *ngIf="!item.paymentAdvises.length"
+                    class="text-yellow-800 text-sm"
+                >
+                    - PA not Generated
+                </p>
+                <div *ngIf="item.paymentAdvises">
+                    <div *ngFor="let pa of item.paymentAdvises">
+                        <div *ngIf="pa.paymentReceipts">
+                            Nu.
+                            {{ parseTotalReceived(pa) }}
                         </div>
+                        <div *ngIf="!pa.paymentReceipts.length">0</div>
                     </div>
                 </div>
             </td>
 
             <td #due>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-                <div *ngFor="let lease of item.leaseAgreements">
-                    <p
-                        *ngIf="!lease.paymentAdvises.length"
-                        class="text-yellow-800 text-sm"
-                    >
-                        - PA not Generated
-                    </p>
-                    <div *ngIf="lease.paymentAdvises">
-                        <div *ngFor="let pa of lease.paymentAdvises">
-                            <p>
-                                {{ pa.amountDue }}
-                            </p>
-                        </div>
+                <p
+                    *ngIf="!item.paymentAdvises.length"
+                    class="text-yellow-800 text-sm"
+                >
+                    - PA not Generated
+                </p>
+                <div *ngIf="item.paymentAdvises">
+                    <div *ngFor="let pa of item.paymentAdvises">
+                        <p>
+                            {{ pa.amountDue }}
+                        </p>
                     </div>
                 </div>
             </td>
 
             <td #paymentMode>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <div *ngIf="item.leaseAgreements.length">
-                    <div *ngFor="let lease of item.leaseAgreements">
-                        <p
-                            *ngIf="!lease.paymentAdvises.length"
-                            class="text-yellow-800 text-sm"
-                        >
-                            - PA not Generated
-                        </p>
-                        <div *ngIf="lease.paymentAdvises">
-                            <div *ngFor="let pa of lease.paymentAdvises">
-                                <p *ngIf="pa.paymentReceipts.length === 1">
-                                    {{ pa.paymentReceipts[0].paymentMode }}
-                                </p>
-                                <p *ngIf="pa.paymentReceipts.length > 1">
-                                    -refer receipt
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <div *ngIf="item.leaseAgreements.length">
-                    <div *ngFor="let lease of item.leaseAgreements">
-                        <p
-                            *ngIf="!lease.paymentAdvises.length"
-                            class="text-yellow-800 text-sm"
-                        >
-                            - PA not Generated
-                        </p>
-
-                        <div *ngIf="lease.paymentAdvises">
-                            <div *ngFor="let pa of lease.paymentAdvises">
-                                <p *ngIf="pa.paymentReceipts.length === 1">
-                                    <span
-                                        *ngFor="
-                                            let receipt of pa.paymentReceipts
-                                        "
-                                    >
-                                        {{ receipt.createdAt | date }}
-                                    </span>
-                                </p>
-                                <p *ngIf="pa.paymentReceipts.length > 1">
-                                    -refer receipt
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <p *ngIf="!item.leaseAgreements.length">Vacant</p>
-
-                <div *ngIf="item.leaseAgreements.length">
-                    <div *ngFor="let lease of item.leaseAgreements">
-                        <p
-                            *ngIf="!lease.paymentAdvises.length"
-                            class="text-yellow-800 text-sm"
-                        >
-                            - PA not Generated
-                        </p>
-                        <div *ngIf="lease.paymentAdvises">
-                            <div *ngFor="let pa of lease.paymentAdvises">
-                                <p *ngFor="let receipt of pa.paymentReceipts">
-                                    {{ receipt.remarks }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </td>
-
-            <td>
-                <div
-                    *ngFor="let lease of item.leaseAgreements"
-                    class="flex jusitify-content-end"
+                <p
+                    *ngIf="!item.paymentAdvises.length"
+                    class="text-yellow-800 text-sm"
                 >
-                    <div *ngFor="let pa of lease.paymentAdvises" class="">
-                        <p-button
-                            label="Receive"
-                            size="small"
-                            *ngIf="pa.status !== 'PAID'"
-                            severity="secondary"
-                            (click)="openPADetails(pa, lease)"
-                        ></p-button>
+                    - PA not Generated
+                </p>
+                <div *ngIf="item.paymentAdvises">
+                    <div *ngFor="let pa of item.paymentAdvises">
+                        <p *ngIf="pa.paymentReceipts.length === 1">
+                            {{ pa.paymentReceipts[0].paymentMode }}
+                        </p>
+                        <p *ngIf="pa.paymentReceipts.length > 1">
+                            -refer receipt
+                        </p>
                     </div>
                 </div>
             </td>
             <td>
-                <div *ngFor="let lease of item.leaseAgreements">
-                    <div *ngFor="let pa of lease.paymentAdvises" class="">
-                        <div
-                            class="flex flex-column gap-2 w-full"
-                            *ngIf="pa.paymentReceipts.length"
-                        >
-                            <p-button
-                                *ngFor="let receipt of pa.paymentReceipts"
-                                [label]="'Receipt#' + receipt.id"
-                                size="small"
-                                outlined="true"
-                                severity="secondary"
-                                (onClick)="openViewPaymentReceipt(receipt)"
-                            ></p-button>
-                        </div>
+                <p
+                    *ngIf="!item.paymentAdvises.length"
+                    class="text-yellow-800 text-sm"
+                >
+                    - PA not Generated
+                </p>
+
+                <div *ngIf="item.paymentAdvises">
+                    <div *ngFor="let pa of item.paymentAdvises">
+                        <p *ngIf="pa.paymentReceipts.length === 1">
+                            <span *ngFor="let receipt of pa.paymentReceipts">
+                                {{ receipt.createdAt | date }}
+                            </span>
+                        </p>
+                        <p *ngIf="pa.paymentReceipts.length > 1">
+                            -refer receipt
+                        </p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <p
+                    *ngIf="!item.paymentAdvises.length"
+                    class="text-yellow-800 text-sm"
+                >
+                    - PA not Generated
+                </p>
+                <div *ngIf="item.paymentAdvises">
+                    <div *ngFor="let pa of item.paymentAdvises">
+                        <p *ngFor="let receipt of pa.paymentReceipts">
+                            {{ receipt.remarks }}
+                        </p>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div *ngFor="let pa of item.paymentAdvises" class="">
+                    <p-button
+                        label="Receive"
+                        size="small"
+                        *ngIf="pa.status !== 'PAID'"
+                        severity="secondary"
+                        (click)="openPADetails(pa, item)"
+                    ></p-button>
+                </div>
+            </td>
+            <td>
+                <div *ngFor="let pa of item.paymentAdvises" class="">
+                    <div
+                        class="flex flex-column gap-2 w-full"
+                        *ngIf="pa.paymentReceipts.length"
+                    >
+                        <p-button
+                            *ngFor="let receipt of pa.paymentReceipts"
+                            [label]="'Receipt#' + receipt.id"
+                            size="small"
+                            outlined="true"
+                            severity="secondary"
+                            (onClick)="openViewPaymentReceipt(receipt)"
+                        ></p-button>
                     </div>
                 </div>
             </td>
         </tr>
     </ng-template>
-
-    <ng-template pTemplate="rowexpansion" let-pr> hi </ng-template>
 </p-table>
 
 <!-- <p-tabView>

@@ -93,8 +93,8 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
 
     selectedDate: Date;
 
-    originalData: PlotDTO[] = [];
-    filteredData: PlotDTO[] = [];
+    originalData: LeaseAgreeementDTO[] = [];
+    filteredData: LeaseAgreeementDTO[] = [];
 
     tenantPhoneNumberFilter: number;
     plotIdFilter: string = '';
@@ -198,12 +198,10 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
             return;
         }
 
-        this.filteredData = this.originalData.filter((plot) =>
-            plot.leaseAgreements?.some((lease) =>
-                lease.tenant?.phoneNumber
-                    ?.toString()
-                    .includes(this.tenantPhoneNumberFilter.toString())
-            )
+        this.filteredData = this.originalData.filter((lease) =>
+            lease.tenant?.phoneNumber
+                ?.toString()
+                .includes(this.tenantPhoneNumberFilter.toString())
         );
     }
 
@@ -225,10 +223,8 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
         }
         this.filteredData = [...this.originalData];
         this.filteredData = this.filteredData.filter((item) =>
-            item.leaseAgreements.some((lease) =>
-                lease.paymentAdvises.some(
-                    (pa) => pa.status === this.selectedPaymentStatus
-                )
+            item.paymentAdvises.some(
+                (pa) => pa.status === this.selectedPaymentStatus
             )
         );
     }
@@ -241,14 +237,8 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
         this.filteredData = [...this.originalData];
     }
 
-    getRowStatus(item: UnitDTO): string {
-        if (!item.leaseAgreements?.length) {
-            return '';
-        }
-
-        const allPaymentAdvises = item.leaseAgreements.flatMap(
-            (lease) => lease.paymentAdvises || []
-        );
+    getRowStatus(item: LeaseAgreeementDTO): string {
+        const allPaymentAdvises = item.paymentAdvises;
 
         if (
             allPaymentAdvises.some(
@@ -267,14 +257,12 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
         let totalReceivable = 0;
         let totalReceived = 0;
 
-        for (let unit of this.filteredData) {
-            for (let lease of unit.leaseAgreements) {
-                totalReceivable += this.computeTotalPayable(lease);
-                for (let paymentAdvice of lease.paymentAdvises) {
-                    if (paymentAdvice.status === PaymentAdviseStatus.PAID) {
-                        for (let paymentReceipts of paymentAdvice.paymentReceipts) {
-                            totalReceived += paymentReceipts.amount;
-                        }
+        for (let lease of this.filteredData) {
+            totalReceivable += this.computeTotalPayable(lease);
+            for (let paymentAdvice of lease.paymentAdvises) {
+                if (paymentAdvice.status === PaymentAdviseStatus.PAID) {
+                    for (let paymentReceipts of paymentAdvice.paymentReceipts) {
+                        totalReceived += paymentReceipts.amount;
                     }
                 }
             }
@@ -330,11 +318,11 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
     // Get the number of vacant units
     getVacantUnits(): number {
         let numberOfVacantUnits = 0;
-        for (let unit of this.filteredData) {
-            if (!unit.leaseAgreements.length) {
-                numberOfVacantUnits++;
-            }
-        }
+        // for (let unit of this.filteredData) {
+        //     if (!unit.leaseAgreements.length) {
+        //         numberOfVacantUnits++;
+        //     }
+        // }
 
         return numberOfVacantUnits;
     }

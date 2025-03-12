@@ -568,8 +568,8 @@ export class PaymentAdviceDataService {
         adminId: number,
         year: number,
         month: number
-    ): Observable<PlotDTO[]> {
-        return this.http.get<PlotDTO[]>(
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
             `${this.apiUrl}/lease-agreement/payment-status/land/monthly/admin/${adminId}/${year}/${month}`
         );
     }
