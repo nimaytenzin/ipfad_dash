@@ -161,7 +161,7 @@
             <th>Lease Type</th>
             <th>Plot ID</th>
             <th>Area Leased</th>
-            <th>Rate Per Month</th>
+            <th>Rate Per Unit Area</th>
             <th>Lease Status</th>
             <th>Tenant Name</th>
             <th>Tenant Contact</th>
@@ -198,12 +198,12 @@
             </td>
 
             <td>
-                <p>{{ item.areaLeased }} {{ item.areaUnits }}</p>
+                <p>{{ item.areaLeased }} {{ item.areaUnit }}</p>
             </td>
             <td>
                 <p>
                     Nu.{{ item.ratePerArea }}
-                    {{ item.areaUnits ? "per" + item.areaUnits : "" }}
+                    {{ item.areaUnits ? "per" + item.areaUnit : "" }}
                 </p>
             </td>
 
