@@ -4,7 +4,10 @@ import {
     Component,
     ElementRef,
     OnInit,
+    QueryList,
+    Renderer2,
     ViewChild,
+    ViewChildren,
 } from '@angular/core';
 import {
     FormBuilder,
@@ -40,6 +43,7 @@ import { CardModule } from 'primeng/card';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { GalleriaModule } from 'primeng/galleria';
+import { TabViewModule } from 'primeng/tabview';
 
 @Component({
     selector: 'app-public-home',
@@ -62,12 +66,16 @@ import { GalleriaModule } from 'primeng/galleria';
         CardModule,
         RecaptchaV3Module,
         GalleriaModule,
+        TabViewModule,
     ],
     providers: [],
 })
 export class PublicHomeComponent implements OnInit, AfterViewInit {
     @ViewChild('hContainer') hContainer: ElementRef;
     @ViewChild('centerElement') centerElement!: ElementRef;
+
+    @ViewChildren('tabPanel') tabPanels!: QueryList<ElementRef>;
+
     showRequestDemoModal: boolean = false;
     zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
     characterLimit = 100;
@@ -77,6 +85,7 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
     date: Date | undefined;
     companyName: string = COMPANY_NAME;
     requestDemoForm: FormGroup;
+    activeIndex = 0;
     captcha: any;
     buildingImages = [
         'https://www.waytobhutan.com/wp-content/uploads/2020/02/dscf26071-1024x768.jpg',
@@ -89,7 +98,8 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
         private recaptchaVerificationService: RecaptchaService,
 
         private messageService: MessageService,
-        private unitDataService: UnitDataService
+        private unitDataService: UnitDataService,
+        private renderer: Renderer2
     ) {
         this.requestDemoForm = this.fb.group({
             name: [],
@@ -109,77 +119,23 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
         });
     }
 
-    ngAfterViewInit(): void {
-        // gsap.from(this.centerElement.nativeElement, {
-        //     duration: 1,
-        //     opacity: 0,
-        //     scale: 1.19, // Scale up to 1.5 times its original size
-        //     // Move it up by 100% of its height
-        //     ease: 'power1.out', // Use a power1 easing function for a smooth start and end
-        //     delay: 0, // Start the animation after a half-second delay
-        // });
-        // gsap.fromTo(
-        //     '.cloud1',
-        //     { left: '0%' },
-        //     {
-        //         left: '30%',
-        //         top: '50%',
-        //         duration: 5000,
-        //         repeat: 1,
-        //         opacity: 0,
-        //         ease: 'linear',
-        //         scrollTrigger: {
-        //             trigger: '.cloud1',
-        //             start: 'top bottom', // Start the animation when the top of the element hits the bottom of the viewport
-        //             end: 'bottom top', // End the animation when the bottom of the element hits the top of the viewport
-        //             scrub: true, // Smoothly scrub the animation based on scroll position
-        //         },
-        //     }
-        // );
+    ngAfterViewInit() {
+        this.setEqualHeight();
+        window.addEventListener('resize', () => this.setEqualHeight());
+    }
 
-        gsap.to('.cloud1', {
-            left: '100%',
-            duration: 230,
-            repeat: -1,
-            ease: 'linear',
+    setEqualHeight() {
+        const heights = this.tabPanels.map(
+            (panel) => panel.nativeElement.offsetHeight
+        );
+        const maxHeight = Math.max(...heights);
+        this.tabPanels.forEach((panel) => {
+            this.renderer.setStyle(
+                panel.nativeElement,
+                'height',
+                `${maxHeight}px`
+            );
         });
-        gsap.to('.cloud2', {
-            left: '100%',
-            duration: 232,
-            repeat: -1,
-            ease: 'linear',
-        });
-        gsap.to('.cloud3', {
-            right: '100%',
-            duration: 222,
-            repeat: -1,
-            ease: 'linear',
-        });
-        gsap.to('.cloud4', {
-            right: '100%',
-            duration: 232,
-            repeat: -1,
-            ease: 'linear',
-        });
-        gsap.to('.cloud5', {
-            left: '100%',
-            duration: 250,
-            repeat: -1,
-            ease: 'linear',
-        });
-        // const items = document.querySelectorAll('.data');
-
-        // gsap.from(items, {
-        //     textContent: 0,
-        //     duration: 4,
-        //     ease: 'power1.in',
-        //     snap: { textContent: 1 },
-        //     onUpdate: function () {
-        //         this.targets()[0].innerHTML = this.numberWithCommas(
-        //             Math.ceil(this.targets()[0].textContent)
-        //         );
-        //     },
-        // });
     }
 
     login() {
