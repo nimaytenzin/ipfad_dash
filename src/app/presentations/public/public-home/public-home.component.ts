@@ -73,7 +73,7 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
     characterLimit = 100;
     characterCountExceeded: boolean = false;
     listedUnits: UnitDTO[] = [];
-
+    currentYear = new Date().getFullYear();
     date: Date | undefined;
     companyName: string = COMPANY_NAME;
     requestDemoForm: FormGroup;
@@ -110,14 +110,14 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        gsap.from(this.centerElement.nativeElement, {
-            duration: 1,
-            opacity: 0,
-            scale: 1.19, // Scale up to 1.5 times its original size
-            // Move it up by 100% of its height
-            ease: 'power1.out', // Use a power1 easing function for a smooth start and end
-            delay: 0, // Start the animation after a half-second delay
-        });
+        // gsap.from(this.centerElement.nativeElement, {
+        //     duration: 1,
+        //     opacity: 0,
+        //     scale: 1.19, // Scale up to 1.5 times its original size
+        //     // Move it up by 100% of its height
+        //     ease: 'power1.out', // Use a power1 easing function for a smooth start and end
+        //     delay: 0, // Start the animation after a half-second delay
+        // });
         // gsap.fromTo(
         //     '.cloud1',
         //     { left: '0%' },
