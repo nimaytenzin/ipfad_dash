@@ -212,8 +212,8 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
             return;
         }
 
-        this.filteredData = this.originalData.filter((plot) =>
-            plot.plotId.toString().includes(this.plotIdFilter.toString())
+        this.filteredData = this.originalData.filter((lease) =>
+            lease.plot.plotId.toString().includes(this.plotIdFilter.toString())
         );
     }
 
@@ -229,7 +229,6 @@ export class AdminMasterTransactionsLandRentMonthlyComponent implements OnInit {
         );
     }
 
-    // Clear all filters
     clearFilters() {
         this.tenantPhoneNumberFilter = null;
         this.plotIdFilter = '';
