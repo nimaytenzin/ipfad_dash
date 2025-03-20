@@ -1,6 +1,7 @@
 <p-confirmDialog />
 
 <p>Pending Payment Advices for the Tenant and Lease</p>
+<p *ngIf="!applyPenalty">* Penalty will not be applied</p>
 <p-table
     [value]="pendingPaymentAdvices"
     [(selection)]="selectedPaymentAdvices"
@@ -35,7 +36,13 @@
                 {{ item.totalAmount }}
             </td>
             <td>
-                <p [ngClass]="item.writeOffPenalty ? 'line-through' : ''">
+                <p
+                    [ngClass]="
+                        item.writeOffPenalty || !applyPenalty
+                            ? 'line-through'
+                            : ''
+                    "
+                >
                     {{
                         item.penalty?.totalPenalty +
                             item.penalty?.penaltyPaid || 0

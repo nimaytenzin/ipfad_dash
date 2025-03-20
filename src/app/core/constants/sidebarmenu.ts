@@ -249,6 +249,12 @@ export const ADMINSIDEBARITEMS = [
                 routerLink: ['/admin/master-bank-accounts'],
                 roles: [USERROLESENUM.ADMIN],
             },
+            {
+                label: 'Setttings',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/system-settings'],
+                roles: [USERROLESENUM.ADMIN],
+            },
         ],
     },
 ];

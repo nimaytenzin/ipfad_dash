@@ -21,7 +21,7 @@ import { PrivacyComponent } from './privacy/privacy.component';
                 },
                 {
                     path: 'privacy',
-                    component: PrivacyComponent
+                    component: PrivacyComponent,
                 },
                 {
                     path: 'auth',
@@ -113,6 +113,15 @@ import { PrivacyComponent } from './privacy/privacy.component';
                                     './presentations/admin/transactions/admin-transaction.routing.modules'
                                 ).then(
                                     (m) => m.AdminMasterTransactionRoutingModule
+                                ),
+                        },
+                        {
+                            path: 'system-settings',
+                            loadChildren: () =>
+                                import(
+                                    './presentations/admin/system/admin-system.routing.modules'
+                                ).then(
+                                    (m) => m.AdminSystemSettingsRoutingModule
                                 ),
                         },
                     ],

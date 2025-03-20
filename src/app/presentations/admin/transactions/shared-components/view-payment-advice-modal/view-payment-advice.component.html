@@ -56,7 +56,10 @@
                 </ng-template>
                 <ng-template
                     pTemplate="footer"
-                    *ngIf="paymentAdvice.type !== paymentAdviceType.SD"
+                    *ngIf="
+                        applyPenaltySetting &&
+                        paymentAdvice.type !== paymentAdviceType.SD
+                    "
                 >
                     <tr class="bg-red-100 text-red-200">
                         <td>Penalty</td>
@@ -123,7 +126,7 @@
                 paymentAdvice.status !== paymentAdviceStatus.PAID
             "
         >
-            <p>
+            <p *ngIf="penalty.daysOverDue">
                 Over due by:
                 {{ penalty.daysOverDue }} Day/s
             </p>

@@ -25,6 +25,7 @@ import { PAType, PaymentAdviseStatus } from 'src/app/core/constants/enums';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
+import { SystemSettingService } from 'src/app/core/dataservice/system.setting.dataservice';
 @Component({
     selector: 'app-view-payment-advice',
     templateUrl: './view-payment-advice.component.html',
@@ -57,6 +58,7 @@ export class ViewPaymentAdviceComponent implements OnInit {
     adminProfileUri: string;
     penalty: PenaltyDetailsDTO;
 
+    applyPenaltySetting: boolean = false;
     constructor(
         private config: DynamicDialogConfig,
         private dialogService: DialogService,
@@ -66,10 +68,14 @@ export class ViewPaymentAdviceComponent implements OnInit {
         private paymentAdviceDataService: PaymentAdviceDataService,
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
-        private pdfGeneratorDataService: PDFGeneratorDataService
+        private pdfGeneratorDataService: PDFGeneratorDataService,
+        private systemSettingService: SystemSettingService
     ) {
         this.paymentAdvice = this.config.data;
-        if (this.paymentAdvice.type !== this.paymentAdviceType.SD) {
+        if (
+            this.applyPenaltySetting &&
+            this.paymentAdvice.type !== this.paymentAdviceType.SD
+        ) {
             this.paymentAdviceDataService
                 .GetPenaltyByPaymentAdvice(this.paymentAdvice.id)
                 .subscribe({

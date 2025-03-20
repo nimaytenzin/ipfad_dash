@@ -63,6 +63,8 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
 
     pendingPaymentAdvices: PaymentAdviceDto[] = [];
     selectedPaymentAdvices: PaymentAdviceDto[] = [];
+
+    applyPenalty: boolean = false;
     constructor(
         private fb: FormBuilder,
         private ref: DynamicDialogRef,
@@ -146,6 +148,7 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
                         this.totalAmount += item.totalAmount;
                         this.totalAmountDue += item.amountDue;
                         if (
+                            this.applyPenalty &&
                             item.type !== PAType.SD &&
                             item.penalty &&
                             !item.writeOffPenalty
@@ -177,8 +180,8 @@ export class AdminReceivePaymentPaymentAdviceModalComponent implements OnInit {
         for (let item of this.selectedPaymentAdvices) {
             totalDue += item.amountDue;
 
-            // Add penalty only if the payment advice is not of type 'SD' and penalty is not written off
             if (
+                this.applyPenalty &&
                 item.type !== PAType.SD &&
                 item.penalty &&
                 !item.writeOffPenalty
