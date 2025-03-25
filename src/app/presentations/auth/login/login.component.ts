@@ -11,16 +11,7 @@ import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dt
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styles: [
-        `
-            :host ::ng-deep .pi-eye,
-            :host ::ng-deep .pi-eye-slash {
-                transform: scale(1.6);
-                margin-right: 1rem;
-                color: var(--primary-color) !important;
-            }
-        `,
-    ],
+    styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
     loginForm: FormGroup;

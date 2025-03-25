@@ -15,7 +15,7 @@ interface IZhidhayContactDetails {
 }
 
 export const ZHIDHAYCONTACTDETAILS: IZhidhayContactDetails = {
-    name: '',
+    name: 'ZHIDHAY',
     webAppName: 'www.zhidhay.com',
     phoneNumber: 17263764,
     email: 'info@zhidhay.com',

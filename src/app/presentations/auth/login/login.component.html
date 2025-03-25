@@ -4,66 +4,90 @@
 >
     <p-toast appendTo="body" />
     <div
-        class="flex bg-white border-round-md flex-column gap-2 p-4 align-items-center justify-content-center"
+        class="flex bg-white border-round-xl shadow gap-2 w-11 sm:w-11 md:w-8 lg:w-6"
+        style="min-height: 50vh"
     >
-        <div>
-            <a
-                routerLink="/"
-                class="flex align-items-center gap-2 hover:underline"
-            >
-                <img style="height: 25px" src="assets/zhidhaylogo.png" />
-                <p class="text-4xl">{{ companyDetails.webAppName }}</p>
-            </a>
-            <p-divider type="dashed"></p-divider>
-        </div>
-        <form [formGroup]="loginForm" class="w-full p-4 p-fluid">
-            <label for="email1" class="block font-semibold text-900 mb-2"
-                >CID</label
-            >
-            <input
-                id="email1"
-                type="text"
-                placeholder="CID"
-                pInputText
-                autocomplete=""
-                formControlName="cid"
-            />
-
-            <label for="email1" class="block font-semibold text-900 mt-4 mb-2"
-                >Password</label
-            >
-            <p-password
-                formControlName="password"
-                placeholder="your password"
-                [feedback]="false"
-            />
-            <div
-                class="flex my-6 align-items-center justify-content-between mb-5 gap-5"
-            >
-                <div class="flex align-items-center">
-                    <p-checkbox
-                        id="rememberMe"
-                        [binary]="true"
-                        styleClass="mr-2"
-                        formControlName="rememberMe"
-                    ></p-checkbox>
-                    <label for="rememberMe">Remember me</label>
+        <div
+            class="w-6 border-round-xl hidden md:block"
+            style="
+                background-image: url('https://images.unsplash.com/photo-1637825987997-6e6d117b81b1?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            "
+        ></div>
+        <div
+            class="w-full md:w-6 p-4 flex flex-column align-items-center justify-content-between"
+            style="min-width: 20vw"
+        >
+            <div>
+                <div class="flex align-items-center gap-2 cursor-pointer">
+                    <img style="height: 20px" src="assets/logo/zhidhay.svg" />
+                    <p class="text-4xl font-bold" style="color: #224e70">
+                        {{ companyDetails.name }}
+                    </p>
                 </div>
-                <!-- <a
+            </div>
+            <form [formGroup]="loginForm" class="w-full p-4 p-fluid">
+                <label for="email1" class="block font-semibold text-900 mb-2"
+                    >CID</label
+                >
+                <input
+                    id="email1"
+                    type="text"
+                    placeholder="CID"
+                    pInputText
+                    autocomplete=""
+                    formControlName="cid"
+                />
+
+                <label
+                    for="email1"
+                    class="block font-semibold text-900 mt-4 mb-2"
+                    >Password</label
+                >
+                <p-password
+                    formControlName="password"
+                    placeholder="your password"
+                    [feedback]="false"
+                />
+                <div
+                    class="flex my-6 align-items-center justify-content-between mb-5 gap-5"
+                >
+                    <div class="flex align-items-center">
+                        <p-checkbox
+                            id="rememberMe"
+                            [binary]="true"
+                            styleClass="mr-2"
+                            formControlName="rememberMe"
+                        ></p-checkbox>
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <!-- <a
                     class="font-medium no-underline ml-2 text-right cursor-pointer"
                     >Forgot password?</a
                 > -->
+                </div>
+                <div class="flex gap-2">
+                    <button
+                        pButton
+                        pRipple
+                        label="Login"
+                        class="w-full"
+                        (click)="login()"
+                    ></button>
+                </div>
+            </form>
+
+            <div>
+                <a
+                    routerLink="/"
+                    class="text-right hover:font-semibold hover:text-blue-800 cursor-pointer"
+                >
+                    Home
+                </a>
             </div>
-            <div class="flex gap-2">
-                <button
-                    pButton
-                    pRipple
-                    label="Login"
-                    class="w-full"
-                    (click)="login()"
-                ></button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
