@@ -44,6 +44,7 @@ import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { GalleriaModule } from 'primeng/galleria';
 import { TabViewModule } from 'primeng/tabview';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
     selector: 'app-public-home',
@@ -62,6 +63,7 @@ import { TabViewModule } from 'primeng/tabview';
         SidebarModule,
         InputTextareaModule,
         InputGroupModule,
+        DividerModule,
         InputGroupAddonModule,
         CardModule,
         RecaptchaV3Module,

@@ -1,17 +1,21 @@
 :host ::ng-deep .custom-tabview .p-tabview-nav {
-    color: gray;
+    color: #bdcad4;
 }
 
 :host ::ng-deep .custom-tabview .p-tabview-nav li {
-    font-size: 16px;
+    font-size: 18px;
 }
 
 :host ::ng-deep .custom-tabview .p-tabview-nav li .p-tabview-title {
-    color: gray; /* Text color */
-    font-weight: 600;
-    padding: 6px 16px;
+    color: #bdcad4; /* Text color */
+    font-weight: 800;
+    padding: 2px 16px;
 }
 
 :host ::ng-deep .custom-tabview .p-tabview-nav li.p-highlight .p-tabview-title {
-    color: #2196f3; /* Highlighted tab color */
+    color: #224e70; /* Highlighted tab color */
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+    border-color: #224e70;
 }

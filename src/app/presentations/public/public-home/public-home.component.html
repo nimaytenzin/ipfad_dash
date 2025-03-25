@@ -89,29 +89,37 @@
                     [(activeIndex)]="activeIndex"
                     class="custom-tabview text-xl"
                 >
-                    <p-tabPanel header="Payments" #tabPanel>
+                    <p-tabPanel header="PAYMENTS" #tabPanel>
                         <div
                             class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
                         >
-                            <div class="w-full md:w-6">
+                            <div
+                                class="w-full md:w-6 flex flex-column gap-4 align-items-center"
+                            >
+                                <p
+                                    class="text-4xl font-bold"
+                                    style="color: #224e70"
+                                >
+                                    Transform Rent Collection: Secure,
+                                    Automated, and Hassle-Free
+                                </p>
+
                                 <img
-                                    src="assets/mockups/lease2.png"
+                                    src="https://www.buildium.com/wp-content/uploads/2024/12/Rent-Collection.png"
                                     class="w-full border-round-lg"
                                     alt="Lease Mockup"
                                 />
                             </div>
                             <div class="w-full md:w-6 flex flex-column gap-3">
-                                <p class="text-2xl font-semibold">
-                                    Transform Rent Collection: Secure,
-                                    Automated, and Hassle-Free
-                                </p>
-
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
-                                        Secured Transactions powered by RMA PG
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
+                                        Secured Rental Transactions
                                     </p>
                                     <p class="text-lg">
-                                        Collect rent through our RMA Payment
+                                        Collect rent through the RMA Payment
                                         Gateway, backed by enterprise-grade
                                         encryption and PCI compliance. Funds hit
                                         your account instantly—no delays, no
@@ -119,8 +127,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Reclaim 70% of Your Time
                                     </p>
                                     <p class="text-lg">
@@ -131,8 +142,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="text-xl font-semibold">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Deadlines? We’ve Got This
                                     </p>
                                     <p class="text-lg">
@@ -146,25 +160,32 @@
                         </div>
                     </p-tabPanel>
 
-                    <p-tabPanel header="Leasing" #tabPanel>
+                    <p-tabPanel header="LEASING" #tabPanel>
                         <div
                             class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
                         >
-                            <div class="w-full md:w-6">
+                            <div
+                                class="w-full md:w-6 flex flex-column gap-4 align-items-center"
+                            >
+                                <p
+                                    class="text-4xl font-bold"
+                                    style="color: #224e70"
+                                >
+                                    Take Control of Your Leases: Simple, Smart,
+                                    and Seamless
+                                </p>
                                 <img
-                                    src="assets/mockups/lease2.png"
+                                    src="https://www.buildium.com/wp-content/uploads/2024/12/Leasing.png"
                                     class="w-full border-round-lg"
                                     alt="Lease Mockup"
                                 />
                             </div>
                             <div class="w-full md:w-6 flex flex-column gap-3">
-                                <p class="text-2xl font-semibold">
-                                    Take Control of Your Leases: Simple, Smart,
-                                    and Seamless
-                                </p>
-
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         All Your Leases in One Place
                                     </p>
                                     <p class="text-lg">
@@ -174,8 +195,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Instant Digital Signing
                                     </p>
                                     <p class="text-lg">
@@ -185,8 +209,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Stay Ahead of Expirations
                                     </p>
                                     <p class="text-lg">
@@ -196,8 +223,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
-                                    <p class="text-xl font-semibold">
+                                <div class="card flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Real-Time Lease Insights
                                     </p>
                                     <p class="text-lg">
@@ -210,25 +240,33 @@
                         </div>
                     </p-tabPanel>
 
-                    <p-tabPanel header="Maintenance" #tabPanel>
+                    <!-- Maintenance Panel -->
+                    <p-tabPanel header="MAINTENANCE" #tabPanel>
                         <div
                             class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
                         >
-                            <div class="w-full md:w-6">
-                                <img
-                                    src="assets/mockups/lease2.png"
-                                    class="w-full border-round-lg"
-                                    alt="Lease Mockup"
-                                />
-                            </div>
-                            <div class="w-full md:w-6 flex flex-column gap-3">
-                                <p class="text-2xl font-semibold">
+                            <div
+                                class="w-full md:w-6 flex flex-column gap-4 align-items-center"
+                            >
+                                <p
+                                    class="text-4xl font-bold"
+                                    style="color: #224e70"
+                                >
                                     Stress-Free Maintenance: Fast, Reliable, and
                                     24/7
                                 </p>
-
-                                <div class="flex flex-column gap-2">
+                                <img
+                                    src="https://www.buildium.com/wp-content/uploads/2024/12/Maintenance.png"
+                                    class="w-full border-round-lg"
+                                    alt="Maintenance Mockup"
+                                />
+                            </div>
+                            <div class="w-full md:w-6 flex flex-column gap-3">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Emergency Support Anytime
                                     </p>
                                     <p class="text-lg">
@@ -238,8 +276,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Vetted Service Providers
                                     </p>
                                     <p class="text-lg">
@@ -248,8 +289,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Real-Time Status Updates
                                     </p>
                                     <p class="text-lg">
@@ -259,8 +303,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
-                                    <p class="text-xl font-semibold">
+                                <div class="card flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Preventive Maintenance Plans
                                     </p>
                                     <p class="text-lg">
@@ -273,25 +320,33 @@
                         </div>
                     </p-tabPanel>
 
-                    <p-tabPanel header="Inventory" #tabPanel>
+                    <!-- Inventory Panel -->
+                    <p-tabPanel header="INVENTORY" #tabPanel>
                         <div
                             class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
                         >
-                            <div class="w-full md:w-6">
-                                <img
-                                    src="assets/mockups/lease2.png"
-                                    class="w-full border-round-lg"
-                                    alt="Lease Mockup"
-                                />
-                            </div>
-                            <div class="w-full md:w-6 flex flex-column gap-3">
-                                <p class="text-2xl font-semibold">
+                            <div
+                                class="w-full md:w-6 flex flex-column gap-4 align-items-center"
+                            >
+                                <p
+                                    class="text-4xl font-bold"
+                                    style="color: #224e70"
+                                >
                                     Manage Your Inventory: Organized, Efficient,
                                     and Up-to-Date
                                 </p>
-
-                                <div class="flex flex-column gap-2">
+                                <img
+                                    src="https://www.buildium.com/wp-content/uploads/2024/12/Integrations.png"
+                                    class="w-full border-round-lg"
+                                    alt="Inventory Mockup"
+                                />
+                            </div>
+                            <div class="w-full md:w-6 flex flex-column gap-3">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Visualize with Google Maps
                                     </p>
                                     <p class="text-lg">
@@ -301,8 +356,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Comprehensive Asset Management
                                     </p>
                                     <p class="text-lg">
@@ -312,8 +370,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
+                                <div class="card flex flex-column gap-2">
                                     <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Generate Reports Instantly
                                     </p>
                                     <p class="text-lg">
@@ -322,8 +383,11 @@
                                     </p>
                                 </div>
 
-                                <div class="flex flex-column gap-2">
-                                    <p class="text-xl font-semibold">
+                                <div class="card flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        <i
+                                            class="pi pi-check text-green-600 font-bold"
+                                        ></i>
                                         Scale with Confidence
                                     </p>
                                     <p class="text-lg">
@@ -342,9 +406,9 @@
 </div>
 
 <div class="grid">
-    <div class="col-1 md:col-2"></div>
-    <div class="col-8 main-content">
-        <p class="text-center text-3xl my-4 font-semibold">
+    <div class="col-1 md:col-2 hidden md:block"></div>
+    <div class="col-12 md:col-8 main-content">
+        <p class="text-center text-5xl my-4 font-bold" style="color: #224e70">
             Built for all kind of properties
         </p>
         <div class="flex md:flex-row flex-column gap-4">
@@ -381,7 +445,7 @@
         <div
             #comingSoon
             class="surface-section surface-ground"
-            style="margin-top: 3rem"
+            style="margin-top: 20rem"
         >
             <div>
                 <p class="text-3xl">Coming soon...</p>
@@ -504,7 +568,7 @@
             </div>
         </div>
     </div>
-    <div class="col-2"></div>
+    <div class="col-1 md:col-2 hidden md:block"></div>
 </div>
 
 <!-- <div
