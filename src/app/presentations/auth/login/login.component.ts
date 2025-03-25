@@ -156,7 +156,6 @@ export class LoginComponent {
         if (authenticatedUser.roles.length > 1) {
             this.showRoleSelection = true;
         } else {
-            console.log(authenticatedUser.roles);
             this.navigateToRole(authenticatedUser.roles[0]);
         }
     }

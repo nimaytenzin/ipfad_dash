@@ -17,141 +17,137 @@
             ></p-button>
         </div>
     </div>
-    <div>
-        <p-table
-            [value]="owners"
-            styleClass="p-datatable-striped"
-            #dt
-            [globalFilterFields]="['nameEnglish', 'phoneNumber', 'cid']"
-        >
-            <ng-template pTemplate="caption">
-                <div
-                    class="flex flex-column align-items-end justify-content-end"
-                >
-                    <p class="text-sm font-normal">
-                        Search by name,cid & phone number
-                    </p>
-                    <input
-                        pInputText
-                        type="text"
-                        (input)="
-                            dt.filterGlobal($event.target.value, 'contains')
-                        "
-                        placeholder="Search keyword"
-                    />
-                </div>
-            </ng-template>
-
-            <ng-template pTemplate="header">
-                <tr>
-                    <th class="text-center">Id</th>
-                    <th>Name</th>
-                    <th>Login Access</th>
-                    <th>Roles</th>
-                    <th>CID</th>
-                    <th>Phone Number</th>
-                    <th></th>
-                </tr>
-            </ng-template>
-
-            <ng-template pTemplate="body" let-item>
-                <tr [ngClass]="item.isDeleted ? 'text-red-800 bg-red-50' : ''">
-                    <td>
-                        <div class="text-center">
-                            <p>
-                                {{ item.id }}
-                            </p>
-                            <p *ngIf="item.isDeleted" class="text-xs">
-                                *Soft Deleted
-                            </p>
-                        </div>
-                    </td>
-                    <td>
-                        <p>
-                            {{ item.nameDzongkha }}
-                        </p>
-
-                        <p>
-                            {{ item.nameEnglish }}
-                        </p>
-                    </td>
-                    <td>
-                        <p
-                            class="mb-1 text-green-500 font-semibold"
-                            *ngIf="item.hasLoginAccess"
-                        >
-                            Enabled
-                        </p>
-                        <p
-                            class="mb-1 text-red-500 font-semibold"
-                            *ngIf="!item.hasLoginAccess"
-                        >
-                            Disabled
-                        </p>
-                    </td>
-                    <td>
-                        <p>
-                            [
-                            <span *ngFor="let role of item.roles">
-                                {{ role.name }}
-                            </span>
-                            ]
-                        </p>
-                    </td>
-
-                    <td>
-                        <p>
-                            {{ item.cid ? item.cid : "NA" }}
-                        </p>
-                    </td>
-                    <td>
-                        <p>
-                            {{ item.phoneNumber ? item.phoneNumber : "NA" }}
-                        </p>
-                    </td>
-
-                    <td>
-                        <div class="flex gap-2">
-                            <p-button
-                                size="small"
-                                icon="pi pi-pencil"
-                                (click)="openUpdateOwnerModal(item)"
-                            ></p-button>
-
-                            <p-button
-                                *ngIf="item.hasLoginAccess"
-                                label="Disable Login"
-                                size="small"
-                                severity="secondary"
-                            ></p-button>
-                            <p-button
-                                *ngIf="item.hasLoginAccess"
-                                label="Change Password"
-                                size="small"
-                                severity="secondary"
-                            ></p-button>
-
-                            <p-button
-                                *ngIf="!item.hasLoginAccess"
-                                label="Enable Login"
-                                size="small"
-                                icon="pi pi-lock"
-                                (click)="enableLogin()"
-                                severity="secondary"
-                            ></p-button>
-
-                            <p-button
-                                size="small"
-                                severity="secondary"
-                                label="Properties"
-                                icon="pi pi-eye"
-                                (click)="openViewPropertiesModal(item)"
-                            ></p-button>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
-    <p *ngIf="!owners.length" class="mt-4">- No Owners</p>
 </div>
+
+<div class="flex align-items-center mb-2 justify-content-between">
+    <div>
+        <p>
+            Showing {{ paginateOwners.data.length }} of
+            {{ paginateOwners.count }} Entries
+        </p>
+    </div>
+    <div class="">
+        <p-paginator
+            (onPageChange)="onPageChange($event)"
+            [first]="firstPageNumber"
+            [rows]="rows"
+            [totalRecords]="paginateOwners.count"
+            [rowsPerPageOptions]="rowsPerPageOptions"
+            [showFirstLastIcon]="true"
+            #paginator
+        ></p-paginator>
+    </div>
+</div>
+
+<p-table [value]="paginateOwners.data" styleClass="p-datatable-striped" #dt>
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="text-center">Id</th>
+            <th>Name</th>
+            <th>Login Access</th>
+            <th>Roles</th>
+            <th>CID</th>
+            <th>Phone Number</th>
+            <th></th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-item>
+        <tr [ngClass]="item.isDeleted ? 'text-red-800 bg-red-50' : ''">
+            <td>
+                <div class="text-center">
+                    <p>
+                        {{ item.id }}
+                    </p>
+                    <p *ngIf="item.isDeleted" class="text-xs">*Soft Deleted</p>
+                </div>
+            </td>
+            <td>
+                <p>
+                    {{ item.nameDzongkha }}
+                </p>
+
+                <p>
+                    {{ item.nameEnglish }}
+                </p>
+            </td>
+            <td>
+                <p
+                    class="mb-1 text-green-500 font-semibold"
+                    *ngIf="item.hasLoginAccess"
+                >
+                    Enabled
+                </p>
+                <p
+                    class="mb-1 text-red-500 font-semibold"
+                    *ngIf="!item.hasLoginAccess"
+                >
+                    Disabled
+                </p>
+            </td>
+            <td>
+                <p>
+                    [
+                    <span *ngFor="let role of item.roles">
+                        {{ role.name }}
+                    </span>
+                    ]
+                </p>
+            </td>
+
+            <td>
+                <p>
+                    {{ item.cid ? item.cid : "NA" }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ item.phoneNumber ? item.phoneNumber : "NA" }}
+                </p>
+            </td>
+
+            <td>
+                <div class="flex gap-2">
+                    <p-button
+                        size="small"
+                        icon="pi pi-pencil"
+                        (click)="openUpdateOwnerModal(item)"
+                    ></p-button>
+                    <p-button
+                        size="small"
+                        icon="pi pi-eye"
+                        label="notification prefs"
+                        (click)="openViewNotificationPreferencesModal(item)"
+                    ></p-button>
+
+                    <p-button
+                        *ngIf="item.hasLoginAccess"
+                        label="Disable Login"
+                        (click)="disableLoginAccess(item)"
+                        size="small"
+                        severity="secondary"
+                    ></p-button>
+
+                    <p-button
+                        *ngIf="!item.hasLoginAccess"
+                        label="Enable Login"
+                        size="small"
+                        icon="pi pi-lock"
+                        (click)="enableLoginAccess(item)"
+                        severity="secondary"
+                    ></p-button>
+
+                    <p-button
+                        size="small"
+                        severity="secondary"
+                        label="Properties"
+                        icon="pi pi-eye"
+                        (click)="openViewPropertiesModal(item)"
+                    ></p-button>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p *ngIf="!paginateOwners.count" class="mt-4">- No Owners registered</p>

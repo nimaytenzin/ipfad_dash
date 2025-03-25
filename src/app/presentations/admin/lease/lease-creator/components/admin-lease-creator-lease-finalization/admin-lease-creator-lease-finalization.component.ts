@@ -24,7 +24,7 @@ import {
 } from 'src/app/core/dataservice/lease/create-lease.dataservice';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { CreateLeaseAgreementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
-import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import { NotificationService } from 'src/app/core/dataservice/notifications/notification.service';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { GETMONTHDIFF, GETTOTALMONTHS } from 'src/app/core/utility/date.helper';
 

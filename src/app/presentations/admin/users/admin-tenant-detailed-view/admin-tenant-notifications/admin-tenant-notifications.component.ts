@@ -12,11 +12,11 @@ import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreeme
 import {
     NotificationChannelStatusEnum,
     NotificationResponseDTO,
-} from 'src/app/core/dataservice/notification/notification.dto';
+} from 'src/app/core/dataservice/notifications/notification.dto';
 import {
     NotificationDTO,
     NotificationService,
-} from 'src/app/core/dataservice/notification/notification.service';
+} from 'src/app/core/dataservice/notifications/notification.service';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 

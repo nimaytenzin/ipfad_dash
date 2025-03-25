@@ -50,7 +50,7 @@ import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.da
 export class AdminUsersUpdateModalComponent implements OnInit {
     updateUserForm: FormGroup;
 
-    isSubmitting: boolean = false; // Add this flag
+    isSubmitting: boolean = false;
     passedUser: UserDTO;
 
     constructor(
@@ -97,7 +97,6 @@ export class AdminUsersUpdateModalComponent implements OnInit {
                 null,
         };
 
-        // Disable the form and button while submitting
         this.isSubmitting = true;
 
         this.messageService.add({
@@ -107,7 +106,6 @@ export class AdminUsersUpdateModalComponent implements OnInit {
             life: 3000,
         });
 
-        // Call the update API
         this.userDataService
             .AdminUpdateUserDetails(this.passedUser.id, data)
             .subscribe({

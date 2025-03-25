@@ -114,6 +114,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
         private excelGeneratorService: ExcelGeneratorDataService
     ) {
         this.adminId = this.authService.GetCurrentRole().adminId;
+        console.log(this.adminId);
     }
 
     ngOnInit() {
@@ -150,6 +151,7 @@ export class AdminMasterTransactionsBuildingRentMonthlyComponent
                 this.getYearMonth().month
             )
             .subscribe((res) => {
+                console.log('STATUS FOR ADMIN', this.adminId, res);
                 this.originalData = res;
                 this.filteredData = [...this.originalData];
                 if (this.tenantPhoneNumberFilter) {

@@ -24,6 +24,7 @@ import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { UserDTO } from 'src/app/core/dataservice/users-and-auth/dto/user.dto';
+import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
@@ -94,9 +95,10 @@ export class AdminUnitLeaseUpcomingExpirationListingsComponent
         private leaseAgreementDataService: LeaseAgreementDataService,
         private authService: AuthService,
         private messageService: MessageService,
-        private excelGeneratorService: ExcelGeneratorDataService
+        private excelGeneratorService: ExcelGeneratorDataService,
+        private userDataService: UserDataService
     ) {
-        this.authService
+        this.userDataService
             .GetAdminDetails(this.authService.GetCurrentRole().adminId)
             .subscribe((res) => {
                 this.admin = res;

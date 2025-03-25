@@ -26,6 +26,7 @@ import {
     AuthenticatedUserDTO,
     CurrentRoleDTO,
 } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
+import { AvatarModule } from 'primeng/avatar';
 
 @Component({
     selector: 'app-admin-topbar',
@@ -45,6 +46,7 @@ import {
         DialogModule,
         FormsModule,
         InputTextModule,
+        AvatarModule,
     ],
     providers: [ConfirmationService, MessageService],
 })
@@ -79,12 +81,11 @@ export class AdminTopbarComponent {
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
         this.currentRole = this.authService.GetCurrentRole();
         this.isNotVerified = !Boolean(this.authenticatedUser.isVerified);
-
-        console.log(this.isNotVerified);
         if (this.currentRole.name === USERROLESENUM.ADMIN) {
             this.userService
                 .FindOneAuthenticated(this.authenticatedUser.id)
                 .subscribe((res) => {
+                    console.log(res);
                     this.admin = res;
                     this.adminProfileUri =
                         API_URL + '/' + this.admin.profileUri;

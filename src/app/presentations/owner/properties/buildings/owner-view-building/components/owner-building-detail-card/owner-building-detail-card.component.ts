@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
-import { AdminEditBuildingComponent } from 'src/app/presentations/admin/buildings/buildings/crud-modal/admin-edit-building/admin-edit-building.component';
+import { AdminEditBuildingComponent } from 'src/app/presentations/admin/properties/buildings/buildings/crud-modal/admin-edit-building/admin-edit-building.component';
 
 @Component({
     selector: 'app-owner-building-detail-card',

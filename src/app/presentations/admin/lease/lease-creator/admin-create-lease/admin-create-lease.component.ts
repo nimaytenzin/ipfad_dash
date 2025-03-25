@@ -47,7 +47,7 @@ import {
 } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { LeaseRuleDTO } from 'src/app/core/dataservice/lease/lease-rule.dto';
 import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharge.dto';
-import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import { NotificationService } from 'src/app/core/dataservice/notifications/notification.service';
 import { OrganiztionDTO } from 'src/app/core/dataservice/organization/organization.dto';
 import { UnitSurchargeDataService } from 'src/app/core/dataservice/units/unit-surcharge.data.service';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';

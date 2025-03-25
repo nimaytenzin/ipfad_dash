@@ -376,6 +376,14 @@ export class PaymentAdviceDataService {
             `${this.apiUrl}/lease-agreement/pa-pending/group-lease/${tenantId}`
         );
     }
+    GetAllPendingByTenantUnderAdminGroupedByLease(
+        tenantId: number,
+        adminId: number
+    ): Observable<LeaseAgreeementDTO[]> {
+        return this.http.get<LeaseAgreeementDTO[]>(
+            `${this.apiUrl}/lease-agreement/admin/pa-pending/group-lease/${tenantId}/${adminId}`
+        );
+    }
 
     GetAllPaidPaymentAdvicesByTenantPaginated(
         tenantId: number,
@@ -403,6 +411,32 @@ export class PaymentAdviceDataService {
         );
     }
 
+    GetAllPaidPaymentAdvicesUnderAdminByTenantPaginated(
+        tenantId: number,
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<PaymentAdviceDto>> {
+        let httpParams = new HttpParams();
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<PaymentAdviceDto>>(
+            `${this.apiUrl}/payment-advice/admin/tenant/paid/p/${tenantId}/${adminId}`,
+            { params: httpParams }
+        );
+    }
     AdminGetAllPendingByPlot(
         plotDatabaseId: number
     ): Observable<PaymentAdviceDto[]> {

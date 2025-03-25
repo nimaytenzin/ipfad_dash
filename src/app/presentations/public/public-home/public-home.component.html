@@ -1,19 +1,28 @@
-<div class="grid">
-    <div class="col-1"></div>
+<div class="grid p-0 m-0">
+    <div class="col-1 hidden md:block"></div>
     <div
         class="col-12 md:col-10 flex justify-content-between align-items-center"
     >
         <div class="flex align-items-center gap-2 font-semibold">
-            <img src="assets/zhidhaylogo.png" class="w-2rem" alt="" />
-            <p class="text-3xl">Zhidhay</p>
+            <img src="assets/logo/zhidhay.svg" class="w-4rem" alt="" />
+            <div class="flex flex-column justify-content-between">
+                <p class="text-3xl font-bold">ZHIDHAY</p>
+                <p class="text-sm">..making rentals easy</p>
+            </div>
         </div>
-
-        <p-button label="Sign In" (click)="login()" text="true"></p-button>
+        <p-button label="Sign In" (click)="login()"></p-button>
     </div>
-    <div class="col-1"></div>
+    <div class="col-1 hidden md:block"></div>
 </div>
 
-<div class="grid" style="background-color: #d5dbdb; padding: 3rem 0">
+<div
+    class="grid"
+    style="
+        background-color: #224e70;
+        padding: 3rem 0;
+        border-radius: 0 0rem 100% 0;
+    "
+>
     <div class="col-1"></div>
     <div class="col-10 main-content">
         <div
@@ -23,15 +32,16 @@
                 class="w-full order-1 md:order-0 md:w-4 text-center md:text-left"
             >
                 <p
-                    class="font-serif text-5xl md:text-7xl font-bold text-blue-600"
+                    class="font-serif text-5xl md:text-7xl font-bold"
+                    style="color: #fbf8be"
                 >
                     {{ companyName }}
                 </p>
-                <p class="text-lg md:text-3xl text-blue-600">
+                <p class="text-lg md:text-3xl" style="color: #fdfce5">
                     <strong>Simplify</strong> Your Property Management with Our
                     <strong>Automated Cloud Solution</strong>
                 </p>
-                <p class="text-lg md:text-2xl">
+                <p class="text-lg md:text-2xl" style="color: #fdfce5">
                     Manage your rental properties effortlessly with our
                     all-in-one platform designed for landlords and property
                     managers.
@@ -41,20 +51,10 @@
                 <div
                     class="flex justify-content-center md:justify-content-start gap-2 mt-3"
                 >
-                    <button
-                        style="
-                            border: none;
-                            padding: 0.6rem 1.2rem;
-                            font-size: 1rem;
-                            border-radius: 5px;
-                            background-color: #1b80cf;
-                            cursor: pointer;
-                            color: #ffffff;
-                        "
+                    <p-button
+                        label="Request Demo"
                         (click)="showRequestDemoModal = true"
-                    >
-                        Request Demo
-                    </button>
+                    ></p-button>
                 </div>
             </div>
 
@@ -77,215 +77,266 @@
     <div class="col-12 lg:col-8 main-content">
         <div #featureSection class="surface-section surface-ground">
             <p class="text-3xl md:text-5xl font-bold text-center my-4 md:my-6">
-                <span class="text-blue-500">All Your Management needs</span> in
-                <span class="text-blue-500">one place.</span>
+                <span class="" style="color: #36454f"
+                    >All Your Management needs</span
+                >
+                in
+                <span style="color: #36454f">one place.</span>
             </p>
 
-            <p-tabView [(activeIndex)]="activeIndex" class="custom-tabview">
-                <p-tabPanel header="Payments" #tabPanel>
-                    <div
-                        class="flex flex-column md:flex-row gap-4 text-white p-4 border-round-xl"
-                        style="
-                            background-color: hsla(211, 100%, 40%, 0.5);
-                            margin-top: 30px;
-                        "
-                    >
-                        <div class="w-full md:w-6">
-                            <img
-                                src="assets/mockups/lease2.png"
-                                class="w-full"
-                                alt=""
-                            />
+            <div>
+                <p-tabView
+                    [(activeIndex)]="activeIndex"
+                    class="custom-tabview text-xl"
+                >
+                    <p-tabPanel header="Payments" #tabPanel>
+                        <div
+                            class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
+                        >
+                            <div class="w-full md:w-6">
+                                <img
+                                    src="assets/mockups/lease2.png"
+                                    class="w-full border-round-lg"
+                                    alt="Lease Mockup"
+                                />
+                            </div>
+                            <div class="w-full md:w-6 flex flex-column gap-3">
+                                <p class="text-2xl font-semibold">
+                                    Transform Rent Collection: Secure,
+                                    Automated, and Hassle-Free
+                                </p>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Secured Transactions powered by RMA PG
+                                    </p>
+                                    <p class="text-lg">
+                                        Collect rent through our RMA Payment
+                                        Gateway, backed by enterprise-grade
+                                        encryption and PCI compliance. Funds hit
+                                        your account instantly—no delays, no
+                                        middlemen.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Reclaim 70% of Your Time
+                                    </p>
+                                    <p class="text-lg">
+                                        Ditch manual tracking and paperwork.
+                                        Automated reminders, late-fee
+                                        calculations, and payment tracking let
+                                        you focus on growth, not grunt work.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="text-xl font-semibold">
+                                        Deadlines? We’ve Got This
+                                    </p>
+                                    <p class="text-lg">
+                                        Tenants receive timely reminders before
+                                        due dates. Missed payments? Penalties
+                                        auto-calculate and notify everyone—no
+                                        follow-ups needed.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-full md:w-6">
-                            <p class="text-2xl md:text-3xl font-bold mb-4">
-                                Collect Rent Online Securely and On-Time
-                            </p>
-                            <p
-                                class="line-height-3 text-base md:text-lg opacity-90"
-                            >
-                                We automate everything from rent collection to
-                                late fees, and send and track other payments.
-                                Focus on what matters most while we handle the
-                                rest.
-                            </p>
-                            <ul class="list-none p-0 m-0 text-base md:text-xl">
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    100% Secured rent payments using RMA Payment
-                                    Gateway.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    100% of rent and late penalties go directly
-                                    to your account.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    70% time saved so you can focus on what you
-                                    love.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Automated payment reminders before due
-                                    dates.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Automatic penalty calculation for late
-                                    payments.
-                                </li>
-                            </ul>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="Leasing" #tabPanel>
+                        <div
+                            class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
+                        >
+                            <div class="w-full md:w-6">
+                                <img
+                                    src="assets/mockups/lease2.png"
+                                    class="w-full border-round-lg"
+                                    alt="Lease Mockup"
+                                />
+                            </div>
+                            <div class="w-full md:w-6 flex flex-column gap-3">
+                                <p class="text-2xl font-semibold">
+                                    Take Control of Your Leases: Simple, Smart,
+                                    and Seamless
+                                </p>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        All Your Leases in One Place
+                                    </p>
+                                    <p class="text-lg">
+                                        Manage residential and commercial leases
+                                        effortlessly. View terms, renewal dates,
+                                        and tenant details with a single click.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Instant Digital Signing
+                                    </p>
+                                    <p class="text-lg">
+                                        Send lease agreements for e-signature
+                                        directly from the platform. No printing,
+                                        scanning, or mailing required.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Stay Ahead of Expirations
+                                    </p>
+                                    <p class="text-lg">
+                                        Automated reminders for lease renewals
+                                        and expirations ensure you never miss a
+                                        deadline.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="text-xl font-semibold">
+                                        Real-Time Lease Insights
+                                    </p>
+                                    <p class="text-lg">
+                                        Instantly access key lease metrics like
+                                        occupancy rate, revenue, and upcoming
+                                        renewals.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </p-tabPanel>
-                <p-tabPanel header="Leasing" #tabPanel>
-                    <div
-                        class="flex flex-column md:flex-row gap-4 w-full my-4 md:my-6 p-4 md:p-6"
-                        style="
-                            border-radius: 15px;
-                            background: white;
-                            color: #1b80cf;
-                        "
-                    >
-                        <div class="w-full md:w-6 text-right">
-                            <p class="text-2xl md:text-5xl font-bold mb-3">
-                                Simplify Your Lease Management
-                            </p>
-                            <p
-                                class="line-height-3 text-base md:text-lg opacity-90"
-                            >
-                                Whether you need to create a new lease, sign an
-                                existing one, or manage renewals, we have the
-                                tools for you!
-                            </p>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="Maintenance" #tabPanel>
+                        <div
+                            class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
+                        >
+                            <div class="w-full md:w-6">
+                                <img
+                                    src="assets/mockups/lease2.png"
+                                    class="w-full border-round-lg"
+                                    alt="Lease Mockup"
+                                />
+                            </div>
+                            <div class="w-full md:w-6 flex flex-column gap-3">
+                                <p class="text-2xl font-semibold">
+                                    Stress-Free Maintenance: Fast, Reliable, and
+                                    24/7
+                                </p>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Emergency Support Anytime
+                                    </p>
+                                    <p class="text-lg">
+                                        24/7 emergency repair services—no matter
+                                        the time or place, we've got you
+                                        covered.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Vetted Service Providers
+                                    </p>
+                                    <p class="text-lg">
+                                        Get access to a network of trusted and
+                                        certified repair professionals.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Real-Time Status Updates
+                                    </p>
+                                    <p class="text-lg">
+                                        Track maintenance progress directly from
+                                        your dashboard. Get notified when
+                                        repairs are completed.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="text-xl font-semibold">
+                                        Preventive Maintenance Plans
+                                    </p>
+                                    <p class="text-lg">
+                                        Schedule routine maintenance to avoid
+                                        costly repairs and ensure tenant
+                                        satisfaction.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-full md:w-6">
-                            <ul class="list-none p-0 m-0 text-base md:text-xl">
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Maintain all records in one place.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Customizable lease templates with
-                                    e-signature support.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Stay on top of lease renewals with automated
-                                    notifications.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Access all tenant information in one place.
-                                </li>
-                            </ul>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="Inventory" #tabPanel>
+                        <div
+                            class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
+                        >
+                            <div class="w-full md:w-6">
+                                <img
+                                    src="assets/mockups/lease2.png"
+                                    class="w-full border-round-lg"
+                                    alt="Lease Mockup"
+                                />
+                            </div>
+                            <div class="w-full md:w-6 flex flex-column gap-3">
+                                <p class="text-2xl font-semibold">
+                                    Manage Your Inventory: Organized, Efficient,
+                                    and Up-to-Date
+                                </p>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Visualize with Google Maps
+                                    </p>
+                                    <p class="text-lg">
+                                        Track your properties on a real-time
+                                        interactive map—know exactly where every
+                                        asset is located.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Comprehensive Asset Management
+                                    </p>
+                                    <p class="text-lg">
+                                        Track property details, lease status,
+                                        and maintenance history all in one
+                                        place.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="font-semibold text-xl">
+                                        Generate Reports Instantly
+                                    </p>
+                                    <p class="text-lg">
+                                        Create tax reports, KML files, and lease
+                                        summaries with a single click.
+                                    </p>
+                                </div>
+
+                                <div class="flex flex-column gap-2">
+                                    <p class="text-xl font-semibold">
+                                        Scale with Confidence
+                                    </p>
+                                    <p class="text-lg">
+                                        Manage growing portfolios with
+                                        ease—whether you have 5 or 500
+                                        properties.
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </p-tabPanel>
-                <p-tabPanel header="Maintenance" #tabPanel>
-                    <div
-                        class="card flex flex-column md:flex-row gap-4 w-full text-white p-4 md:p-6"
-                        style="
-                            background-color: hsla(211, 100%, 40%, 0.5);
-                            border-radius: 10px;
-                        "
-                    >
-                        <div class="w-full md:w-6">
-                            <p class="text-2xl md:text-5xl font-bold mb-3">
-                                24X7 Maintenance Services
-                            </p>
-                        </div>
-                        <div class="w-full md:w-6">
-                            <ul class="list-none p-0 m-0 text-base md:text-xl">
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Access 24/7 repair coordination.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Receive timely updates on repair status.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    End-to-end repair support.
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </p-tabPanel>
-                <p-tabPanel header="Inventory" #tabPanel>
-                    <div
-                        class="flex flex-column md:flex-row gap-4 w-full my-4 md:my-6 p-4 md:p-6"
-                        style="
-                            border-radius: 15px;
-                            background: white;
-                            color: #1b80cf;
-                        "
-                    >
-                        <div class="w-full md:w-6">
-                            <ul class="list-none p-0 m-0 text-base md:text-xl">
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    View your properties spatially with Google
-                                    Maps.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Generate KML files for Google Earth.
-                                </li>
-                                <li class="mb-3 flex align-items-center">
-                                    <i
-                                        class="pi pi-check-circle text-green-300 mr-2"
-                                    ></i>
-                                    Generate tax reports easily.
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="w-full md:w-6 text-right">
-                            <p class="text-2xl md:text-5xl font-bold mb-3">
-                                Maintain an inventory of all your assets.
-                            </p>
-                            <p
-                                class="line-height-3 text-base md:text-lg opacity-90"
-                            >
-                                Maintain an inventory of all your land and
-                                buildings. You only get charged for rented
-                                properties.
-                            </p>
-                        </div>
-                    </div>
-                </p-tabPanel>
-            </p-tabView>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
         </div>
     </div>
 </div>
@@ -310,10 +361,10 @@
             >
                 <img
                     src="assets/icons/duplex.jpg"
-                    class="w-14rem md:w-24rem"
+                    class="w-12rem md:w-22rem"
                     alt=""
                 />
-                <p>duplexes</p>
+                <p class="font-semibold text-lg">Duplexes</p>
             </div>
             <div
                 class="flex flex-column align-items-center justify-content-end gap-2"
@@ -324,7 +375,7 @@
                     alt=""
                 />
 
-                <p>Housing Colonies</p>
+                <p class="font-semibold text-lg">Apartments</p>
             </div>
         </div>
         <div

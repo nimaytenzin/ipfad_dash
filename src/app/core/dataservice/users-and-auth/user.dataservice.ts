@@ -3,6 +3,10 @@ import { Injectable } from '@angular/core';
 import { API_URL } from '../../constants/constants';
 import { Observable } from 'rxjs';
 import { CreateUserDTO, UpdateUserDetailsDTO, UserDTO } from './dto/user.dto';
+import {
+    PaginatedData,
+    PaginatedParamsOptions,
+} from '../../dto/paginated-data.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -12,34 +16,64 @@ export class UserDataService {
 
     constructor(private http: HttpClient) {}
 
-    AdminCreateUser(data: CreateUserDTO): Observable<UserDTO> {
-        return this.http.post<UserDTO>(
-            `${this.apiUrl}/auth/admin/signup`,
-            data
+    GetAdminDetails(id: number): Observable<UserDTO> {
+        return this.http.get<UserDTO>(
+            `${this.apiUrl}/auth/admin-details/${id}`
         );
     }
+
     AdminUpdateUserDetails(
         userId: number,
         data: UpdateUserDetailsDTO
     ): Observable<UserDTO> {
         return this.http.patch<UserDTO>(
-            `${this.apiUrl}/auth/update/${userId}`,
+            `${this.apiUrl}/user/update/${userId}`,
             data
         );
     }
 
     AdminGetAllOwners(adminId: number): Observable<UserDTO[]> {
-        return this.http.get<UserDTO[]>(`${this.apiUrl}/auth/owner/${adminId}`);
+        return this.http.get<UserDTO[]>(
+            `${this.apiUrl}/auth/owners/admin/${adminId}`
+        );
     }
+
+    AdminGetAllOwnersByAdminPaginated(
+        adminId: number,
+        params?: PaginatedParamsOptions
+    ): Observable<PaginatedData<UserDTO>> {
+        let httpParams = new HttpParams();
+
+        if (params) {
+            if (params.pageNo !== undefined) {
+                httpParams = httpParams.append(
+                    'pageNo',
+                    params.pageNo.toString()
+                );
+            }
+            if (params.pageSize !== undefined) {
+                httpParams = httpParams.append(
+                    'pageSize',
+                    params.pageSize.toString()
+                );
+            }
+        }
+
+        return this.http.get<PaginatedData<UserDTO>>(
+            `${this.apiUrl}/user/owners/admin/p/${adminId}`,
+            { params: httpParams }
+        );
+    }
+
     AdminGetAllTenants(adminId: number): Observable<UserDTO[]> {
         return this.http.get<UserDTO[]>(
-            `${this.apiUrl}/auth/tenants/admin/${adminId}`
+            `${this.apiUrl}/user/tenants/admin/${adminId}`
         );
     }
 
     AdminGetAllManagersByAdmin(adminId: number): Observable<UserDTO[]> {
         return this.http.get<UserDTO[]>(
-            `${this.apiUrl}/auth/managers/admin/${adminId}`
+            `${this.apiUrl}/user/managers/admin/${adminId}`
         );
     }
 
@@ -51,7 +85,7 @@ export class UserDataService {
 
     AdminSearchTenantByPhoneNumber(phoneNumber: number): Observable<UserDTO> {
         return this.http.get<UserDTO>(
-            `${this.apiUrl}/auth/tenant/phone/${phoneNumber}`
+            `${this.apiUrl}/user/tenant/phone/${phoneNumber}`
         );
     }
 
@@ -63,7 +97,7 @@ export class UserDataService {
 
     AdminFindTenantByPhoneNumber(phoneNumber: number): Observable<UserDTO> {
         return this.http.get<UserDTO>(
-            `${this.apiUrl}/auth/tenant/phone/${phoneNumber}`
+            `${this.apiUrl}/user/tenant/phone/${phoneNumber}`
         );
     }
 
@@ -72,6 +106,6 @@ export class UserDataService {
     }
 
     AdminFindTenantByCID(cid: string): Observable<UserDTO> {
-        return this.http.get<UserDTO>(`${this.apiUrl}/auth/tenant/cid/${cid}`);
+        return this.http.get<UserDTO>(`${this.apiUrl}/user/tenant/cid/${cid}`);
     }
 }

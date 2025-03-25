@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import {
     CreateThramDTO,
     SearchThramDTO,
+    SearchThramUnderAdminDTO,
     ThramDTO,
     UpdateThramDTO,
 } from './dto/thram.dto';
@@ -70,9 +71,22 @@ export class ThramDataService {
     SearchForThramByThramNo(data: SearchThramDTO): Observable<ThramDTO> {
         return this.http.post<ThramDTO>(`${this.apiUrl}/thram/search`, data);
     }
+    SearchForThramUnderAdminByThramNo(
+        data: SearchThramUnderAdminDTO
+    ): Observable<ThramDTO> {
+        return this.http.post<ThramDTO>(
+            `${this.apiUrl}/thram/search/admin`,
+            data
+        );
+    }
     SearchForThramByPlotId(plotId): Observable<ThramDTO> {
         return this.http.get<ThramDTO>(
             `${this.apiUrl}/thram/search/plot/${plotId}`
+        );
+    }
+    SearchForThramUnderAdminByPlotId(plotId, adminId): Observable<ThramDTO> {
+        return this.http.get<ThramDTO>(
+            `${this.apiUrl}/thram/search/plot/admin/${plotId}/${adminId}`
         );
     }
 

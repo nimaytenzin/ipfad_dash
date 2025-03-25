@@ -28,6 +28,7 @@ import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreeme
 import { DividerModule } from 'primeng/divider';
 import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
 import { AdminViewPaymentReceiptModalComponent } from '../../../transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-admin-tenant-payments',
@@ -76,7 +77,8 @@ export class AdminTenantPaymentsComponent implements OnInit, OnChanges {
         private userDataService: UserDataService,
         private messageService: MessageService,
         private paymentAdviceDataService: PaymentAdviceDataService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private authService: AuthService
     ) {}
 
     ngOnInit() {
@@ -93,7 +95,10 @@ export class AdminTenantPaymentsComponent implements OnInit, OnChanges {
     findPendingByTenant() {
         console.log(this.tenantId);
         this.paymentAdviceDataService
-            .GetAllPendingByTenantGroupedByLease(this.tenantId)
+            .GetAllPendingByTenantUnderAdminGroupedByLease(
+                this.tenantId,
+                this.authService.GetCurrentRole().adminId
+            )
             .subscribe({
                 next: (res) => {
                     if (res) {
@@ -152,14 +157,14 @@ export class AdminTenantPaymentsComponent implements OnInit, OnChanges {
         };
 
         this.paymentAdviceDataService
-            .GetAllPaidPaymentAdvicesByTenantPaginated(
+            .GetAllPaidPaymentAdvicesUnderAdminByTenantPaginated(
                 this.tenantId,
+                this.authService.GetCurrentRole().adminId,
                 queryParams
             )
             .subscribe({
                 next: (res) => {
                     this.paginatedPaidPaymentAdvice = res;
-                    console.log('PAID PA TENTNTAS', res);
                 },
                 error: (err) => {
                     console.log(err);

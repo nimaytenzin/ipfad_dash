@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { DividerModule } from 'primeng/divider';
 import { ZHIDHAYCONTACTDETAILS } from 'src/app/core/constants/constants';
-import { NotificationDTO } from 'src/app/core/dataservice/notification/notification.service';
+import { NotificationDTO } from 'src/app/core/dataservice/notifications/notification.service';
 
 @Component({
     selector: 'app-tenant-notifications-summary',

@@ -24,7 +24,7 @@ import {
     PAType,
     PAYMENTMODES,
 } from 'src/app/core/constants/enums';
-import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import { NotificationService } from 'src/app/core/dataservice/notifications/notification.service';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import {

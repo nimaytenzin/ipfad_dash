@@ -12,7 +12,19 @@
 
     <div class="flex ml-4 gap-2 align-items-center">
         <div>
-            <img [src]="this.adminProfileUri" style="height: 30px" />
+            <img
+                *ngIf="admin?.profileUri"
+                [src]="this.adminProfileUri"
+                style="height: 30px"
+            />
+
+            <p-avatar
+                *ngIf="!admin?.profileUri"
+                [label]="admin?.nameEnglish[0]"
+                styleClass="mr-2"
+                size="large"
+                shape="circle"
+            />
         </div>
         <div class="flex flex-column">
             <p>

@@ -63,6 +63,15 @@ export class PlotDataService {
         return this.http.get<PlotDTO>(`${this.apiUrl}/plot/search/${plotId}`);
     }
 
+    SearchPlotUnderAdminByPlotId(
+        plotId: string,
+        adminId: number
+    ): Observable<PlotDTO> {
+        return this.http.get<PlotDTO>(
+            `${this.apiUrl}/plot/search/admin/${plotId}/${adminId}`
+        );
+    }
+
     GetPlotByPlotDatabaseId(plotDatabaseId: number): Observable<PlotDTO> {
         return this.http.get<PlotDTO>(`${this.apiUrl}/plot/${plotDatabaseId}`);
     }

@@ -33,7 +33,7 @@ import { MessageService } from 'primeng/api';
 import {
     NotificationDTO,
     NotificationService,
-} from 'src/app/core/dataservice/notification/notification.service';
+} from 'src/app/core/dataservice/notifications/notification.service';
 import { AuthenticatedUserDTO } from 'src/app/core/dataservice/users-and-auth/dto/auth.dto';
 
 @Component({

@@ -250,6 +250,12 @@ export const ADMINSIDEBARITEMS = [
                 roles: [USERROLESENUM.ADMIN],
             },
             {
+                label: 'Notifications',
+                icon: 'pi pi-fw pi-th-large',
+                routerLink: ['/admin/system-settings/notifications'],
+                roles: [USERROLESENUM.ADMIN],
+            },
+            {
                 label: 'Setttings',
                 icon: 'pi pi-fw pi-th-large',
                 routerLink: ['/admin/system-settings'],

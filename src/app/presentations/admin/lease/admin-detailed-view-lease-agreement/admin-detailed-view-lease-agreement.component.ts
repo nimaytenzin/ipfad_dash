@@ -24,7 +24,7 @@ import { LeaseSurchargeDTO } from 'src/app/core/dataservice/lease/lease-surcharg
 import {
     NotificationDTO,
     NotificationService,
-} from 'src/app/core/dataservice/notification/notification.service';
+} from 'src/app/core/dataservice/notifications/notification.service';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { GETMONTHNAME, GETMONTHDIFF } from 'src/app/core/utility/date.helper';
@@ -62,6 +62,7 @@ import { PaymentAdviceDto } from 'src/app/core/dto/payments/payment-advice.dto';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
 import { AdminViewPaymentReceiptModalComponent } from '../../transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 import { FileUploadModule } from 'primeng/fileupload';
+import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 
 @Component({
     selector: 'app-admin-detailed-view-lease-agreement',
@@ -161,7 +162,8 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private geometryDataService: GeometryDataService,
         private paymentAdviceDataService: PaymentAdviceDataService,
-        private router: Router
+        private router: Router,
+        private userDataService: UserDataService
     ) {
         this.leaseAgreementId = Number(
             this.route.snapshot.paramMap.get('leaseAgreementId')
@@ -174,7 +176,7 @@ export class AdminDetailedViewLeaseAgreementComponent implements OnInit {
                 this.activeIndex = tabIndex;
             }
         );
-        this.authService
+        this.userDataService
             .GetAdminDetails(this.authService.GetCurrentRole().adminId)
             .subscribe((res) => {
                 this.admin = res;

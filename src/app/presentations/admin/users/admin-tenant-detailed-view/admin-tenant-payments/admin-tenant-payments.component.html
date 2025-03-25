@@ -6,21 +6,20 @@
     <div *ngFor="let lease of pendingPaymentAdvicesGroupedByLease" class="mb-3">
         <div #propertyLeased class="mt-4">
             <p><strong>Lease Type:</strong> {{ lease?.type }}</p>
-            <div *ngIf="lease?.type === leaseTypeEnums.UNIT">
+            <div
+                *ngIf="
+                    lease?.type === leaseTypeEnums.UNIT ||
+                    lease?.type === leaseTypeEnums.BUILDING
+                "
+            >
                 <p>
                     <strong>Unit Number: </strong>
                     {{ lease?.unit?.floorLevel }}-{{ lease?.unit?.unitNumber }}
-                    <br />
+                </p>
+                <p *ngIf="lease?.unit?.remarks">
                     <strong>Remarks: </strong>
                     {{ lease?.unit?.remarks }}
                 </p>
-            </div>
-            <div
-                *ngIf="
-                    lease?.type === leaseTypeEnums.BUILDING ||
-                    leaseTypeEnums.UNIT
-                "
-            >
                 <p>
                     <strong>Building Name:</strong>
                     {{ lease?.building?.name }}
@@ -30,6 +29,7 @@
                     {{ lease?.building?.buildingNumber }}
                 </p>
             </div>
+
             <p>
                 <strong>PlotId:</strong>
                 {{ lease?.plot?.plotId }}

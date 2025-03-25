@@ -25,6 +25,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 import { ViewPaymentAdviceComponent } from '../view-payment-advice-modal/view-payment-advice.component';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
+import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 
 @Component({
     selector: 'app-admin-view-payment-receipt-modal',
@@ -56,7 +57,8 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
         private authService: AuthService,
         private ref: DynamicDialogRef,
         private pdfGeneratorDataService: PDFGeneratorDataService,
-        private paymentAdviceDataService: PaymentAdviceDataService
+        private paymentAdviceDataService: PaymentAdviceDataService,
+        private userDataService: UserDataService
     ) {
         this.paymentReceiptId = this.config.data.paymentReceiptId;
         this.getPaymentReceiptDetails();
@@ -76,7 +78,7 @@ export class AdminViewPaymentReceiptModalComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.authService
+        this.userDataService
             .GetAdminDetails(this.authService.GetCurrentRole().adminId)
             .subscribe((res) => {
                 this.admin = res;

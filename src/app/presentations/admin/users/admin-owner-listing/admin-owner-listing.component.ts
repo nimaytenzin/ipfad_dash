@@ -18,6 +18,10 @@ import { AdminViewPropertiesModalComponent } from '../components/admin-view-prop
 import { AdminUsersUpdateModalComponent } from '../components/admin-users-update-modal/admin-users-update-modal.component';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
 import { InputTextModule } from 'primeng/inputtext';
+import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
+import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
+import { PaginatorModule } from 'primeng/paginator';
+import { AdminUsersNotificationPreferencesComponent } from '../components/admin-users-notification-preferences/admin-users-notification-preferences.component';
 
 @Component({
     selector: 'app-admin-owner-listing',
@@ -32,6 +36,7 @@ import { InputTextModule } from 'primeng/inputtext';
         ChipModule,
         DividerModule,
         InputTextModule,
+        PaginatorModule,
     ],
     providers: [DialogService, ConfirmationService],
 })
@@ -39,6 +44,20 @@ export class AdminOwnerListingComponent implements OnInit {
     ref: DynamicDialogRef;
 
     owners: UserDTO[] = [];
+    paginateOwners: PaginatedData<UserDTO> = {
+        firstPage: 0,
+        currentPage: 0,
+        previousPage: 0,
+        nextPage: 0,
+        lastPage: 0,
+        limit: 0,
+        count: 0,
+        data: [],
+    };
+    rowsPerPageOptions = ROWSPERPAGEOPTION;
+    firstPageNumber = 0;
+    rows = ROWSPERPAGEOPTION[0];
+    currentPage = 0;
 
     constructor(
         private dialogService: DialogService,
@@ -51,13 +70,35 @@ export class AdminOwnerListingComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.getAllOwners();
+        this.handlePagination();
+    }
+
+    onPageChange(event: PageEvent): void {
+        this.firstPageNumber = event.first;
+        this.currentPage = event.page;
+        this.rows = event.rows;
+        this.handlePagination();
+    }
+
+    private handlePagination(): void {
+        const queryParams: any = {
+            pageNo: this.currentPage,
+            pageSize: this.rows,
+        };
+
+        this.userDataService
+            .AdminGetAllOwnersByAdminPaginated(
+                this.authService.GetCurrentRole().adminId,
+                queryParams
+            )
+            .subscribe({
+                next: (res) => {
+                    this.paginateOwners = res;
+                },
+            });
     }
 
     openCreateOwnerModal() {
-        // this.role = this.config.data.role;
-        // this.adminId = this.config.data.adminId;
-
         this.ref = this.dialogService.open(AdminUsersCreateModalComponent, {
             header: 'Create Owner',
             data: {
@@ -68,7 +109,7 @@ export class AdminOwnerListingComponent implements OnInit {
         });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 201) {
-                this.getAllOwners();
+                this.handlePagination();
             }
         });
     }
@@ -82,7 +123,7 @@ export class AdminOwnerListingComponent implements OnInit {
         });
         this.ref.onClose.subscribe((res) => {
             if (res && res.status === 200) {
-                this.getAllOwners();
+                this.handlePagination();
             }
         });
     }
@@ -102,7 +143,7 @@ export class AdminOwnerListingComponent implements OnInit {
                 this.ownerDataService.DeleteOwner(owner.id).subscribe({
                     next: (res) => {
                         if (res) {
-                            this.getAllOwners();
+                            this.handlePagination();
                             this.messageService.add({
                                 severity: 'info',
                                 summary: 'Confirmed',
@@ -116,18 +157,88 @@ export class AdminOwnerListingComponent implements OnInit {
         });
     }
 
-    getAllOwners() {
-        this.userDataService
-            .AdminGetAllOwners(this.authService.GetCurrentRole().adminId)
-            .subscribe({
-                next: (res) => {
-                    this.owners = res;
-                },
-            });
+    enableLoginAccess(item: UserDTO) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+                'Are you sure that you want to Enable Login for ' +
+                item.nameEnglish +
+                '?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.authService
+                    .AdminEnableUserLogin({
+                        userId: item.id,
+                        adminId: this.authService.GetCurrentRole().adminId,
+                    })
+                    .subscribe({
+                        next: (res) => {
+                            if (res) {
+                                this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Login Enabled',
+                                    detail:
+                                        'Login enabled for ' + item.nameEnglish,
+                                });
+                                this.handlePagination();
+                            }
+                        },
+                        error: (err) => {
+                            this.messageService.add({
+                                severity: 'info',
+                                summary: 'Error',
+                                detail: err.error.message,
+                            });
+                        },
+                    });
+            },
+        });
     }
-
-    enableLogin() {
-        alert('will be availble soon in v1.1');
+    disableLoginAccess(item: UserDTO) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message:
+                'Are you sure that you want to Disable Login for ' +
+                item.nameEnglish +
+                '?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon: 'none',
+            rejectIcon: 'none',
+            rejectButtonStyleClass: 'p-button-text',
+            accept: () => {
+                this.authService
+                    .AdminDisableUserLogin({
+                        userId: item.id,
+                        adminId: this.authService.GetCurrentRole().adminId,
+                    })
+                    .subscribe({
+                        next: (res) => {
+                            if (res) {
+                                this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Login Disabled',
+                                    detail:
+                                        'Login disabled for ' +
+                                        item.nameEnglish,
+                                });
+                                this.handlePagination();
+                            }
+                        },
+                        error: (err) => {
+                            this.messageService.add({
+                                severity: 'info',
+                                summary: 'Error',
+                                detail: err.error.message,
+                            });
+                        },
+                    });
+            },
+        });
     }
 
     downloadMasterTable() {
@@ -166,5 +277,17 @@ export class AdminOwnerListingComponent implements OnInit {
                 ...item,
             },
         });
+    }
+
+    openViewNotificationPreferencesModal(item: UserDTO) {
+        this.ref = this.dialogService.open(
+            AdminUsersNotificationPreferencesComponent,
+            {
+                header: 'Notification Preferences',
+                data: {
+                    ...item,
+                },
+            }
+        );
     }
 }

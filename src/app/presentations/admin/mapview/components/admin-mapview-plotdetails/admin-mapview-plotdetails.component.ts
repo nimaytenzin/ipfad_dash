@@ -7,7 +7,7 @@ import { DividerModule } from 'primeng/divider';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { PlotDataService } from 'src/app/core/dataservice/land/plot.dataservice';
-import { AdminPlotPhotosComponent } from '../../../land/plots/components/admin-plot-photos/admin-plot-photos.component';
+import { AdminPlotPhotosComponent } from '../../../properties/land/plots/components/admin-plot-photos/admin-plot-photos.component';
 
 @Component({
     selector: 'app-admin-mapview-plotdetails',

@@ -26,6 +26,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { PDFGeneratorDataService } from 'src/app/core/dataservice/pdf.generator.dataservice';
 import { SystemSettingService } from 'src/app/core/dataservice/system.setting.dataservice';
+import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 @Component({
     selector: 'app-view-payment-advice',
     templateUrl: './view-payment-advice.component.html',
@@ -69,7 +70,8 @@ export class ViewPaymentAdviceComponent implements OnInit {
         private confirmationService: ConfirmationService,
         private messageService: MessageService,
         private pdfGeneratorDataService: PDFGeneratorDataService,
-        private systemSettingService: SystemSettingService
+        private systemSettingService: SystemSettingService,
+        private userDataService: UserDataService
     ) {
         this.paymentAdvice = this.config.data;
         if (
@@ -102,7 +104,7 @@ export class ViewPaymentAdviceComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.authService
+        this.userDataService
             .GetAdminDetails(this.authService.GetCurrentRole().adminId)
             .subscribe((res) => {
                 this.admin = res;

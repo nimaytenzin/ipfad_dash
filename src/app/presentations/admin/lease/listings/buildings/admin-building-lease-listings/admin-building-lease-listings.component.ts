@@ -125,7 +125,6 @@ export class AdminBuildingLeaseListingsComponent implements OnInit {
             pageSize: this.rows,
         };
 
-        console.log(queryParams);
         this.leaseAgreementDataService
             .GetAllBuildingLeaseByAdminPaginated(
                 this.authService.GetCurrentRole().adminId,

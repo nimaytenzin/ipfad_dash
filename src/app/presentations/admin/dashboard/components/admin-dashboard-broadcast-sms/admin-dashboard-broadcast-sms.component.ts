@@ -9,7 +9,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { BuildingDataService } from 'src/app/core/dataservice/building/building.dataservice';
-import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import { NotificationService } from 'src/app/core/dataservice/notifications/notification.service';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 

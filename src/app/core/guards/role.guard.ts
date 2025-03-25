@@ -26,7 +26,10 @@ export class RoleGuard implements CanActivate {
         const user: AuthenticatedUserDTO =
             this.authService.GetAuthenticatedUser();
 
-        if (user && user.role && this.hasRole(user, next.data['roles'])) {
+        console.log('authernticated user', user);
+        console.log('allowed roles', next.data);
+
+        if (user && user.roles && this.hasRole(user, next.data['roles'])) {
             return true;
         } else {
             this.messageService.add({
@@ -42,15 +45,8 @@ export class RoleGuard implements CanActivate {
         user: AuthenticatedUserDTO,
         allowedRoles: string[]
     ): boolean {
-        const userRolesArray = this.parseRolesString(user.role);
-
-        return userRolesArray.some((role) => allowedRoles.includes(role));
-    }
-
-    private parseRolesString(roles: string): string[] {
-        return roles
-            .replace(/[\[\]']/g, '')
-            .split(',')
-            .map((role) => role.trim());
+        const userRolesArray = user.roles;
+        console.log(userRolesArray, allowedRoles);
+        return userRolesArray.some((role) => allowedRoles.includes(role.name));
     }
 }

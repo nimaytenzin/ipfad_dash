@@ -45,3 +45,10 @@ export interface SearchThramDTO {
     administrativeZoneId: number;
     thramNo: string;
 }
+
+export interface SearchThramUnderAdminDTO {
+    adminId: number;
+    dzongkhagId: number;
+    administrativeZoneId: number;
+    thramNo: string;
+}

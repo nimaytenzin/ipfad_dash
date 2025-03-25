@@ -11,7 +11,6 @@ import { TableModule } from 'primeng/table';
 import { ROWSPERPAGEOPTION, PageEvent } from 'src/app/core/constants/constants';
 import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
-import { AdminBuildingDetailsCardComponent } from '../../buildings/buildings/components/admin-building-details-card/admin-building-details-card.component';
 import { UnitDataService } from 'src/app/core/dataservice/units/unit.dataservice';
 import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { LESSEETYPE } from 'src/app/core/constants/enums';
@@ -22,6 +21,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
+import { AdminBuildingDetailsCardComponent } from '../../properties/buildings/buildings/components/admin-building-details-card/admin-building-details-card.component';
 
 @Component({
     selector: 'app-admin-all-unit-listing',

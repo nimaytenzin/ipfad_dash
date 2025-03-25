@@ -110,11 +110,8 @@ export class AdminLeaseCreatorTenantSelectorComponent implements OnInit {
                 error: (err) => {
                     this.messageService.add({
                         severity: 'error',
-                        summary: 'Tenant Not Found!',
-                        detail:
-                            'Tenant with phone ' +
-                            this.searchPhoneNumber +
-                            ' not found.',
+                        summary: err.error.statusCode,
+                        detail: err.error.message,
                     });
                 },
             });

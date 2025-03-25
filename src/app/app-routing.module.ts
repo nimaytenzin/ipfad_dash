@@ -34,10 +34,10 @@ import { PrivacyComponent } from './privacy/privacy.component';
                 {
                     path: 'admin',
                     component: AdminLayoutComponent,
-                    // canActivate: [RoleGuard],
-                    // data: {
-                    //     roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
-                    // },
+                    canActivate: [RoleGuard],
+                    data: {
+                        roles: [USERROLESENUM.ADMIN, USERROLESENUM.MANAGER],
+                    },
                     children: [
                         {
                             path: '',
@@ -50,7 +50,7 @@ import { PrivacyComponent } from './privacy/privacy.component';
                             path: 'master-properties',
                             loadChildren: () =>
                                 import(
-                                    './presentations/admin/buildings/admin-master-properties-routing.module'
+                                    './presentations/admin/properties/admin-master-properties-routing.module'
                                 ).then(
                                     (m) => m.AdminMasterPropertiesRoutingModule
                                 ),

@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import {
     AdminDisableUserLoginDTO,
+    AdminEnableUserLogin,
+    CreateUserDTO,
     UpdateUserDetailsDTO,
     UserDTO,
 } from './dto/user.dto';
@@ -36,6 +38,13 @@ export class AuthService {
         return this.http.post(`${this.apiUrl}/auth/login`, data);
     }
 
+    AdminCreateUser(data: CreateUserDTO): Observable<UserDTO> {
+        return this.http.post<UserDTO>(
+            `${this.apiUrl}/auth/admin/signup`,
+            data
+        );
+    }
+
     UpdateUserDetails(id: number, data: UpdateUserDetailsDTO) {
         return this.http.patch(
             `${this.apiUrl}/auth/update/details/${id}`,
@@ -43,17 +52,11 @@ export class AuthService {
         );
     }
 
-    GetAdminDetails(id: number): Observable<UserDTO> {
-        return this.http.get<UserDTO>(
-            `${this.apiUrl}/auth/admin-details/${id}`
-        );
-    }
-
     AdminDisableUserLogin(data: AdminDisableUserLoginDTO) {
         return this.http.post(`${this.apiUrl}/auth/admin/disable-login`, data);
     }
 
-    AdminEnableUserLogin(data: AdminDisableUserLoginDTO) {
+    AdminEnableUserLogin(data: AdminEnableUserLogin) {
         return this.http.post(`${this.apiUrl}/auth/admin/enable-login`, data);
     }
 

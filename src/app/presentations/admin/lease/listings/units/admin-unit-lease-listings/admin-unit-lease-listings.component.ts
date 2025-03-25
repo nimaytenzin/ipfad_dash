@@ -29,6 +29,7 @@ import { UnitDTO } from 'src/app/core/dto/units/unit.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { ExcelGeneratorDataService } from 'src/app/core/dataservice/excel.generator.dataservice';
+import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 
 @Component({
     selector: 'app-admin-unit-lease-listings',
@@ -91,9 +92,10 @@ export class AdminUnitLeaseListingsComponent implements OnInit {
         private leaseAgreementDataService: LeaseAgreementDataService,
         private authService: AuthService,
         private messageService: MessageService,
-        private excelGeneratorService: ExcelGeneratorDataService
+        private excelGeneratorService: ExcelGeneratorDataService,
+        private userDataService: UserDataService
     ) {
-        this.authService
+        this.userDataService
             .GetAdminDetails(this.authService.GetCurrentRole().adminId)
             .subscribe((res) => {
                 this.admin = res;

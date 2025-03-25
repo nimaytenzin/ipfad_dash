@@ -8,7 +8,7 @@ import { BuildingDataService } from 'src/app/core/dataservice/building/building.
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
 import { QRCodeModule } from 'angularx-qrcode';
 import { PARSEBUILDINGFLOORS } from 'src/app/core/utility/helper.function';
-import { AdminBuildingPhotosComponent } from '../../../buildings/buildings/components/admin-building-photos/admin-building-photos.component';
+import { AdminBuildingPhotosComponent } from '../../../properties/buildings/buildings/components/admin-building-photos/admin-building-photos.component';
 @Component({
     selector: 'app-admin-mapview-buildingdetails',
     templateUrl: './admin-mapview-buildingdetails.component.html',

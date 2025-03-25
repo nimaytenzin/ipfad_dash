@@ -28,7 +28,7 @@ import { Router } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { NotificationService } from 'src/app/core/dataservice/notification/notification.service';
+import { NotificationService } from 'src/app/core/dataservice/notifications/notification.service';
 import { AdminViewPaymentReceiptModalComponent } from '../../../transactions/shared-components/admin-view-payment-receipt-modal/admin-view-payment-receipt-modal.component';
 import { PaymentReceiptDTO } from 'src/app/core/dto/payments/payment-receipt-dto';
 

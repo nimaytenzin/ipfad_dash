@@ -1,0 +1,13 @@
+<div *ngFor="let item of groupedNotificationPrefs" class="">
+    <p>{{ item.name }}</p>
+    <p>{{ item.description }}</p>
+    <div class="flex">
+        <div *ngFor="let channel of item.channels" class="channel-item">
+            <span>{{ channel.channelName }}</span>
+            <p-inputSwitch
+                [modelValue]="channel.isSubscribed"
+                (ngModelChange)="updateSubscription(channel.id, $event)"
+            ></p-inputSwitch>
+        </div>
+    </div>
+</div>

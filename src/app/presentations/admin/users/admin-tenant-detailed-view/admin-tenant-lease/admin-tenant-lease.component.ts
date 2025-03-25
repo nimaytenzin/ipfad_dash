@@ -19,6 +19,7 @@ import { PlotDTO } from 'src/app/core/dataservice/land/dto/plot.dto';
 import { LeaseAgreementDataService } from 'src/app/core/dataservice/lease/lease-agreement.dataservice';
 import { LeaseAgreeementDTO } from 'src/app/core/dataservice/lease/lease-agreement.dto';
 import { PaymentAdviceDataService } from 'src/app/core/dataservice/payments/payment-advice.dataservice';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 import { UserDataService } from 'src/app/core/dataservice/users-and-auth/user.dataservice';
 import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { BuildingDTO } from 'src/app/core/dto/properties/building.dto';
@@ -78,7 +79,8 @@ export class AdminTenantLeaseComponent implements OnInit {
         private paymentAdviceDataService: PaymentAdviceDataService,
         private dialogService: DialogService,
         private leaseAgreementDataService: LeaseAgreementDataService,
-        private router: Router
+        private router: Router,
+        private authService: AuthService
     ) {}
 
     ngOnInit() {
@@ -135,11 +137,15 @@ export class AdminTenantLeaseComponent implements OnInit {
         };
 
         this.leaseAgreementDataService
-            .GetAllNonActiveLeaseByTenantPaginated(this.tenantId, queryParams)
+            .GetAllNonActiveLeaseUnderAdminByTenantPaginated(
+                this.tenantId,
+                this.authService.GetCurrentRole().adminId,
+
+                queryParams
+            )
             .subscribe({
                 next: (res) => {
                     this.paginatedLeaseHistory = res;
-                    console.log('PAID PA TENTNTAS', res);
                 },
                 error: (err) => {
                     console.log(err);
@@ -149,7 +155,10 @@ export class AdminTenantLeaseComponent implements OnInit {
 
     findActiveLeaseAgreementByTenant() {
         this.leaseAgreementDataService
-            .GetActiveLeaseAgreementsByTenant(this.tenantId)
+            .GetActiveLeaseAgreementsUnderAdminByTenant(
+                this.tenantId,
+                this.authService.GetCurrentRole().adminId
+            )
             .subscribe({
                 next: (res) => {
                     this.activeLeaseAgreements = res;
@@ -159,7 +168,10 @@ export class AdminTenantLeaseComponent implements OnInit {
 
     findPendingLeaseAgreementsByTenant() {
         this.leaseAgreementDataService
-            .GetPendingLeaseAgreementsByTenant(this.tenantId)
+            .GetPendingLeaseAgreementsUnderAdminByTenant(
+                this.tenantId,
+                this.authService.GetCurrentRole().adminId
+            )
             .subscribe({
                 next: (res) => {
                     this.pendingLeaseAgreements = res;
@@ -177,7 +189,10 @@ export class AdminTenantLeaseComponent implements OnInit {
 
     findUpcomingExpirationLeaseAgreementsByTenant() {
         this.leaseAgreementDataService
-            .GetUpcomingExpirationLeaseAgreementsByTenant(this.tenantId)
+            .GetUpcomingExpirationLeaseAgreementsUnderAdminByTenant(
+                this.tenantId,
+                this.authService.GetCurrentRole().adminId
+            )
             .subscribe({
                 next: (res) => {
                     this.upcomingExpiryLeaseAgreements = res;

@@ -54,7 +54,8 @@ export class AdminUsersCreateModalComponent implements OnInit {
         private ref: DynamicDialogRef,
         private userDataService: UserDataService,
         private config: DynamicDialogConfig,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private authService: AuthService
     ) {
         this.role = this.config.data.role;
         this.adminId = this.config.data.adminId;
@@ -80,8 +81,6 @@ export class AdminUsersCreateModalComponent implements OnInit {
         if (this.isSubmitting) return;
 
         let data: CreateUserDTO;
-        // this.isSubmitting = true;
-
         data = {
             hasLoginAccess:
                 this.createUserForm.controls['hasLoginAccess'].value,
@@ -96,15 +95,13 @@ export class AdminUsersCreateModalComponent implements OnInit {
                 this.createUserForm.controls['permanentAddress'].value,
         };
 
-        console.log(data);
-
         this.messageService.add({
             severity: 'info',
             summary: 'Creating',
             detail: 'Creating user...',
             life: 3000,
         });
-        this.userDataService.AdminCreateUser(data).subscribe({
+        this.authService.AdminCreateUser(data).subscribe({
             next: (res) => {
                 this.messageService.add({
                     severity: 'success',

@@ -49,4 +49,10 @@ export interface UpdateUserDetailsDTO {
 
 export interface AdminDisableUserLoginDTO {
     userId: number;
+    adminId: number;
+}
+
+export interface AdminEnableUserLogin {
+    userId: number;
+    adminId: number;
 }

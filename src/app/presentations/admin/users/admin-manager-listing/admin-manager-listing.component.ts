@@ -114,6 +114,7 @@ export class AdminManagerListingComponent implements OnInit {
                 this.authService
                     .AdminDisableUserLogin({
                         userId: item.id,
+                        adminId: this.authService.GetCurrentRole().adminId,
                     })
                     .subscribe((res) => {
                         if (res) {
@@ -146,6 +147,7 @@ export class AdminManagerListingComponent implements OnInit {
                 this.authService
                     .AdminEnableUserLogin({
                         userId: item.id,
+                        adminId: this.authService.GetCurrentRole().adminId,
                     })
                     .subscribe({
                         next: (res) => {

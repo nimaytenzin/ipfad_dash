@@ -32,6 +32,7 @@ import {
     GETDURATIONDIFFINYEAR,
     GETTOTALMONTHS,
 } from 'src/app/core/utility/date.helper';
+import { AuthService } from 'src/app/core/dataservice/users-and-auth/auth.service';
 
 @Component({
     selector: 'app-admin-lease-creator-property-selector',
@@ -78,7 +79,8 @@ export class AdminLeaseCreatorPropertySelectorComponent implements OnInit {
         private leaseAgreementDataService: LeaseAgreementDataService,
         private leaseCreatorStateService: LeaseCreatorStateService,
         private plotDataService: PlotDataService,
-        private router: Router
+        private router: Router,
+        private authService: AuthService
     ) {}
 
     ngOnInit() {}
@@ -92,24 +94,29 @@ export class AdminLeaseCreatorPropertySelectorComponent implements OnInit {
         this.selectedPlot = null;
         this.selectedUnit = null;
 
-        this.plotDataService.SearchPlotById(this.plotId).subscribe({
-            next: (res) => {
-                this.messageService.add({
-                    severity: 'info',
-                    summary: 'Found',
-                    detail: 'Plot Found',
-                });
-                this.searchedPlot = res;
-                this.plotArray.push(res);
-            },
-            error: (err) => {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Not Found',
-                    detail: err.error.message,
-                });
-            },
-        });
+        this.plotDataService
+            .SearchPlotUnderAdminByPlotId(
+                this.plotId,
+                this.authService.GetCurrentRole().adminId
+            )
+            .subscribe({
+                next: (res) => {
+                    this.messageService.add({
+                        severity: 'info',
+                        summary: 'Found',
+                        detail: 'Plot Found',
+                    });
+                    this.searchedPlot = res;
+                    this.plotArray.push(res);
+                },
+                error: (err) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Not Found',
+                        detail: err.error.message,
+                    });
+                },
+            });
     }
 
     selectPlot() {
