@@ -113,13 +113,7 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
         });
     }
 
-    ngOnInit() {
-        this.unitDataService.GetUnitListings().subscribe({
-            next: (res) => {
-                this.listedUnits = res;
-            },
-        });
-    }
+    ngOnInit() {}
 
     ngAfterViewInit() {}
 
