@@ -121,24 +121,7 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
         });
     }
 
-    ngAfterViewInit() {
-        this.setEqualHeight();
-        window.addEventListener('resize', () => this.setEqualHeight());
-    }
-
-    setEqualHeight() {
-        const heights = this.tabPanels.map(
-            (panel) => panel.nativeElement.offsetHeight
-        );
-        const maxHeight = Math.max(...heights);
-        this.tabPanels.forEach((panel) => {
-            this.renderer.setStyle(
-                panel.nativeElement,
-                'height',
-                `${maxHeight}px`
-            );
-        });
-    }
+    ngAfterViewInit() {}
 
     login() {
         this.router.navigate(['auth']);
