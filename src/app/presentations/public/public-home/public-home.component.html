@@ -91,13 +91,13 @@
                 >
                     <p-tabPanel header="PAYMENTS" #tabPanel>
                         <div
-                            class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6"
+                            class="flex flex-column md:flex-row gap-4 border-round-xl p-2 md:p-6 md:text-left text-center"
                         >
                             <div
                                 class="w-full md:w-6 flex flex-column gap-4 align-items-center"
                             >
                                 <p
-                                    class="text-4xl font-bold"
+                                    class="text-2xl md:text-3xl font-bold"
                                     style="color: #224e70"
                                 >
                                     Transform Rent Collection: Secure,
@@ -412,14 +412,6 @@
             Built for all kind of properties
         </p>
         <div class="flex md:flex-row flex-column gap-4">
-            <div class="flex flex-column align-items-center gap-2">
-                <img
-                    src="assets/icons/apartment.jpg"
-                    class="w-20rem md:w-30rem"
-                    alt=""
-                />
-                <p class="font-semibold text-lg">Apartments</p>
-            </div>
             <div
                 class="flex flex-column align-items-center justify-content-end gap-2"
             >
@@ -428,8 +420,17 @@
                     class="w-12rem md:w-22rem"
                     alt=""
                 />
-                <p class="font-semibold text-lg">Duplexes</p>
+                <p class="font-semibold text-lg">Duplexes(1+ units)</p>
             </div>
+            <div class="flex flex-column align-items-center gap-2">
+                <img
+                    src="assets/icons/apartment.jpg"
+                    class="w-20rem md:w-30rem"
+                    alt=""
+                />
+                <p class="font-semibold text-lg">Apartments(10+ Units)</p>
+            </div>
+
             <div
                 class="flex flex-column align-items-center justify-content-end gap-2"
             >
@@ -439,13 +440,13 @@
                     alt=""
                 />
 
-                <p class="font-semibold text-lg">Apartments</p>
+                <p class="font-semibold text-lg">Housing colonies(20+ Units)</p>
             </div>
         </div>
         <div
             #comingSoon
             class="surface-section surface-ground"
-            style="margin-top: 20rem"
+            style="margin-top: 10rem"
         >
             <div>
                 <p class="text-3xl">Coming soon...</p>

@@ -73,35 +73,23 @@ import { DividerModule } from 'primeng/divider';
     providers: [],
 })
 export class PublicHomeComponent implements OnInit, AfterViewInit {
-    @ViewChild('hContainer') hContainer: ElementRef;
-    @ViewChild('centerElement') centerElement!: ElementRef;
-
-    @ViewChildren('tabPanel') tabPanels!: QueryList<ElementRef>;
-
     showRequestDemoModal: boolean = false;
     zhidhayContactDetails = ZHIDHAYCONTACTDETAILS;
     characterLimit = 100;
     characterCountExceeded: boolean = false;
-    listedUnits: UnitDTO[] = [];
     currentYear = new Date().getFullYear();
     date: Date | undefined;
     companyName: string = COMPANY_NAME;
     requestDemoForm: FormGroup;
     activeIndex = 0;
     captcha: any;
-    buildingImages = [
-        'https://www.waytobhutan.com/wp-content/uploads/2020/02/dscf26071-1024x768.jpg',
-        'https://media.architecturaldigest.com/photos/5aa7f0882ed63a101d5619f3/master/w_1600%2Cc_limit/amankora-gangtey-bhutan-dining.jpg.jpg',
-    ];
+
     constructor(
         private router: Router,
         private fb: FormBuilder,
         private recaptchaV3Service: ReCaptchaV3Service,
         private recaptchaVerificationService: RecaptchaService,
-
-        private messageService: MessageService,
-        private unitDataService: UnitDataService,
-        private renderer: Renderer2
+        private messageService: MessageService
     ) {
         this.requestDemoForm = this.fb.group({
             name: [],
