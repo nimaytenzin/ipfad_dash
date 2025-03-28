@@ -108,6 +108,9 @@ export class PublicHomeComponent implements OnInit, AfterViewInit {
     login() {
         this.router.navigate(['auth']);
     }
+    goToBrandDescriptionPage() {
+        this.router.navigate(['brand']);
+    }
 
     onTextareaInput(event: Event): void {
         const value = (event.target as HTMLTextAreaElement).value;

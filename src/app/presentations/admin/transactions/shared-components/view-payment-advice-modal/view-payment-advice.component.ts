@@ -109,6 +109,7 @@ export class ViewPaymentAdviceComponent implements OnInit {
             .subscribe((res) => {
                 this.admin = res;
                 this.adminProfileUri = API_URL + '/' + this.admin.profileUri;
+                console.log(this.admin);
             });
     }
 

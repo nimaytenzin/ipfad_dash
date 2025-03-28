@@ -113,11 +113,18 @@
                         icon="pi pi-pencil"
                         (click)="openUpdateOwnerModal(item)"
                     ></p-button>
-                    <p-button
+                    <!-- <p-button
                         size="small"
                         icon="pi pi-eye"
                         label="notification prefs"
                         (click)="openViewNotificationPreferencesModal(item)"
+                    ></p-button> -->
+
+                    <p-button
+                        size="small"
+                        icon="pi pi-plus"
+                        label="Bank Account"
+                        (click)="openAddBankAccountModal(item)"
                     ></p-button>
 
                     <p-button
@@ -143,6 +150,13 @@
                         label="Properties"
                         icon="pi pi-eye"
                         (click)="openViewPropertiesModal(item)"
+                    ></p-button>
+                    <p-button
+                        size="small"
+                        severity="secondary"
+                        label="Bank Accounts"
+                        icon="pi pi-eye"
+                        (click)="openViewBankAccountModal(item)"
                     ></p-button>
                 </div>
             </td>

@@ -81,6 +81,7 @@ export class AdminLeaseCreatorLeaseFinalizationComponent implements OnInit {
     ) {
         this.leaseCreatorStateService.propertySelection$.subscribe((res) => {
             this.propertyDetails = res;
+            console.log('PROPERTY DETAILS SUBSCRIPTION', res);
         });
         this.leaseCreatorStateService.tenantSelection$.subscribe((res) => {
             this.tenantDetails = res;
@@ -164,6 +165,8 @@ export class AdminLeaseCreatorLeaseFinalizationComponent implements OnInit {
                     : null,
             tenantId: this.tenantDetails.tenant.id,
             unitId:
+                this.propertyDetails.leaseType ===
+                    this.leaseTypeEnum.BUILDING ||
                 this.propertyDetails.leaseType === this.leaseTypeEnum.UNIT
                     ? this.propertyDetails.unit.id
                     : null,

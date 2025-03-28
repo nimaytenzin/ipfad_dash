@@ -54,7 +54,7 @@
         >
             - {{ item.name }}
         </p>
-        <p *ngIf="!plot.building?.length">- No buildings added</p>
+        <p *ngIf="!plot.buildings?.length">- No buildings added</p>
         <app-admin-plot-map-viewer
             [plotId]="plot.plotId"
             [buildings]="plot.buildings"

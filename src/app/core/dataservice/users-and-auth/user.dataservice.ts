@@ -18,7 +18,7 @@ export class UserDataService {
 
     GetAdminDetails(id: number): Observable<UserDTO> {
         return this.http.get<UserDTO>(
-            `${this.apiUrl}/auth/admin-details/${id}`
+            `${this.apiUrl}/user/admin-details/${id}`
         );
     }
 

@@ -37,6 +37,11 @@ export class BankAccountDataService {
             `${this.apiUrl}/bank-account/admin/${adminId}`
         );
     }
+    GetAllBankAccountsByOwner(ownerId: number): Observable<BankAccountDto[]> {
+        return this.http.get<BankAccountDto[]>(
+            `${this.apiUrl}/bank-account/owner/${ownerId}`
+        );
+    }
 
     UpdateBankAccount(
         data: CreateBankAccountDto,

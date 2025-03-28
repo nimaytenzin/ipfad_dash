@@ -17,26 +17,29 @@
         </p>
 
         <div #plotDetails>
-            <p>PlotID: {{ propertyDetails.plot.plotId }}</p>
-
-            <p>
-                Area: {{ propertyDetails.plot.netArea }}
-                {{ propertyDetails.plot.areaUnit }}
+            <p class="font-semibold text-lg mt-4 mb-2">
+                PlotID: {{ propertyDetails.plot.plotId }}
             </p>
+
             <p>Thram No: {{ propertyDetails.plot.thram.thramNo }}</p>
             <p>
-                Admin Zone:
-                {{ propertyDetails.plot.thram.administrativeZone.name }}
-            </p>
-            <p>
-                Sub Admin Zone:
+                Location:
+                {{ propertyDetails.plot.thram.administrativeZone.name }},
                 {{ propertyDetails.plot.thram.subAdministrativeZone.name }}
             </p>
         </div>
         <div #buildingDetails *ngIf="propertyDetails.building">
-            <p>Building Name: {{ propertyDetails.building.name }}</p>
+            <p class="font-semibold text-lg mt-4 mb-2">
+                Building Name: {{ propertyDetails.building.name }}
+            </p>
         </div>
-        <div #unitDetails *ngIf="propertyDetails.unit"></div>
+        <div #unitDetails *ngIf="propertyDetails.unit">
+            <p class="font-semibold text-lg mt-4 mb-2">
+                Unit Number: {{ propertyDetails.unit.floorLevel }}-{{
+                    propertyDetails.unit.unitNumber
+                }}
+            </p>
+        </div>
     </div>
 
     <div #tenant *ngIf="tenantDetails" class="card flex-1">

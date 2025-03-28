@@ -10,19 +10,23 @@
                 <p class="text-sm">..making rentals easy</p>
             </div>
         </div>
-        <p-button label="Sign In" (click)="login()"></p-button>
+        <div class="flex align-items-center gap-2">
+            <p-button
+                label="Brand Description"
+                text="true"
+                (click)="goToBrandDescriptionPage()"
+                severity="secondary"
+            >
+            </p-button>
+            <p-button label="Sign In" (click)="login()"></p-button>
+        </div>
     </div>
     <div class="col-1 hidden md:block"></div>
 </div>
 
-<div
-    class="grid"
-    style="
-        background-color: #224e70;
-        padding: 3rem 0;
-        border-radius: 0 0rem 100% 0;
-    "
->
+<!-- -->
+
+<div class="grid cta-section">
     <div class="col-1"></div>
     <div class="col-10 main-content">
         <div
@@ -38,10 +42,9 @@
                     {{ companyName }}
                 </p>
                 <p class="text-lg md:text-3xl" style="color: #fdfce5">
-                    <strong>Simplify</strong> Your Property Management with Our
-                    <strong>Automated Cloud Solution</strong>
+                    <strong>Simplify</strong> Your Property Management
                 </p>
-                <p class="text-lg md:text-2xl" style="color: #fdfce5">
+                <p class="text-lg md:text-xl" style="color: #fdfce5">
                     Manage your rental properties effortlessly with our
                     all-in-one platform designed for landlords and property
                     managers.
@@ -53,6 +56,7 @@
                 >
                     <p-button
                         label="Request Demo"
+                        severity="secondary"
                         (click)="showRequestDemoModal = true"
                     ></p-button>
                 </div>

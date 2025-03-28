@@ -22,6 +22,8 @@ import { PaginatedData } from 'src/app/core/dto/paginated-data.dto';
 import { PageEvent, ROWSPERPAGEOPTION } from 'src/app/core/constants/constants';
 import { PaginatorModule } from 'primeng/paginator';
 import { AdminUsersNotificationPreferencesComponent } from '../components/admin-users-notification-preferences/admin-users-notification-preferences.component';
+import { AdminCreateBankAccountComponent } from '../../bankaccounts/admin-create-bank-account/admin-create-bank-account.component';
+import { AdminBankAccountViewByOwnerComponent } from '../../bankaccounts/admin-bank-account-view-by-owner/admin-bank-account-view-by-owner.component';
 
 @Component({
     selector: 'app-admin-owner-listing',
@@ -284,6 +286,26 @@ export class AdminOwnerListingComponent implements OnInit {
             AdminUsersNotificationPreferencesComponent,
             {
                 header: 'Notification Preferences',
+                data: {
+                    ...item,
+                },
+            }
+        );
+    }
+    openAddBankAccountModal(item: UserDTO) {
+        this.ref = this.dialogService.open(AdminCreateBankAccountComponent, {
+            header: 'Create Bank Account',
+            data: {
+                owner: item,
+            },
+        });
+    }
+
+    openViewBankAccountModal(item: UserDTO) {
+        this.ref = this.dialogService.open(
+            AdminBankAccountViewByOwnerComponent,
+            {
+                header: 'Bank Acounts| ' + item.nameEnglish,
                 data: {
                     ...item,
                 },

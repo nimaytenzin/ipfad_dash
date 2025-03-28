@@ -4,6 +4,7 @@ import { UserDTO } from '../users-and-auth/dto/user.dto';
 export interface BankAccountDto {
     id: number;
     adminId: number;
+    ownerId?: number;
 
     bankName: string;
     accountName: string;
@@ -12,11 +13,13 @@ export interface BankAccountDto {
     remarks: string;
 
     admin: UserDTO;
+    owner: UserDTO;
 }
 
 export interface CreateBankAccountDto {
     bankName: string;
     adminId: number;
+    ownerId?: number;
     accountNumber: number;
     accountName: string;
     remarks: string;
