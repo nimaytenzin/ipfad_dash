@@ -41,3 +41,23 @@
     opacity: 0.9;
     z-index: -1;
 }
+
+.pattern-bg {
+    position: relative;
+    overflow: hidden;
+}
+
+.pattern-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/assets/patterns/YonW.png");
+    background-blend-mode: screen;
+    background-repeat: repeat;
+    background-size: 20%;
+    opacity: 0.9;
+    z-index: -1;
+}
