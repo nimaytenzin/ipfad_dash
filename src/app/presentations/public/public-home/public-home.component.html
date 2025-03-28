@@ -71,14 +71,13 @@
             </div>
         </div>
     </div>
-
     <div class="col-1"></div>
 </div>
 
 <div class="grid">
-    <div class="col-12 lg:col-2"></div>
+    <div class="col-12 lg:col-1"></div>
 
-    <div class="col-12 lg:col-8 main-content">
+    <div class="col-12 lg:col-10 main-content">
         <div #featureSection class="surface-section surface-ground">
             <p class="text-3xl md:text-5xl font-bold text-center my-4 md:my-6">
                 <span class="" style="color: #36454f"
@@ -407,15 +406,21 @@
             </div>
         </div>
     </div>
+    <div class="col-12 lg:col-1"></div>
 </div>
 
 <div class="grid">
-    <div class="col-1 md:col-2 hidden md:block"></div>
-    <div class="col-12 md:col-8 main-content">
-        <p class="text-center text-5xl my-4 font-bold" style="color: #224e70">
+    <div class="col-1 md:col-1 hidden md:block"></div>
+    <div class="col-12 md:col-10 main-content">
+        <p
+            class="text-center text-5xl my-4 md:my-6 font-bold"
+            style="color: #224e70"
+        >
             Built for all kind of properties
         </p>
-        <div class="flex md:flex-row flex-column gap-4">
+        <div
+            class="flex md:flex-row flex-column align-items-center justify-content-center gap-4"
+        >
             <div
                 class="flex flex-column align-items-center justify-content-end gap-2"
             >
@@ -447,199 +452,252 @@
                 <p class="font-semibold text-lg">Housing colonies(20+ Units)</p>
             </div>
         </div>
-        <div
-            #comingSoon
-            class="surface-section surface-ground"
-            style="margin-top: 10rem"
-        >
-            <div>
-                <p class="text-3xl">Coming soon...</p>
-                <hr />
-                <div
-                    class="flex-column md:flex-row flex justify-content-center gap-4"
-                >
-                    <div class="w-full md:w-5">
-                        <p class="text-4xl font-bold">
-                            <span class="text-blue-600 text-5xl">
-                                Zhidhay AI </span
-                            >- Automate repetitive tasks.
-                        </p>
-                        <hr />
-                        <p>"How do I onboard a new tenant?"</p>
-                        <p>"Can you help me track rent payments?"</p>
-                        <p>"I need to report a maintenance issue."</p>
+    </div>
+    <div class="col-1 md:col-1 hidden md:block"></div>
+</div>
 
-                        <p>"How do I generate a tax report?"</p>
-                        <p>
-                            You can ask Zhidhay AI anything and it will not just
-                            answer but also help do those tasks for you.
-                        </p>
-                    </div>
+<div #newFeatures style="margin-top: 7rem">
+    <p class="text-center text-4xl my-4 font-bold" style="color: #224e70">
+        New Features. Coming soon...
+    </p>
+    <div
+        #zhidhayAi
+        style="
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                #edeeb885 10%,
+                #edeeb87d 90%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            padding: 3rem 0;
+        "
+        class="grid"
+    >
+        <div class="col-1 md:col-1 hidden md:block"></div>
+        <div class="col-12 md:col-10 p-6">
+            <!-- Headline with gradient text -->
+            <p class="text-4xl md:text-5xl font-bold text-center my-6">
+                <span
+                    class="bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text"
+                    >Zhidhay AI</span
+                >
+                - Your 24/7 Property Management Assistant
+            </p>
+
+            <div
+                class="flex flex-column md:flex-row justify-content-center gap-6 align-items-center"
+            >
+                <!-- Left Column: Questions & Value Prop -->
+                <div class="w-full md:w-5 flex flex-column gap-4">
+                    <!-- Animated question list -->
                     <div
-                        class="flex justify-content-center align-items-end w-full md:w-7"
+                        class="p-4 bg-white border-round-lg shadow-2 hover:shadow-4 transition-all"
                     >
-                        <img
-                            src="assets/mockups/zhidhayai.png"
-                            class="w-30rem"
-                            alt=""
-                        />
+                        <p class="text-xl md:text-2xl text-600 mb-3">
+                            Try asking:
+                        </p>
+                        <ul
+                            class="list-none p-0 m-0 flex flex-column gap-3 text-xl"
+                        >
+                            <li class="flex align-items-center gap-2">
+                                <i class="pi pi-angle-right text-blue-500"></i>
+                                <p>
+                                    "How do I onboard a new tenant with digital
+                                    contracts?"
+                                </p>
+                            </li>
+                            <li class="flex align-items-center gap-2">
+                                <i class="pi pi-angle-right text-blue-500"></i>
+                                <p>
+                                    "Show me overdue rent payments for Q3 2023"
+                                </p>
+                            </li>
+                            <li class="flex align-items-center gap-2">
+                                <i class="pi pi-angle-right text-blue-500"></i>
+                                <p>
+                                    "Create a maintenance ticket for apartment
+                                    5B - leaking faucet"
+                                </p>
+                            </li>
+                            <li class="flex align-items-center gap-2">
+                                <i class="pi pi-angle-right text-blue-500"></i>
+                                <p>
+                                    "Generate a tax report with depreciation
+                                    calculations"
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Value proposition -->
+                    <div
+                        class="bg-blue-50 p-4 border-round-lg border-left-3 border-blue-500"
+                    >
+                        <p
+                            class="text-2xl md:text-3xl font-bold text-blue-800 mb-3"
+                        >
+                            Beyond Answers → Action
+                        </p>
+                        <p class="line-height-3 text-gray-700 text-xl">
+                            Zhidhay AI doesn't just respond - it
+                            <span class="font-semibold">executes tasks</span>
+                            in your property management system. From drafting
+                            lease agreements to reconciling payments, consider
+                            it your digital employee.
+                        </p>
                     </div>
                 </div>
 
-                <hr style="margin: 5rem 0" />
-                <div class="flex flex-column md:flex-row justify-center gap-4">
-                    <div>
-                        <p class="text-5xl font-bold">
-                            <span class="text-blue-600">Zhidhay </span>
-                            <span class="text-green-500">Care</span> for tenants
-                        </p>
-                        <p class="mt-2">Rent Without a Security Deposit!</p>
+                <!-- Right Column: Image -->
+                <div class="w-full md:w-7 flex justify-content-center">
+                    <img
+                        src="assets/mockups/zhidhayai.png"
+                        class="w-full animate-float"
+                        alt="Zhidhay AI interface showing task automation dashboard"
+                        style="
+                            width: 30rem;
+                            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+                        "
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="col-1 md:col-1 hidden md:block"></div>
+    </div>
 
-                        <p class="mt-4">
-                            Say goodbye to hefty deposits! With Zhidhay Care,
-                            you can move in by paying a small monthly fee — no
-                            big upfront costs, just peace of mind. Renting made
-                            simple, affordable, and stress-free.
-                        </p>
-                    </div>
+    <div #zhidhayCare class="grid">
+        <div class="col-1 md:col-1 hidden md:block"></div>
+        <div class="col-12 md:col-10 p-6">
+            <!-- Headline with gradient text -->
 
-                    <div>
-                        <p class="font-semibold">Easy, Affordable Rentals</p>
-                        <p>
+            <p class="text-4xl md:text-5xl font-bold text-center my-6">
+                <span style="color: #224e70">Zhidhay </span>
+                <span style="color: #bad9bf">Care</span> for tenants
+            </p>
+
+            <div
+                class="flex flex-column md:flex-row justify-content-center gap-6 align-items-center"
+            >
+                <div class="w-full md:w-7 flex flex-column gap-4">
+                    <img
+                        src="assets/mockups/zhidhaycare.png"
+                        class="w-full"
+                        alt=""
+                    />
+                </div>
+
+                <!-- Right Column: Image -->
+                <div
+                    class="w-full md:w-5 flex flex-column justify-content-center"
+                >
+                    <div class="card flex flex-column gap-2">
+                        <p class="font-semibold text-xl">
+                            <i class="pi pi-check text-green-600 font-bold"></i>
+                            Easy, Affordable Rentals
+                        </p>
+                        <p class="text-lg">
                             Pay a small monthly fee — no more large security
                             deposits.Zhidhay will pay the security deposit for
                             you.
                         </p>
+                    </div>
 
-                        <p class="mt-4 font-semibold">
+                    <div class="card flex flex-column gap-2">
+                        <p class="font-semibold text-xl">
+                            <i class="pi pi-check text-green-600 font-bold"></i>
+                            Rent Without a Security Deposit!
+                        </p>
+                        <p class="text-lg">
+                            Move in with ease! With Zhidhay Care, enjoy a small
+                            monthly fee—no hefty deposits or upfront costs.
+                            Renting made simple, affordable, and stress-free.
+                        </p>
+                    </div>
+                    <div class="card flex flex-column gap-2">
+                        <p class="font-semibold text-xl">
+                            <i class="pi pi-check text-green-600 font-bold"></i>
                             Trusted Tenants, Happy Landlords
                         </p>
-                        <p>
+                        <p class="text-lg">
                             Pre-screening for eligibility ensures reliable
                             tenants for owners, making it a worry-free
-                            experience for owners
+                            experience for owners.
                         </p>
                     </div>
                 </div>
-
-                <!-- <div style="margin-top: 5rem">
-                    <p class="text-center text-5xl mb-6 font-bold">
-                        Our Partners
-                    </p>
-
-                    <div class="flex justify-content-center gap-5 text-center">
-                        <div>
-                            <img
-                                src="assets/partners/rma.png"
-                                class="w-3rem md:w-6rem"
-                                alt=""
-                            />
-                            <p>RMA</p>
-                        </div>
-                        <div>
-                            <img
-                                src="assets/partners/gny.png"
-                                class="w-3rem md:w-6rem"
-                                alt=""
-                            />
-                            <p>Gerab Nyed Yon</p>
-                        </div>
-                        <div>
-                            <img
-                                src="assets/partners/bob.svg"
-                                class="w-3rem md:w-6rem"
-                                alt=""
-                            />
-                            <p>Bank of Bhutan</p>
-                        </div>
-                        <div>
-                            <img
-                                src="assets/partners/bt.png"
-                                class="w-3rem md:w-6rem"
-                                alt=""
-                            />
-                            <p>Bhutan Telecom</p>
-                        </div>
-                        <div>
-                            <img
-                                src="assets/partners/tashicell.png"
-                                class="w-3rem md:w-6rem"
-                                alt=""
-                            />
-                            <p>Tashi cell</p>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
+        <div class="col-1 md:col-1 hidden md:block"></div>
     </div>
-    <div class="col-1 md:col-2 hidden md:block"></div>
 </div>
 
-<!-- <div
-    class="flex flex-column justify-content-center text-center gap-4"
-    style="margin-bottom: 2rem"
->
-    <p class="text-5xl font-bold mb-4">Our Reach</p>
-    <img src="assets/svgmaps/bhutan.svg" height="200px" alt="" />
+<footer style="background-color: #f5f6db7d">
+    <div class="grid p-0 m-0">
+        <div class="col-1 hidden md:block"></div>
+        <div
+            class="col-12 md:col-10 flex justify-content-between align-items-center"
+        >
+            <div
+                class="flex flex-column justify-content-center align-items-start gap-2 w-4"
+            >
+                <div class="flex">
+                    <img src="assets/logo/zhidhay.svg" class="w-4rem" alt="" />
+                    <div class="flex flex-column justify-content-between">
+                        <p class="text-3xl font-bold">ZHIDHAY</p>
+                        <p class="text-sm">..making rentals easy</p>
+                    </div>
+                </div>
+                <p class="text-sm">
+                    Elevate your rental experience with Zhidhay Care.
+                    Effortlessly manage properties, simplify processes, and
+                    enjoy reliable tenant pre-screening—all while avoiding hefty
+                    security deposits. Join us today for easy, affordable
+                    rentals!
+                </p>
+            </div>
 
-    <p class="text-xl">
-        Zhidhay is currently managing
-        <span class="text-3xl font-bold text-blue-600">552</span> properties
-        across
-        <span class="text-3xl font-bold text-blue-600">5 Dzongkhags</span>
-    </p>
-</div> -->
+            <div class="text-center">
+                <p class="text-3xl font-bold">
+                    <span class="text-blue-600">Contact Us</span>
+                </p>
+                <p class="text-sm text-color-secondary mb-2"></p>
+                <div class="flex align-items-center gap-3">
+                    <a
+                        href="https://www.facebook.com/profile.php?id=61563403383387&sk=about"
+                        target="_blank"
+                        class="text-color hover:text-primary"
+                    >
+                        <i class="pi pi-facebook text-2xl"></i>
+                    </a>
 
-<footer
-    class="surface-50 mt-6 mx-auto"
-    style="background: linear-gradient(to top, #e0e0e0, #ffffff)"
->
-    <div
-        class="flex justify-content-center align-items-center flex-wrap gap-4 px-4"
-    >
-        <div>
-            <p class="text-3xl font-bold">
-                <span class="text-blue-600">Zhidhay.bt</span>
-            </p>
-            <p class="text-sm text-color-secondary mb-2">
-                Making rentals easy in Bhutan.
-            </p>
-            <div class="flex align-items-center gap-3">
-                <a
-                    href="https://www.facebook.com/profile.php?id=61563403383387&sk=about"
-                    target="_blank"
-                    class="text-color hover:text-primary"
-                >
-                    <i class="pi pi-facebook text-2xl"></i>
-                </a>
+                    <a
+                        href="https://instagram.com"
+                        target="_blank"
+                        class="text-color hover:text-primary"
+                    >
+                        <i class="pi pi-instagram text-2xl"></i>
+                    </a>
+                </div>
+            </div>
 
-                <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    class="text-color hover:text-primary"
-                >
-                    <i class="pi pi-instagram text-2xl"></i>
-                </a>
+            <div class="flex flex-column gap-2">
+                <div class="flex flex-column justify-center align-items-center">
+                    <img
+                        src="assets/partners/segmentx.png"
+                        height="80px"
+                        alt=""
+                    />
+                    <p>Powered by SegmentX Private Limited</p>
+                </div>
             </div>
         </div>
-
-        <div class="flex flex-column gap-2">
-            <div class="flex flex-column justify-center align-items-center">
-                <img src="assets/partners/segmentx.png" height="80px" alt="" />
-                <p>Powered by SegmentX Private Limited</p>
-            </div>
-        </div>
+        <div class="col-1 hidden md:block"></div>
     </div>
 
-    <div class="text-center mt-4 text-sm text-color-secondary">
+    <div class="text-center col-12 mt-4 text-sm text-color-secondary">
         © {{ currentYear }} Zhidhay. All Rights Reserved.
     </div>
-    <img
-        src="/assets/images/herobg.png"
-        style="width: 100%; margin-top: -70px"
-        alt=""
-    />
 </footer>
 
 <p-sidebar [(visible)]="showRequestDemoModal" styleClass="requestdemo-sidebar ">
