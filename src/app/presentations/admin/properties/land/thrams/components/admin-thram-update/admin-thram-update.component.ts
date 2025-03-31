@@ -73,7 +73,6 @@ export class AdminThramUpdateComponent implements OnInit {
         this.getAllDzongkhags();
         this.getAdminsitrativeZones(this.thram.dzongkhagId);
         this.getSubadministrativeZones(this.thram.administrativeZoneId);
-        console.log('Passed thram data', this.thram);
         this.selectedOwners = this.thram.owners;
     }
 
@@ -159,7 +158,7 @@ export class AdminThramUpdateComponent implements OnInit {
 
     getAllOwners() {
         this.userDataService
-            .AdminGetAllOwners(this.authService.GetAuthenticatedUser().id)
+            .AdminGetAllOwners(this.authService.GetCurrentRole().adminId)
             .subscribe((res) => {
                 console.log(res);
                 this.owners = res;
