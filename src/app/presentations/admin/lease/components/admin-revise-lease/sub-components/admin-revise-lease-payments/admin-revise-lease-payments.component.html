@@ -1,7 +1,7 @@
 <p-confirmPopup></p-confirmPopup>
 <div>
-    <div class="flex">
-        <div class="p-fluid">
+    <div class="flex gap-2 my-3">
+        <div class="p-fluid w-full md:w-6">
             <p>Monthly rent</p>
             <p-inputGroup>
                 <p-inputGroupAddon>Nu.</p-inputGroupAddon>
@@ -13,7 +13,7 @@
                 />
             </p-inputGroup>
         </div>
-        <div class="p-fluid">
+        <div class="p-fluid w-full md:w-6">
             <p>Security Deposit</p>
             <p-inputGroup>
                 <p-inputGroupAddon>Nu.</p-inputGroupAddon>
@@ -27,8 +27,11 @@
         </div>
     </div>
 
-    <div *ngIf="leaseAgreement.type === leaseTypeEnum.LAND">
-        <div class="col-4 field p-fluid">
+    <div
+        *ngIf="leaseAgreement.type === leaseTypeEnum.LAND"
+        class="flex gap-2 my-3"
+    >
+        <div class="p-fluid w-full md:w-6">
             <p>Area Leased</p>
             <div class="flex">
                 <p-inputGroup class="w-full">
@@ -41,14 +44,14 @@
                 </p-inputGroup>
                 <p-dropdown
                     [options]="areaUnits"
-                    [(ngModel)]="selectedAreaUnit"
+                    [(ngModel)]="areaUnit"
                     [showClear]="false"
                     placeholder="Select Lessee Type"
                 >
                 </p-dropdown>
             </div>
         </div>
-        <div class="col-4 field p-fluid">
+        <div class="p-fluid w-full md:w-6">
             <p>Rate Per Area</p>
             <div class="flex">
                 <p-inputGroup>

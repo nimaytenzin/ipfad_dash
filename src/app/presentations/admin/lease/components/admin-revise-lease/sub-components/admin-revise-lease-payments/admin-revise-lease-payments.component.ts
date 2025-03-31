@@ -78,6 +78,8 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
     rent: number;
     securityDepositAmount: number;
     ratePerArea: number;
+    areaUnit: string;
+
     areaLeased: number;
     penaltyPercentagePerAnnum: number;
 
@@ -108,6 +110,9 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
         this.selectedOwnerBankAccount = this.leaseAgreement.bankAccount;
         this.leaseCharges = this.leaseAgreement.leaseSurcharges;
 
+        this.areaLeased = this.leaseAgreement.areaLeased;
+        this.areaUnit = this.leaseAgreement.areaUnit;
+        this.ratePerArea = this.leaseAgreement.ratePerArea;
         this.createLeaseChargeForm = this.fb.group({
             particular: [],
             amount: [],
@@ -186,10 +191,18 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
             this.leaseAgreement.securityDepositAmount;
         const hasLeaseChargesChanged = this.hasLeaseChargesChanged();
 
+        const hasAreaLeasedChanged =
+            this.areaLeased !== this.leaseAgreement.areaLeased;
+
+        const hasRatePerAreaChanged =
+            this.ratePerArea !== this.leaseAgreement.ratePerArea;
+
         if (
             hasRentChanged ||
             hasSecurityDepositChanged ||
-            hasLeaseChargesChanged
+            hasLeaseChargesChanged ||
+            hasAreaLeasedChanged ||
+            hasRatePerAreaChanged
         ) {
             // Prepare the lease revision data
             this.leaseRevisionData = {
@@ -197,6 +210,9 @@ export class AdminReviseLeasePaymentsComponent implements OnInit {
                 securityDepositAmount: this.securityDepositAmount,
                 penaltyPercentagePerAnnum: this.penaltyPercentagePerAnnum,
                 leaseSurcharges: this.leaseCharges,
+                areaLeased: this.areaLeased,
+                areaUnit: this.areaUnit,
+                ratePerArea: this.ratePerArea,
             };
 
             // Update the lease payment
