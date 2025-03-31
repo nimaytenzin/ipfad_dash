@@ -89,7 +89,7 @@ export class AdminPlotCreateComponent implements OnInit {
         this.createPlotForm = this.fb.group({
             plotId: ['', [Validators.required]],
             plotCategory: ['', Validators.required],
-            netArea: ['', [Validators.required, Validators.min(1)]],
+            netArea: ['', [Validators.required]],
             areaUnit: [LANDAREAUNITS.SQFT, Validators.required],
             lapName: [''],
             lapCode: [''],
