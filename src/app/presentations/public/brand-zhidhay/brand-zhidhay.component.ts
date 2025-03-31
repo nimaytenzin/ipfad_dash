@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
     selector: 'app-brand-zhidhay',
     templateUrl: './brand-zhidhay.component.html',
     styleUrls: ['./brand-zhidhay.component.css'],
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, PdfViewerModule],
 })
 export class BrandZhidhayComponent implements OnInit {
     primaryColors = [

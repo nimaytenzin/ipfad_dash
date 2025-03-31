@@ -85,7 +85,6 @@ export class AdminPgPaymentStepperComponent implements OnInit {
         this.instance = this.dialogService.getInstance(this.ref);
         this.paymentAdvice = this.instance.data;
         this.bankList = bankAccountDataService.BankListWithLogo;
-        console.log('PAYMENT ADIVCE PASSED', this.paymentAdvice);
     }
 
     ngOnInit() {

@@ -1,94 +1,17 @@
 <div
-    class="flex justify-content-center py-4 align-items-center gap-2 font-semibold cursor-pointer hover:shadow-lg"
-    (click)="goToHome()"
+    class="flex flex-column justify-content-center align-items-center gap-2 font-semibold cursor-pointer"
 >
-    <img src="assets/logo/zhidhay.svg" class="w-4rem" alt="" />
-    <div class="flex flex-column justify-content-between">
-        <p class="text-3xl font-bold">ZHIDHAY</p>
-        <p class="text-sm">Brand Description</p>
-    </div>
-</div>
-
-<div
-    style="
-        height: 40vh;
-        background-image: url('/assets/patterns/DYonB.png');
-        background-blend-mode: screen;
-        background-repeat: repeat;
-        background-size: 30%;
-    "
-></div>
-
-<div class="grid">
-    <div class="col-2"></div>
-    <div class="col-8 flex">
-        <div class="flex-1">
-            <p class="text-2xl font-bold" style="color: #224e70">Colors</p>
-
-            <p>Primary Color <span class="text-3xl">Chathams-Blue</span></p>
-            <div class="flex">
-                <div *ngFor="let color of primaryColors" class="text-center">
-                    <div
-                        [ngStyle]="{ 'background-color': color.value }"
-                        class="w-4rem h-4rem"
-                    ></div>
-                    <div class="color-label">{{ color.label }}</div>
-                </div>
-            </div>
-
-            <div class="">
-                <p>Secondary Color <span class="text-3xl">Gurkha</span></p>
-                <div class="flex">
-                    <div
-                        *ngFor="let color of secondaryColors"
-                        class="text-center"
-                    >
-                        <div
-                            [ngStyle]="{ 'background-color': color.value }"
-                            class="w-4rem h-4rem rounded shadow"
-                        ></div>
-                        <div class="color-label">{{ color.label }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <p>Typography</p>
-
-            <p>Font Family: Raleway</p>
-            <p class="text-3xl font-thin">
-                Whereas recognition of the inherent dignity
-            </p>
-
-            <p class="text-3xl">Whereas recognition of the inherent dignity</p>
-            <p class="text-3xl font-medium">
-                Whereas recognition of the inherent dignity
-            </p>
-            <p class="text-3xl font-semibold">
-                Whereas recognition of the inherent dignity
-            </p>
-            <p class="text-3xl font-bold">
-                Whereas recognition of the inherent dignity
-            </p>
+    <div (click)="goToHome()" class="flex align-items-center">
+        <img src="assets/logo/zhidhay.svg" class="w-4rem" alt="" />
+        <div class="flex flex-column justify-content-between">
+            <p class="text-3xl font-bold">ZHIDHAY</p>
+            <p class="text-sm">Brand Description</p>
         </div>
     </div>
-    <div class="col-2"></div>
-</div>
-
-<div>
-    <p>Logos</p>
-
-    <p>Light on Dark</p>
-    <img src="assets/logo/zhidhay_light_on_dark.png" class="w-20rem" alt="" />
-    <p>Dark on Light</p>
-    <img src="assets/logo/zhidhay_dark_on_light.png" class="w-20rem" alt="" />
-
-    <div>
-        <p>Mobile Icons</p>
-        <div>
-            <img src="assets/logo/logo_square.png" alt="" />
-            <img src="assets/logo/logo_rounded.png" alt="" />
-            <img src="assets/logo/logo_round.png" alt="" />
-        </div>
-    </div>
+    <pdf-viewer
+        src="assets/docs/brand.pdf"
+        [render-text]="true"
+        [original-size]="false"
+        class="pdf-viewer"
+    ></pdf-viewer>
 </div>
