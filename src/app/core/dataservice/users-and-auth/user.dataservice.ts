@@ -34,7 +34,7 @@ export class UserDataService {
 
     AdminGetAllOwners(adminId: number): Observable<UserDTO[]> {
         return this.http.get<UserDTO[]>(
-            `${this.apiUrl}/auth/user/admin/${adminId}`
+            `${this.apiUrl}/user/owners/admin/${adminId}`
         );
     }
 
