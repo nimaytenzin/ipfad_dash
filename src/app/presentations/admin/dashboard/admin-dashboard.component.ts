@@ -91,6 +91,10 @@ export class AdminDashboardComponent implements OnInit {
 
     ngOnInit() {
         this.authenticatedUser = this.authService.GetAuthenticatedUser();
+        console.log(
+            'LOGGIN IN ROLE',
+            this.authService.GetCurrentRole().adminId
+        );
 
         this.statsService
             .GetSummaryStatsByAdmin(this.authService.GetCurrentRole().adminId)

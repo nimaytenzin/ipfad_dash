@@ -26,9 +26,6 @@ export class RoleGuard implements CanActivate {
         const user: AuthenticatedUserDTO =
             this.authService.GetAuthenticatedUser();
 
-        console.log('authernticated user', user);
-        console.log('allowed roles', next.data);
-
         if (user && user.roles && this.hasRole(user, next.data['roles'])) {
             return true;
         } else {
@@ -46,7 +43,6 @@ export class RoleGuard implements CanActivate {
         allowedRoles: string[]
     ): boolean {
         const userRolesArray = user.roles;
-        console.log(userRolesArray, allowedRoles);
         return userRolesArray.some((role) => allowedRoles.includes(role.name));
     }
 }

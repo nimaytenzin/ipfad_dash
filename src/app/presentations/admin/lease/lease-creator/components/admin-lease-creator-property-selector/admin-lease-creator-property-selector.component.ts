@@ -159,7 +159,6 @@ export class AdminLeaseCreatorPropertySelectorComponent implements OnInit {
     }
 
     selectUnit(item: UnitDTO, building: BuildingDTO) {
-        // Check if the selected lease type is neither UNIT nor BUILDING
         if (
             this.selectedLeaseType !== this.leaseTypeEnum.UNIT &&
             this.selectedLeaseType !== this.leaseTypeEnum.BUILDING
