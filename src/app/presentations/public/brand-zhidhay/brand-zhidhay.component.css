@@ -1,19 +1,17 @@
 /* For mobile devices */
 .pdf-viewer {
-    width: 100%;
+    width: 100dvw;
     height: 90vh;
 }
 
-/* For tablets and larger (768px and up) */
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
     .pdf-viewer {
-        width: 75%;
+        width: 100%;
     }
 }
 
-/* For laptops/desktops (1024px and up) */
 @media (min-width: 1024px) {
     .pdf-viewer {
-        width: 50%;
+        width: 100%;
     }
-}
+} */
