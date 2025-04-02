@@ -70,7 +70,7 @@ export class PublicHomeComponent implements OnInit {
     selectedBasemap = this.basemapOptions[0];
     currentBasemap!: L.TileLayer;
 
-    selectedTown = this.towns[0];
+    selectedTown = this.towns[1];
     title = `Map Showing Drains of ${this.selectedTown.name}`;
 
     cartoLight = L.tileLayer(
