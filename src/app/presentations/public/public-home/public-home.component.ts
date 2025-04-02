@@ -28,9 +28,48 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class PublicHomeComponent implements OnInit {
     towns = [
-        { name: 'Phuentsholing Thromde', value: 'pling' },
-        { name: 'Samtse LAP', value: 'samtse' },
+        {
+            name: 'Phuentsholing Thromde',
+            value: 'pling',
+            dataFile: 'assets/data/phuenthsolingData.zip',
+        },
+        {
+            name: 'Samtse LAP',
+            value: 'samtse',
+            dataFile: 'assets/data/samtseData.zip',
+        },
     ];
+
+    basemapOptions = [
+        {
+            name: 'Google Satellite',
+            layer: L.tileLayer(
+                'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}',
+                {
+                    attribution:
+                        '&copy; <a href="https://www.google.com/maps">Google</a>',
+                }
+            ),
+        },
+        {
+            name: 'Carto Light',
+            layer: L.tileLayer(
+                'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+                { attribution: '&copy; <a href="https://carto.com/">CARTO</a>' }
+            ),
+        },
+        {
+            name: 'OpenStreetMap',
+            layer: L.tileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                { attribution: '&copy; OpenStreetMap contributors' }
+            ),
+        },
+    ];
+
+    selectedBasemap = this.basemapOptions[0];
+    currentBasemap!: L.TileLayer;
+
     selectedTown = this.towns[0];
     title = `Map Showing Drains of ${this.selectedTown.name}`;
 
@@ -61,17 +100,20 @@ export class PublicHomeComponent implements OnInit {
         this.map = L.map('map', {
             center: [27.43503, 89.651983],
             zoom: 15,
-            layers: [this.cartoLight],
+            layers: [this.selectedBasemap.layer], // Default basemap
             zoomControl: false,
             attributionControl: false,
         });
 
-        const baseMaps = {
-            'Google Satellite': this.googleSat,
-            'Carto Light': this.cartoLight,
-        };
+        this.currentBasemap = this.selectedBasemap.layer;
+    }
 
-        L.control.layers(baseMaps).addTo(this.map);
+    changeBasemap() {
+        if (this.currentBasemap) {
+            this.map.removeLayer(this.currentBasemap);
+        }
+        this.currentBasemap = this.selectedBasemap.layer;
+        this.currentBasemap.addTo(this.map);
     }
 
     loadDrainsGeojson() {
@@ -87,21 +129,75 @@ export class PublicHomeComponent implements OnInit {
                 }
 
                 this.drainsGeojsonLayer = L.geoJSON(geojson, {
-                    style: { color: '#0099ff', weight: 2, opacity: 0.8 },
+                    style: (feature) => ({
+                        color:
+                            feature.properties.Class === 'Primary'
+                                ? '#58a5df'
+                                : '#28a745',
+                        weight: feature.properties.Class === 'Primary' ? 4 : 3,
+                        opacity: 0.9,
+                    }),
                     onEachFeature: (feature, layer) => {
                         const popupContent = `
-              <b>Drain ID:</b> ${feature.properties.Id || 'N/A'}<br>
-              <b>Name:</b> ${feature.properties.Name || 'N/A'}<br>
-              <b>Type:</b> ${feature.properties.Type || 'N/A'}<br>
-              <b>Material:</b> ${feature.properties.Material || 'N/A'}<br>
-              <b>Problem:</b> ${feature.properties.Problem || 'None'}
-            `;
+                                <div class="popup-container">
+                                    <h5 class="popup-title">Name: ${
+                                        feature.properties.Name ||
+                                        'Unnamed Drain'
+                                    }</h5>
+                                    <table class="popup-table">
+                                        <tr><td><b>ID</b></td><td>${
+                                            feature.properties.Id || 'N/A'
+                                        }</td></tr>
+                                        <tr><td><b>Type</b></td><td>${
+                                            feature.properties.Type || 'N/A'
+                                        }</td></tr>
+                                        <tr><td><b>Class</b></td><td class="${
+                                            feature.properties.Class ===
+                                            'Primary'
+                                                ? 'primary-class'
+                                                : 'secondary-class'
+                                        }">${
+                            feature.properties.Class || 'N/A'
+                        }</td></tr>
+                                        <tr><td><b>Material</b></td><td>${
+                                            feature.properties.Material || 'N/A'
+                                        }</td></tr>
+                                        <tr><td><b>Top Width</b></td><td>${
+                                            feature.properties.Top_Width ||
+                                            'N/A'
+                                        } mm</td></tr>
+                                        <tr><td><b>Bottom Width</b></td><td>${
+                                            feature.properties.Bottom_Wid ||
+                                            'N/A'
+                                        } mm</td></tr>
+                                        <tr><td><b>Height</b></td><td>${
+                                            feature.properties.Height || 'N/A'
+                                        } mm</td></tr>
+                                        <tr><td><b>Wall Thickness</b></td><td>${
+                                            feature.properties.Wall_Thick ||
+                                            'N/A'
+                                        } mm</td></tr>
+                                        <tr><td><b>Problem</b></td><td>${
+                                            feature.properties.Problem
+                                                ? feature.properties.Problem
+                                                : 'None'
+                                        }</td></tr>
+                                    </table>
+                                </div>
+                            `;
                         layer.bindPopup(popupContent);
                         layer.on('click', () => {
                             this.drainsGeojsonLayer.eachLayer((l) =>
                                 (l as L.Path).setStyle({ color: '#0099ff' })
                             );
                             (layer as L.Path).setStyle({ color: 'red' });
+
+                            // Fly to clicked feature
+                            const bounds = (layer as any).getBounds();
+                            this.map.flyToBounds(bounds, {
+                                animate: true,
+                                duration: 1.5,
+                            });
                         });
                     },
                 }).addTo(this.map);
@@ -115,5 +211,15 @@ export class PublicHomeComponent implements OnInit {
             error: (error) =>
                 console.error('Error loading drains GeoJSON:', error),
         });
+    }
+
+    downloadData() {
+        const dataFile = this.selectedTown.dataFile;
+        const link = document.createElement('a');
+        link.href = dataFile;
+        link.download = dataFile.split('/').pop() || 'data.zip';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 }

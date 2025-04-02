@@ -3,8 +3,10 @@
         <h2>{{ title }}</h2>
 
         <hr />
-        <div class="flex align-items-center justify-content-center p-fluid">
-            <p>Select Town</p>
+        <div
+            class="flex align-items-center justify-content-center gap-6 p-fluid"
+        >
+            <p class="flex-1 w-full">Select Town</p>
 
             <p-dropdown
                 [options]="towns"
@@ -13,8 +15,37 @@
                 placeholder="Select Town"
                 (onChange)="loadDrainsGeojson()"
             ></p-dropdown>
+
+            <button
+                pButton
+                label="Download Data"
+                icon="pi pi-download"
+                (click)="downloadData()"
+            ></button>
         </div>
         <p>Click on a feature to view properties</p>
+
+        <hr />
+        <div class="flex align-items-center gap-2">
+            <p>BaseMap</p>
+            <p-dropdown
+                [options]="basemapOptions"
+                [(ngModel)]="selectedBasemap"
+                optionLabel="name"
+                placeholder="Select Basemap"
+                (onChange)="changeBasemap()"
+            ></p-dropdown>
+        </div>
     </div>
     <div id="map" class="map"></div>
+
+    <div id="legend">
+        <h3>Legend</h3>
+        <div class="legend-item">
+            <span class="legend-color primary"></span> Primary Drain
+        </div>
+        <div class="legend-item">
+            <span class="legend-color secondary"></span> Secondary Drain
+        </div>
+    </div>
 </div>
